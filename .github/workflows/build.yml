@@ -30,6 +30,6 @@ jobs:
     - name: Get and extract ODE
       run: wget https://sourceforge.net/projects/opende/files/ODE/0.13/ode-0.13.tar.gz/download -O - | tar xvzf -
     - name: Build ODE
-      run: cd ode-0.13 && ./configure --host=i686-w64-mingw32 --prefix=/ && make
+      run: cd ode-0.13 && ./configure --host=i686-w64-mingw32 --prefix=/ --disable-demos --without-drawstuff --enable-shared && make
     - name: Install ODE
       run: make -C ode-0.13 install DESTDIR=`pwd`/deps
