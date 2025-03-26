@@ -3,15 +3,17 @@
 
 #include <stdio.h>
 
-nb_engine_t engine;
+nb_engine_t* engine;
 
 int main(int argc, char** argv) {
 	nb_version_t ver;
 	nb_get_version(&ver);
 	printf("NishBox engine %s - Powered by Pawn and ODE\n", ver.full);
+
 	nb_engine_begin();
-	nb_engine_create(&engine);
-	nb_engine_destroy(&engine);
+	engine = nb_engine_create();
+	nb_engine_destroy(engine);
 	nb_engine_end();
+
 	return 0;
 }

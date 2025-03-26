@@ -6,9 +6,11 @@ AMX_LIBS = `pkg-config --libs amx`
 GL_CFLAGS = `pkg-config --cflags gl`
 GL_LIBS = `pkg-config --libs gl`
 
+BACKEND = GLX
+
 AR = $(TARGET_PREFIX)ar
 CC = $(TARGET_PREFIX)gcc
-CFLAGS = -D_DEFAULT_SOURCE -I../engine $(ODE_CFLAGS) $(AMX_CFLAGS) $(GL_CFLAGS)
+CFLAGS = -D_DEFAULT_SOURCE -DUSE_$(BACKEND) -I../engine $(ODE_CFLAGS) $(AMX_CFLAGS) $(GL_CFLAGS)
 LDFLAGS =
 LIBS = $(ODE_LIBS) $(AMX_LIBS) $(GL_LIBS)
 
