@@ -10,5 +10,6 @@ int main(int argc, char** argv) {
 	nb_get_version(&ver);
 	printf("NishBox engine %s - Powered by Pawn and ODE\n", ver.full);
 	nb_engine_init(&engine);
+	nb_engine_destroy(&engine);
 	return 0;
 }
