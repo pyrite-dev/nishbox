@@ -14,6 +14,8 @@ ODE_CFLAGS = -I../deps/include
 ODE_LIBS = -L../deps/lib -lode
 AMX_CFLAGS = -I../deps/include
 AMX_LIBS = -L../deps/lib -lamx
+PAWNC_CFLAGS = -I../deps/include
+PAWNC_LIBS = -L../deps/lib -lpawnc
 GL_CFLAGS =
 GL_LIBS = -lopengl32 -lgdi32
 
