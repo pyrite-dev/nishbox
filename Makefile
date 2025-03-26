@@ -1,40 +1,5 @@
 export
-WINDOWS = NO
-ifeq ($(PLATFORM),win32)
-TARGET_PREFIX = i686-w64-mingw32-
-WINDOWS = YES
-endif
-
-ifeq ($(PLATFORM),win64)
-TARGET_PREFIX = x86_64-w64-mingw32-
-WINDOWS = YES
-endif
-
-ifdef WINDOWS
-ODE_CFLAGS = -I../deps/include
-ODE_LIBS = -L../deps/lib -lode
-AMX_CFLAGS = -I../deps/include
-AMX_LIBS = -L../deps/lib -lamx
-GL_CFLAGS =
-GL_LIBS = -lopengl32 -lgdi32
-
-BACKEND = WGL
-
-EXEC = .exe
-endif
-
-ifeq ($(PLATFORM),)
-ODE_CFLAGS = `pkg-config --cflags ode`
-ODE_LIBS = `pkg-config --libs ode`
-AMX_CFLAGS = `pkg-config --cflags amx`
-AMX_LIBS = `pkg-config --libs amx`
-GL_CFLAGS = `pkg-config --cflags gl`
-GL_LIBS = `pkg-config --libs gl`
-
-BACKEND = GLX
-
-EXEC =
-endif
+include mk/p_*.mk
 
 AR = $(TARGET_PREFIX)ar
 CC = $(TARGET_PREFIX)gcc
