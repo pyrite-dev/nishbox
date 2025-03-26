@@ -1,5 +1,5 @@
 TARGET = libnishbox.a
-OBJS = version.o
+OBJS = version.o core.o
 
 include ../common.mk
 
