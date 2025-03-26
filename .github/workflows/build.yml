@@ -5,9 +5,9 @@ on:
     inputs:
       release:
         description: "release or not"
-	type: boolean
-	default: true
-	required: true
+        type: boolean
+        default: true
+        required: true
   push:
 
 concurrency:
