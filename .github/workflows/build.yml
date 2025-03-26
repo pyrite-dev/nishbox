@@ -8,7 +8,6 @@ on:
         type: boolean
         default: true
         required: true
-  push:
 
 concurrency:
   group: "build"
