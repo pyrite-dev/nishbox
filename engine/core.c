@@ -13,6 +13,7 @@
 
 /* Standard */
 #include <stdlib.h>
+#include <string.h>
 
 void nb_engine_begin(void) {
 	nb_version_t ver;
@@ -26,7 +27,8 @@ void nb_engine_end(void) { dCloseODE(); }
 
 nb_engine_t* nb_engine_create(void) {
 	nb_engine_t* engine = malloc(sizeof(*engine));
-	engine->draw	    = nb_draw_create();
+	memset(engine, 0, sizeof(*engine));
+	engine->draw = nb_draw_create();
 	if(engine->draw == NULL) {
 		nb_function_log("Failed to create drawing interface", "");
 		free(engine);
@@ -37,4 +39,9 @@ nb_engine_t* nb_engine_create(void) {
 	return engine;
 }
 
-void nb_engine_destroy(nb_engine_t* engine) { dWorldDestroy(engine->world); }
+void nb_engine_destroy(nb_engine_t* engine) {
+	dWorldDestroy(engine->world);
+	if(engine->draw != NULL) nb_draw_destroy(engine->draw);
+	free(engine);
+	nb_function_log("Destroyed engine", "");
+}

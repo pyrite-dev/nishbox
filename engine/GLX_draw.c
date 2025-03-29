@@ -3,26 +3,48 @@
 /* External library */
 #include <X11/Xlib.h>
 #include <GL/glx.h>
+#include <GL/glxext.h>
 
 /* Interface */
 #include "nb_draw_platform.h"
+#include "nb_draw.h"
 
 /* NishBox */
 #include "nb_log.h"
 
 /* Standard */
+#include <string.h>
+
+#ifndef GLX_MESA_swap_control
+#define GLX_MESA_swap_control 1
+typedef int (*PFNGLXGETSWAPINTERVALMESAPROC)(void);
+#endif
+
+static int has_glx_extension(nb_draw_t* draw, const char* query) {
+	const char* glx_ext = NULL;
+	const char* ptr;
+	const int   len = strlen(query);
+	if(glx_ext == NULL) {
+		glx_ext = glXQueryExtensionsString(draw->display, DefaultScreen(draw->display));
+	}
+	ptr = strstr(glx_ext, query);
+	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
+}
 
 void _nb_draw_create(nb_draw_t** pdraw) {
-	nb_draw_t*   draw = *pdraw;
-	int	     i;
-	int	     attribs[64];
-	int	     screen;
-	Window	     root;
-	XVisualInfo* visual;
-	draw->display = XOpenDisplay(NULL);
+	nb_draw_t*	     draw = *pdraw;
+	int		     i	  = 0;
+	int		     attribs[64];
+	int		     screen;
+	Window		     root;
+	XVisualInfo*	     visual;
+	XSetWindowAttributes attr;
+	XSizeHints	     hints;
+	int		     interval = 0;
+	draw->display		      = XOpenDisplay(NULL);
 	if(draw->display == NULL) {
 		nb_function_log("Failed to open display", "");
-		_nb_draw_destroy(draw);
+		nb_draw_destroy(draw);
 		*pdraw = NULL;
 		return;
 	}
@@ -45,12 +67,63 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 
 	visual = glXChooseVisual(draw->display, screen, attribs);
 	if(visual == NULL) {
-		nb_function_log("Failed to get a visual", "");
-		_nb_draw_destroy(draw);
+		nb_function_log("Failed to get visual", "");
+		nb_draw_destroy(draw);
+		*pdraw = NULL;
+		return;
 	}
+
+	attr.colormap	= XCreateColormap(draw->display, root, visual->visual, AllocNone);
+	attr.event_mask = StructureNotifyMask | ExposureMask;
+	draw->window	= XCreateWindow(draw->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
+
+	hints.x	     = draw->x;
+	hints.y	     = draw->y;
+	hints.width  = draw->width;
+	hints.height = draw->height;
+	hints.flags  = USSize | USPosition;
+	XSetNormalHints(draw->display, draw->window, &hints);
+	XSetStandardProperties(draw->display, draw->window, "NishBox", "NishBox", None, (char**)NULL, 0, &hints);
+
+	draw->context = glXCreateContext(draw->display, visual, NULL, True);
+	if(draw->context == NULL) {
+		XFree(visual);
+		nb_function_log("Failed to get OpenGL context", "");
+		nb_draw_destroy(draw);
+		*pdraw = NULL;
+		return;
+	}
+
 	XFree(visual);
+
+	XMapWindow(draw->display, draw->window);
+	glXMakeCurrent(draw->display, draw->window, draw->context);
+
+#if defined(GLX_EXT_swap_control)
+	if(has_glx_extension(draw, "GLX_EXT_swap_control")) {
+		unsigned int tmp = -1;
+		glXQueryDrawable(draw->display, draw->window, GLX_SWAP_INTERVAL_EXT, &tmp);
+		interval = tmp;
+	} else
+#endif
+	    if(has_glx_extension(draw, "GLX_MESA_swap_control")) {
+		PFNGLXGETSWAPINTERVALMESAPROC proc = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
+		interval			   = proc();
+	} else if(has_glx_extension(draw, "GLX_SGI_swap_control")) {
+		interval = 1;
+	}
+	if(interval > 0) {
+		nb_function_log("VSync should be enabled", "");
+	}
 }
 
 void _nb_draw_destroy(nb_draw_t* draw) {
-	if(draw->display != NULL) XCloseDisplay(draw->display);
+	if(draw->context != NULL) {
+		glXMakeCurrent(draw->display, None, NULL);
+		glXDestroyContext(draw->display, draw->context);
+	}
+	if(draw->display != NULL) {
+		XDestroyWindow(draw->display, draw->window);
+		XCloseDisplay(draw->display);
+	}
 }

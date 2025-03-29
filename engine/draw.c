@@ -18,6 +18,10 @@
 nb_draw_t* nb_draw_create(void) {
 	nb_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
+	draw->x	     = 0;
+	draw->y	     = 0;
+	draw->width  = 640;
+	draw->height = 480;
 	_nb_draw_create(&draw);
 	if(draw != NULL) {
 		nb_function_log("Created drawing interface successfully", "");
@@ -25,4 +29,8 @@ nb_draw_t* nb_draw_create(void) {
 	return draw;
 }
 
-void nb_draw_destroy(nb_draw_t* draw) { _nb_draw_destroy(draw); }
+void nb_draw_destroy(nb_draw_t* draw) {
+	_nb_draw_destroy(draw);
+	free(draw);
+	nb_function_log("Destroyed drawing interface", "");
+}

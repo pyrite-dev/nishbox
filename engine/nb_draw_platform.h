@@ -29,6 +29,10 @@ typedef struct nb_draw {
 	HDC	  dc;
 	HGLRC	  glrc;
 #endif
+	int x;
+	int y;
+	int width;
+	int height;
 } nb_draw_t;
 #else
 typedef void nb_draw_t;
