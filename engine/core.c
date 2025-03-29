@@ -2,6 +2,9 @@
 
 /* External library */
 #include <ode/ode.h>
+#ifdef _WIN32
+#include <winsock.h>
+#endif
 
 /* Interface */
 #include "nb_core.h"
@@ -17,9 +20,16 @@
 
 void nb_engine_begin(void) {
 	nb_version_t ver;
+#ifdef _WIN32
+	WSADATA wsa;
+#endif
 	nb_get_version(&ver);
 	nb_function_log("NishBox engine %s", ver.full);
 	nb_function_log("OpenGL backend: %s", ver.opengl);
+#ifdef _WIN32
+	WSAStartup(MAKEWORD(1, 1), &wsa);
+	nb_function_log("Winsock ready", "");
+#endif
 	dInitODE();
 }
 

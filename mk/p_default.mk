@@ -7,6 +7,7 @@ PAWNC_CFLAGS = `pkg-config --cflags pawnc`
 PAWNC_LIBS = `pkg-config --libs pawnc`
 GL_CFLAGS = `pkg-config --cflags gl`
 GL_LIBS = `pkg-config --libs gl`
+SOCKET_LIBS = 
 
 BACKEND = GLX
 

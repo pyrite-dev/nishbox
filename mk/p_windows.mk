@@ -1,4 +1,3 @@
-WINDOWS = NO
 ifeq ($(PLATFORM),win32)
 TARGET_PREFIX = i686-w64-mingw32-
 WINDOWS = YES
@@ -18,6 +17,7 @@ PAWNC_CFLAGS = -I../deps/include
 PAWNC_LIBS = -L../deps/lib -lpawnc
 GL_CFLAGS =
 GL_LIBS = -lopengl32 -lgdi32
+SOCKET_LIBS = -lws2_32
 
 BACKEND = WGL
 
