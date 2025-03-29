@@ -1,5 +1,11 @@
+/* Interface */
 #include "nb_version.h"
 
+/* NishBox */
+
+/* External library */
+
+/* Standard */
 #include <string.h>
 #include <stdlib.h>
 

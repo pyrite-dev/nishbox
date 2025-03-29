@@ -1,6 +1,14 @@
 #ifndef __NB_VERSION_H__
 #define __NB_VERSION_H__
 
+/* Interface */
+
+/* NishBox */
+
+/* External library */
+
+/* Standard */
+
 typedef struct nb_version {
 	int  major;
 	int  minor;
