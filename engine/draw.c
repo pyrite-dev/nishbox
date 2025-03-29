@@ -38,13 +38,14 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
-		unsigned char* font = malloc(8 * 4);
+		unsigned char* font = malloc(8 * 8 * 4);
 		int	       j;
-		for(j = 0; j < 8; j++) {
-			font[j * 4 + 0] = nb_font[i][j];
-			font[j * 4 + 1] = nb_font[i][j];
-			font[j * 4 + 2] = nb_font[i][j];
-			font[j * 4 + 3] = nb_font[i][j];
+		for(j = 0; j < 8 * 8; j++) {
+			unsigned char val = (nb_font[i][j / 8] >> (j % 8)) & 1 ? 255 : 0;
+			font[j * 4 + 0]	  = val;
+			font[j * 4 + 1]	  = val;
+			font[j * 4 + 2]	  = val;
+			font[j * 4 + 3]	  = val;
 		}
 		glGenTextures(1, &draw->font[i]);
 		glBindTexture(GL_TEXTURE_2D, draw->font[i]);
@@ -78,9 +79,9 @@ void nb_draw_frame(nb_draw_t* draw) {
 	nb_draw_begin_2d(draw);
 	glColor3f(1, 0, 0);
 	glBegin(GL_TRIANGLES);
-	glVertex2f(0, draw->height);
-	glVertex2f(draw->width / 2, 0);
-	glVertex2f(draw->width, draw->height);
+	glVertex2d(0, draw->height);
+	glVertex2d(draw->width / 2, 0);
+	glVertex2d(draw->width, draw->height);
 	glEnd();
 	nb_draw_end_2d(draw);
 }
