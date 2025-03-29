@@ -46,4 +46,4 @@ jobs:
     - name: Build NishBox
       run: make PLATFORM=win${{env.BITS}}
     - name: Copy DLL
-      run: cp `${{env.ARCH}}-w64-mingw32-gcc -print-file-name=libstdc++-6.dll` ./ && cp `${{env.ARCH}}-w64-mingw32-gcc -print-file-name=libstdc++-6.dll | sed -E 's/\/libstdc\+\+-6\.dll$//g'`/libgcc_*.dll ./ && cp deps/bin/*.dll ./
+      run: cp `make PLATFORM=win${{env.BITS}} print-deps` ./
