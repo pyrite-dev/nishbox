@@ -17,6 +17,9 @@ jobs:
   build-win32:
     name: "Build for Windows 32-bit"
     runs-on: ubuntu-latest
+    env:
+      ARCH: i686
+      BITS: 32
     
     permissions:
       contents: write
@@ -31,14 +34,16 @@ jobs:
     - name: Get and extract ODE
       run: wget https://sourceforge.net/projects/opende/files/ODE/0.13/ode-0.13.tar.gz/download -O - | tar xvzf -
     - name: Build ODE
-      run: cd ode-0.13 && ./configure --host=i686-w64-mingw32 --prefix=/ --disable-demos --without-drawstuff --enable-shared LDFLAGS="-static-libgcc -static-libstdc++" && sed -i "s/-lstdc++//g" ode/Makefile && make -j4
+      run: cd ode-0.13 && ./configure --host=${{env.ARCH}}-w64-mingw32 --prefix=/ --disable-demos --without-drawstuff --enable-shared && make -j4
     - name: Install ODE
       run: make -C ode-0.13 install DESTDIR=`pwd`/deps
     - name: Get Pawn
       run: git clone https://github.com/nishiowo/pawn --depth=1
     - name: Build Pawn
-      run: cd pawn && mkdir build && cd build && cmake -DDEBIAN=ON -DCMAKE_TOOLCHAIN_FILE=../../cmake-files/windows.cmake -DARCH=i686 .. -DCMAKE_INSTALL_PREFIX=/ && make -j4
+      run: cd pawn && mkdir build && cd build && cmake -DDEBIAN=ON -DCMAKE_TOOLCHAIN_FILE=../../cmake-files/windows.cmake -DARCH=${{env.ARCH}} .. -DCMAKE_INSTALL_PREFIX=/ && make -j4
     - name: Install Pawn
       run: make -C pawn/build install DESTDIR=`pwd`/deps
     - name: Build NishBox
-      run: make PLATFORM=win32
+      run: make PLATFORM=win${{env.BITS}}
+    - name: Copy DLL
+      run: cp `${{env.ARCH}}-w64-mingw32-gcc -print-file-name=libstdc++-6.dll` ./ && cp `${{env.ARCH}}-w64-mingw32-gcc -print-file-name=libgcc_s_seh-1.dll` ./ && cp deps/bin/*.dll ./
