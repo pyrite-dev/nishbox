@@ -1,7 +1,4 @@
-/* Interface */
-#include "nb_draw.h"
-
-/* NishBox */
+#define NB_EXPOSE_DRAW
 
 /* External library */
 #include <GL/gl.h>
@@ -11,6 +8,11 @@
 #elif defined(USE_WGL)
 #include <windows.h>
 #endif
+
+/* Interface */
+#include "nb_draw.h"
+
+/* NishBox */
 
 /* Standard */
 #include <stdlib.h>

@@ -1,11 +1,11 @@
 #ifndef __NB_VERSION_H__
 #define __NB_VERSION_H__
 
-/* Interface */
-
-/* NishBox */
+#include <nb_macro.h>
 
 /* External library */
+
+/* NishBox */
 
 /* Standard */
 

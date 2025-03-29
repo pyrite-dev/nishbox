@@ -1,11 +1,13 @@
+#define NB_EXPOSE_CORE
+
+/* External library */
+#include <ode/ode.h>
+
 /* Interface */
 #include "nb_core.h"
 
 /* NishBox */
 #include "nb_draw.h"
-
-/* External library */
-#include <ode/ode.h>
 
 /* Standard */
 #include <stdlib.h>

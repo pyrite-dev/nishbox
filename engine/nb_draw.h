@@ -1,21 +1,15 @@
 #ifndef __NB_DRAW_H__
 #define __NB_DRAW_H__
 
-/* Interface */
+#include <nb_macro.h>
+
+/* External library */
 
 /* NishBox */
 
-/* External library */
-#include <GL/gl.h>
-#if defined(USE_GLX)
-#include <X11/Xlib.h>
-#include <GL/glx.h>
-#elif defined(USE_WGL)
-#include <windows.h>
-#endif
-
 /* Standard */
 
+#ifdef NB_EXPOSE_DRAW
 typedef struct nb_draw {
 #if defined(USE_GLX)
 	Display*   display;
@@ -28,6 +22,9 @@ typedef struct nb_draw {
 	HGLRC	  glrc;
 #endif
 } nb_draw_t;
+#else
+typedef void nb_draw_t;
+#endif
 
 nb_draw_t* nb_draw_create(void);
 
