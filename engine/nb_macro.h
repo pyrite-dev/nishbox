@@ -13,4 +13,12 @@
 
 #endif
 
+#ifndef __FUNCTION_NAME__
+#ifdef _MSC_VER
+#define __FUNCTION_NAME__ __FUNCTION__
+#else
+#define __FUNCTION_NAME__ __func__
+#endif
+#endif
+
 #endif

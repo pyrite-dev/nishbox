@@ -1,7 +1,7 @@
+/* External library */
+
 /* Interface */
 
 /* NishBox */
-
-/* External library */
 
 /* Standard */
