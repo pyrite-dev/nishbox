@@ -10,6 +10,7 @@
 /* NishBox */
 #include "nb_log.h"
 #include "nb_draw_platform.h"
+#include "nb_font.h"
 
 /* Standard */
 #include <stdlib.h>
@@ -26,9 +27,33 @@ nb_draw_t* nb_draw_create(void) {
 	if(draw != NULL) {
 		nb_function_log("Created drawing interface successfully", "");
 	}
-	_nb_draw_init_opengl(draw);
+	nb_draw_init_opengl(draw);
 	nb_draw_reshape(draw);
 	return draw;
+}
+
+void nb_draw_init_opengl(nb_draw_t* draw) {
+	int i;
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
+		unsigned char* font = malloc(8 * 4);
+		int	       j;
+		for(j = 0; j < 8; j++) {
+			font[j * 4 + 0] = nb_font[i][j];
+			font[j * 4 + 1] = nb_font[i][j];
+			font[j * 4 + 2] = nb_font[i][j];
+			font[j * 4 + 3] = nb_font[i][j];
+		}
+		glGenTextures(1, &draw->font[i]);
+		glBindTexture(GL_TEXTURE_2D, draw->font[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, font);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		free(font);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void nb_draw_begin_2d(nb_draw_t* draw) {
@@ -53,15 +78,9 @@ void nb_draw_frame(nb_draw_t* draw) {
 	nb_draw_begin_2d(draw);
 	glColor3f(1, 0, 0);
 	glBegin(GL_TRIANGLES);
-	glVertex2f(0, 0);
-	glVertex2f(draw->width, draw->height);
-	glVertex2f(draw->width, 0);
-	glEnd();
-	glColor3f(0, 0, 1);
-	glBegin(GL_TRIANGLES);
 	glVertex2f(0, draw->height);
+	glVertex2f(draw->width / 2, 0);
 	glVertex2f(draw->width, draw->height);
-	glVertex2f(0, 0);
 	glEnd();
 	nb_draw_end_2d(draw);
 }

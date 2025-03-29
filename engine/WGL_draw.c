@@ -28,7 +28,7 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_SIZE:
-		GetWindowRect(hWnd, &rect);
+		GetClientRect(hWnd, &rect);
 		draw->x	     = rect.left;
 		draw->y	     = rect.top;
 		draw->width  = rect.right - rect.left;
@@ -70,8 +70,6 @@ int _nb_draw_step(nb_draw_t* draw) {
 	}
 	return ret;
 }
-
-void _nb_draw_init_opengl(nb_draw_t* draw) {}
 
 void _nb_draw_create(nb_draw_t** pdraw) {
 	nb_draw_t*	       draw = *pdraw;
@@ -117,7 +115,7 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 
 	SetWindowLongPtr(draw->window, GWLP_USERDATA, (LONG_PTR)draw);
 
-	GetWindowRect(draw->window, &rect);
+	GetClientRect(draw->window, &rect);
 
 	memset(&desc, 0, sizeof(desc));
 	desc.nSize	= sizeof(desc);

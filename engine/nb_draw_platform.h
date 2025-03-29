@@ -5,6 +5,7 @@
 
 /* External library */
 #ifdef NB_EXPOSE_DRAW_PLATFORM
+#include <GL/gl.h>
 #if defined(USE_GLX)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -31,11 +32,12 @@ typedef struct nb_draw {
 	HDC	  dc;
 	HGLRC	  glrc;
 #endif
-	int close;
-	int x;
-	int y;
-	int width;
-	int height;
+	int    close;
+	int    x;
+	int    y;
+	int    width;
+	int    height;
+	GLuint font[128];
 } nb_draw_t;
 #else
 typedef void nb_draw_t;
@@ -44,6 +46,5 @@ typedef void nb_draw_t;
 void _nb_draw_create(nb_draw_t** pdraw);
 void _nb_draw_destroy(nb_draw_t* draw);
 int  _nb_draw_step(nb_draw_t* draw);
-void _nb_draw_init_opengl(nb_draw_t* draw);
 
 #endif

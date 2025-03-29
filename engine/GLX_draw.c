@@ -173,8 +173,6 @@ int _nb_draw_step(nb_draw_t* draw) {
 	return ret;
 }
 
-void _nb_draw_init_opengl(nb_draw_t* draw) {}
-
 void _nb_draw_destroy(nb_draw_t* draw) {
 	if(draw->context != NULL) {
 		glXMakeCurrent(draw->display, None, NULL);
