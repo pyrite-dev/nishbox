@@ -11,6 +11,10 @@
 #define NB_EXPOSE_DRAW
 #endif
 
+#ifndef NB_EXPOSE_DRAW_PLATFORM
+#define NB_EXPOSE_DRAW_PLATFORM
+#endif
+
 #endif
 
 #ifndef __FUNCTION_NAME__

@@ -18,6 +18,11 @@ void nb_get_version(nb_version_t* version) {
 	int   old  = 0;
 	strcpy(cpstr, NB_VERSION);
 	strcpy(version->full, NB_VERSION);
+#if defined(USE_GLX)
+	strcpy(version->opengl, "GLX");
+#elif defined(USE_WGL)
+	strcpy(version->opengl, "WGL");
+#endif
 	for(i = 0;; i++) {
 		if(cpstr[i] == '.' || cpstr[i] == 0) {
 			int num;

@@ -11,7 +11,6 @@
 
 void nb_log(const char* fmt, ...);
 
-#define NB_FORMAT_LOG(fmt, arg...) nb_log("%s: " fmt "\n", __FUNCTION_NAME__, arg)
-#define NB_LOG(fmt) nb_log("%s: " fmt "\n", __FUNCTION_NAME__)
+#define nb_function_log(fmt, arg...) nb_log("%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, arg)
 
 #endif
