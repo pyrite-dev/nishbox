@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
 		nb_engine_end();
 		return 1;
 	}
+	nb_engine_loop(engine);
 	nb_engine_destroy(engine);
 	nb_engine_end();
 

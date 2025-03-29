@@ -7,6 +7,7 @@
 #ifdef NB_EXPOSE_DRAW_PLATFORM
 #if defined(USE_GLX)
 #include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #include <GL/glx.h>
 #elif defined(USE_WGL)
 #include <windows.h>
@@ -23,12 +24,14 @@ typedef struct nb_draw {
 	Display*   display;
 	Window	   window;
 	GLXContext context;
+	Atom	   wm_delete_window;
 #elif defined(USE_WGL)
 	HINSTANCE instance;
 	HWND	  window;
 	HDC	  dc;
 	HGLRC	  glrc;
 #endif
+	int close;
 	int x;
 	int y;
 	int width;
@@ -40,5 +43,7 @@ typedef void nb_draw_t;
 
 void _nb_draw_create(nb_draw_t** pdraw);
 void _nb_draw_destroy(nb_draw_t* draw);
+int  _nb_draw_step(nb_draw_t* draw);
+void _nb_draw_init_opengl(nb_draw_t* draw);
 
 #endif

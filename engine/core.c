@@ -55,6 +55,14 @@ nb_engine_t* nb_engine_create(int nogui) {
 	return engine;
 }
 
+void nb_engine_loop(nb_engine_t* engine) {
+	while(1) {
+		if(engine->draw != NULL) {
+			if(nb_draw_step(engine->draw) != 0) break;
+		}
+	}
+}
+
 void nb_engine_destroy(nb_engine_t* engine) {
 	dWorldDestroy(engine->world);
 	if(engine->draw != NULL) nb_draw_destroy(engine->draw);

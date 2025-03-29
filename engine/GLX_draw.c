@@ -1,7 +1,9 @@
 #define NB_EXPOSE_DRAW_PLATFORM
 
 /* External library */
+#include <GL/gl.h>
 #include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #include <GL/glx.h>
 #include <GL/glxext.h>
 
@@ -96,6 +98,9 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	XSetNormalHints(draw->display, draw->window, &hints);
 	XSetStandardProperties(draw->display, draw->window, "NishBox", "NishBox", None, (char**)NULL, 0, &hints);
 
+	draw->wm_delete_window = XInternAtom(draw->display, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(draw->display, draw->window, &draw->wm_delete_window, 1);
+
 	draw->context = glXCreateContext(draw->display, visual, NULL, True);
 	if(draw->context == NULL) {
 		XFree(visual);
@@ -137,6 +142,38 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		nb_function_log("Enabled VSync", "");
 	}
 }
+
+int _nb_draw_step(nb_draw_t* draw) {
+	int ret = 0;
+	glXMakeCurrent(draw->display, draw->window, draw->context);
+	while(XPending(draw->display) > 0) {
+		XEvent event;
+		XNextEvent(draw->display, &event);
+		if(event.type == Expose) {
+			break;
+		} else if(event.type == ConfigureNotify) {
+			draw->x	     = event.xconfigure.x;
+			draw->y	     = event.xconfigure.y;
+			draw->width  = event.xconfigure.width;
+			draw->height = event.xconfigure.height;
+			nb_draw_reshape(draw);
+		} else if(event.type == ClientMessage) {
+			if(event.xclient.data.l[0] == draw->wm_delete_window) {
+				draw->close = 1;
+				break;
+			}
+		}
+	}
+	if(ret == 0) {
+		nb_draw_frame(draw);
+
+		glFlush();
+		glXSwapBuffers(draw->display, draw->window);
+	}
+	return ret;
+}
+
+void _nb_draw_init_opengl(nb_draw_t* draw) {}
 
 void _nb_draw_destroy(nb_draw_t* draw) {
 	if(draw->context != NULL) {

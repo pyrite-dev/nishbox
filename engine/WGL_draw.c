@@ -1,6 +1,7 @@
 #define NB_EXPOSE_DRAW_PLATFORM
 
 /* External library */
+#include <GL/gl.h>
 #include <windows.h>
 
 /* Interface */
@@ -14,8 +15,28 @@
 #include <string.h>
 
 LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+	PAINTSTRUCT ps;
+	RECT	    rect;
+	nb_draw_t*  draw = (nb_draw_t*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 	switch(msg) {
+	case WM_PAINT:
+		nb_draw_frame(draw);
+
+		glFlush();
+		SwapBuffers(draw->dc);
+		BeginPaint(hWnd, &ps);
+		EndPaint(hWnd, &ps);
+		break;
+	case WM_SIZE:
+		GetWindowRect(hWnd, &rect);
+		draw->x	     = rect.left;
+		draw->y	     = rect.top;
+		draw->width  = rect.right - rect.left;
+		draw->height = rect.bottom - rect.top;
+		nb_draw_reshape(draw);
+		break;
 	case WM_CLOSE:
+		draw->close = 1;
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -27,6 +48,30 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 }
 
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
+
+int _nb_draw_step(nb_draw_t* draw) {
+	MSG msg;
+	int ret = 0;
+	wglMakeCurrent(draw->dc, draw->glrc);
+	while(PeekMessage(&msg, draw->window, 0, 0, PM_NOREMOVE)) {
+		if(GetMessage(&msg, draw->window, 0, 0)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		} else {
+			ret = 1;
+			break;
+		}
+	}
+	if(ret == 0) {
+		nb_draw_frame(draw);
+
+		glFlush();
+		SwapBuffers(draw->dc);
+	}
+	return ret;
+}
+
+void _nb_draw_init_opengl(nb_draw_t* draw) {}
 
 void _nb_draw_create(nb_draw_t** pdraw) {
 	nb_draw_t*	       draw = *pdraw;
@@ -70,6 +115,8 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		return;
 	}
 
+	SetWindowLongPtr(draw->window, GWLP_USERDATA, (LONG_PTR)draw);
+
 	GetWindowRect(draw->window, &rect);
 
 	memset(&desc, 0, sizeof(desc));
@@ -100,4 +147,11 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	UpdateWindow(draw->window);
 }
 
-void _nb_draw_destroy(nb_draw_t* draw) {}
+void _nb_draw_destroy(nb_draw_t* draw) {
+	if(draw->window != NULL) {
+		wglMakeCurrent(NULL, NULL);
+		ReleaseDC(draw->window, draw->dc);
+		wglDeleteContext(draw->glrc);
+		DestroyWindow(draw->window);
+	}
+}
