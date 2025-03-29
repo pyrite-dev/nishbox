@@ -1,12 +1,6 @@
 #ifndef __NB_MACRO_H__
 #define __NB_MACRO_H__
 
-/* External library */
-
-/* NishBox */
-
-/* Standard */
-
 #ifdef NB_EXPOSE_ALL
 
 #ifndef NB_EXPOSE_CORE

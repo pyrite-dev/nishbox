@@ -4,9 +4,6 @@
 #include <nb_macro.h>
 
 /* External library */
-#ifdef NB_EXPOSE_CORE
-#include <ode/ode.h>
-#endif
 
 /* NishBox */
 
