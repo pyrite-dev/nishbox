@@ -1,5 +1,3 @@
-/* Interface */
-
 /* NishBox */
 #include <nb_version.h>
 #include <nb_core.h>

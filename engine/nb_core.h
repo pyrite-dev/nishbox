@@ -6,13 +6,16 @@
 /* External library */
 
 /* NishBox */
+#ifdef NB_EXPOSE_CORE
+#include <nb_draw.h>
+#endif
 
 /* Standard */
 
 #ifdef NB_EXPOSE_CORE
 typedef struct nb_engine {
-	dWorldID world;
-	void*	 draw; /* User should not touch this directly: internally pointer of nb_draw_t */
+	dWorldID   world;
+	nb_draw_t* draw;
 } nb_engine_t;
 #else
 typedef void nb_engine_t;
