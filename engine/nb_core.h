@@ -9,9 +9,7 @@
 #endif
 
 /* NishBox */
-#ifdef NB_EXPOSE_CORE
 #include <nb_draw.h>
-#endif
 
 /* Standard */
 

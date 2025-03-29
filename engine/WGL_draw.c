@@ -1,6 +1,7 @@
 #define NB_EXPOSE_DRAW_PLATFORM
 
 /* External library */
+#include <windows.h>
 
 /* Interface */
 #include "nb_draw_platform.h"
