@@ -13,7 +13,18 @@
 /* Standard */
 #include <string.h>
 
-LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) { return DefWindowProc(hWnd, msg, wp, lp); }
+LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+	switch(msg) {
+	case WM_CLOSE:
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, msg, wp, lp);
+	}
+	return 0;
+}
 
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
 
