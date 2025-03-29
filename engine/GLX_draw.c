@@ -7,10 +7,10 @@
 
 /* Interface */
 #include "nb_draw_platform.h"
-#include "nb_draw.h"
 
 /* NishBox */
 #include "nb_log.h"
+#include "nb_draw.h"
 
 /* Standard */
 #include <string.h>
@@ -18,9 +18,20 @@
 #ifndef GLX_MESA_swap_control
 #define GLX_MESA_swap_control 1
 typedef int (*PFNGLXGETSWAPINTERVALMESAPROC)(void);
+typedef void (*PFNGLXSWAPINTERVALMESAPROC)(int);
 #endif
 
-static int has_glx_extension(nb_draw_t* draw, const char* query) {
+#ifndef GLX_EXT_swap_control
+#define GLX_EXT_swap_control 1
+typedef void (*PFNGLXSWAPINTERVALEXTPROC)(Display*, GLXDrawable, int);
+#endif
+
+#ifndef GLX_SGI_swap_control
+#define GLX_SGI_swap_control 1
+typedef void (*PFNGLXSWAPINTERVALSGIPROC)(int);
+#endif
+
+int _nb_draw_has_glx_extension(nb_draw_t* draw, const char* query) {
 	const char* glx_ext = NULL;
 	const char* ptr;
 	const int   len = strlen(query);
@@ -100,20 +111,30 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	glXMakeCurrent(draw->display, draw->window, draw->context);
 
 #if defined(GLX_EXT_swap_control)
-	if(has_glx_extension(draw, "GLX_EXT_swap_control")) {
-		unsigned int tmp = -1;
+	if(_nb_draw_has_glx_extension(draw, "GLX_EXT_swap_control")) {
+		unsigned int		  tmp  = -1;
+		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
+		if(proc != NULL) {
+			proc(draw->display, draw->window, 1);
+		}
 		glXQueryDrawable(draw->display, draw->window, GLX_SWAP_INTERVAL_EXT, &tmp);
 		interval = tmp;
 	} else
 #endif
-	    if(has_glx_extension(draw, "GLX_MESA_swap_control")) {
-		PFNGLXGETSWAPINTERVALMESAPROC proc = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
-		interval			   = proc();
-	} else if(has_glx_extension(draw, "GLX_SGI_swap_control")) {
+	    if(_nb_draw_has_glx_extension(draw, "GLX_MESA_swap_control")) {
+		PFNGLXGETSWAPINTERVALMESAPROC proc  = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
+		PFNGLXSWAPINTERVALMESAPROC    proc2 = (PFNGLXSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXSwapIntervalMESA");
+		if(proc2 != NULL) {
+			proc2(1);
+		}
+		interval = proc();
+	} else if(_nb_draw_has_glx_extension(draw, "GLX_SGI_swap_control")) {
+		PFNGLXSWAPINTERVALSGIPROC proc = (PFNGLXSWAPINTERVALSGIPROC)glXGetProcAddressARB("glXSwapIntervalSGI");
+		proc(1);
 		interval = 1;
 	}
 	if(interval > 0) {
-		nb_function_log("VSync should be enabled", "");
+		nb_function_log("Enabled VSync", "");
 	}
 }
 

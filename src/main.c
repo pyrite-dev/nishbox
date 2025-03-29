@@ -10,7 +10,7 @@ nb_engine_t* engine;
 
 int main(int argc, char** argv) {
 	nb_engine_begin();
-	engine = nb_engine_create();
+	engine = nb_engine_create(0);
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
 		nb_engine_end();

@@ -24,7 +24,7 @@ typedef void nb_engine_t;
 
 void	     nb_engine_begin(void);
 void	     nb_engine_end(void);
-nb_engine_t* nb_engine_create(void);
+nb_engine_t* nb_engine_create(int nogui);
 void	     nb_engine_destroy(nb_engine_t* engine);
 
 #endif

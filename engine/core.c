@@ -25,14 +25,20 @@ void nb_engine_begin(void) {
 
 void nb_engine_end(void) { dCloseODE(); }
 
-nb_engine_t* nb_engine_create(void) {
+nb_engine_t* nb_engine_create(int nogui) {
 	nb_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
-	engine->draw = nb_draw_create();
-	if(engine->draw == NULL) {
-		nb_function_log("Failed to create drawing interface", "");
-		free(engine);
-		return NULL;
+	if(nogui) {
+		nb_function_log("No GUI mode", "");
+		engine->draw = NULL;
+	} else {
+		nb_function_log("GUI mode", "");
+		engine->draw = nb_draw_create();
+		if(engine->draw == NULL) {
+			nb_function_log("Failed to create drawing interface", "");
+			free(engine);
+			return NULL;
+		}
 	}
 	engine->world = dWorldCreate();
 	dWorldSetGravity(engine->world, 0, 0, -9.81);
