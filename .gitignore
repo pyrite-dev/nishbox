@@ -3,6 +3,7 @@
 *.a
 *.core
 *.dll
+*.zip
 /deps
 /contrib
 /src/nishbox

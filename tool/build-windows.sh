@@ -59,4 +59,3 @@ cd ../..
 cd ..
 
 ${MAKE} PLATFORM=win${BITS}
-cp `${MAKE} PLATFORM=win${BITS} print-deps` ./

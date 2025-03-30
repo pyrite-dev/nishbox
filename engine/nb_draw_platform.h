@@ -37,6 +37,7 @@ typedef struct nb_draw {
 	int    y;
 	int    width;
 	int    height;
+	int    running;
 	GLuint font[128];
 } nb_draw_t;
 #else

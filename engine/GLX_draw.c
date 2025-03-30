@@ -97,7 +97,7 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	hints.height = draw->height;
 	hints.flags  = USSize | USPosition;
 	XSetNormalHints(draw->display, draw->window, &hints);
-	XSetStandardProperties(draw->display, draw->window, "NishBox", "NishBox", None, (char**)NULL, 0, &hints);
+	XSetStandardProperties(draw->display, draw->window, "NishBox (GLX)", "NishBox", None, (char**)NULL, 0, &hints);
 
 	draw->wm_delete_window = XInternAtom(draw->display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(draw->display, draw->window, &draw->wm_delete_window, 1);
@@ -157,6 +157,7 @@ int _nb_draw_step(nb_draw_t* draw) {
 			draw->y	     = event.xconfigure.y;
 			draw->width  = event.xconfigure.width;
 			draw->height = event.xconfigure.height;
+			glXMakeCurrent(draw->display, draw->window, draw->context);
 			nb_draw_reshape(draw);
 		} else if(event.type == ClientMessage) {
 			if(event.xclient.data.l[0] == draw->wm_delete_window) {

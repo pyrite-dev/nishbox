@@ -15,20 +15,23 @@
 /* Standard */
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 nb_draw_t* nb_draw_create(void) {
 	nb_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
-	draw->x	     = 0;
-	draw->y	     = 0;
-	draw->width  = 640;
-	draw->height = 480;
+	draw->x	      = 0;
+	draw->y	      = 0;
+	draw->width   = 640;
+	draw->height  = 480;
+	draw->running = 0;
 	_nb_draw_create(&draw);
 	if(draw != NULL) {
 		nb_function_log("Created drawing interface successfully", "");
+		nb_draw_init_opengl(draw);
+		nb_draw_reshape(draw);
+		draw->running = 1;
 	}
-	nb_draw_init_opengl(draw);
-	nb_draw_reshape(draw);
 	return draw;
 }
 
@@ -87,17 +90,53 @@ void nb_draw_end_2d(nb_draw_t* draw) {
 	glPopMatrix();
 }
 
-int  i = 0;
-void nb_draw_frame(nb_draw_t* draw) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	nb_draw_begin_2d(draw);
-	glBegin(GL_TRIANGLES);
-	glVertex2d(0, draw->height);
-	glVertex2d(i, 0);
-	glVertex2d(draw->width, draw->height);
-	i += 1;
-	glEnd();
-	nb_draw_end_2d(draw);
+double i = 0;
+void   nb_draw_frame(nb_draw_t* draw) {
+	  double p = sin(i) * (draw->width / 2) + (draw->width / 2);
+	  int	 j;
+	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	  nb_draw_begin_2d(draw);
+	  glColor3f(1, 0, 0);
+	  glBegin(GL_TRIANGLES);
+	  glVertex2d(0, 0);
+	  glVertex2d(p, 0);
+	  glVertex2d(0, draw->height);
+	  glEnd();
+	  glColor3f(0, 1, 0);
+	  glBegin(GL_TRIANGLES);
+	  glVertex2d(0, draw->height);
+	  glVertex2d(p, 0);
+	  glVertex2d(draw->width, draw->height);
+	  glEnd();
+	  glColor3f(0, 0, 1);
+	  glBegin(GL_TRIANGLES);
+	  glVertex2d(p, 0);
+	  glVertex2d(draw->width, 0);
+	  glVertex2d(draw->width, draw->height);
+	  glEnd();
+
+	  glEnable(GL_TEXTURE_2D);
+	  for(j = 0; j <= 'Z' - 'A'; j++) {
+		  double c = sin(i * 2 + j) / 2 + 1;
+		  double s = 4.0 * c;
+		  glColor3f(c, c, c);
+		  glBindTexture(GL_TEXTURE_2D, draw->font['A' + j]);
+		  glBegin(GL_QUADS);
+		  glTexCoord2d(0, 0);
+		  glVertex2d(0, 0);
+		  glTexCoord2d(1, 0);
+		  glVertex2d(3 * s, 0);
+		  glTexCoord2d(1, 1);
+		  glVertex2d(3 * s, 4 * s);
+		  glTexCoord2d(0, 1);
+		  glVertex2d(0, 4 * s);
+		  glEnd();
+		  glTranslatef(3 * s, 0, 0);
+	  }
+	  glDisable(GL_TEXTURE_2D);
+	  glBindTexture(GL_TEXTURE_2D, 0);
+	  i += 0.01;
+	  nb_draw_end_2d(draw);
 }
 
 int nb_draw_step(nb_draw_t* draw) {
@@ -117,8 +156,10 @@ void nb_draw_reshape(nb_draw_t* draw) {
 
 void nb_draw_destroy(nb_draw_t* draw) {
 	int i;
-	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
-		glDeleteTextures(1, &draw->font[i]);
+	if(draw->running) {
+		for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
+			glDeleteTextures(1, &draw->font[i]);
+		}
 	}
 	_nb_draw_destroy(draw);
 	free(draw);

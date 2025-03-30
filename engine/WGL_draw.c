@@ -32,6 +32,7 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 		draw->y	     = rect.top;
 		draw->width  = rect.right - rect.left;
 		draw->height = rect.bottom - rect.top;
+		wglMakeCurrent(draw->dc, draw->glrc);
 		nb_draw_reshape(draw);
 		break;
 	case WM_CLOSE:
@@ -96,10 +97,12 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	DWORD		       style;
 	draw->instance = (HINSTANCE)GetModuleHandle(NULL);
 	if(draw->instance == NULL) {
-		nb_function_log("Failed to get the instance", "");
+		nb_function_log("Failed to get instance", "");
 		nb_draw_destroy(draw);
 		*pdraw = NULL;
 		return;
+	} else {
+		nb_function_log("Got instance", "");
 	}
 
 	wc.cbSize	 = sizeof(wc);
@@ -119,41 +122,45 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		nb_draw_destroy(draw);
 		*pdraw = NULL;
 		return;
+	} else {
+		nb_function_log("Registered class", "");
 	}
 
-	draw->window = CreateWindow("nishbox", "NishBox", (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->instance, NULL);
+	draw->window = CreateWindow("nishbox", "NishBox (WGL)", (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->instance, NULL);
 	if(draw->window == NULL) {
 		nb_function_log("Failed to create window", "");
 		nb_draw_destroy(draw);
 		*pdraw = NULL;
 		return;
+	} else {
+		nb_function_log("Created window", "");
 	}
 
-	SetRect(&rect, 0, 0, draw->width, draw->height);
-	style = (DWORD)GetWindowLongPtr(draw->window, GWL_STYLE);
-	AdjustWindowRect(&rect, style, FALSE);
-	SetWindowPos(draw->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
-
 	SetWindowLongPtr(draw->window, GWLP_USERDATA, (LONG_PTR)draw);
-
-	GetClientRect(draw->window, &rect);
 
 	memset(&desc, 0, sizeof(desc));
 	desc.nSize	= sizeof(desc);
 	desc.nVersion	= 1;
 	desc.dwFlags	= PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 	desc.iPixelType = PFD_TYPE_RGBA;
-	desc.cColorBits = 16;
+	desc.cColorBits = 24;
 	desc.cAlphaBits = 8;
-	desc.cDepthBits = 16;
+	desc.cDepthBits = 32;
 
 	draw->dc = GetDC(draw->window);
 
 	fmt = ChoosePixelFormat(draw->dc, &desc);
 	SetPixelFormat(draw->dc, fmt, &desc);
-	SetWindowPos(draw->window, HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_FRAMECHANGED);
 
 	draw->glrc = wglCreateContext(draw->dc);
+	if(draw->glrc == NULL) {
+		nb_function_log("Failed to create OpenGL context", "");
+		nb_draw_destroy(draw);
+		*pdraw = NULL;
+		return;
+	} else {
+		nb_function_log("Created OpenGL context", "");
+	}
 	wglMakeCurrent(draw->dc, draw->glrc);
 
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
@@ -162,15 +169,22 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		wglSwapIntervalEXT(1);
 	}
 
+	SetRect(&rect, 0, 0, draw->width, draw->height);
+	style = (DWORD)GetWindowLongPtr(draw->window, GWL_STYLE);
+	AdjustWindowRect(&rect, style, FALSE);
+	SetWindowPos(draw->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
+
 	ShowWindow(draw->window, SW_NORMAL);
 	UpdateWindow(draw->window);
 }
 
 void _nb_draw_destroy(nb_draw_t* draw) {
-	if(draw->window != NULL) {
+	if(draw->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
 		ReleaseDC(draw->window, draw->dc);
 		wglDeleteContext(draw->glrc);
+	}
+	if(draw->window != NULL) {
 		DestroyWindow(draw->window);
 	}
 }
