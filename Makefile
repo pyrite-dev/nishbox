@@ -24,7 +24,7 @@ format:
 	$(MAKE) -C $@
 
 print-deps:
-	@sh deps.sh
+	@sh ./tool/deps.sh
 
 clean:
 	$(MAKE) -C ./engine clean

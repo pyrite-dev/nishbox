@@ -27,4 +27,4 @@ jobs:
     - name: Install packages
       run: sudo apt-get install mingw-w64
     - name: Run build script
-      run: env ARCH=i686 BITS=32 MAKE=make ./build-windows.sh
+      run: env ARCH=i686 BITS=32 MAKE=make ./tool/build-windows.sh
