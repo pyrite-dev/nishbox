@@ -15,6 +15,7 @@
 #include "nb_log.h"
 #include "nb_draw_platform.h"
 #include "nb_font.h"
+#include "nb_math.h"
 
 /* Standard */
 #include <stdlib.h>
@@ -56,19 +57,20 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glCullFace(GL_BACK);
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightdim);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightwht);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
 
 	glShadeModel(GL_FLAT);
 	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
 	glLoadIdentity();
 
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightwht);
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.1f);
-
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendFunc(GL_ONE, GL_ONE);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
 		unsigned char* font = malloc(8 * 8 * 4);
@@ -147,7 +149,7 @@ void nb_draw_end_2d(nb_draw_t* draw) {
 
 double i = 0;
 
-#define NEAREST_POW2(x) pow((2), log((int)(x) + 1) / log(2))
+#define NEAREST_POW2(x) pow((2), nb_log2((int)(x) + 1))
 
 void nb_draw_frame(nb_draw_t* draw) {
 	double size = 10;
@@ -155,7 +157,7 @@ void nb_draw_frame(nb_draw_t* draw) {
 
 	glLoadIdentity();
 	gluLookAt(draw->camera[0], draw->camera[1], draw->camera[2], draw->lookat[0], draw->lookat[1], draw->lookat[2], 0, 1, 0);
-	glRotatef(i, 0, 1, 0);
+	glLightfv(GL_LIGHT0, GL_POSITION, draw->light);
 
 	glPushMatrix();
 	glEnable(GL_TEXTURE_2D);

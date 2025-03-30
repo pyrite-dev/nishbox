@@ -15,10 +15,16 @@
 /* Standard */
 
 #ifdef NB_EXPORT_DRAW
+typedef struct nb_shape {
+	int	points;
+	GLfloat points[4][3];
+} nb_shape_t;
 typedef struct nb_mesh {
+	nb_shape_t* shapes;
 } nb_mesh_t;
 #else
 typedef void nb_mesh_t;
+typedef void nb_shape_t;
 #endif
 
 nb_draw_t* nb_draw_create(void);
