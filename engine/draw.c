@@ -87,9 +87,16 @@ void nb_draw_end_2d(nb_draw_t* draw) {
 	glPopMatrix();
 }
 
+int  i = 0;
 void nb_draw_frame(nb_draw_t* draw) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	nb_draw_begin_2d(draw);
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0, draw->height);
+	glVertex2d(i, 0);
+	glVertex2d(draw->width, draw->height);
+	i += 1;
+	glEnd();
 	nb_draw_end_2d(draw);
 }
 
@@ -109,6 +116,10 @@ void nb_draw_reshape(nb_draw_t* draw) {
 }
 
 void nb_draw_destroy(nb_draw_t* draw) {
+	int i;
+	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
+		glDeleteTextures(1, &draw->font[i]);
+	}
 	_nb_draw_destroy(draw);
 	free(draw);
 	nb_function_log("Destroyed drawing interface", "");

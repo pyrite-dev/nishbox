@@ -23,10 +23,6 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	nb_draw_t*  draw = (nb_draw_t*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 	switch(msg) {
 	case WM_PAINT:
-		nb_draw_frame(draw);
-
-		glFlush();
-		SwapBuffers(draw->dc);
 		BeginPaint(hWnd, &ps);
 		EndPaint(hWnd, &ps);
 		break;
