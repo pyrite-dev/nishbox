@@ -16,7 +16,7 @@ AMX_LIBS = -L../deps/lib -lamx
 PAWNC_CFLAGS = -I../deps/include
 PAWNC_LIBS = -L../deps/lib -lpawnc
 GL_CFLAGS =
-GL_LIBS = -lopengl32 -lgdi32
+GL_LIBS = -lopengl32 -lglu32 -lgdi32
 SOCKET_LIBS = -lws2_32
 
 BACKEND = WGL

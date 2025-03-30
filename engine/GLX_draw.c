@@ -1,5 +1,7 @@
 #define NB_EXPOSE_DRAW_PLATFORM
 
+#include "nb_pre.h"
+
 /* External library */
 #include <GL/gl.h>
 #include <X11/Xlib.h>

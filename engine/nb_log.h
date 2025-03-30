@@ -1,6 +1,7 @@
 #ifndef __NB_LOG_H__
 #define __NB_LOG_H__
 
+#include <nb_pre.h>
 #include <nb_macro.h>
 
 /* External library */

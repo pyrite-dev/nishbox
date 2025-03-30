@@ -1,8 +1,12 @@
 #define NB_EXPOSE_DRAW
 #define NB_EXPOSE_DRAW_PLATFORM
 
+#include "nb_pre.h"
+
 /* External library */
 #include <GL/gl.h>
+#include <GL/glu.h>
+#include "stb_image.h"
 
 /* Interface */
 #include "nb_draw.h"
@@ -16,6 +20,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
+GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
 nb_draw_t* nb_draw_create(void) {
 	nb_draw_t* draw = malloc(sizeof(*draw));
@@ -35,10 +43,32 @@ nb_draw_t* nb_draw_create(void) {
 	return draw;
 }
 
+GLuint nb_test_texture;
+
+void nb_draw_body(nb_draw_t* draw);
+
 void nb_draw_init_opengl(nb_draw_t* draw) {
-	int i;
+	int	       i;
+	int	       w, h, ch;
+	unsigned char* img;
 	glEnable(GL_BLEND);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
+	glShadeModel(GL_FLAT);
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
+	glLoadIdentity();
+
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightwht);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.1f);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE, GL_ONE);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
 		unsigned char* font = malloc(8 * 8 * 4);
@@ -59,6 +89,30 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	nb_function_log("Registered %d glyphs", sizeof(nb_font) / sizeof(nb_font[0]));
+
+	img = stbi_load("texture/test.bmp", &w, &h, &ch, 4);
+	glGenTextures(1, &nb_test_texture);
+	glBindTexture(GL_TEXTURE_2D, nb_test_texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	stbi_image_free(img);
+
+	draw->quadric = gluNewQuadric();
+
+	draw->light[0] = 10.0;
+	draw->light[1] = 10.0;
+	draw->light[2] = 0.0;
+	draw->light[3] = 1.0;
+
+	draw->camera[0] = -10;
+	draw->camera[1] = 10;
+	draw->camera[2] = 0;
+
+	draw->lookat[0] = 0;
+	draw->lookat[1] = 0;
+	draw->lookat[2] = 0;
 }
 
 int nb_draw_has_extension(nb_draw_t* draw, const char* query) {
@@ -88,61 +142,47 @@ void nb_draw_end_2d(nb_draw_t* draw) {
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 }
 
 double i = 0;
-void   nb_draw_frame(nb_draw_t* draw) {
-	  double p = sin(i) * (draw->width / 2) + (draw->width / 2);
-	  int	 j;
-	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	  nb_draw_begin_2d(draw);
-	  glColor3f(1, 0, 0);
-	  glBegin(GL_TRIANGLES);
-	  glVertex2d(0, 0);
-	  glVertex2d(p, 0);
-	  glVertex2d(0, draw->height);
-	  glEnd();
-	  glColor3f(0, 1, 0);
-	  glBegin(GL_TRIANGLES);
-	  glVertex2d(0, draw->height);
-	  glVertex2d(p, 0);
-	  glVertex2d(draw->width, draw->height);
-	  glEnd();
-	  glColor3f(0, 0, 1);
-	  glBegin(GL_TRIANGLES);
-	  glVertex2d(p, 0);
-	  glVertex2d(draw->width, 0);
-	  glVertex2d(draw->width, draw->height);
-	  glEnd();
 
-	  glEnable(GL_TEXTURE_2D);
-	  for(j = 0; j <= 'Z' - 'A'; j++) {
-		  double c = sin(i * 2 + j) / 2 + 1;
-		  double s = 4.0 * c;
-		  glColor3f(c, c, c);
-		  glBindTexture(GL_TEXTURE_2D, draw->font['A' + j]);
-		  glBegin(GL_QUADS);
-		  glTexCoord2d(0, 0);
-		  glVertex2d(0, 0);
-		  glTexCoord2d(1, 0);
-		  glVertex2d(3 * s, 0);
-		  glTexCoord2d(1, 1);
-		  glVertex2d(3 * s, 4 * s);
-		  glTexCoord2d(0, 1);
-		  glVertex2d(0, 4 * s);
-		  glEnd();
-		  glTranslatef(3 * s, 0, 0);
-	  }
-	  glDisable(GL_TEXTURE_2D);
-	  glBindTexture(GL_TEXTURE_2D, 0);
-	  i += 0.01;
-	  nb_draw_end_2d(draw);
+#define NEAREST_POW2(x) pow((2), log((int)(x) + 1) / log(2))
+
+void nb_draw_frame(nb_draw_t* draw) {
+	double size = 10;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glLoadIdentity();
+	gluLookAt(draw->camera[0], draw->camera[1], draw->camera[2], draw->lookat[0], draw->lookat[1], draw->lookat[2], 0, 1, 0);
+	glRotatef(i, 0, 1, 0);
+
+	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, nb_test_texture);
+	glBegin(GL_QUADS);
+	glNormal3d(0, 5, 0);
+	glColor3f(1, 1, 1);
+	glTexCoord2i(0, 0);
+	glVertex3d(-size / 2, 0, -size / 2);
+	glTexCoord2i(0, size);
+	glVertex3d(-size / 2, 0, size / 2);
+	glTexCoord2i(size, size);
+	glVertex3d(size / 2, 0, size / 2);
+	glTexCoord2i(size, 0);
+	glVertex3d(size / 2, 0, -size / 2);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+
+	i++;
 }
 
 int nb_draw_step(nb_draw_t* draw) {
 	int ret = _nb_draw_step(draw);
 	if(ret != 0) return ret;
 	draw->close = 0;
+
 	return 0;
 }
 
@@ -150,6 +190,8 @@ void nb_draw_reshape(nb_draw_t* draw) {
 	glViewport(0, 0, (GLint)draw->width, (GLint)draw->height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	gluPerspective(30, (double)draw->width / (double)draw->height, 1.0, 1000.0);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

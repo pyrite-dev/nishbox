@@ -1,5 +1,7 @@
 #define NB_EXPOSE_CORE
 
+#include "nb_pre.h"
+
 /* External library */
 #include <ode/ode.h>
 #ifdef _WIN32

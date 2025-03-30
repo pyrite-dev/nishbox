@@ -1,11 +1,11 @@
 #ifndef __NB_DRAW_PLATFORM_H__
 #define __NB_DRAW_PLATFORM_H__
 
+#include <nb_pre.h>
 #include <nb_macro.h>
 
 /* External library */
 #ifdef NB_EXPOSE_DRAW_PLATFORM
-#include <GL/gl.h>
 #if defined(USE_GLX)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -13,6 +13,8 @@
 #elif defined(USE_WGL)
 #include <windows.h>
 #endif
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif
 
 /* NishBox */
@@ -32,13 +34,17 @@ typedef struct nb_draw {
 	HDC	  dc;
 	HGLRC	  glrc;
 #endif
-	int    close;
-	int    x;
-	int    y;
-	int    width;
-	int    height;
-	int    running;
-	GLuint font[128];
+	int	    close;
+	int	    x;
+	int	    y;
+	int	    width;
+	int	    height;
+	int	    running;
+	GLuint	    font[128];
+	GLfloat	    light[4];
+	GLfloat	    lookat[3];
+	GLfloat	    camera[3];
+	GLUquadric* quadric;
 } nb_draw_t;
 #else
 typedef void nb_draw_t;

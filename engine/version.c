@@ -1,3 +1,5 @@
+#include "nb_pre.h"
+
 /* External library */
 
 /* Interface */
