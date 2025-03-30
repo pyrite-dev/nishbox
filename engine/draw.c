@@ -55,6 +55,7 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 		free(font);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
+	nb_function_log("Registered %d glyphs", sizeof(nb_font) / sizeof(nb_font[0]));
 }
 
 void nb_draw_begin_2d(nb_draw_t* draw) {
