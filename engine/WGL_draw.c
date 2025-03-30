@@ -78,6 +78,7 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 	RECT		       rect;
 	int		       fmt;
+	DWORD		       style;
 	draw->instance = (HINSTANCE)GetModuleHandle(NULL);
 	if(draw->instance == NULL) {
 		nb_function_log("Failed to get the instance", "");
@@ -112,6 +113,11 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		*pdraw = NULL;
 		return;
 	}
+
+	SetRect(&rect, 0, 0, draw->width, draw->height);
+	style = (DWORD)GetWindowLongPtr(draw->window, GWL_STYLE);
+	AdjustWindowRect(&rect, style, FALSE);
+	SetWindowPos(draw->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
 
 	SetWindowLongPtr(draw->window, GWLP_USERDATA, (LONG_PTR)draw);
 
