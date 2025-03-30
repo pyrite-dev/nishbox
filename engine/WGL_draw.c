@@ -14,6 +14,9 @@
 /* Standard */
 #include <string.h>
 
+typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
+typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
+
 LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
@@ -47,7 +50,23 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	return 0;
 }
 
-typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
+int _nb_draw_has_extension(nb_draw_t* draw, const char* query) {
+	const char*		     ext = NULL;
+	const char*		     ptr;
+	const int		     len = strlen(query);
+	PFNWGLGETEXTENSIONSSTRINGARB proc;
+
+	wglMakeCurrent(draw->dc, draw->glrc);
+
+	proc = (PFNWGLGETEXTENSIONSSTRINGARB)wglGetProcAddress("wglGetExtensionsStringARB");
+
+	if(proc != NULL) {
+		ext = proc(draw->dc);
+		ptr = strstr(ext, query);
+		return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
+	}
+	return 0;
+}
 
 int _nb_draw_step(nb_draw_t* draw) {
 	MSG msg;

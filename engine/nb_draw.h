@@ -16,5 +16,6 @@ void	   nb_draw_frame(nb_draw_t* draw);
 int	   nb_draw_step(nb_draw_t* draw);
 void	   nb_draw_reshape(nb_draw_t* draw);
 void	   nb_draw_init_opengl(nb_draw_t* draw);
+int	   nb_draw_has_extension(nb_draw_t* draw, const char* query);
 
 #endif

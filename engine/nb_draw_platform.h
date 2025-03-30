@@ -46,5 +46,6 @@ typedef void nb_draw_t;
 void _nb_draw_create(nb_draw_t** pdraw);
 void _nb_draw_destroy(nb_draw_t* draw);
 int  _nb_draw_step(nb_draw_t* draw);
+int  _nb_draw_has_extension(nb_draw_t* draw, const char* query);
 
 #endif

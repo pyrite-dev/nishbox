@@ -58,6 +58,18 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 	nb_function_log("Registered %d glyphs", sizeof(nb_font) / sizeof(nb_font[0]));
 }
 
+int nb_draw_has_extension(nb_draw_t* draw, const char* query) {
+	int	    ret = _nb_draw_has_extension(draw, query);
+	const char* ext = NULL;
+	const char* ptr;
+	const int   len = strlen(query);
+	if(ret != 0) return ret;
+
+	ext = glGetString(GL_EXTENSIONS);
+	ptr = strstr(ext, query);
+	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
+}
+
 void nb_draw_begin_2d(nb_draw_t* draw) {
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();

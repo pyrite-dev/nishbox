@@ -33,14 +33,15 @@ typedef void (*PFNGLXSWAPINTERVALEXTPROC)(Display*, GLXDrawable, int);
 typedef void (*PFNGLXSWAPINTERVALSGIPROC)(int);
 #endif
 
-int _nb_draw_has_glx_extension(nb_draw_t* draw, const char* query) {
-	const char* glx_ext = NULL;
+int _nb_draw_has_extension(nb_draw_t* draw, const char* query) {
+	const char* ext = NULL;
 	const char* ptr;
 	const int   len = strlen(query);
-	if(glx_ext == NULL) {
-		glx_ext = glXQueryExtensionsString(draw->display, DefaultScreen(draw->display));
-	}
-	ptr = strstr(glx_ext, query);
+
+	glXMakeCurrent(draw->display, draw->window, draw->context);
+
+	ext = glXQueryExtensionsString(draw->display, DefaultScreen(draw->display));
+	ptr = strstr(ext, query);
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 }
 
@@ -116,7 +117,7 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	glXMakeCurrent(draw->display, draw->window, draw->context);
 
 #if defined(GLX_EXT_swap_control)
-	if(_nb_draw_has_glx_extension(draw, "GLX_EXT_swap_control")) {
+	if(_nb_draw_has_extension(draw, "GLX_EXT_swap_control")) {
 		unsigned int		  tmp  = -1;
 		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
 		if(proc != NULL) {
@@ -126,14 +127,14 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 		interval = tmp;
 	} else
 #endif
-	    if(_nb_draw_has_glx_extension(draw, "GLX_MESA_swap_control")) {
+	    if(_nb_draw_has_extension(draw, "GLX_MESA_swap_control")) {
 		PFNGLXGETSWAPINTERVALMESAPROC proc  = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
 		PFNGLXSWAPINTERVALMESAPROC    proc2 = (PFNGLXSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXSwapIntervalMESA");
 		if(proc2 != NULL) {
 			proc2(1);
 		}
 		interval = proc();
-	} else if(_nb_draw_has_glx_extension(draw, "GLX_SGI_swap_control")) {
+	} else if(_nb_draw_has_extension(draw, "GLX_SGI_swap_control")) {
 		PFNGLXSWAPINTERVALSGIPROC proc = (PFNGLXSWAPINTERVALSGIPROC)glXGetProcAddressARB("glXSwapIntervalSGI");
 		proc(1);
 		interval = 1;
