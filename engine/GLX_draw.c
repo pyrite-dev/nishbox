@@ -35,6 +35,8 @@ typedef void (*PFNGLXSWAPINTERVALEXTPROC)(Display*, GLXDrawable, int);
 typedef void (*PFNGLXSWAPINTERVALSGIPROC)(int);
 #endif
 
+void _nb_draw_init(void) {}
+
 int _nb_draw_has_extension(nb_draw_t* draw, const char* query) {
 	const char* ext = NULL;
 	const char* ptr;

@@ -4,6 +4,7 @@
 *.core
 *.dll
 *.zip
+ext_*.h
 /deps
 /contrib
 /src/nishbox

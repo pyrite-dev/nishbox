@@ -108,7 +108,7 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 	draw->light[2] = 0.0;
 	draw->light[3] = 1.0;
 
-	draw->camera[0] = -10;
+	draw->camera[0] = 0;
 	draw->camera[1] = 10;
 	draw->camera[2] = 0;
 
@@ -176,6 +176,10 @@ void nb_draw_frame(nb_draw_t* draw) {
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+
+	draw->camera[0] = 10 * cos(i / 180 * M_PI);
+	draw->camera[1] = 10;
+	draw->camera[2] = 10 * sin(i / 180 * M_PI);
 
 	i++;
 }

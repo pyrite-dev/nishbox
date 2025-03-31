@@ -24,6 +24,8 @@ void nb_get_version(nb_version_t* version) {
 	strcpy(version->opengl, "GLX");
 #elif defined(USE_WGL)
 	strcpy(version->opengl, "WGL");
+#elif defined(USE_GLFW)
+	strcpy(version->opengl, "GLFW");
 #endif
 	for(i = 0;; i++) {
 		if(cpstr[i] == '.' || cpstr[i] == 0) {

@@ -13,6 +13,7 @@
 
 /* NishBox */
 #include "nb_draw.h"
+#include "nb_draw_platform.h"
 #include "nb_log.h"
 #include "nb_version.h"
 
@@ -32,6 +33,7 @@ void nb_engine_begin(void) {
 	WSAStartup(MAKEWORD(1, 1), &wsa);
 	nb_function_log("Winsock ready", "");
 #endif
+	_nb_draw_init();
 	dInitODE();
 }
 

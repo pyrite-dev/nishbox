@@ -9,17 +9,23 @@ WINDOWS = YES
 endif
 
 ifeq ($(WINDOWS),YES)
+BACKEND = WGL
+
 ODE_CFLAGS = -I../deps/include
 ODE_LIBS = -L../deps/lib -lode
 AMX_CFLAGS = -I../deps/include
 AMX_LIBS = -L../deps/lib -lamx
 PAWNC_CFLAGS = -I../deps/include
 PAWNC_LIBS = -L../deps/lib -lpawnc
+ifeq ($(BACKEND),WGL)
 GL_CFLAGS =
 GL_LIBS = -lopengl32 -lglu32 -lgdi32
+endif
+ifeq ($(BACKEND),GLFW)
+GL_CFLAGS = -I../deps/include
+GL_LIBS = -L../deps/lib -lglfw -lopengl32 -lglu32 -lgdi32
+endif
 SOCKET_LIBS = -lws2_32
-
-BACKEND = WGL
 
 EXEC = .exe
 endif

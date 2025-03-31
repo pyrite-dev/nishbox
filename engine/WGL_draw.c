@@ -19,6 +19,8 @@
 typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
 
+void _nb_draw_init(void) {}
+
 LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
