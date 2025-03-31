@@ -5,3 +5,8 @@ include ../common.mk
 
 $(TARGET): $(OBJS)
 	$(AR) rcs $@ $(OBJS)
+
+stb_image.c draw.c: ext_stb_image.h
+
+ext_stb_image.h:
+	wget https://github.com/nothings/stb/raw/refs/heads/master/stb_image.h -O $@

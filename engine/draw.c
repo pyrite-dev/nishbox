@@ -6,7 +6,7 @@
 /* External library */
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "stb_image.h"
+#include "ext_stb_image.h"
 
 /* Interface */
 #include "nb_draw.h"

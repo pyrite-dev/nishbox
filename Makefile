@@ -16,7 +16,7 @@ LIBS = $(ODE_LIBS) $(AMX_LIBS) $(PAWNC_LIBS) $(GL_LIBS) $(SOCKET_LIBS)
 all: ./src
 
 format:
-	clang-format --verbose -i `find ./src ./engine "(" -name "*.c" -or -name "*.h" ")" -and -not -name "stb_image.h"`
+	clang-format --verbose -i `find ./src ./engine "(" -name "*.c" -or -name "*.h" ")" -and -not -name "ext_*"`
 
 ./engine::
 	$(MAKE) -C $@

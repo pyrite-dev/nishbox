@@ -7,4 +7,4 @@ all: $(TARGET)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(TARGET) *.a *.exe *.o
+	rm -f $(TARGET) *.a *.exe *.o ext_*
