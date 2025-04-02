@@ -32,30 +32,6 @@ if [ ! -f .installed ]; then
 fi
 cd ..
 
-if [ -d pawn ]; then
-	cd pawn
-	git pull
-	cd build
-else
-	git clone https://github.com/nishiowo/pawn --depth=1
-	cd pawn
-	mkdir build
-	cd build
-fi
-if [ ! -f ../.configured ]; then
-	cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake-files/windows.cmake -DARCH=${ARCH} .. -DCMAKE_INSTALL_PREFIX=/ || exit 1
-	touch ../.configured
-fi
-if [ ! -f ../.made ]; then
-	${MAKE} -j4 || exit 1
-	touch ../.made
-fi
-if [ ! -f ../.installed ]; then
-	${MAKE} install DESTDIR=${BASE}/deps
-	touch ../.installed
-fi
-cd ../..
-
 cd ..
 
 ${MAKE} PLATFORM=win${BITS}
