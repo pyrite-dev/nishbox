@@ -1,0 +1,19 @@
+#!/bin/sh
+OBJS=""
+for i in $2/*.c; do
+	ADD=true
+	SRC=`echo $i | rev | cut -d"/" -f1 | rev`
+	OBJ=$1_`echo $i | rev | cut -d"/" -f1 | rev | cut -d"." -f1`.o
+	for j in $DISCARD; do
+		if [ "$j" = "$SRC" ]; then
+			ADD=false
+			break
+		fi
+	done
+	if $ADD; then
+		echo "$OBJ: $i"
+		echo "	\$(CC) \$(CFLAGS) -c -o \$@ $i"
+		OBJS="$OBJS $OBJ"
+	fi
+done
+echo "OBJS +=$OBJS"
