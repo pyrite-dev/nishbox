@@ -1,5 +1,6 @@
 TARGET = libnishbox.a
-OBJS = nb_version.o nb_core.o nb_draw.o nb_log.o nb_font.o nb_math.o nb_physics.o nb_mesh.o nb_model.o
+OBJS = nb_version.o nb_core.o nb_draw.o nb_log.o nb_font.o nb_math.o nb_physics.o nb_mesh.o nb_model.o nb_texture.o
+OBJS += nb_$(DRIVER)_driver.o
 OBJS += nb_$(BACKEND)_draw.o
 OBJS += nb_stb_image.o
 

@@ -6,13 +6,13 @@
 
 #ifdef NB_EXPOSE_TEXTURE
 /* External library */
-#include <GL/gl.h>
 
 /* NishBox */
+#include <nb_type/draw_driver.h>
 
 /* Standard */
 
-NB_DECLARE_TYPE(texture, { GLuint id; });
+typedef nb_draw_driver_texture_t nb_texture_t;
 #else
 typedef void nb_texture_t;
 #endif

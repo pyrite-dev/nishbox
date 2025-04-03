@@ -39,6 +39,10 @@
 #define NB_EXPOSE_VERSION
 #endif
 
+#ifndef NB_EXPOSE_DRAW_DRIVER
+#define NB_EXPOSE_DRAW_DRIVER
+#endif
+
 #endif
 
 #ifndef __FUNCTION_NAME__

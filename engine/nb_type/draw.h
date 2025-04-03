@@ -9,22 +9,25 @@
 
 /* NishBox */
 #include <nb_type/draw_platform.h>
+#include <nb_type/draw_driver.h>
+#include <nb_type/texture.h>
+#include <nb_type/math.h>
 
 /* Standard */
 
 NB_DECLARE_TYPE(draw, {
 	nb_draw_platform_t* platform;
+	nb_draw_driver_t*   driver;
 	int		    close;
 	int		    x;
 	int		    y;
 	int		    width;
 	int		    height;
 	int		    running;
-	GLuint		    font[128];
-	GLfloat		    light[4];
-	GLfloat		    lookat[3];
-	GLfloat		    camera[3];
-	GLUquadric*	    quadric;
+	nb_texture_t*	    font[128];
+	nb_vector_t	    light;
+	nb_vector_t	    lookat;
+	nb_vector_t	    camera;
 });
 #else
 typedef void nb_draw_t;
