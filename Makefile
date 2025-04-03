@@ -14,15 +14,19 @@ STB_CFLAGS = -I../external/stb
 STB_LDFLAGS =
 STB_LIBS =
 
+ZLIB_CFLAGS = -I../external/zlib -DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1
+ZLIB_LDFLAGS =
+ZLIB_LIBS =
+
 CXX_LIBS = -lstdc++
 
 AR = $(TARGET_PREFIX)ar
 CC = $(TARGET_PREFIX)gcc
 OBJDUMP = $(TARGET_PREFIX)objdump
 STRIP = $(TARGET_PREFIX)strip
-CFLAGS = -D_DEFAULT_SOURCE -DUSE_$(BACKEND) -DDRV_$(DRIVER) -I../engine/include $(ODE_CFLAGS) $(GL_CFLAGS) $(LUA_CFLAGS) $(STB_CFLAGS)
-LDFLAGS = $(LUA_LDFLAGS) $(STB_LDFLAGS)
-LIBS = $(ODE_LIBS) $(GL_LIBS) $(SOCKET_LIBS) $(LUA_LIBS) $(CXX_LIBS) $(STB_LIBS)
+CFLAGS = -D_DEFAULT_SOURCE -DUSE_$(BACKEND) -DDRV_$(DRIVER) -I../engine/include $(ODE_CFLAGS) $(GL_CFLAGS) $(LUA_CFLAGS) $(STB_CFLAGS) $(ZLIB_CFLAGS)
+LDFLAGS = $(LUA_LDFLAGS) $(STB_LDFLAGS) $(ZLIB_LDFLAGS)
+LIBS = $(ODE_LIBS) $(GL_LIBS) $(SOCKET_LIBS) $(LUA_LIBS) $(CXX_LIBS) $(STB_LIBS) $(ZLIB_LIBS)
 
 .PHONY: all format clean ./engine ./src print-deps pack
 
@@ -33,6 +37,7 @@ format:
 
 ./engine::
 	cd $@ && mkdir -p LUA && env DISCARD="lua.c" ../tool/genmk LUA ../external/lua > ext_lua.mk
+	cd $@ && mkdir -p ZLIB && ../tool/genmk ZLIB ../external/zlib > ext_zlib.mk
 	$(MAKE) -C $@
 
 ./src:: ./engine
@@ -48,3 +53,4 @@ clean:
 	$(MAKE) -C ./engine clean
 	$(MAKE) -C ./src clean
 	rm -rf ./engine/LUA
+	rm -rf ./engine/ZLIB

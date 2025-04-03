@@ -7,6 +7,7 @@ OBJS += nb_stb_image.o
 include ../common.mk
 
 -include ext_lua.mk
+-include ext_zlib.mk
 
 $(TARGET): $(OBJS)
 	$(AR) rcs $@ $(OBJS)
