@@ -1,6 +1,8 @@
 #include <nb_pre.h>
 
 /* External library */
+#include <lua.h>
+#include <zlib.h>
 
 /* Interface */
 #include <nb_version.h>
@@ -27,6 +29,8 @@ void nb_get_version(nb_version_t* version) {
 #elif defined(USE_GLFW)
 	strcpy(version->opengl, "GLFW");
 #endif
+	strcpy(version->zlib, ZLIB_VERSION);
+	strcpy(version->lua, LUA_RELEASE);
 	for(i = 0;; i++) {
 		if(cpstr[i] == '.' || cpstr[i] == 0) {
 			int num;

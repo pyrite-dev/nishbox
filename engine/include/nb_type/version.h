@@ -17,6 +17,8 @@ NB_DECLARE_TYPE(version, {
 	int  patch;
 	char full[64];
 	char opengl[32];
+	char lua[32];
+	char zlib[32];
 });
 #else
 #error "should not happen!"
