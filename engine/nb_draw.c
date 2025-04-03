@@ -71,9 +71,6 @@ int nb_draw_step(nb_draw_t* draw) {
 void nb_draw_destroy(nb_draw_t* draw) {
 	int i;
 	if(draw->running) {
-		free(draw->light);
-		free(draw->camera);
-		free(draw->lookat);
 		nb_draw_driver_destroy(draw);
 	}
 	nb_draw_platform_destroy(draw);
