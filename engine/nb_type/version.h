@@ -11,13 +11,13 @@
 
 /* Standard */
 
-typedef struct nb_version {
+NB_DECLARE_TYPE(version, {
 	int  major;
 	int  minor;
 	int  patch;
 	char full[64];
 	char opengl[32];
-} nb_version_t;
+});
 #else
 typedef void nb_version_t;
 #endif
