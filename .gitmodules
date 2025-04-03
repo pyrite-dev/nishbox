@@ -2,3 +2,6 @@
 	path = external/lua
 	url = https://github.com/lua/lua
 	branch = v5.4
+[submodule "external/stb"]
+	path = external/stb
+	url = https://github.com/nothings/stb
