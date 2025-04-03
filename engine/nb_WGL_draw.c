@@ -1,4 +1,5 @@
 #define NB_EXPOSE_DRAW_PLATFORM
+#define NB_EXPOSE_DRAW
 
 #include "nb_pre.h"
 
@@ -108,7 +109,6 @@ void nb_draw_platform_create(nb_draw_t* draw) {
 	if(draw->platform->instance == NULL) {
 		nb_function_log("Failed to get instance", "");
 		nb_draw_destroy(draw);
-		*pdraw = NULL;
 		return;
 	} else {
 		nb_function_log("Got instance", "");
@@ -119,7 +119,7 @@ void nb_draw_platform_create(nb_draw_t* draw) {
 	wc.lpfnWndProc	 = nb_draw_platform_proc;
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
-	wc.hInstance	 = draw->instance;
+	wc.hInstance	 = draw->platform->instance;
 	wc.hIcon	 = LoadIcon(NULL, IDI_WINLOGO);
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
@@ -154,13 +154,13 @@ void nb_draw_platform_create(nb_draw_t* draw) {
 	desc.cAlphaBits = 8;
 	desc.cDepthBits = 32;
 
-	draw->dc = GetDC(draw->platform->window);
+	draw->platform->dc = GetDC(draw->platform->window);
 
 	fmt = ChoosePixelFormat(draw->platform->dc, &desc);
 	SetPixelFormat(draw->platform->dc, fmt, &desc);
 
 	draw->platform->glrc = wglCreateContext(draw->platform->dc);
-	if(draw->glrc == NULL) {
+	if(draw->platform->glrc == NULL) {
 		nb_function_log("Failed to create OpenGL context", "");
 		nb_draw_destroy(draw);
 		return;
@@ -187,10 +187,15 @@ void nb_draw_platform_create(nb_draw_t* draw) {
 void nb_draw_platform_destroy(nb_draw_t* draw) {
 	if(draw->platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
+	}
+	if(draw->platform->dc != NULL) {
 		ReleaseDC(draw->platform->window, draw->platform->dc);
+	}
+	if(draw->platform->glrc != NULL) {
 		wglDeleteContext(draw->platform->glrc);
 	}
 	if(draw->platform->window != NULL) {
 		DestroyWindow(draw->platform->window);
 	}
+	free(draw->platform);
 }

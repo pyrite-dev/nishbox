@@ -62,7 +62,6 @@ void nb_draw_platform_create(nb_draw_t* draw) {
 	if(draw->platform->window == NULL) {
 		nb_function_log("Failed to create window", "");
 		nb_draw_destroy(draw);
-		*pdraw = NULL;
 		return;
 	}
 

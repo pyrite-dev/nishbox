@@ -191,4 +191,5 @@ void nb_draw_platform_destroy(nb_draw_t* draw) {
 		XDestroyWindow(draw->platform->display, draw->platform->window);
 		XCloseDisplay(draw->platform->display);
 	}
+	free(draw->platform);
 }
