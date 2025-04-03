@@ -133,6 +133,7 @@ void nb_draw_driver_reshape(nb_draw_t* draw) {
 }
 
 void nb_draw_driver_draw_texture(nb_draw_t* draw, float x, float y, float w, float h, nb_draw_driver_texture_t* texture, float r, float g, float b, float a) {
+	nb_graphic_begin_2d(draw);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -154,6 +155,7 @@ void nb_draw_driver_draw_texture(nb_draw_t* draw, float x, float y, float w, flo
 	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
+	nb_graphic_end_2d(draw);
 }
 
 void nb_draw_driver_destroy(nb_draw_t* draw) {
