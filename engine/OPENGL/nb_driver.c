@@ -105,7 +105,7 @@ void nb_draw_driver_init(nb_draw_t* draw) {
 	}
 	nb_function_log("Registered %d glyphs", sizeof(nb_font) / sizeof(nb_font[0]));
 
-	glClearColor(0.5, 0.5, 0.5, 1);
+	glClearColor(0, 0, 0, 1);
 
 	draw->driver->quadric = gluNewQuadric();
 }
