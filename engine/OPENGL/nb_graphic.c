@@ -11,6 +11,7 @@
 
 /* NishBox */
 #include <nb_draw.h>
+#include <nb_texture.h>
 
 /* Standard */
 
@@ -33,3 +34,12 @@ void nb_graphic_end_2d(nb_draw_t* draw) {
 }
 
 void nb_graphic_clear(nb_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
+
+void nb_graphic_text(nb_draw_t* draw, float x, float y, float size, const char* text, float r, float g, float b, float a) {
+	int i;
+	nb_graphic_begin_2d(draw);
+	for(i = 0; text[i] != 0; i++) {
+		nb_draw_texture(draw, x + i * (size / 2), y, size / 2, size, draw->font[text[i]], r, g, b, a);
+	}
+	nb_graphic_end_2d(draw);
+}

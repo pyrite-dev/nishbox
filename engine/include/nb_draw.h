@@ -18,7 +18,5 @@ int	   nb_draw_step(nb_draw_t* draw);
 void	   nb_draw_begin(void);
 void	   nb_draw_end(void);
 void	   nb_draw_reshape(nb_draw_t* draw);
-void	   nb_draw_begin_2d(nb_draw_t* draw);
-void	   nb_draw_end_2d(nb_draw_t* draw);
 
 #endif

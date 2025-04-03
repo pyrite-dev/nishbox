@@ -12,6 +12,7 @@
 #include <nb_draw_platform.h>
 
 /* NishBox */
+#include <nb_draw_driver.h>
 #include <nb_log.h>
 #include <nb_draw.h>
 
@@ -46,7 +47,9 @@ int nb_draw_platform_step(nb_draw_t* draw) {
 	if(draw->close) glfwSetWindowShouldClose(draw->platform->window, GLFW_FALSE);
 	glfwPollEvents();
 	if(ret == 0) {
+		nb_draw_driver_before(draw);
 		nb_draw_frame(draw);
+		nb_draw_driver_after(draw);
 
 		glfwSwapBuffers(draw->platform->window);
 	}

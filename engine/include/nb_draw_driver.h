@@ -19,9 +19,8 @@ void nb_draw_driver_reshape(nb_draw_t* draw);
 
 nb_draw_driver_texture_t* nb_draw_driver_register_texture(nb_draw_t* draw, int width, int height, unsigned char* data);
 void			  nb_draw_driver_destroy_texture(nb_draw_driver_texture_t* texture);
-
-void nb_draw_clear(nb_draw_t* draw);
-void nb_draw_begin_2d(nb_draw_t* draw);
-void nb_draw_end_2d(nb_draw_t* draw);
+void			  nb_draw_driver_draw_texture(nb_draw_t* draw, float x, float y, float w, float h, nb_draw_driver_texture_t* texture, float r, float g, float b, float a);
+void			  nb_draw_driver_before(nb_draw_t* draw);
+void			  nb_draw_driver_after(nb_draw_t* draw);
 
 #endif

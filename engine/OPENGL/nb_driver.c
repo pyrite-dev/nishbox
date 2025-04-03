@@ -17,6 +17,7 @@
 #include <nb_log.h>
 #include <nb_font.h>
 #include <nb_math.h>
+#include <nb_graphic.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -50,6 +51,8 @@ nb_draw_driver_texture_t* nb_draw_driver_register_texture(nb_draw_t* draw, int w
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, d);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return r;
@@ -102,6 +105,8 @@ void nb_draw_driver_init(nb_draw_t* draw) {
 	}
 	nb_function_log("Registered %d glyphs", sizeof(nb_font) / sizeof(nb_font[0]));
 
+	glClearColor(0.5, 0.5, 0.5, 1);
+
 	draw->driver->quadric = gluNewQuadric();
 }
 
@@ -127,9 +132,51 @@ void nb_draw_driver_reshape(nb_draw_t* draw) {
 	glLoadIdentity();
 }
 
+void nb_draw_driver_draw_texture(nb_draw_t* draw, float x, float y, float w, float h, nb_draw_driver_texture_t* texture, float r, float g, float b, float a) {
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture->id);
+
+	glColor4f(r / 255, g / 255, b / 255, a / 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
+	glVertex2f(x, y);
+	glTexCoord2f(0, 1);
+	glVertex2f(x, y + h);
+	glTexCoord2f(1, 1);
+	glVertex2f(x + w, y + h);
+	glTexCoord2f(1, 0);
+	glVertex2f(x + w, y);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+}
+
 void nb_draw_driver_destroy(nb_draw_t* draw) {
 	int i;
 	for(i = 0; i < sizeof(nb_font) / sizeof(nb_font[0]); i++) {
 		nb_destroy_texture(draw->font[i]);
 	}
+}
+
+void nb_draw_driver_before(nb_draw_t* draw) {
+	GLfloat lightpos[3];
+	NB_VECTOR_COPY(draw->light, lightpos);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	gluLookAt(draw->camera[0], draw->camera[1], draw->camera[2], draw->lookat[0], draw->lookat[1], draw->lookat[2], 0, 1, 0);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+	glPushMatrix();
+	nb_graphic_clear(draw);
+}
+
+void nb_draw_driver_after(nb_draw_t* draw) {
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }

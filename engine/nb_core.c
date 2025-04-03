@@ -69,8 +69,10 @@ nb_engine_t* nb_engine_create(int nogui) {
  * 1. Calls nb_draw_step
  * 2. nb_draw_step calls _nb_draw_step (Platform-dependent)
  * 3. _nb_draw_step processes platform-dependent stuffs (e.g. events)
+ * 4. _nb_draw_step calls nb_draw_driver_before
  * 4. _nb_draw_step calls nb_draw_frame
  * 5. nb_draw_frame draws frame
+ * 4. _nb_draw_step calls nb_draw_driver_after
  * 6. _nb_draw_step swaps buffers
  * 7. Comes back here
  */

@@ -14,5 +14,6 @@
 
 nb_texture_t* nb_register_texture(nb_draw_t* draw, int width, int height, unsigned char* data);
 void	      nb_destroy_texture(nb_texture_t* texture);
+void	      nb_draw_texture(nb_draw_t* draw, float x, float y, float w, float h, nb_texture_t* texture, float r, float g, float b, float a);
 
 #endif

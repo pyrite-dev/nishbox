@@ -56,7 +56,11 @@ nb_draw_t* nb_draw_create(void) {
 void nb_draw_reshape(nb_draw_t* draw) { nb_draw_driver_reshape(draw); }
 
 /* Runs every frame */
-void nb_draw_frame(nb_draw_t* draw) { nb_graphic_clear(draw); }
+void nb_draw_frame(nb_draw_t* draw) {
+	nb_graphic_text(draw, 0, 0, 32, "test text", 255, 0, 0, 128);
+	nb_graphic_text(draw, 8, 8, 32, "test text", 0, 255, 0, 128);
+	nb_graphic_text(draw, 16, 16, 32, "test text", 0, 0, 255, 128);
+}
 
 int nb_draw_step(nb_draw_t* draw) {
 	int ret = nb_draw_platform_step(draw);
