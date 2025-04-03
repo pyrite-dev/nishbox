@@ -1,14 +1,14 @@
 #define NB_EXPOSE_TEXTURE
 
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 
 /* Interface */
-#include "nb_texture.h"
+#include <nb_texture.h>
 
 /* NishBox */
-#include "nb_draw_driver.h"
+#include <nb_draw_driver.h>
 
 /* Standard */
 #include <stdlib.h>

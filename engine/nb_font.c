@@ -1,9 +1,9 @@
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 
 /* Interface */
-#include "nb_font.h"
+#include <nb_font.h>
 
 /* NishBox */
 

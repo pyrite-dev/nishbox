@@ -1,10 +1,10 @@
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 #include <ode/odemath.h>
 
 /* Interface */
-#include "nb_math.h"
+#include <nb_math.h>
 
 /* NishBox */
 

@@ -1,17 +1,17 @@
 #define NB_EXPOSE_DRAW
 
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 
 /* Interface */
-#include "nb_draw.h"
+#include <nb_draw.h>
 
 /* NishBox */
-#include "nb_log.h"
-#include "nb_draw_platform.h"
-#include "nb_draw_driver.h"
-#include "nb_graphic.h"
+#include <nb_log.h>
+#include <nb_draw_platform.h>
+#include <nb_draw_driver.h>
+#include <nb_graphic.h>
 
 /* Standard */
 #include <stdlib.h>

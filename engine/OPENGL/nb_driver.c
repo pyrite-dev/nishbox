@@ -1,22 +1,22 @@
 #define NB_EXPOSE_DRAW_DRIVER
 #define NB_EXPOSE_DRAW
 
-#include "../nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 #include <GL/gl.h>
 #include <GL/glu.h>
 
 /* Interface */
-#include "../nb_draw_driver.h"
+#include <nb_draw_driver.h>
 
 /* NishBox */
-#include "../nb_draw_platform.h"
-#include "../nb_texture.h"
-#include "../nb_draw.h"
-#include "../nb_log.h"
-#include "../nb_font.h"
-#include "../nb_math.h"
+#include <nb_draw_platform.h>
+#include <nb_texture.h>
+#include <nb_draw.h>
+#include <nb_log.h>
+#include <nb_font.h>
+#include <nb_math.h>
 
 /* Standard */
 #include <stdlib.h>

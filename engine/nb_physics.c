@@ -1,15 +1,15 @@
 #define NB_EXPOSE_PHYSICS
 
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 #include <ode/ode.h>
 
 /* Interface */
-#include "nb_physics.h"
+#include <nb_physics.h>
 
 /* NishBox */
-#include "nb_log.h"
+#include <nb_log.h>
 
 /* Standard */
 #include <stdlib.h>

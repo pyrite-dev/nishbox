@@ -1,16 +1,16 @@
 #define NB_EXPOSE_DRAW
 
-#include "../nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 #include <GL/gl.h>
 #include <GL/glu.h>
 
 /* Interface */
-#include "../nb_graphic.h"
+#include <nb_graphic.h>
 
 /* NishBox */
-#include "../nb_draw.h"
+#include <nb_draw.h>
 
 /* Standard */
 

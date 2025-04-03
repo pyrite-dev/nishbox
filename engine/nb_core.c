@@ -1,6 +1,6 @@
 #define NB_EXPOSE_CORE
 
-#include "nb_pre.h"
+#include <nb_pre.h>
 
 /* External library */
 #ifdef _WIN32
@@ -10,13 +10,13 @@
 #include <lua.h>
 
 /* Interface */
-#include "nb_core.h"
+#include <nb_core.h>
 
 /* NishBox */
-#include "nb_draw.h"
-#include "nb_physics.h"
-#include "nb_log.h"
-#include "nb_version.h"
+#include <nb_draw.h>
+#include <nb_physics.h>
+#include <nb_log.h>
+#include <nb_version.h>
 
 /* Standard */
 #include <stdlib.h>
