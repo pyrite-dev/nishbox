@@ -10,3 +10,5 @@ include ../common.mk
 
 $(TARGET): $(OBJS)
 	$(AR) rcs $@ $(OBJS)
+
+nb_stb_image.c: ../external/stb/stb_image.h
