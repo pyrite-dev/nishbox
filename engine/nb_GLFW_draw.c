@@ -48,7 +48,6 @@ int nb_draw_platform_step(nb_draw_t* draw) {
 	if(ret == 0) {
 		nb_draw_frame(draw);
 
-		glFlush();
 		glfwSwapBuffers(draw->platform->window);
 	}
 	return ret;

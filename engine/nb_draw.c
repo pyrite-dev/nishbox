@@ -11,6 +11,7 @@
 #include "nb_log.h"
 #include "nb_draw_platform.h"
 #include "nb_draw_driver.h"
+#include "nb_graphic.h"
 
 /* Standard */
 #include <stdlib.h>
@@ -54,11 +55,8 @@ nb_draw_t* nb_draw_create(void) {
 
 void nb_draw_reshape(nb_draw_t* draw) { nb_draw_driver_reshape(draw); }
 
-void nb_draw_begin_2d(nb_draw_t* draw) { nb_draw_driver_begin_2d(draw); }
-
-void nb_draw_end_2d(nb_draw_t* draw) { nb_draw_driver_end_2d(draw); }
-
-void nb_draw_frame(nb_draw_t* draw) {}
+/* Runs every frame */
+void nb_draw_frame(nb_draw_t* draw) { nb_graphic_clear(draw); }
 
 int nb_draw_step(nb_draw_t* draw) {
 	int ret = nb_draw_platform_step(draw);

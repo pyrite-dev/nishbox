@@ -117,24 +117,6 @@ int nb_draw_driver_has_extension(nb_draw_t* draw, const char* query) {
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 }
 
-void nb_draw_driver_begin_2d(nb_draw_t* draw) {
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, draw->width, draw->height, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-}
-
-void nb_draw_driver_end_2d(nb_draw_t* draw) {
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-}
-
 void nb_draw_driver_reshape(nb_draw_t* draw) {
 	glViewport(0, 0, (GLint)draw->width, (GLint)draw->height);
 	glMatrixMode(GL_PROJECTION);
