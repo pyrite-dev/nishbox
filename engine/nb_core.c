@@ -15,7 +15,7 @@
 
 /* NishBox */
 #include "nb_draw.h"
-#include "nb_draw_platform.h"
+#include "nb_physics.h"
 #include "nb_log.h"
 #include "nb_version.h"
 
@@ -36,11 +36,14 @@ void nb_engine_begin(void) {
 	WSAStartup(MAKEWORD(1, 1), &wsa);
 	nb_function_log("Winsock ready", "");
 #endif
-	_nb_draw_init();
-	dInitODE();
+	nb_draw_begin();
+	nb_physics_begin();
 }
 
-void nb_engine_end(void) { dCloseODE(); }
+void nb_engine_end(void) {
+	nb_physics_end();
+	nb_draw_end();
+}
 
 nb_engine_t* nb_engine_create(int nogui) {
 	nb_engine_t* engine = malloc(sizeof(*engine));
@@ -57,8 +60,7 @@ nb_engine_t* nb_engine_create(int nogui) {
 			return NULL;
 		}
 	}
-	engine->world = dWorldCreate();
-	dWorldSetGravity(engine->world, 0, 0, -9.81);
+	engine->physics = nb_physics_create();
 	return engine;
 }
 
@@ -82,7 +84,7 @@ void nb_engine_loop(nb_engine_t* engine) {
 }
 
 void nb_engine_destroy(nb_engine_t* engine) {
-	dWorldDestroy(engine->world);
+	if(engine->physics != NULL) nb_physics_destroy(engine->physics);
 	if(engine->draw != NULL) nb_draw_destroy(engine->draw);
 	free(engine);
 	nb_function_log("Destroyed engine", "");

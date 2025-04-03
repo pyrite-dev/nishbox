@@ -1,14 +1,16 @@
 TARGET = libnishbox.a
-OBJS = version.o core.o draw.o log.o $(BACKEND)_draw.o font.o stb_image.o math.o
+OBJS = nb_version.o nb_core.o nb_draw.o nb_log.o nb_font.o nb_math.o nb_physics.o nb_mesh.o nb_model.o
+OBJS += nb_$(BACKEND)_draw.o
+OBJS += nb_stb_image.o
 
 include ../common.mk
 
-include ext_lua.mk
+-include ext_lua.mk
 
 $(TARGET): $(OBJS)
 	$(AR) rcs $@ $(OBJS)
 
-stb_image.c draw.c: ext_stb_image.h
+nb_stb_image.c nb_draw.c: ext_stb_image.h
 
 ext_stb_image.h:
 	wget https://github.com/nothings/stb/raw/refs/heads/master/stb_image.h -O $@

@@ -1,5 +1,3 @@
-#define NB_EXPOSE_MATH
-
 #include "nb_pre.h"
 
 /* External library */

@@ -26,6 +26,10 @@ GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
+void nb_draw_begin(void) { nb_draw_platform_begin(); }
+
+void nb_draw_end(void) { nb_draw_platform_end(); }
+
 nb_draw_t* nb_draw_create(void) {
 	nb_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
@@ -34,8 +38,8 @@ nb_draw_t* nb_draw_create(void) {
 	draw->width   = 640;
 	draw->height  = 480;
 	draw->running = 0;
-	_nb_draw_create(&draw);
-	if(draw != NULL) {
+	nb_draw_platform_create(draw);
+	if(draw->platform != NULL) {
 		nb_function_log("Created drawing interface successfully", "");
 		nb_draw_init_opengl(draw);
 		nb_draw_reshape(draw);
@@ -45,8 +49,6 @@ nb_draw_t* nb_draw_create(void) {
 }
 
 GLuint nb_test_texture;
-
-void nb_draw_body(nb_draw_t* draw);
 
 void nb_draw_init_opengl(nb_draw_t* draw) {
 	int	       i;
@@ -118,7 +120,7 @@ void nb_draw_init_opengl(nb_draw_t* draw) {
 }
 
 int nb_draw_has_extension(nb_draw_t* draw, const char* query) {
-	int	    ret = _nb_draw_has_extension(draw, query);
+	int	    ret = nb_draw_platform_has_extension(draw, query);
 	const char* ext = NULL;
 	const char* ptr;
 	const int   len = strlen(query);
@@ -185,7 +187,7 @@ void nb_draw_frame(nb_draw_t* draw) {
 }
 
 int nb_draw_step(nb_draw_t* draw) {
-	int ret = _nb_draw_step(draw);
+	int ret = nb_draw_platform_step(draw);
 	if(ret != 0) return ret;
 	draw->close = 0;
 
@@ -209,7 +211,6 @@ void nb_draw_destroy(nb_draw_t* draw) {
 			glDeleteTextures(1, &draw->font[i]);
 		}
 	}
-	_nb_draw_destroy(draw);
-	free(draw);
+	nb_draw_platform_destroy(draw);
 	nb_function_log("Destroyed drawing interface", "");
 }

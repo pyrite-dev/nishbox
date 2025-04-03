@@ -4,7 +4,7 @@
 
 /* External library */
 #include <GL/gl.h>
-#include <windows.h>
+#include <GL/wgl.h>
 
 /* Interface */
 #include "nb_draw_platform.h"
@@ -15,13 +15,15 @@
 
 /* Standard */
 #include <string.h>
+#include <stdlib.h>
 
 typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
 
-void _nb_draw_init(void) {}
+void nb_draw_platform_begin(void) {}
+void nb_draw_platform_end(void) {}
 
-LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+LRESULT CALLBACK nb_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
 	nb_draw_t*  draw = (nb_draw_t*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -36,7 +38,7 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 		draw->y	     = rect.top;
 		draw->width  = rect.right - rect.left;
 		draw->height = rect.bottom - rect.top;
-		wglMakeCurrent(draw->dc, draw->glrc);
+		wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 		nb_draw_reshape(draw);
 		break;
 	case WM_CLOSE:
@@ -51,30 +53,30 @@ LRESULT CALLBACK _nb_draw_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	return 0;
 }
 
-int _nb_draw_has_extension(nb_draw_t* draw, const char* query) {
+int nb_draw_platform_has_extension(nb_draw_t* draw, const char* query) {
 	const char*		     ext = NULL;
 	const char*		     ptr;
 	const int		     len = strlen(query);
 	PFNWGLGETEXTENSIONSSTRINGARB proc;
 
-	wglMakeCurrent(draw->dc, draw->glrc);
+	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
 	proc = (PFNWGLGETEXTENSIONSSTRINGARB)wglGetProcAddress("wglGetExtensionsStringARB");
 
 	if(proc != NULL) {
-		ext = proc(draw->dc);
+		ext = proc(draw->platform->dc);
 		ptr = strstr(ext, query);
 		return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 	}
 	return 0;
 }
 
-int _nb_draw_step(nb_draw_t* draw) {
+int nb_draw_platform_step(nb_draw_t* draw) {
 	MSG msg;
 	int ret = 0;
-	wglMakeCurrent(draw->dc, draw->glrc);
-	while(PeekMessage(&msg, draw->window, 0, 0, PM_NOREMOVE)) {
-		if(GetMessage(&msg, draw->window, 0, 0)) {
+	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
+	while(PeekMessage(&msg, draw->platform->window, 0, 0, PM_NOREMOVE)) {
+		if(GetMessage(&msg, draw->platform->window, 0, 0)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} else {
@@ -86,21 +88,24 @@ int _nb_draw_step(nb_draw_t* draw) {
 		nb_draw_frame(draw);
 
 		glFlush();
-		SwapBuffers(draw->dc);
+		SwapBuffers(draw->platform->dc);
 	}
 	return ret;
 }
 
-void _nb_draw_create(nb_draw_t** pdraw) {
-	nb_draw_t*	       draw = *pdraw;
+void nb_draw_platform_create(nb_draw_t* draw) {
 	WNDCLASSEX	       wc;
 	PIXELFORMATDESCRIPTOR  desc;
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 	RECT		       rect;
 	int		       fmt;
 	DWORD		       style;
-	draw->instance = (HINSTANCE)GetModuleHandle(NULL);
-	if(draw->instance == NULL) {
+
+	draw->platform = malloc(sizeof(*draw->platform));
+	memset(draw->platform, 0, sizeof(*draw->platform));
+
+	draw->platform->instance = (HINSTANCE)GetModuleHandle(NULL);
+	if(draw->platform->instance == NULL) {
 		nb_function_log("Failed to get instance", "");
 		nb_draw_destroy(draw);
 		*pdraw = NULL;
@@ -111,7 +116,7 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 
 	wc.cbSize	 = sizeof(wc);
 	wc.style	 = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc	 = _nb_draw_proc;
+	wc.lpfnWndProc	 = nb_draw_platform_proc;
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
 	wc.hInstance	 = draw->instance;
@@ -124,23 +129,21 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	if(!RegisterClassEx(&wc)) {
 		nb_function_log("Failed to register class", "");
 		nb_draw_destroy(draw);
-		*pdraw = NULL;
 		return;
 	} else {
 		nb_function_log("Registered class", "");
 	}
 
-	draw->window = CreateWindow("nishbox", "NishBox (WGL)", (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->instance, NULL);
-	if(draw->window == NULL) {
+	draw->platform->window = CreateWindow("nishbox", "NishBox (WGL)", (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->platform->instance, NULL);
+	if(draw->platform->window == NULL) {
 		nb_function_log("Failed to create window", "");
 		nb_draw_destroy(draw);
-		*pdraw = NULL;
 		return;
 	} else {
 		nb_function_log("Created window", "");
 	}
 
-	SetWindowLongPtr(draw->window, GWLP_USERDATA, (LONG_PTR)draw);
+	SetWindowLongPtr(draw->platform->window, GWLP_USERDATA, (LONG_PTR)draw);
 
 	memset(&desc, 0, sizeof(desc));
 	desc.nSize	= sizeof(desc);
@@ -151,21 +154,20 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	desc.cAlphaBits = 8;
 	desc.cDepthBits = 32;
 
-	draw->dc = GetDC(draw->window);
+	draw->dc = GetDC(draw->platform->window);
 
-	fmt = ChoosePixelFormat(draw->dc, &desc);
-	SetPixelFormat(draw->dc, fmt, &desc);
+	fmt = ChoosePixelFormat(draw->platform->dc, &desc);
+	SetPixelFormat(draw->platform->dc, fmt, &desc);
 
-	draw->glrc = wglCreateContext(draw->dc);
+	draw->platform->glrc = wglCreateContext(draw->platform->dc);
 	if(draw->glrc == NULL) {
 		nb_function_log("Failed to create OpenGL context", "");
 		nb_draw_destroy(draw);
-		*pdraw = NULL;
 		return;
 	} else {
 		nb_function_log("Created OpenGL context", "");
 	}
-	wglMakeCurrent(draw->dc, draw->glrc);
+	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	if(wglSwapIntervalEXT != NULL) {
@@ -174,21 +176,21 @@ void _nb_draw_create(nb_draw_t** pdraw) {
 	}
 
 	SetRect(&rect, 0, 0, draw->width, draw->height);
-	style = (DWORD)GetWindowLongPtr(draw->window, GWL_STYLE);
+	style = (DWORD)GetWindowLongPtr(draw->platform->window, GWL_STYLE);
 	AdjustWindowRect(&rect, style, FALSE);
-	SetWindowPos(draw->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
+	SetWindowPos(draw->platform->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
 
-	ShowWindow(draw->window, SW_NORMAL);
-	UpdateWindow(draw->window);
+	ShowWindow(draw->platform->window, SW_NORMAL);
+	UpdateWindow(draw->platform->window);
 }
 
-void _nb_draw_destroy(nb_draw_t* draw) {
-	if(draw->glrc != NULL) {
+void nb_draw_platform_destroy(nb_draw_t* draw) {
+	if(draw->platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
-		ReleaseDC(draw->window, draw->dc);
-		wglDeleteContext(draw->glrc);
+		ReleaseDC(draw->platform->window, draw->platform->dc);
+		wglDeleteContext(draw->platform->glrc);
 	}
-	if(draw->window != NULL) {
-		DestroyWindow(draw->window);
+	if(draw->platform->window != NULL) {
+		DestroyWindow(draw->platform->window);
 	}
 }

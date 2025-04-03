@@ -4,24 +4,12 @@
 #include <nb_pre.h>
 #include <nb_macro.h>
 
-/* External library */
-#ifdef NB_EXPOSE_CORE
-#include <ode/ode.h>
-#endif
+/* Type */
+#include <nb_type/core.h>
 
 /* NishBox */
-#include <nb_draw.h>
 
 /* Standard */
-
-#ifdef NB_EXPOSE_CORE
-typedef struct nb_engine {
-	dWorldID   world;
-	nb_draw_t* draw;
-} nb_engine_t;
-#else
-typedef void nb_engine_t;
-#endif
 
 void	     nb_engine_begin(void);
 void	     nb_engine_end(void);

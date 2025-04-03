@@ -1,15 +1,14 @@
-#ifndef __NB_FONT_H__
-#define __NB_FONT_H__
+#ifndef __NB_MODEL_H__
+#define __NB_MODEL_H__
 
 #include <nb_pre.h>
 #include <nb_macro.h>
 
 /* Type */
+#include <nb_type/model.h>
 
 /* NishBox */
 
 /* Standard */
-
-extern unsigned char nb_font[128][8];
 
 #endif
