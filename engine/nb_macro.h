@@ -49,7 +49,7 @@
 #endif
 #endif
 
-#define NB_DECLARE_TYPE(n, b) typedef struct nb_##n b nb_##n##_t;
+#define NB_DECLARE_TYPE(n, b) typedef struct _nb_##n b nb_##n##_t;
 
 /* Expose them by default */
 #ifndef NB_EXPOSE_MATH
