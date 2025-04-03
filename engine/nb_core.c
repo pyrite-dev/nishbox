@@ -6,8 +6,8 @@
 #ifdef _WIN32
 #include <winsock.h>
 #endif
-
 #include <lua.h>
+#include <zlib.h>
 
 /* Interface */
 #include <nb_core.h>
@@ -30,6 +30,7 @@ void nb_engine_begin(void) {
 	nb_get_version(&ver);
 	nb_function_log("NishBox engine %s", ver.full);
 	nb_function_log("%s", LUA_RELEASE);
+	nb_function_log("zlib %s", ZLIB_VERSION);
 	nb_function_log("OpenGL backend: %s", ver.opengl);
 #ifdef _WIN32
 	WSAStartup(MAKEWORD(1, 1), &wsa);
