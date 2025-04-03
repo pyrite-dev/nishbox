@@ -22,6 +22,7 @@ GL_CFLAGS = -I../deps/include
 GL_LIBS = -L../deps/lib -lglfw -lopengl32 -lglu32 -lgdi32
 endif
 SOCKET_LIBS = -lws2_32
+MATH_LIBS =
 
 EXEC = .exe
 endif

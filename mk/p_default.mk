@@ -12,6 +12,7 @@ GL_CFLAGS = `pkg-config --cflags glfw3` `pkg-config --cflags glu`
 GL_LIBS = `pkg-config --libs glfw3` `pkg-config --libs glu`
 endif
 SOCKET_LIBS = 
+MATH_LIBS = -lm
 
 EXEC =
 endif
