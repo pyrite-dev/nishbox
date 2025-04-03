@@ -9,15 +9,16 @@
 /* NishBox */
 
 /* Standard */
+#include <string.h>
 #include <stdlib.h>
 #include <math.h>
 
 float nb_log2(float x) { return log(x) / log(2); }
 
-nb_vector_t nb_calculate_normal(nb_vector_t v0, nb_vector_t v1, nb_vector_t v2) {
+void nb_calculate_normal(nb_vector_t* r, nb_vector_t v0, nb_vector_t v1, nb_vector_t v2) {
 	int	    i;
 	dReal	    length;
-	nb_vector_t vec = malloc(sizeof(*vec) * 3);
+	nb_vector_t vec;
 	dReal	    res[3];
 	dReal	    tmp0[3];
 	dReal	    tmp1[3];
@@ -41,5 +42,5 @@ nb_vector_t nb_calculate_normal(nb_vector_t v0, nb_vector_t v1, nb_vector_t v2) 
 	vec[1] /= length;
 	vec[2] /= length;
 
-	return vec;
+	memcpy(*r, vec, sizeof(vec));
 }

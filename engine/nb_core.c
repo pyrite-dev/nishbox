@@ -3,7 +3,6 @@
 #include "nb_pre.h"
 
 /* External library */
-#include <ode/ode.h>
 #ifdef _WIN32
 #include <winsock.h>
 #endif

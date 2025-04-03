@@ -19,7 +19,7 @@ NB_DECLARE_TYPE(version, {
 	char opengl[32];
 });
 #else
-typedef void nb_version_t;
+#error "should not happen!"
 #endif
 
 #endif

@@ -36,18 +36,15 @@ nb_draw_t* nb_draw_create(void) {
 		nb_draw_reshape(draw);
 		draw->running = 1;
 
-		draw->light    = malloc(sizeof(*draw->light) * 4);
 		draw->light[0] = 10.0;
 		draw->light[1] = 10.0;
 		draw->light[2] = 0.0;
 		draw->light[3] = 1.0;
 
-		draw->camera	= malloc(sizeof(*draw->camera) * 3);
 		draw->camera[0] = 0;
 		draw->camera[1] = 10;
 		draw->camera[2] = 0;
 
-		draw->lookat	= malloc(sizeof(*draw->lookat) * 3);
 		draw->lookat[0] = 0;
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;

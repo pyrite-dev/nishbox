@@ -16,7 +16,7 @@
 	to[1] = from[1]; \
 	to[2] = from[2]
 
-float	    nb_log2(float x);
-nb_vector_t nb_calculate_normal(nb_vector_t v0, nb_vector_t v1, nb_vector_t v2);
+float nb_log2(float x);
+void  nb_calculate_normal(nb_vector_t* r, nb_vector_t v0, nb_vector_t v1, nb_vector_t v2);
 
 #endif

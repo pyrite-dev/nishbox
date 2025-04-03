@@ -1,5 +1,3 @@
-#define NB_LOG_EXPOSE
-
 #include "nb_pre.h"
 
 /* External library */

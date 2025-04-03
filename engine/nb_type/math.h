@@ -11,9 +11,9 @@
 
 /* Standard */
 
-typedef double* nb_vector_t;
+typedef double nb_vector_t[4];
 #else
-typedef void* nb_vector_t;
+#error "should not happen!"
 #endif
 
 #endif
