@@ -26,7 +26,7 @@ format:
 	clang-format --verbose -i `find ./src ./engine "(" -name "*.c" -or -name "*.h" ")" -and -not -name "ext_*"`
 
 ./engine::
-	cd $@ && env DISCARD="lua.c" ../tool/genmk LUA ../external/lua > ext_lua.mk
+	cd $@ && mkdir -p LUA && env DISCARD="lua.c" ../tool/genmk LUA ../external/lua > ext_lua.mk
 	$(MAKE) -C $@
 
 ./src:: ./engine
@@ -41,3 +41,4 @@ pack: all
 clean:
 	$(MAKE) -C ./engine clean
 	$(MAKE) -C ./src clean
+	rm -rf ./engine/LUA

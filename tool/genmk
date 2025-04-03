@@ -3,7 +3,7 @@ OBJS=""
 for i in $2/*.c; do
 	ADD=true
 	SRC=`echo $i | rev | cut -d"/" -f1 | rev`
-	OBJ=$1_`echo $i | rev | cut -d"/" -f1 | rev | cut -d"." -f1`.o
+	OBJ=$1/`echo $i | rev | cut -d"/" -f1 | rev | cut -d"." -f1`.o
 	for j in $DISCARD; do
 		if [ "$j" = "$SRC" ]; then
 			ADD=false
@@ -11,7 +11,7 @@ for i in $2/*.c; do
 		fi
 	done
 	if $ADD; then
-		echo "$OBJ: $i"
+		echo "$OBJ: $i $1"
 		echo "	\$(CC) \$(CFLAGS) -c -o \$@ $i"
 		OBJS="$OBJS $OBJ"
 	fi
