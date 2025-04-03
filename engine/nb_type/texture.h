@@ -12,7 +12,11 @@
 
 /* Standard */
 
-typedef nb_draw_driver_texture_t nb_texture_t;
+NB_DECLARE_TYPE(texture, {
+	nb_draw_driver_texture_t* draw_driver_texture;
+	int			  width;
+	int			  height;
+});
 #else
 typedef void nb_texture_t;
 #endif
