@@ -2,7 +2,7 @@ ifeq ($(PLATFORM),)
 BACKEND = GLX
 
 ODE_CFLAGS = `pkg-config --cflags ode`
-ODE_LIBS = `pkg-config --libs ode` -lstdc++
+ODE_LIBS = `pkg-config --libs ode`
 ifeq ($(BACKEND),GLX)
 GL_CFLAGS = `pkg-config --cflags x11` `pkg-config --cflags gl` `pkg-config --cflags glu`
 GL_LIBS = `pkg-config --libs x11` `pkg-config --libs gl` `pkg-config --libs glu`

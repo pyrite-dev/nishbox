@@ -10,13 +10,15 @@ LUA_CFLAGS = -DLUA_COMPAT_5_2 -DLUA_USE_C89 -I../external/lua
 LUA_LDFLAGS =
 LUA_LIBS =
 
+CXX_LIBS = -lstdc++
+
 AR = $(TARGET_PREFIX)ar
 CC = $(TARGET_PREFIX)gcc
 OBJDUMP = $(TARGET_PREFIX)objdump
 STRIP = $(TARGET_PREFIX)strip
 CFLAGS = -D_DEFAULT_SOURCE -DUSE_$(BACKEND) -DDRV_$(DRIVER) -I../engine/include $(ODE_CFLAGS) $(GL_CFLAGS) $(LUA_CFLAGS)
 LDFLAGS = $(LUA_LDFLAGS)
-LIBS = $(ODE_LIBS) $(GL_LIBS) $(SOCKET_LIBS) $(LUA_LIBS)
+LIBS = $(ODE_LIBS) $(GL_LIBS) $(SOCKET_LIBS) $(LUA_LIBS) $(CXX_LIBS)
 
 .PHONY: all format clean ./engine ./src print-deps pack
 
