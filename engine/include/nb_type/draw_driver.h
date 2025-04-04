@@ -15,16 +15,10 @@
 
 /* Standard */
 
-NB_DECLARE_TYPE(draw_driver, {
 #ifdef DRV_OPENGL
-	GLUquadric* quadric;
+NB_DECLARE_TYPE(draw_driver, { GLUquadric* quadric; });
+NB_DECLARE_TYPE(draw_driver_texture, { GLuint id; });
 #endif
-});
-NB_DECLARE_TYPE(draw_driver_texture, {
-#ifdef DRV_OPENGL
-	GLuint id;
-#endif
-});
 #else
 typedef void nb_draw_driver_t;
 typedef void nb_draw_driver_texture_t;

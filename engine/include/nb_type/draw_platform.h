@@ -22,21 +22,23 @@
 
 /* Standard */
 
-NB_DECLARE_TYPE(draw_platform, {
 #if defined(USE_GLX)
+NB_DECLARE_TYPE(draw_platform, {
 	Display*   display;
 	Window	   window;
 	GLXContext context;
 	Atom	   wm_delete_window;
+});
 #elif defined(USE_WGL)
+NB_DECLARE_TYPE(draw_platform, {
 	HINSTANCE instance;
 	HWND	  window;
 	HDC	  dc;
 	HGLRC	  glrc;
-#elif defined(USE_GLFW)
-	GLFWwindow* window;
-#endif
 });
+#elif defined(USE_GLFW)
+NB_DECLARE_TYPE(draw_platform, { GLFWwindow* window; });
+#endif
 #else
 typedef void nb_draw_platform_t;
 #endif
