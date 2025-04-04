@@ -10,7 +10,7 @@
 
 /* Standard */
 
-#define nb_function_log(fmt, arg...) nb_log("%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, arg)
+#define nb_function_log(fmt, arg, ...) nb_log("%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, arg)
 
 void nb_log(const char* fmt, ...);
 
