@@ -28,16 +28,18 @@ CFLAGS = -D_DEFAULT_SOURCE -DUSE_$(BACKEND) -DDRV_$(DRIVER) -I../engine/include 
 LDFLAGS = $(LUA_LDFLAGS) $(STB_LDFLAGS) $(ZLIB_LDFLAGS)
 LIBS = $(ODE_LIBS) $(GL_LIBS) $(SOCKET_LIBS) $(LUA_LIBS) $(CXX_LIBS) $(STB_LIBS) $(ZLIB_LIBS) $(MATH_LIBS)
 
-.PHONY: all format clean ./engine ./src print-deps pack
+.PHONY: all ext format clean ./engine ./src print-deps pack
 
 all: ./src
 
 format:
 	clang-format --verbose -i `find ./src ./engine "(" -name "*.c" -or -name "*.h" ")" -and -not -name "ext_*"`
 
-./engine::
-	cd $@ && mkdir -p LUA && env DISCARD="lua.c" ../tool/genmk LUA ../external/lua > ext_lua.mk
-	cd $@ && mkdir -p ZLIB && ../tool/genmk ZLIB ../external/zlib > ext_zlib.mk
+ext:
+	cd ./engine && mkdir -p LUA && env DISCARD="lua.c" ../tool/genmk LUA ../external/lua > ext_lua.mk
+	cd ./engine && mkdir -p ZLIB && ../tool/genmk ZLIB ../external/zlib > ext_zlib.mk
+
+./engine:: ext
 	$(MAKE) -C $@
 
 ./src:: ./engine
