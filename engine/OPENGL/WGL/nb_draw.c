@@ -5,7 +5,6 @@
 
 /* External library */
 #include <GL/gl.h>
-#include <GL/wgl.h>
 
 /* Interface */
 #include <nb_draw_platform.h>

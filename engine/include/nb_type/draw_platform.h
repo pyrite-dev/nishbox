@@ -13,7 +13,7 @@
 #include <X11/Xatom.h>
 #include <GL/glx.h>
 #elif defined(USE_WGL)
-#include <GL/wgl.h>
+/* Should require nothing... for now? */
 #elif defined(USE_GLFW)
 #include <GLFW/glfw3.h>
 #endif
