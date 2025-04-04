@@ -1,0 +1,36 @@
+# Rule file for NishBox build script generation...
+# --- Native build ---
+    NINCLUDE	/usr/local/include
+    NINCLUDE	/usr/pkg/include
+    NINCLUDE	/usr/X11R7/include
+    NLIBRARY	/usr/local/lib
+    NLIBRARY	/usr/pkg/lib
+    NLIBRARY	/usr/X11R7/lib
+# --- Dependency ---
+     INCREL	deps/include
+     LIBREL	deps/lib
+# --- Engine ---
+     INCREL	engine/include
+# --- External ---
+     INCREL	external/lua
+     INCREL	external/stb
+     INCREL	external/zlib
+# --- Actual check ---
+     CHECK	GL/gl.h
+     CHECK	GL/glu.h
+?    CHECK	GL/glx.h
+    DLABEL	X
+?    CHECK	winsock.h
+    DLABEL	W
+?    CHECK	unistd.h
+    DDEFINE	HAS_UNISTD_H=1
+     DEFINE	HAS_STDARG_H=1
+     DEFINE	LUA_COMPAT_5_2
+     DEFINE	LUA_USE_C89
+# --- Library ---
+    WLINK	gdi32
+    WLINK	opengl32
+    WLINK	glu32
+    XLINK	X11
+    XLINK	GL
+    XLINK	GLU

@@ -1,0 +1,214 @@
+#!/usr/bin/env perl
+use Cwd;
+use File::Path;
+
+my $CROSS	= defined($ENV{CROSS}) ? $ENV{CROSS} : -1;
+my $IS_MSVC	= 0;
+my $IS_MSWIN	= $^O eq "MSWin32";
+my $AR		= defined($ENV{AR}) ? $ENV{AR} : "ar";
+my $CC		= defined($ENV{CC}) ? $ENV{CC} : "gcc";
+my $CFLAGS	= defined($ENV{CFLAGS}) ? $ENV{CFLAGS} : "";
+my $LDFLAGS	= defined($ENV{LDFLAGS}) ? $ENV{LDFLAGS} : "";
+my $LIBS	= defined($ENV{LIBS}) ? $ENV{LIBS} : "";
+my $NUL		= "> /dev/null 2>&1";
+
+sub path_translate {
+	local($path) = @_;
+	if($IS_MSWIN){
+		$path =~ s/\//\\\\/g;
+		return $path;
+	}else{
+		return $path;
+	}
+}
+
+my %labels = ();
+my @types = (
+	"make"
+);
+my $type = $types[0];
+
+print("NishBox build script generator\n");
+if(@ARGV == 1){
+	$found = 0;
+	$type = $ARGV[0];
+	foreach(@types){
+		if($_ eq $type){
+			$found = 1;
+			break;
+		}
+	}
+	if(!$found){
+		print("Not supported build script type\n");
+		exit(1);
+	}
+}elsif(@ARGV != 0){
+	print("Bad arguments, this script only needs build script type\n");
+	print("Supported types:\n");
+	foreach(@types){
+		print("  $_");
+		if($_ eq $types[0]){
+			print(" (default)");
+		}
+		print("\n");
+	}
+	exit(1);
+}
+print("Generating for $type\n");
+if($IS_MSWIN){
+	print("Seems like you're building from Windows\n");
+	$NUL = " > NUL:";
+}
+
+open(RULES, "<", "Rules") or die "Where is Rules";
+
+print("Are we cross-compiling... ");
+
+if($CROSS == -1){
+	mkdir("test_conf");
+	chdir("test_conf");
+	open(SRC, ">", "test.c");
+	print(SRC "int main(){}\n");
+	close(SRC);
+	if($IS_MSVC){
+		$status = system("$CC /Fetest test.c $NUL");
+	}else{
+		$status = system("$CC -o test test.c $NUL");
+	}
+	if($status == 0){
+		if($IS_MSWIN){
+			$status = system("test.exe");
+		}else{
+			$status = system("./test");
+		}
+	}
+	chdir("..");
+	rmtree("test_conf");
+	if($status == 0){
+		$CROSS = 0;
+	}else{
+		$CROSS = 1;
+	}
+}
+
+if($CROSS){
+	$labels{C} = 1;
+	print("yes");
+}else{
+	$labels{N} = 1;
+	print("no");
+}
+print("\n");
+
+while($line = <RULES>){
+	my $run = 1;
+
+	my $optional	= "";
+	my $label	= "";
+	my $command	= "";
+	my $arg		= "";
+	if($line =~ /^#/){
+		next;
+	}
+	$line =~ s/\n//g;
+	if($line =~ /^(.)(....)([^\t ]+)$/){
+		$optional	= $1;
+		$label		= $2;
+		$command	= $3;
+	}elsif($line =~ /^(.)(....)([^\t ]+)[\t ]+(.+)$/){
+		$optional	= $1;
+		$label		= $2;
+		$command	= $3;
+		$arg		= $4;
+	}
+	while($label =~ /(.)/g){
+		if(!($1 eq " ")){
+			$run = $run && defined($labels{$1});
+		}
+	}
+	if(!$run){
+		next;
+	}
+	$optional = !($optional eq " ");
+	if($command eq "CHECK"){
+		my $status = 0;
+		print("Checking if $arg exists... ");
+
+		mkdir("test_conf");
+		chdir("test_conf");
+		open(SRC, ">", "test.c");
+		print(SRC "#include <$arg>\n");
+		close(SRC);
+		if($IS_MSVC){
+			$status = system("$CC /c $CFLAGS test.c $NUL");
+		}else{
+			$status = system("$CC -c $CFLAGS test.c $NUL");
+		}
+		chdir("..");
+		rmtree("test_conf");
+
+		if(defined($labels{D})){
+			undef($labels{D});
+		}
+		if($status == 0){
+			print("yes");
+			$labels{D} = 1;
+		}else{
+			print("no");
+		}
+
+		print("\n");
+		if($status != 0 && !$optional){
+			print("Required header missing - generation aborted\n");
+			exit(1);
+		}
+	}elsif($command eq "DEFINE"){
+		if($IS_MSVC){
+			$CFLAGS = "$CFLAGS /D$arg";
+		}else{
+			$CFLAGS = "$CFLAGS -D$arg";
+		}
+	}elsif($command eq "LABEL"){
+		$labels{$arg} = 1;
+	}elsif($command eq "UNLABEL"){
+		if(defined($labels{$arg})){
+			undef($labels{$arg});
+		}
+	}elsif($command eq "INCREL" || $command eq "INCLUDE"){
+		if($command eq "INCREL"){
+			$arg = path_translate(Cwd::getcwd() . "/" . $arg);
+		}else{
+			$arg = path_translate($arg);
+		}
+		if($IS_MSVC){
+			$CFLAGS = "$CFLAGS /I$arg";
+		}else{
+			$CFLAGS = "$CFLAGS -I$arg";
+		}
+	}elsif($command eq "LIBREL" || $command eq "LIBRARY"){
+		if($command eq "LIBREL"){
+			$arg = path_translate(Cwd::getcwd() . "/" . $arg);
+		}else{
+			$arg = path_translate($arg);
+		}
+		if($IS_MSVC){
+			$LDFLAGS = "$LDFLAGS /LIBPATH $arg";
+		}else{
+			$LDFLAGS = "$LDFLAGS -L$arg";
+		}
+	}elsif($command eq "LINK"){
+		if($IS_MSVC){
+			$LIBS = "$LIBS $arg.lib";
+		}else{
+			$LIBS = "$LIBS -l$arg";
+		}
+	}
+}
+
+close(RULES);
+
+print("     AR: $AR\n");
+print("     CC: $CC\n");
+print(" CFLAGS: $CFLAGS\n");
+print("LDFLAGS: $LDFLAGS\n");
+print("   LIBS: $LIBS\n");
