@@ -82,8 +82,9 @@
     SLINK	stdc++
     SLINK	m
 # --- Add source ---
-     COMPILE	engine
-     COMPILE	engine/OPENGL
-    XCOMPILE	engine/OPENGL/GLX
-    WCOMPILE	engine/OPENGL/WGL
-    GCOMPILE	engine/OPENGL/GLFW
+     COMPILE	engine			engine
+     COMPILE	engine/OPENGL		engine
+    XCOMPILE	engine/OPENGL/GLX	engine
+    WCOMPILE	engine/OPENGL/WGL	engine
+    GCOMPILE	engine/OPENGL/GLFW	engine
+     STATIC	libnishbox.a		engine

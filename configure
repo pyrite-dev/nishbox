@@ -23,6 +23,7 @@ sub path_translate {
 }
 
 my %labels = ();
+my %srcs = ();
 my @types = (
 	"make"
 );
@@ -128,6 +129,7 @@ while($line = <RULES>){
 		$command	= $3;
 		$arg		= $4;
 	}
+	my @args = split(/[\t ]+/, $arg);
 	while($label =~ /(.)/g){
 		if(!($1 eq " ")){
 			$run = $run && defined($labels{$1});
@@ -229,10 +231,13 @@ while($line = <RULES>){
 			$LIBS = "$LIBS -l$arg";
 		}
 	}elsif($command eq "COMPILE"){
-		opendir(my $dh, $arg);
+		if(!defined($srcs{$args[1]})){
+			@{$srcs{$args[1]}} = ();
+		}
+		opendir(my $dh, $args[0]);
 		my @l = grep(/\.c$/, readdir($dh));
 		foreach(@l){
-			print("$_\n");
+			push(@{$srcs{$args[1]}}, $args[0] . "/" . $_);
 		}
 		closedir($dh);
 	}
@@ -247,3 +252,4 @@ print(" CFLAGS: $CFLAGS\n");
 print("LDFLAGS: $LDFLAGS\n");
 print("   LIBS: $LIBS\n");
 print("--------------------------------\n");
+
