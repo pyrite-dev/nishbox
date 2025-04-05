@@ -28,6 +28,10 @@ my @types = (
 );
 my $type = $types[0];
 
+if(defined($ENV{BACKEND})){
+	$labels{$ENV{BACKEND}} = 1;
+}
+
 print("NishBox build script generator\n");
 if(@ARGV == 1){
 	$found = 0;
@@ -95,10 +99,13 @@ if($CROSS){
 	$labels{C} = 1;
 	print("yes");
 }else{
-	$labels{N} = 1;
 	print("no");
 }
 print("\n");
+
+if($IS_MSVC){
+	$labels{M} = 1;
+}
 
 while($line = <RULES>){
 	my $run = 1;
@@ -168,6 +175,25 @@ while($line = <RULES>){
 		}else{
 			$CFLAGS = "$CFLAGS -D$arg";
 		}
+	}elsif($command eq "PKGCONF"){
+		my $result = "";
+		if($IS_MSVC){
+			$result = `pkg-config --silence-errors --msvc-syntax --cflags $arg`;
+			$result =~ s/\n$//g;
+			$CFLAGS = "$CFLAGS $result";
+
+			$result = `pkg-config --silence-errors --msvc-syntax --libs $arg`;
+			$result =~ s/\n$//g;
+			$LIBS = "$LIBS $result";
+		}else{
+			$result = `pkg-config --silence-errors --cflags $arg`;
+			$result =~ s/\n$//g;
+			$CFLAGS = "$CFLAGS $result";
+
+			$result = `pkg-config --silence-errors --libs $arg`;
+			$result =~ s/\n$//g;
+			$LIBS = "$LIBS $result";
+		}
 	}elsif($command eq "LABEL"){
 		$labels{$arg} = 1;
 	}elsif($command eq "UNLABEL"){
@@ -207,8 +233,10 @@ while($line = <RULES>){
 
 close(RULES);
 
+print("----- Configuration result -----\n");
 print("     AR: $AR\n");
 print("     CC: $CC\n");
 print(" CFLAGS: $CFLAGS\n");
 print("LDFLAGS: $LDFLAGS\n");
 print("   LIBS: $LIBS\n");
+print("--------------------------------\n");

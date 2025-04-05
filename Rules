@@ -1,4 +1,27 @@
 # Rule file for NishBox build script generation...
+#
+# Label N is defined for native build
+# Label C is defined for cross build
+# Label G is defined for GLFW build
+# Label W is defined for Windows build
+# Label X is defined for X11 build
+# Label M is defined for MSVC build
+# Label S is defined for non-MSVC build
+# Label D is defined when check doesn't fail
+#
+# --- Define some labels ---
+     LABEL	N
+    CUNLABEL	N
+     LABEL	S
+    MUNLABEL	S
+# --- Define OpenGL labels ---
+     LABEL	U
+   UGUNLABEL	U
+   UWUNLABEL	U
+   UXUNLABEL	U
+    ULABEL	G
+    ULABEL	W
+    ULABEL	X
 # --- Native build ---
     NINCLUDE	/usr/local/include
     NINCLUDE	/usr/pkg/include
@@ -15,22 +38,45 @@
      INCREL	external/lua
      INCREL	external/stb
      INCREL	external/zlib
+# --- ODE ---
+    CLINK	ode
+   MNLINK	ode
+   SNPKGCONF	ode
 # --- Actual check ---
      CHECK	GL/gl.h
      CHECK	GL/glu.h
-?    CHECK	GL/glx.h
-    DLABEL	X
-?    CHECK	winsock.h
-    DLABEL	W
+# --- GLX ---
+?   XCHECK	GL/glx.h
+   XDUNLABEL	W
+   XDUNLABEL	G
+# --- WGL but also checks WinSock ---
+?   WCHECK	winsock2.h
+   WDUNLABEL	X
+   WDUNLABEL	G
+# --- GLFW ---
+?   GCHECK	GLFW/glfw3.h
+   GDUNLABEL	W
+   GDUNLABEL	X
+# --- Standard headers ---
 ?    CHECK	unistd.h
     DDEFINE	HAS_UNISTD_H=1
      DEFINE	HAS_STDARG_H=1
      DEFINE	LUA_COMPAT_5_2
      DEFINE	LUA_USE_C89
-# --- Library ---
+# --- Backend ---
+     DEFINE	DRV_OPENGL
+    XDEFINE	USE_GLX
+    WDEFINE	USE_WGL
+    GDEFINE	USE_GLFW
+# --- Other library ---
     WLINK	gdi32
     WLINK	opengl32
     WLINK	glu32
+    WLINK	ws2_32
     XLINK	X11
     XLINK	GL
     XLINK	GLU
+    GLINK	glfw
+# --- Link this only for non-MSVC ---
+    SLINK	stdc++
+    SLINK	m
