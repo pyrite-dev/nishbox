@@ -5,6 +5,13 @@
 *.dll
 *.zip
 ext_*
+*~
+config.log
+aclocal.m4
+autom4te.cache
+Makefile
+.deps
+.dirstamp
 /deps
 /contrib
 /src/nishbox
