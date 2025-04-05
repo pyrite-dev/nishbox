@@ -63,6 +63,7 @@
      DEFINE	HAS_STDARG_H=1
      DEFINE	LUA_COMPAT_5_2
      DEFINE	LUA_USE_C89
+     DEFINE	_DEFAULT_SOURCE
 # --- Backend ---
      DEFINE	DRV_OPENGL
     XDEFINE	USE_GLX
@@ -80,3 +81,9 @@
 # --- Link this only for non-MSVC ---
     SLINK	stdc++
     SLINK	m
+# --- Add source ---
+     COMPILE	engine
+     COMPILE	engine/OPENGL
+    XCOMPILE	engine/OPENGL/GLX
+    WCOMPILE	engine/OPENGL/WGL
+    GCOMPILE	engine/OPENGL/GLFW

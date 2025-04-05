@@ -228,6 +228,13 @@ while($line = <RULES>){
 		}else{
 			$LIBS = "$LIBS -l$arg";
 		}
+	}elsif($command eq "COMPILE"){
+		opendir(my $dh, $arg);
+		my @l = grep(/\.c$/, readdir($dh));
+		foreach(@l){
+			print("$_\n");
+		}
+		closedir($dh);
 	}
 }
 
