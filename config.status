@@ -603,8 +603,8 @@ S["LUA_SOURCES"]=" ../external/lua/lapi.c ../external/lua/lauxlib.c ../external/
 "./external/lua/lobject.c ../external/lua/lopcodes.c ../external/lua/loslib.c ../external/lua/lparser.c ../external/lua/lstate.c ../external/lua/lstr"\
 "ing.c ../external/lua/lstrlib.c ../external/lua/ltable.c ../external/lua/ltablib.c ../external/lua/ltests.c ../external/lua/ltm.c ../external/lua/lu"\
 "a.c ../external/lua/lundump.c ../external/lua/lutf8lib.c ../external/lua/lvm.c ../external/lua/lzio.c ../external/lua/onelua.c"
-S["NB_LDADD"]="-Wl,-rpath,/usr/X11R7/lib -L/usr/X11R7/lib -lX11  -Wl,-rpath,/usr/X11R7/lib -L/usr/X11R7/lib -lGL -L/usr/X11R7/lib -lGLU -Wl,-rpath,/usr/X11R7/lib -"\
-"lGL -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -lode"
+S["NB_LDADD"]="-lstdc++ -Wl,-rpath,/usr/X11R7/lib -L/usr/X11R7/lib -lX11  -Wl,-rpath,/usr/X11R7/lib -L/usr/X11R7/lib -lGL -L/usr/X11R7/lib -lGLU -Wl,-rpath,/usr/X1"\
+"1R7/lib -lGL -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -lode"
 S["NB_CPPFLAGS"]="-DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1 -I/usr/X11R7/include -D_REENTRANT -I/usr/X11R7/include -D_REENTRANT -I/usr/X11R7/include/libdrm -I/usr/X11R7/inc"\
 "lude -D_REENTRANT -I/usr/X11R7/include/libdrm -I/usr/pkg/include"
 S["NB_BACKEND"]="GLX"

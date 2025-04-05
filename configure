@@ -6469,8 +6469,51 @@ esac
 fi
 
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for main in -lstdc++" >&5
+printf %s "checking for main in -lstdc++... " >&6; }
+if test ${ac_cv_lib_stdcpp_main+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-lstdc++  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main (void)
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_stdcpp_main=yes
+else case e in #(
+  e) ac_cv_lib_stdcpp_main=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_stdcpp_main" >&5
+printf "%s\n" "$ac_cv_lib_stdcpp_main" >&6; }
+if test "x$ac_cv_lib_stdcpp_main" = xyes
+then :
+  STDCXX_LIBS="-lstdc++"
+else case e in #(
+  e) : ;;
+esac
+fi
+
+
 NB_CPPFLAGS="$UNISTD_CFLAGS $STDARG_CFLAGS $GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
-NB_LDADD="$GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS"
+NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS"
 
 
 
