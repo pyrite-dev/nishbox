@@ -136,9 +136,9 @@ am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
 	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
 	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
-	nb_version.$(OBJEXT) $(NB_DRIVER)/nb_driver.$(OBJEXT) \
-	$(NB_DRIVER)/nb_graphics.$(OBJEXT) \
-	$(NB_DRIVER)/$(NB_BACKEND)/nb_draw.$(OBJEXT)
+	nb_version.$(OBJEXT) @NB_DRIVER@/nb_driver.$(OBJEXT) \
+	@NB_DRIVER@/nb_graphic.$(OBJEXT) \
+	@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT)
 libnishbox_a_OBJECTS = $(am_libnishbox_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -155,15 +155,15 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po \
-	$(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po \
-	$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po \
-	./$(DEPDIR)/nb_core.Po ./$(DEPDIR)/nb_draw_common.Po \
-	./$(DEPDIR)/nb_font.Po ./$(DEPDIR)/nb_log.Po \
-	./$(DEPDIR)/nb_math.Po ./$(DEPDIR)/nb_mesh.Po \
-	./$(DEPDIR)/nb_model.Po ./$(DEPDIR)/nb_physics.Po \
-	./$(DEPDIR)/nb_stb_image.Po ./$(DEPDIR)/nb_texture.Po \
-	./$(DEPDIR)/nb_version.Po
+am__depfiles_remade = ./$(DEPDIR)/nb_core.Po \
+	./$(DEPDIR)/nb_draw_common.Po ./$(DEPDIR)/nb_font.Po \
+	./$(DEPDIR)/nb_log.Po ./$(DEPDIR)/nb_math.Po \
+	./$(DEPDIR)/nb_mesh.Po ./$(DEPDIR)/nb_model.Po \
+	./$(DEPDIR)/nb_physics.Po ./$(DEPDIR)/nb_stb_image.Po \
+	./$(DEPDIR)/nb_texture.Po ./$(DEPDIR)/nb_version.Po \
+	@NB_DRIVER@/$(DEPDIR)/nb_driver.Po \
+	@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po \
+	@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -226,6 +226,12 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
+GLU_CFLAGS = @GLU_CFLAGS@
+GLU_LIBS = @GLU_LIBS@
+GL_CFLAGS = @GL_CFLAGS@
+GL_LIBS = @GL_LIBS@
+GL_MORE_CFLAGS = @GL_MORE_CFLAGS@
+GL_MORE_LIBS = @GL_MORE_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -237,7 +243,13 @@ LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NB_BACKEND = @NB_BACKEND@
+NB_CPPFLAGS = @NB_CPPFLAGS@
+NB_DRIVER = @NB_DRIVER@
+NB_LDADD = @NB_LDADD@
 OBJEXT = @OBJEXT@
+ODE_CFLAGS = @ODE_CFLAGS@
+ODE_LIBS = @ODE_LIBS@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -298,9 +310,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
+AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
 lib_LIBRARIES = libnishbox.a
-libnishbox_a_SOURCES = nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c $(NB_DRIVER)/nb_driver.c $(NB_DRIVER)/nb_graphics.c $(NB_DRIVER)/$(NB_BACKEND)/nb_draw.c
+libnishbox_a_SOURCES = nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c @NB_DRIVER@/nb_driver.c @NB_DRIVER@/nb_graphic.c @NB_DRIVER@/@NB_BACKEND@/nb_draw.c
 all: all-am
 
 .SUFFIXES:
@@ -366,25 +378,25 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
-$(NB_DRIVER)/$(am__dirstamp):
-	@$(MKDIR_P) $(NB_DRIVER)
-	@: > $(NB_DRIVER)/$(am__dirstamp)
-$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) $(NB_DRIVER)/$(DEPDIR)
-	@: > $(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
-$(NB_DRIVER)/nb_driver.$(OBJEXT): $(NB_DRIVER)/$(am__dirstamp) \
-	$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
-$(NB_DRIVER)/nb_graphics.$(OBJEXT): $(NB_DRIVER)/$(am__dirstamp) \
-	$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
-$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp):
-	@$(MKDIR_P) $(NB_DRIVER)/$(NB_BACKEND)
-	@: > $(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)
-$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)
-	@: > $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
-$(NB_DRIVER)/$(NB_BACKEND)/nb_draw.$(OBJEXT):  \
-	$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp) \
-	$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
+@NB_DRIVER@/$(am__dirstamp):
+	@$(MKDIR_P) @NB_DRIVER@
+	@: > @NB_DRIVER@/$(am__dirstamp)
+@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) @NB_DRIVER@/$(DEPDIR)
+	@: > @NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
+@NB_DRIVER@/nb_driver.$(OBJEXT): @NB_DRIVER@/$(am__dirstamp) \
+	@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
+@NB_DRIVER@/nb_graphic.$(OBJEXT): @NB_DRIVER@/$(am__dirstamp) \
+	@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
+@NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp):
+	@$(MKDIR_P) @NB_DRIVER@/@NB_BACKEND@
+	@: > @NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp)
+@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) @NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)
+	@: > @NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp)
+@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT):  \
+	@NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp) \
+	@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp)
 
 libnishbox.a: $(libnishbox_a_OBJECTS) $(libnishbox_a_DEPENDENCIES) $(EXTRA_libnishbox_a_DEPENDENCIES) 
 	$(AM_V_at)-rm -f libnishbox.a
@@ -393,15 +405,12 @@ libnishbox.a: $(libnishbox_a_OBJECTS) $(libnishbox_a_DEPENDENCIES) $(EXTRA_libni
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/*.$(OBJEXT)
-	-rm -f $(NB_DRIVER)/*.$(OBJEXT)
+	-rm -f @NB_DRIVER@/*.$(OBJEXT)
+	-rm -f @NB_DRIVER@/@NB_BACKEND@/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(DEPDIR)/nb_driver.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_core.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw_common.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_font.Po@am__quote@ # am--include-marker
@@ -413,6 +422,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_stb_image.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_texture.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_version.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@@NB_DRIVER@/$(DEPDIR)/nb_driver.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -553,10 +565,10 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-test -z "$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
-	-test -z "$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
-	-test -z "$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)
-	-test -z "$(NB_DRIVER)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(am__dirstamp)
+	-rm -f @NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
+	-rm -f @NB_DRIVER@/$(am__dirstamp)
+	-rm -f @NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp)
+	-rm -f @NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -566,10 +578,7 @@ clean: clean-am
 clean-am: clean-generic clean-libLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po
-	-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po
-	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po
-	-rm -f ./$(DEPDIR)/nb_core.Po
+		-rm -f ./$(DEPDIR)/nb_core.Po
 	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
@@ -580,6 +589,9 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/nb_stb_image.Po
 	-rm -f ./$(DEPDIR)/nb_texture.Po
 	-rm -f ./$(DEPDIR)/nb_version.Po
+	-rm -f @NB_DRIVER@/$(DEPDIR)/nb_driver.Po
+	-rm -f @NB_DRIVER@/$(DEPDIR)/nb_graphic.Po
+	-rm -f @NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -625,10 +637,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po
-	-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po
-	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po
-	-rm -f ./$(DEPDIR)/nb_core.Po
+		-rm -f ./$(DEPDIR)/nb_core.Po
 	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
@@ -639,6 +648,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/nb_stb_image.Po
 	-rm -f ./$(DEPDIR)/nb_texture.Po
 	-rm -f ./$(DEPDIR)/nb_version.Po
+	-rm -f @NB_DRIVER@/$(DEPDIR)/nb_driver.Po
+	-rm -f @NB_DRIVER@/$(DEPDIR)/nb_graphic.Po
+	-rm -f @NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

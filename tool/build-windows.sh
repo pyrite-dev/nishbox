@@ -19,7 +19,7 @@ if [ ! -d ode-${ODE_VERSION} ]; then
 fi
 cd ode-${ODE_VERSION}
 if [ ! -f .configured ]; then
-	./configure --host=${ARCH}-w64-mingw32 --prefix=/ --disable-demos --without-drawstuff --enable-shared || exit 1
+	./configure --host=${ARCH}-w64-mingw32 --prefix=$BASE/deps --disable-demos --without-drawstuff --enable-shared || exit 1
 	touch .configured
 fi
 if [ ! -f .made ]; then
@@ -27,11 +27,12 @@ if [ ! -f .made ]; then
 	touch .made
 fi
 if [ ! -f .installed ]; then
-	${MAKE} install DESTDIR=${BASE}/deps
+	${MAKE} install
 	touch .installed
 fi
 cd ..
 
 cd ..
 
-${MAKE} PLATFORM=win${BITS}
+./configure --host=${ARCH}-w64-mingw32 --with-wgl
+${MAKE}
