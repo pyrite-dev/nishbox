@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NB_VERSION "1.0.0"
+#define NB_VERSION PACKAGE_VERSION
 
 void nb_get_version(nb_version_t* version) {
 	char* cpstr = malloc(strlen(NB_VERSION) + 1);
