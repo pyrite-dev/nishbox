@@ -1,1 +1,1 @@
-SUBDIRS = src engine
+SUBDIRS = engine src

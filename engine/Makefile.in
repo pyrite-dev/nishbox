@@ -131,11 +131,14 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libnishbox_a_AR = $(AR) $(ARFLAGS)
 libnishbox_a_LIBADD =
-am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw.$(OBJEXT) \
+am__dirstamp = $(am__leading_dot)dirstamp
+am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
 	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
 	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
-	nb_version.$(OBJEXT)
+	nb_version.$(OBJEXT) $(NB_DRIVER)/nb_driver.$(OBJEXT) \
+	$(NB_DRIVER)/nb_graphics.$(OBJEXT) \
+	$(NB_DRIVER)/$(NB_BACKEND)/nb_draw.$(OBJEXT)
 libnishbox_a_OBJECTS = $(am_libnishbox_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -152,7 +155,10 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/nb_core.Po ./$(DEPDIR)/nb_draw.Po \
+am__depfiles_remade = $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po \
+	$(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po \
+	$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po \
+	./$(DEPDIR)/nb_core.Po ./$(DEPDIR)/nb_draw_common.Po \
 	./$(DEPDIR)/nb_font.Po ./$(DEPDIR)/nb_log.Po \
 	./$(DEPDIR)/nb_math.Po ./$(DEPDIR)/nb_mesh.Po \
 	./$(DEPDIR)/nb_model.Po ./$(DEPDIR)/nb_physics.Po \
@@ -195,7 +201,8 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
+am__DIST_COMMON = $(srcdir)/Makefile.in \
+	$(top_srcdir)/common-automake.mk $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -239,6 +246,9 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -248,6 +258,7 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -287,13 +298,14 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AM_CPPFLAGS = -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
 lib_LIBRARIES = libnishbox.a
-libnishbox_a_SOURCES = nb_core.c nb_draw.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c
+libnishbox_a_SOURCES = nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c $(NB_DRIVER)/nb_driver.c $(NB_DRIVER)/nb_graphics.c $(NB_DRIVER)/$(NB_BACKEND)/nb_draw.c
 all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/common-automake.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -313,6 +325,7 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__maybe_remake_depfiles)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__maybe_remake_depfiles);; \
 	esac;
+$(top_srcdir)/common-automake.mk $(am__empty):
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
@@ -353,6 +366,25 @@ uninstall-libLIBRARIES:
 
 clean-libLIBRARIES:
 	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
+$(NB_DRIVER)/$(am__dirstamp):
+	@$(MKDIR_P) $(NB_DRIVER)
+	@: > $(NB_DRIVER)/$(am__dirstamp)
+$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(NB_DRIVER)/$(DEPDIR)
+	@: > $(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
+$(NB_DRIVER)/nb_driver.$(OBJEXT): $(NB_DRIVER)/$(am__dirstamp) \
+	$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
+$(NB_DRIVER)/nb_graphics.$(OBJEXT): $(NB_DRIVER)/$(am__dirstamp) \
+	$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
+$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp):
+	@$(MKDIR_P) $(NB_DRIVER)/$(NB_BACKEND)
+	@: > $(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)
+$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)
+	@: > $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
+$(NB_DRIVER)/$(NB_BACKEND)/nb_draw.$(OBJEXT):  \
+	$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp) \
+	$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
 
 libnishbox.a: $(libnishbox_a_OBJECTS) $(libnishbox_a_DEPENDENCIES) $(EXTRA_libnishbox_a_DEPENDENCIES) 
 	$(AM_V_at)-rm -f libnishbox.a
@@ -361,12 +393,17 @@ libnishbox.a: $(libnishbox_a_OBJECTS) $(libnishbox_a_DEPENDENCIES) $(EXTRA_libni
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/*.$(OBJEXT)
+	-rm -f $(NB_DRIVER)/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(DEPDIR)/nb_driver.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_core.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw_common.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_font.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_log.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_math.Po@am__quote@ # am--include-marker
@@ -384,15 +421,17 @@ $(am__depfiles_remade):
 am--depfiles: $(am__depfiles_remade)
 
 .c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
@@ -514,6 +553,10 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/$(am__dirstamp)
+	-test -z "$(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(am__dirstamp)
+	-test -z "$(NB_DRIVER)/$(am__dirstamp)" || rm -f $(NB_DRIVER)/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -523,8 +566,11 @@ clean: clean-am
 clean-am: clean-generic clean-libLIBRARIES mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw.Po
+		-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po
+	-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po
+	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po
+	-rm -f ./$(DEPDIR)/nb_core.Po
+	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
@@ -579,8 +625,11 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw.Po
+		-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_driver.Po
+	-rm -f $(NB_DRIVER)/$(DEPDIR)/nb_graphics.Po
+	-rm -f $(NB_DRIVER)/$(NB_BACKEND)/$(DEPDIR)/nb_draw.Po
+	-rm -f ./$(DEPDIR)/nb_core.Po
+	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
