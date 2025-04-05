@@ -12,6 +12,10 @@ my $LDFLAGS	= defined($ENV{LDFLAGS}) ? $ENV{LDFLAGS} : "";
 my $LIBS	= defined($ENV{LIBS}) ? $ENV{LIBS} : "";
 my $NUL		= "> /dev/null 2>&1";
 
+if($CC eq "cl"){
+	$IS_MSVC = 1;
+}
+
 sub path_translate {
 	local($path) = @_;
 	if($IS_MSWIN){
@@ -253,3 +257,6 @@ print("LDFLAGS: $LDFLAGS\n");
 print("   LIBS: $LIBS\n");
 print("--------------------------------\n");
 
+if($type == "make"){
+	print("Creating Makefile\n");
+}
