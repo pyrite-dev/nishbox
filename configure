@@ -6453,7 +6453,7 @@ fi
 ac_fn_c_check_header_compile "$LINENO" "unistd.h" "ac_cv_header_unistd_h" "$ac_includes_default"
 if test "x$ac_cv_header_unistd_h" = xyes
 then :
-  UNISTD_CFLAGS="-DHAVE_UNISTD_H=1"
+  :
 else case e in #(
   e) : ;;
 esac
@@ -6462,7 +6462,7 @@ fi
 ac_fn_c_check_header_compile "$LINENO" "stdarg.h" "ac_cv_header_stdarg_h" "$ac_includes_default"
 if test "x$ac_cv_header_stdarg_h" = xyes
 then :
-  STDARG_CFLAGS="-DHAVE_STDARG_H=1"
+  :
 else case e in #(
   e) : ;;
 esac
@@ -6512,7 +6512,7 @@ esac
 fi
 
 
-NB_CPPFLAGS="$UNISTD_CFLAGS $STDARG_CFLAGS $GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
+NB_CPPFLAGS="$GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
 NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS"
 
 
