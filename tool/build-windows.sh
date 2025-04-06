@@ -34,5 +34,5 @@ cd ..
 
 cd ..
 
-./configure --host=${ARCH}-w64-mingw32 --with-wgl
+./configure --host=${ARCH}-w64-mingw32 --with-backend=wgl
 ${MAKE}

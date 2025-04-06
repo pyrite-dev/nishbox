@@ -1,9 +1,7 @@
 AC_INIT([NishBox], [1.0.0])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 
-AC_ARG_WITH([glx], AS_HELP_STRING([--with-glx], [Build with GLX backend]))
-AC_ARG_WITH([wgl], AS_HELP_STRING([--with-wgl], [Build with WGL backend]))
-AC_ARG_WITH([glfw], AS_HELP_STRING([--with-glfw], [Build with GLFW backend]))
+AC_ARG_WITH([backend], AS_HELP_STRING([--with-backend=glx|wgl|glfw], [Select backend]))
 
 AM_PROG_AR
 AC_PROG_RANLIB
@@ -14,14 +12,14 @@ PKG_PROG_PKG_CONFIG
 NB_DRIVER=OPENGL
 NB_BACKEND=
 
-AS_IF([test "x$with_glx" = "xyes"], [
+AS_IF([test "x$with_backend" = "xglx"], [
 	PKG_CHECK_MODULES([GL_MORE], [x11])
 	PKG_CHECK_MODULES([GL], [gl])
 	PKG_CHECK_MODULES([GLU], [glu])
 	NB_BACKEND=GLX
 ])
 
-AS_IF([test "x$with_wgl" = "xyes"], [
+AS_IF([test "x$with_backend" = "xwgl"], [
 	:
 	GL_MORE_LIBS="-lgdi32"
 	GL_LIBS="-lopengl32"
@@ -29,7 +27,7 @@ AS_IF([test "x$with_wgl" = "xyes"], [
 	NB_BACKEND=WGL
 ])
 
-AS_IF([test "x$with_glfw" = "xyes"], [
+AS_IF([test "x$with_backend" = "xglfw"], [
 	PKG_CHECK_MODULES([GL], [glfw3])
 	PKG_CHECK_MODULES([GLU], [glu])
 	NB_BACKEND=GLFW

@@ -750,9 +750,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 enable_silent_rules
-with_glx
-with_wgl
-with_glfw
+with_backend
 enable_dependency_tracking
 '
       ac_precious_vars='build_alias
@@ -1407,9 +1405,8 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-glx              Build with GLX backend
-  --with-wgl              Build with WGL backend
-  --with-glfw             Build with GLFW backend
+  --with-backend=glx|wgl|glfw
+                          Select backend
 
 Some influential environment variables:
   CC          C compiler command
@@ -3059,24 +3056,10 @@ fi
 
 
 
-# Check whether --with-glx was given.
-if test ${with_glx+y}
+# Check whether --with-backend was given.
+if test ${with_backend+y}
 then :
-  withval=$with_glx;
-fi
-
-
-# Check whether --with-wgl was given.
-if test ${with_wgl+y}
-then :
-  withval=$with_wgl;
-fi
-
-
-# Check whether --with-glfw was given.
-if test ${with_glfw+y}
-then :
-  withval=$with_glfw;
+  withval=$with_backend;
 fi
 
 
@@ -5738,7 +5721,7 @@ fi
 NB_DRIVER=OPENGL
 NB_BACKEND=
 
-if test "x$with_glx" = "xyes"
+if test "x$with_backend" = "xglx"
 then :
 
 
@@ -6018,7 +6001,7 @@ fi
 
 fi
 
-if test "x$with_wgl" = "xyes"
+if test "x$with_backend" = "xwgl"
 then :
 
 	:
@@ -6029,7 +6012,7 @@ then :
 
 fi
 
-if test "x$with_glfw" = "xyes"
+if test "x$with_backend" = "xglfw"
 then :
 
 
