@@ -19,10 +19,27 @@ void draw_frame(ne_draw_t* draw) {
 	int y, x;
 	int i = 0;
 	int s = 8;
+
+	int r = 0, g = 0, b = 0;
+	int max = 5;
+
 	for(y = 0; y < draw->height; y += s) {
 		for(x = 0; x < draw->width; x += s / 2) {
 			str[0] = d[(i++) % strlen(d)];
-			ne_graphic_text(draw, x, y, s, str, (i & 0b100) ? 255 : 0, (i & 0b010) ? 255 : 0, (i & 0b001) ? 255 : 0, 255);
+			ne_graphic_text(draw, x, y, s, str, 255 / max * r, 255 / max * g, 255 / max * b, 255);
+
+			b++;
+			if(b == max + 1){
+				b = 0;
+				g++;
+			}
+			if(g == max + 1){
+				g = 0;
+				r++;
+			}
+			if(r == max + 1){
+				r = 0;
+			}
 		}
 	}
 }
