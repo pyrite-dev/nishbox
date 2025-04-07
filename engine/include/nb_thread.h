@@ -11,4 +11,6 @@
 
 /* Standard */
 
+nb_thread_t* nb_create_thread(void (*func)(void*), void* userdata);
+
 #endif
