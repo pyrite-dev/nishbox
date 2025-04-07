@@ -48,9 +48,22 @@ AC_CHECK_HEADER(stdarg.h,:,:)
 
 AC_CHECK_LIB(stdc++,main,STDCXX_LIBS="-lstdc++",:)
 
-NB_CPPFLAGS="$GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
-NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS"
+AC_CHECK_LIB(kernel32,CreateThread,[
+	NB_THREAD="WIN32"
+],[
+	AC_CHECK_LIB(pthread,pthread_create,[
+		NB_THREAD="POSIX"
+		THREAD_LIBS="-lpthread"
+	],[
+		AS_ECHO("Could not detect thread")
+		AS_EXIT(1)
+	])
+])
 
+NB_CPPFLAGS="$GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
+NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS $THREAD_LIBS"
+
+AC_SUBST(NB_THREAD)
 AC_SUBST(NB_DRIVER)
 AC_SUBST(NB_BACKEND)
 AC_SUBST(NB_CPPFLAGS)
@@ -72,4 +85,5 @@ AC_OUTPUT
 AS_ECHO("----------------------------------")
 AS_ECHO("Driver  : $NB_DRIVER")
 AS_ECHO("Backend : $NB_BACKEND")
+AS_ECHO("Thread  : $NB_THREAD")
 AS_ECHO("----------------------------------")

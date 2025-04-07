@@ -646,6 +646,7 @@ NB_LDADD
 NB_CPPFLAGS
 NB_BACKEND
 NB_DRIVER
+NB_THREAD
 ODE_LIBS
 ODE_CFLAGS
 GLU_LIBS
@@ -6495,8 +6496,121 @@ esac
 fi
 
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for CreateThread in -lkernel32" >&5
+printf %s "checking for CreateThread in -lkernel32... " >&6; }
+if test ${ac_cv_lib_kernel32_CreateThread+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-lkernel32  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.
+   The 'extern "C"' is for builds by C++ compilers;
+   although this is not generally supported in C code supporting it here
+   has little cost and some practical benefit (sr 110532).  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char CreateThread (void);
+int
+main (void)
+{
+return CreateThread ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_kernel32_CreateThread=yes
+else case e in #(
+  e) ac_cv_lib_kernel32_CreateThread=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_kernel32_CreateThread" >&5
+printf "%s\n" "$ac_cv_lib_kernel32_CreateThread" >&6; }
+if test "x$ac_cv_lib_kernel32_CreateThread" = xyes
+then :
+
+	NB_THREAD="WIN32"
+
+else case e in #(
+  e)
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lpthread" >&5
+printf %s "checking for pthread_create in -lpthread... " >&6; }
+if test ${ac_cv_lib_pthread_pthread_create+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.
+   The 'extern "C"' is for builds by C++ compilers;
+   although this is not generally supported in C code supporting it here
+   has little cost and some practical benefit (sr 110532).  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_create (void);
+int
+main (void)
+{
+return pthread_create ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_pthread_pthread_create=yes
+else case e in #(
+  e) ac_cv_lib_pthread_pthread_create=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_pthread_create" >&5
+printf "%s\n" "$ac_cv_lib_pthread_pthread_create" >&6; }
+if test "x$ac_cv_lib_pthread_pthread_create" = xyes
+then :
+
+		NB_THREAD="POSIX"
+		THREAD_LIBS="-lpthread"
+
+else case e in #(
+  e)
+		printf "%s\n" "Could not detect thread"
+		as_fn_exit 1
+	 ;;
+esac
+fi
+
+ ;;
+esac
+fi
+
+
 NB_CPPFLAGS="$GL_MORE_CFLAGS $GL_CFLAGS $GLU_CFLAGS $ODE_CFLAGS"
-NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS"
+NB_LDADD="$STDCXX_LIBS $GL_MORE_LIBS $SOCKET_LIBS $GL_LIBS $GLU_LIBS $ODE_LIBS $THREAD_LIBS"
+
 
 
 
@@ -7823,5 +7937,6 @@ fi
 printf "%s\n" "----------------------------------"
 printf "%s\n" "Driver  : $NB_DRIVER"
 printf "%s\n" "Backend : $NB_BACKEND"
+printf "%s\n" "Thread  : $NB_THREAD"
 printf "%s\n" "----------------------------------"
 
