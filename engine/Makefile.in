@@ -132,15 +132,7 @@ am__v_AR_1 =
 libnishbox_a_AR = $(AR) $(ARFLAGS)
 libnishbox_a_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
-	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
-	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
-	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
-	nb_version.$(OBJEXT) graphic/@NB_DRIVER@/nb_driver.$(OBJEXT) \
-	graphic/@NB_DRIVER@/nb_graphic.$(OBJEXT) \
-	graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT) \
-	thread/@NB_THREAD@/nb_thread.$(OBJEXT) \
-	../external/lua/lapi.$(OBJEXT) \
+am__objects_1 = ../external/lua/lapi.$(OBJEXT) \
 	../external/lua/lauxlib.$(OBJEXT) \
 	../external/lua/lbaselib.$(OBJEXT) \
 	../external/lua/lcode.$(OBJEXT) \
@@ -166,12 +158,11 @@ am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	../external/lua/ltable.$(OBJEXT) \
 	../external/lua/ltablib.$(OBJEXT) \
 	../external/lua/ltests.$(OBJEXT) ../external/lua/ltm.$(OBJEXT) \
-	../external/lua/lua.$(OBJEXT) \
 	../external/lua/lundump.$(OBJEXT) \
 	../external/lua/lutf8lib.$(OBJEXT) \
 	../external/lua/lvm.$(OBJEXT) ../external/lua/lzio.$(OBJEXT) \
-	../external/lua/onelua.$(OBJEXT) \
-	../external/zlib/adler32.$(OBJEXT) \
+	../external/lua/onelua.$(OBJEXT)
+am__objects_2 = ../external/zlib/adler32.$(OBJEXT) \
 	../external/zlib/compress.$(OBJEXT) \
 	../external/zlib/crc32.$(OBJEXT) \
 	../external/zlib/deflate.$(OBJEXT) \
@@ -186,6 +177,15 @@ am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	../external/zlib/trees.$(OBJEXT) \
 	../external/zlib/uncompr.$(OBJEXT) \
 	../external/zlib/zutil.$(OBJEXT)
+am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
+	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
+	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
+	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
+	nb_version.$(OBJEXT) graphic/@NB_DRIVER@/nb_driver.$(OBJEXT) \
+	graphic/@NB_DRIVER@/nb_graphic.$(OBJEXT) \
+	graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT) \
+	thread/@NB_THREAD@/nb_thread.$(OBJEXT) $(am__objects_1) \
+	$(am__objects_2)
 libnishbox_a_OBJECTS = $(am_libnishbox_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -231,7 +231,6 @@ am__depfiles_remade = ../external/lua/$(DEPDIR)/lapi.Po \
 	../external/lua/$(DEPDIR)/ltablib.Po \
 	../external/lua/$(DEPDIR)/ltests.Po \
 	../external/lua/$(DEPDIR)/ltm.Po \
-	../external/lua/$(DEPDIR)/lua.Po \
 	../external/lua/$(DEPDIR)/lundump.Po \
 	../external/lua/$(DEPDIR)/lutf8lib.Po \
 	../external/lua/$(DEPDIR)/lvm.Po \
@@ -413,11 +412,16 @@ AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_TH
 lib_LIBRARIES = libnishbox.a
 libnishbox_a_SOURCES = \
 		       nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c \
-		       graphic/@NB_DRIVER@/nb_driver.c graphic/@NB_DRIVER@/nb_graphic.c graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
+		       graphic/@NB_DRIVER@/nb_driver.c graphic/@NB_DRIVER@/nb_graphic.c \
+		       graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
 		       thread/@NB_THREAD@/nb_thread.c \
-		       ../external/lua/lapi.c ../external/lua/lauxlib.c ../external/lua/lbaselib.c ../external/lua/lcode.c ../external/lua/lcorolib.c ../external/lua/lctype.c ../external/lua/ldblib.c ../external/lua/ldebug.c ../external/lua/ldo.c ../external/lua/ldump.c ../external/lua/lfunc.c ../external/lua/lgc.c ../external/lua/linit.c ../external/lua/liolib.c ../external/lua/llex.c ../external/lua/lmathlib.c ../external/lua/lmem.c ../external/lua/loadlib.c ../external/lua/lobject.c ../external/lua/lopcodes.c ../external/lua/loslib.c ../external/lua/lparser.c ../external/lua/lstate.c ../external/lua/lstring.c ../external/lua/lstrlib.c ../external/lua/ltable.c ../external/lua/ltablib.c ../external/lua/ltests.c ../external/lua/ltm.c ../external/lua/lua.c ../external/lua/lundump.c ../external/lua/lutf8lib.c ../external/lua/lvm.c ../external/lua/lzio.c ../external/lua/onelua.c \
-		       ../external/zlib/adler32.c ../external/zlib/compress.c ../external/zlib/crc32.c ../external/zlib/deflate.c ../external/zlib/gzclose.c ../external/zlib/gzlib.c ../external/zlib/gzread.c ../external/zlib/gzwrite.c ../external/zlib/infback.c ../external/zlib/inffast.c ../external/zlib/inflate.c ../external/zlib/inftrees.c ../external/zlib/trees.c ../external/zlib/uncompr.c ../external/zlib/zutil.c 
+		       $(LUASRC) $(ZLIBSRC)
 
+#AUTOGEN
+# DO NOT EDIT BELOW THIS COMMENT!!!
+# They are auto-generated
+LUASRC = ../external/lua/lapi.c ../external/lua/lauxlib.c ../external/lua/lbaselib.c ../external/lua/lcode.c ../external/lua/lcorolib.c ../external/lua/lctype.c ../external/lua/ldblib.c ../external/lua/ldebug.c ../external/lua/ldo.c ../external/lua/ldump.c ../external/lua/lfunc.c ../external/lua/lgc.c ../external/lua/linit.c ../external/lua/liolib.c ../external/lua/llex.c ../external/lua/lmathlib.c ../external/lua/lmem.c ../external/lua/loadlib.c ../external/lua/lobject.c ../external/lua/lopcodes.c ../external/lua/loslib.c ../external/lua/lparser.c ../external/lua/lstate.c ../external/lua/lstring.c ../external/lua/lstrlib.c ../external/lua/ltable.c ../external/lua/ltablib.c ../external/lua/ltests.c ../external/lua/ltm.c ../external/lua/lundump.c ../external/lua/lutf8lib.c ../external/lua/lvm.c ../external/lua/lzio.c ../external/lua/onelua.c
+ZLIBSRC = ../external/zlib/adler32.c ../external/zlib/compress.c ../external/zlib/crc32.c ../external/zlib/deflate.c ../external/zlib/gzclose.c ../external/zlib/gzlib.c ../external/zlib/gzread.c ../external/zlib/gzwrite.c ../external/zlib/infback.c ../external/zlib/inffast.c ../external/zlib/inflate.c ../external/zlib/inftrees.c ../external/zlib/trees.c ../external/zlib/uncompr.c ../external/zlib/zutil.c
 all: all-am
 
 .SUFFIXES:
@@ -577,8 +581,6 @@ thread/@NB_THREAD@/nb_thread.$(OBJEXT):  \
 	../external/lua/$(DEPDIR)/$(am__dirstamp)
 ../external/lua/ltm.$(OBJEXT): ../external/lua/$(am__dirstamp) \
 	../external/lua/$(DEPDIR)/$(am__dirstamp)
-../external/lua/lua.$(OBJEXT): ../external/lua/$(am__dirstamp) \
-	../external/lua/$(DEPDIR)/$(am__dirstamp)
 ../external/lua/lundump.$(OBJEXT): ../external/lua/$(am__dirstamp) \
 	../external/lua/$(DEPDIR)/$(am__dirstamp)
 ../external/lua/lutf8lib.$(OBJEXT): ../external/lua/$(am__dirstamp) \
@@ -671,7 +673,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/ltablib.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/ltests.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/ltm.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/lua.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/lundump.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/lutf8lib.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/lua/$(DEPDIR)/lvm.Po@am__quote@ # am--include-marker
@@ -895,7 +896,6 @@ distclean: distclean-am
 	-rm -f ../external/lua/$(DEPDIR)/ltablib.Po
 	-rm -f ../external/lua/$(DEPDIR)/ltests.Po
 	-rm -f ../external/lua/$(DEPDIR)/ltm.Po
-	-rm -f ../external/lua/$(DEPDIR)/lua.Po
 	-rm -f ../external/lua/$(DEPDIR)/lundump.Po
 	-rm -f ../external/lua/$(DEPDIR)/lutf8lib.Po
 	-rm -f ../external/lua/$(DEPDIR)/lvm.Po
@@ -1005,7 +1005,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ../external/lua/$(DEPDIR)/ltablib.Po
 	-rm -f ../external/lua/$(DEPDIR)/ltests.Po
 	-rm -f ../external/lua/$(DEPDIR)/ltm.Po
-	-rm -f ../external/lua/$(DEPDIR)/lua.Po
 	-rm -f ../external/lua/$(DEPDIR)/lundump.Po
 	-rm -f ../external/lua/$(DEPDIR)/lutf8lib.Po
 	-rm -f ../external/lua/$(DEPDIR)/lvm.Po
