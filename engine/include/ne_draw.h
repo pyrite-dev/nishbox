@@ -17,6 +17,7 @@ void	   ne_draw_frame(ne_draw_t* draw);
 int	   ne_draw_step(ne_draw_t* draw);
 void	   ne_draw_begin(void);
 void	   ne_draw_end(void);
+void	   ne_draw_set_draw(ne_draw_t* engine, void (*func)(ne_draw_t*));
 void	   ne_draw_reshape(ne_draw_t* draw);
 
 #endif

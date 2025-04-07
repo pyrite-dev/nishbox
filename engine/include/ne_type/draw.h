@@ -15,6 +15,8 @@
 
 /* Standard */
 
+NE_DECLARE_TYPE(draw, );
+
 NE_DECLARE_TYPE(draw, {
 	ne_draw_platform_t* platform;
 	ne_draw_driver_t*   driver;
@@ -28,6 +30,7 @@ NE_DECLARE_TYPE(draw, {
 	ne_vector_t	    light;
 	ne_vector_t	    lookat;
 	ne_vector_t	    camera;
+	void (*draw)(ne_draw_t*);
 });
 #else
 typedef void ne_draw_t;

@@ -57,10 +57,10 @@ void ne_draw_reshape(ne_draw_t* draw) { ne_draw_driver_reshape(draw); }
 
 /* Runs every frame */
 void ne_draw_frame(ne_draw_t* draw) {
-	ne_graphic_text(draw, 0, 0, 32, "test text", 255, 0, 0, 128);
-	ne_graphic_text(draw, 8, 8, 32, "test text", 0, 255, 0, 128);
-	ne_graphic_text(draw, 16, 16, 32, "test text", 0, 0, 255, 128);
+	if(draw->draw != NULL) draw->draw(draw);
 }
+
+void ne_draw_set_draw(ne_draw_t* draw, void (*func)(ne_draw_t*)) { draw->draw = func; }
 
 int ne_draw_step(ne_draw_t* draw) {
 	int ret = ne_draw_platform_step(draw);

@@ -63,6 +63,8 @@ ne_engine_t* ne_engine_create(int nogui) {
 	return engine;
 }
 
+void ne_engine_set_draw(ne_engine_t* engine, void (*func)(ne_draw_t*)) { ne_draw_set_draw(engine->draw, func); }
+
 /**
  * Writing this so I don't forget
  *
