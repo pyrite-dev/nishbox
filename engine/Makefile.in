@@ -177,15 +177,15 @@ am__objects_2 = ../external/zlib/adler32.$(OBJEXT) \
 	../external/zlib/trees.$(OBJEXT) \
 	../external/zlib/uncompr.$(OBJEXT) \
 	../external/zlib/zutil.$(OBJEXT)
-am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
-	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
-	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
-	nb_stb_image.$(OBJEXT) nb_miniaudio.$(OBJEXT) \
-	nb_texture.$(OBJEXT) nb_version.$(OBJEXT) \
-	graphic/@NB_DRIVER@/nb_driver.$(OBJEXT) \
-	graphic/@NB_DRIVER@/nb_graphic.$(OBJEXT) \
-	graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT) \
-	thread/@NB_THREAD@/nb_thread.$(OBJEXT) $(am__objects_1) \
+am_libnishbox_a_OBJECTS = ne_core.$(OBJEXT) ne_draw_common.$(OBJEXT) \
+	ne_font.$(OBJEXT) ne_log.$(OBJEXT) ne_math.$(OBJEXT) \
+	ne_mesh.$(OBJEXT) ne_model.$(OBJEXT) ne_physics.$(OBJEXT) \
+	ne_stb_image.$(OBJEXT) ne_miniaudio.$(OBJEXT) \
+	ne_texture.$(OBJEXT) ne_version.$(OBJEXT) \
+	graphic/@NB_DRIVER@/ne_driver.$(OBJEXT) \
+	graphic/@NB_DRIVER@/ne_graphic.$(OBJEXT) \
+	graphic/@NB_DRIVER@/@NB_BACKEND@/ne_draw.$(OBJEXT) \
+	thread/@NB_THREAD@/ne_thread.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_2)
 libnishbox_a_OBJECTS = $(am_libnishbox_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -251,17 +251,17 @@ am__depfiles_remade = ../external/lua/$(DEPDIR)/lapi.Po \
 	../external/zlib/$(DEPDIR)/inftrees.Po \
 	../external/zlib/$(DEPDIR)/trees.Po \
 	../external/zlib/$(DEPDIR)/uncompr.Po \
-	../external/zlib/$(DEPDIR)/zutil.Po ./$(DEPDIR)/nb_core.Po \
-	./$(DEPDIR)/nb_draw_common.Po ./$(DEPDIR)/nb_font.Po \
-	./$(DEPDIR)/nb_log.Po ./$(DEPDIR)/nb_math.Po \
-	./$(DEPDIR)/nb_mesh.Po ./$(DEPDIR)/nb_miniaudio.Po \
-	./$(DEPDIR)/nb_model.Po ./$(DEPDIR)/nb_physics.Po \
-	./$(DEPDIR)/nb_stb_image.Po ./$(DEPDIR)/nb_texture.Po \
-	./$(DEPDIR)/nb_version.Po \
-	graphic/@NB_DRIVER@/$(DEPDIR)/nb_driver.Po \
-	graphic/@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po \
-	graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po \
-	thread/@NB_THREAD@/$(DEPDIR)/nb_thread.Po
+	../external/zlib/$(DEPDIR)/zutil.Po ./$(DEPDIR)/ne_core.Po \
+	./$(DEPDIR)/ne_draw_common.Po ./$(DEPDIR)/ne_font.Po \
+	./$(DEPDIR)/ne_log.Po ./$(DEPDIR)/ne_math.Po \
+	./$(DEPDIR)/ne_mesh.Po ./$(DEPDIR)/ne_miniaudio.Po \
+	./$(DEPDIR)/ne_model.Po ./$(DEPDIR)/ne_physics.Po \
+	./$(DEPDIR)/ne_stb_image.Po ./$(DEPDIR)/ne_texture.Po \
+	./$(DEPDIR)/ne_version.Po \
+	graphic/@NB_DRIVER@/$(DEPDIR)/ne_driver.Po \
+	graphic/@NB_DRIVER@/$(DEPDIR)/ne_graphic.Po \
+	graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/ne_draw.Po \
+	thread/@NB_THREAD@/$(DEPDIR)/ne_thread.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -413,10 +413,10 @@ top_srcdir = @top_srcdir@
 AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/external/miniaudio -I$(top_srcdir)/deps/include
 lib_LIBRARIES = libnishbox.a
 libnishbox_a_SOURCES = \
-		       nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_miniaudio.c nb_texture.c nb_version.c \
-		       graphic/@NB_DRIVER@/nb_driver.c graphic/@NB_DRIVER@/nb_graphic.c \
-		       graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
-		       thread/@NB_THREAD@/nb_thread.c \
+		       ne_core.c ne_draw_common.c ne_font.c ne_log.c ne_math.c ne_mesh.c ne_model.c ne_physics.c ne_stb_image.c ne_miniaudio.c ne_texture.c ne_version.c \
+		       graphic/@NB_DRIVER@/ne_driver.c graphic/@NB_DRIVER@/ne_graphic.c \
+		       graphic/@NB_DRIVER@/@NB_BACKEND@/ne_draw.c \
+		       thread/@NB_THREAD@/ne_thread.c \
 		       $(LUASRC) $(ZLIBSRC)
 
 #AUTOGEN
@@ -495,10 +495,10 @@ graphic/@NB_DRIVER@/$(am__dirstamp):
 graphic/@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) graphic/@NB_DRIVER@/$(DEPDIR)
 	@: > graphic/@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
-graphic/@NB_DRIVER@/nb_driver.$(OBJEXT):  \
+graphic/@NB_DRIVER@/ne_driver.$(OBJEXT):  \
 	graphic/@NB_DRIVER@/$(am__dirstamp) \
 	graphic/@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
-graphic/@NB_DRIVER@/nb_graphic.$(OBJEXT):  \
+graphic/@NB_DRIVER@/ne_graphic.$(OBJEXT):  \
 	graphic/@NB_DRIVER@/$(am__dirstamp) \
 	graphic/@NB_DRIVER@/$(DEPDIR)/$(am__dirstamp)
 graphic/@NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp):
@@ -507,7 +507,7 @@ graphic/@NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp):
 graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)
 	@: > graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp)
-graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT):  \
+graphic/@NB_DRIVER@/@NB_BACKEND@/ne_draw.$(OBJEXT):  \
 	graphic/@NB_DRIVER@/@NB_BACKEND@/$(am__dirstamp) \
 	graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/$(am__dirstamp)
 thread/@NB_THREAD@/$(am__dirstamp):
@@ -516,7 +516,7 @@ thread/@NB_THREAD@/$(am__dirstamp):
 thread/@NB_THREAD@/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) thread/@NB_THREAD@/$(DEPDIR)
 	@: > thread/@NB_THREAD@/$(DEPDIR)/$(am__dirstamp)
-thread/@NB_THREAD@/nb_thread.$(OBJEXT):  \
+thread/@NB_THREAD@/ne_thread.$(OBJEXT):  \
 	thread/@NB_THREAD@/$(am__dirstamp) \
 	thread/@NB_THREAD@/$(DEPDIR)/$(am__dirstamp)
 ../external/lua/$(am__dirstamp):
@@ -695,22 +695,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../external/zlib/$(DEPDIR)/trees.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/zlib/$(DEPDIR)/uncompr.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/zlib/$(DEPDIR)/zutil.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_core.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw_common.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_font.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_log.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_math.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_mesh.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_miniaudio.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_model.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_physics.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_stb_image.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_texture.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_version.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/$(DEPDIR)/nb_driver.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@thread/@NB_THREAD@/$(DEPDIR)/nb_thread.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_core.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_draw_common.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_font.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_log.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_math.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_mesh.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_miniaudio.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_model.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_physics.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_stb_image.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_texture.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ne_version.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/$(DEPDIR)/ne_driver.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/$(DEPDIR)/ne_graphic.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/ne_draw.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@thread/@NB_THREAD@/$(DEPDIR)/ne_thread.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -919,22 +919,22 @@ distclean: distclean-am
 	-rm -f ../external/zlib/$(DEPDIR)/trees.Po
 	-rm -f ../external/zlib/$(DEPDIR)/uncompr.Po
 	-rm -f ../external/zlib/$(DEPDIR)/zutil.Po
-	-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw_common.Po
-	-rm -f ./$(DEPDIR)/nb_font.Po
-	-rm -f ./$(DEPDIR)/nb_log.Po
-	-rm -f ./$(DEPDIR)/nb_math.Po
-	-rm -f ./$(DEPDIR)/nb_mesh.Po
-	-rm -f ./$(DEPDIR)/nb_miniaudio.Po
-	-rm -f ./$(DEPDIR)/nb_model.Po
-	-rm -f ./$(DEPDIR)/nb_physics.Po
-	-rm -f ./$(DEPDIR)/nb_stb_image.Po
-	-rm -f ./$(DEPDIR)/nb_texture.Po
-	-rm -f ./$(DEPDIR)/nb_version.Po
-	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/nb_driver.Po
-	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po
-	-rm -f graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po
-	-rm -f thread/@NB_THREAD@/$(DEPDIR)/nb_thread.Po
+	-rm -f ./$(DEPDIR)/ne_core.Po
+	-rm -f ./$(DEPDIR)/ne_draw_common.Po
+	-rm -f ./$(DEPDIR)/ne_font.Po
+	-rm -f ./$(DEPDIR)/ne_log.Po
+	-rm -f ./$(DEPDIR)/ne_math.Po
+	-rm -f ./$(DEPDIR)/ne_mesh.Po
+	-rm -f ./$(DEPDIR)/ne_miniaudio.Po
+	-rm -f ./$(DEPDIR)/ne_model.Po
+	-rm -f ./$(DEPDIR)/ne_physics.Po
+	-rm -f ./$(DEPDIR)/ne_stb_image.Po
+	-rm -f ./$(DEPDIR)/ne_texture.Po
+	-rm -f ./$(DEPDIR)/ne_version.Po
+	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/ne_driver.Po
+	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/ne_graphic.Po
+	-rm -f graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/ne_draw.Po
+	-rm -f thread/@NB_THREAD@/$(DEPDIR)/ne_thread.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1029,22 +1029,22 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ../external/zlib/$(DEPDIR)/trees.Po
 	-rm -f ../external/zlib/$(DEPDIR)/uncompr.Po
 	-rm -f ../external/zlib/$(DEPDIR)/zutil.Po
-	-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw_common.Po
-	-rm -f ./$(DEPDIR)/nb_font.Po
-	-rm -f ./$(DEPDIR)/nb_log.Po
-	-rm -f ./$(DEPDIR)/nb_math.Po
-	-rm -f ./$(DEPDIR)/nb_mesh.Po
-	-rm -f ./$(DEPDIR)/nb_miniaudio.Po
-	-rm -f ./$(DEPDIR)/nb_model.Po
-	-rm -f ./$(DEPDIR)/nb_physics.Po
-	-rm -f ./$(DEPDIR)/nb_stb_image.Po
-	-rm -f ./$(DEPDIR)/nb_texture.Po
-	-rm -f ./$(DEPDIR)/nb_version.Po
-	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/nb_driver.Po
-	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po
-	-rm -f graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po
-	-rm -f thread/@NB_THREAD@/$(DEPDIR)/nb_thread.Po
+	-rm -f ./$(DEPDIR)/ne_core.Po
+	-rm -f ./$(DEPDIR)/ne_draw_common.Po
+	-rm -f ./$(DEPDIR)/ne_font.Po
+	-rm -f ./$(DEPDIR)/ne_log.Po
+	-rm -f ./$(DEPDIR)/ne_math.Po
+	-rm -f ./$(DEPDIR)/ne_mesh.Po
+	-rm -f ./$(DEPDIR)/ne_miniaudio.Po
+	-rm -f ./$(DEPDIR)/ne_model.Po
+	-rm -f ./$(DEPDIR)/ne_physics.Po
+	-rm -f ./$(DEPDIR)/ne_stb_image.Po
+	-rm -f ./$(DEPDIR)/ne_texture.Po
+	-rm -f ./$(DEPDIR)/ne_version.Po
+	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/ne_driver.Po
+	-rm -f graphic/@NB_DRIVER@/$(DEPDIR)/ne_graphic.Po
+	-rm -f graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/ne_draw.Po
+	-rm -f thread/@NB_THREAD@/$(DEPDIR)/ne_thread.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
