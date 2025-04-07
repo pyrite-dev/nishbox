@@ -87,6 +87,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = nishbox$(EXEEXT)
+@WINDOWS_TRUE@am__append_1 = nishbox.rc
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -98,7 +99,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_nishbox_OBJECTS = main.$(OBJEXT)
+am__nishbox_SOURCES_DIST = main.c nishbox.rc
+@WINDOWS_TRUE@am__objects_1 = nishbox.$(OBJEXT)
+am_nishbox_OBJECTS = main.$(OBJEXT) $(am__objects_1)
 nishbox_OBJECTS = $(am_nishbox_OBJECTS)
 nishbox_DEPENDENCIES = ../engine/libnishbox.a
 AM_V_P = $(am__v_P_@AM_V@)
@@ -131,7 +134,7 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(nishbox_SOURCES)
-DIST_SOURCES = $(nishbox_SOURCES)
+DIST_SOURCES = $(am__nishbox_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -221,6 +224,7 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+WINDRES = @WINDRES@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -266,12 +270,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/external/miniaudio -I$(top_srcdir)/deps/include
-nishbox_SOURCES = main.c
+nishbox_SOURCES = main.c $(am__append_1)
 nishbox_LDADD = ../engine/libnishbox.a @NB_LDADD@
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
+.SUFFIXES: .c .o .obj .rc
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/common-automake.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -587,6 +591,10 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
+@WINDOWS_TRUE@.rc.o:
+@WINDOWS_TRUE@	$(WINDRES) $^ -o $@
+@WINDOWS_TRUE@%.o: %.rc
+@WINDOWS_TRUE@	$(WINDRES) $^ -o $@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

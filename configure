@@ -647,6 +647,8 @@ NB_CPPFLAGS
 NB_BACKEND
 NB_DRIVER
 NB_THREAD
+WINDOWS_FALSE
+WINDOWS_TRUE
 ODE_LIBS
 ODE_CFLAGS
 GLU_LIBS
@@ -658,6 +660,7 @@ GL_MORE_CFLAGS
 PKG_CONFIG_LIBDIR
 PKG_CONFIG_PATH
 PKG_CONFIG
+WINDRES
 RANLIB
 am__fastdepCC_FALSE
 am__fastdepCC_TRUE
@@ -5582,6 +5585,110 @@ else
 fi
 
 
+if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}windres", so it can be a program name with args.
+set dummy ${ac_tool_prefix}windres; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_WINDRES+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) if test -n "$WINDRES"; then
+  ac_cv_prog_WINDRES="$WINDRES" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_WINDRES="${ac_tool_prefix}windres"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi ;;
+esac
+fi
+WINDRES=$ac_cv_prog_WINDRES
+if test -n "$WINDRES"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $WINDRES" >&5
+printf "%s\n" "$WINDRES" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_prog_WINDRES"; then
+  ac_ct_WINDRES=$WINDRES
+  # Extract the first word of "windres", so it can be a program name with args.
+set dummy windres; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_ac_ct_WINDRES+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) if test -n "$ac_ct_WINDRES"; then
+  ac_cv_prog_ac_ct_WINDRES="$ac_ct_WINDRES" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_WINDRES="windres"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi ;;
+esac
+fi
+ac_ct_WINDRES=$ac_cv_prog_ac_ct_WINDRES
+if test -n "$ac_ct_WINDRES"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_ct_WINDRES" >&5
+printf "%s\n" "$ac_ct_WINDRES" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+  if test "x$ac_ct_WINDRES" = x; then
+    WINDRES=":"
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+printf "%s\n" "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    WINDRES=$ac_ct_WINDRES
+  fi
+else
+  WINDRES="$ac_cv_prog_WINDRES"
+fi
+
 
 
 
@@ -6438,9 +6545,28 @@ fi
 printf "%s\n" "$ac_cv_lib_ws2_32_socket" >&6; }
 if test "x$ac_cv_lib_ws2_32_socket" = xyes
 then :
-  SOCKET_LIBS="-lws2_32"
+
+	SOCKET_LIBS="-lws2_32"
+	 if true; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
+
+
 else case e in #(
-  e) : ;;
+  e)
+	 if false; then
+  WINDOWS_TRUE=
+  WINDOWS_FALSE='#'
+else
+  WINDOWS_TRUE='#'
+  WINDOWS_FALSE=
+fi
+
+ ;;
 esac
 fi
 
@@ -6897,6 +7023,14 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WINDOWS_TRUE}" && test -z "${WINDOWS_FALSE}"; then
+  as_fn_error $? "conditional \"WINDOWS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

@@ -6,6 +6,7 @@ AC_ARG_WITH([backend], AS_HELP_STRING([--with-backend=glx|wgl|glfw], [Select bac
 AM_PROG_AR
 AC_PROG_RANLIB
 AC_PROG_CC
+AC_CHECK_TOOL(WINDRES,windres,:)
 
 PKG_PROG_PKG_CONFIG
 
@@ -45,7 +46,12 @@ AC_CHECK_HEADER(stdarg.h,:,:)
 
 AC_CHECK_LIB(stdc++,main,STDCXX_LIBS="-lstdc++",:)
 
-AC_CHECK_LIB(ws2_32,socket,SOCKET_LIBS="-lws2_32",:)
+AC_CHECK_LIB(ws2_32,socket,[
+	SOCKET_LIBS="-lws2_32"
+	AM_CONDITIONAL(WINDOWS, true)
+],[
+	AM_CONDITIONAL(WINDOWS, false)
+])
 AC_CHECK_LIB(socket,socket,SOCKET_LIBS="-lsocket",:)
 
 AC_CHECK_LIB(dl,dlopen,DL_LIBS="-ldl",:)
