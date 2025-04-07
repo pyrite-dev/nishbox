@@ -124,6 +124,7 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 	XMapWindow(draw->platform->display, draw->platform->window);
 	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
 
+#ifdef DO_SWAP_INTERVAL
 	if(ne_draw_platform_has_extension(draw, "GLX_EXT_swap_control")) {
 		unsigned int		  tmp  = -1;
 		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
@@ -147,6 +148,7 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 	if(interval > 0) {
 		ne_function_log("Enabled VSync", "");
 	}
+#endif
 }
 
 int ne_draw_platform_step(ne_draw_t* draw) {

@@ -170,11 +170,13 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 	}
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
+#ifdef DO_SWAP_INTERVAL
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	if(wglSwapIntervalEXT != NULL) {
 		ne_function_log("Enabled VSync", "");
 		wglSwapIntervalEXT(1);
 	}
+#endif
 
 	SetRect(&rect, 0, 0, draw->width, draw->height);
 	style = (DWORD)GetWindowLongPtr(draw->platform->window, GWL_STYLE);

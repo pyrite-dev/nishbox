@@ -30,6 +30,14 @@ void ne_draw_platform_begin(void) {
 
 void ne_draw_platform_end(void) {}
 
+void ne_glfw_size(GLFWwindow* window, int w, int h) {
+	ne_draw_t* draw = (ne_draw_t*)glfwGetWindowUserPointer(window);
+	draw->width	= w;
+	draw->height	= h;
+	glfwSetWindowSize(window, w, h);
+	ne_draw_reshape(draw);
+}
+
 int ne_draw_platform_has_extension(ne_draw_t* draw, const char* query) {
 	const char* ext = NULL;
 	const char* ptr;
@@ -42,6 +50,7 @@ int ne_draw_platform_has_extension(ne_draw_t* draw, const char* query) {
 
 int ne_draw_platform_step(ne_draw_t* draw) {
 	int ret = 0;
+	int w, h;
 	glfwMakeContextCurrent(draw->platform->window);
 	draw->close = glfwWindowShouldClose(draw->platform->window);
 	if(draw->close) glfwSetWindowShouldClose(draw->platform->window, GLFW_FALSE);
@@ -67,8 +76,13 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 		return;
 	}
 
+	glfwSetWindowUserPointer(draw->platform->window, draw);
+	glfwSetWindowSizeCallback(draw->platform->window, ne_glfw_size);
+
 	glfwMakeContextCurrent(draw->platform->window);
+#ifdef DO_SWAP_INTERVAL
 	glfwSwapInterval(1);
+#endif
 }
 
 void ne_draw_platform_destroy(ne_draw_t* draw) {

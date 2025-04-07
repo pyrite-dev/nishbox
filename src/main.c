@@ -1,3 +1,5 @@
+#define NE_EXPOSE_DRAW
+
 /* NishBox */
 #include <ne_core.h>
 #include <ne_graphic.h>
@@ -6,10 +8,23 @@
 
 /* Standard */
 #include <stdio.h>
+#include <string.h>
 
 ne_engine_t* engine;
 
 void draw_frame(ne_draw_t* draw) {
+	char d[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char str[2];
+	str[1] = 0;
+	int y, x;
+	int i = 0;
+	int s = 8;
+	for(y = 0; y < draw->height; y += s) {
+		for(x = 0; x < draw->width; x += s / 2) {
+			str[0] = d[(i++) % strlen(d)];
+			ne_graphic_text(draw, x, y, s, str, (i & 0b100) ? 255 : 0, (i & 0b010) ? 255 : 0, (i & 0b001) ? 255 : 0, 255);
+		}
+	}
 }
 
 int main(int argc, char** argv) {
