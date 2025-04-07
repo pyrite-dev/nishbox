@@ -29,6 +29,7 @@ void nb_engine_begin(void) {
 	nb_function_log("NishBox engine %s", ver.full);
 	nb_function_log("Lua %s", ver.lua);
 	nb_function_log("zlib %s", ver.zlib);
+	nb_function_log("Thread model: %s", ver.thread);
 	nb_function_log("OpenGL backend: %s", ver.opengl);
 #ifdef _WIN32
 	WSAStartup(MAKEWORD(1, 1), &wsa);

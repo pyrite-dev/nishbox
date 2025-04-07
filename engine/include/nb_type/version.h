@@ -19,6 +19,7 @@ NB_DECLARE_TYPE(version, {
 	char opengl[32];
 	char lua[32];
 	char zlib[32];
+	char thread[32];
 });
 #else
 #error "should not happen!"

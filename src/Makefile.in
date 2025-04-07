@@ -201,6 +201,7 @@ NB_BACKEND = @NB_BACKEND@
 NB_CPPFLAGS = @NB_CPPFLAGS@
 NB_DRIVER = @NB_DRIVER@
 NB_LDADD = @NB_LDADD@
+NB_THREAD = @NB_THREAD@
 OBJEXT = @OBJEXT@
 ODE_CFLAGS = @ODE_CFLAGS@
 ODE_LIBS = @ODE_LIBS@
@@ -264,7 +265,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
+AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
 nishbox_SOURCES = main.c
 nishbox_LDADD = ../engine/libnishbox.a @NB_LDADD@
 all: all-am

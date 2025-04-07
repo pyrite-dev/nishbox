@@ -132,7 +132,7 @@ am__v_AR_1 =
 libnishbox_a_AR = $(AR) $(ARFLAGS)
 libnishbox_a_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw.$(OBJEXT) \
+am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
 	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
 	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
@@ -251,7 +251,7 @@ am__depfiles_remade = ../external/lua/$(DEPDIR)/lapi.Po \
 	../external/zlib/$(DEPDIR)/trees.Po \
 	../external/zlib/$(DEPDIR)/uncompr.Po \
 	../external/zlib/$(DEPDIR)/zutil.Po ./$(DEPDIR)/nb_core.Po \
-	./$(DEPDIR)/nb_draw.Po ./$(DEPDIR)/nb_font.Po \
+	./$(DEPDIR)/nb_draw_common.Po ./$(DEPDIR)/nb_font.Po \
 	./$(DEPDIR)/nb_log.Po ./$(DEPDIR)/nb_math.Po \
 	./$(DEPDIR)/nb_mesh.Po ./$(DEPDIR)/nb_model.Po \
 	./$(DEPDIR)/nb_physics.Po ./$(DEPDIR)/nb_stb_image.Po \
@@ -343,6 +343,7 @@ NB_BACKEND = @NB_BACKEND@
 NB_CPPFLAGS = @NB_CPPFLAGS@
 NB_DRIVER = @NB_DRIVER@
 NB_LDADD = @NB_LDADD@
+NB_THREAD = @NB_THREAD@
 OBJEXT = @OBJEXT@
 ODE_CFLAGS = @ODE_CFLAGS@
 ODE_LIBS = @ODE_LIBS@
@@ -406,10 +407,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
+AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
 lib_LIBRARIES = libnishbox.a
 libnishbox_a_SOURCES = \
-		       nb_core.c nb_draw.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c @NB_DRIVER@/nb_driver.c @NB_DRIVER@/nb_graphic.c @NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
+		       nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c @NB_DRIVER@/nb_driver.c @NB_DRIVER@/nb_graphic.c @NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
 		       ../external/lua/lapi.c ../external/lua/lauxlib.c ../external/lua/lbaselib.c ../external/lua/lcode.c ../external/lua/lcorolib.c ../external/lua/lctype.c ../external/lua/ldblib.c ../external/lua/ldebug.c ../external/lua/ldo.c ../external/lua/ldump.c ../external/lua/lfunc.c ../external/lua/lgc.c ../external/lua/linit.c ../external/lua/liolib.c ../external/lua/llex.c ../external/lua/lmathlib.c ../external/lua/lmem.c ../external/lua/loadlib.c ../external/lua/lobject.c ../external/lua/lopcodes.c ../external/lua/loslib.c ../external/lua/lparser.c ../external/lua/lstate.c ../external/lua/lstring.c ../external/lua/lstrlib.c ../external/lua/ltable.c ../external/lua/ltablib.c ../external/lua/ltests.c ../external/lua/ltm.c ../external/lua/lua.c ../external/lua/lundump.c ../external/lua/lutf8lib.c ../external/lua/lvm.c ../external/lua/lzio.c ../external/lua/onelua.c \
 		       ../external/zlib/adler32.c ../external/zlib/compress.c ../external/zlib/crc32.c ../external/zlib/deflate.c ../external/zlib/gzclose.c ../external/zlib/gzlib.c ../external/zlib/gzread.c ../external/zlib/gzwrite.c ../external/zlib/infback.c ../external/zlib/inffast.c ../external/zlib/inflate.c ../external/zlib/inftrees.c ../external/zlib/trees.c ../external/zlib/uncompr.c ../external/zlib/zutil.c 
 
@@ -676,7 +677,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../external/zlib/$(DEPDIR)/uncompr.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../external/zlib/$(DEPDIR)/zutil.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_core.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_draw_common.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_font.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_log.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_math.Po@am__quote@ # am--include-marker
@@ -897,7 +898,7 @@ distclean: distclean-am
 	-rm -f ../external/zlib/$(DEPDIR)/uncompr.Po
 	-rm -f ../external/zlib/$(DEPDIR)/zutil.Po
 	-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw.Po
+	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
@@ -1006,7 +1007,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ../external/zlib/$(DEPDIR)/uncompr.Po
 	-rm -f ../external/zlib/$(DEPDIR)/zutil.Po
 	-rm -f ./$(DEPDIR)/nb_core.Po
-	-rm -f ./$(DEPDIR)/nb_draw.Po
+	-rm -f ./$(DEPDIR)/nb_draw_common.Po
 	-rm -f ./$(DEPDIR)/nb_font.Po
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
