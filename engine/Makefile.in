@@ -180,8 +180,9 @@ am__objects_2 = ../external/zlib/adler32.$(OBJEXT) \
 am_libnishbox_a_OBJECTS = nb_core.$(OBJEXT) nb_draw_common.$(OBJEXT) \
 	nb_font.$(OBJEXT) nb_log.$(OBJEXT) nb_math.$(OBJEXT) \
 	nb_mesh.$(OBJEXT) nb_model.$(OBJEXT) nb_physics.$(OBJEXT) \
-	nb_stb_image.$(OBJEXT) nb_texture.$(OBJEXT) \
-	nb_version.$(OBJEXT) graphic/@NB_DRIVER@/nb_driver.$(OBJEXT) \
+	nb_stb_image.$(OBJEXT) nb_miniaudio.$(OBJEXT) \
+	nb_texture.$(OBJEXT) nb_version.$(OBJEXT) \
+	graphic/@NB_DRIVER@/nb_driver.$(OBJEXT) \
 	graphic/@NB_DRIVER@/nb_graphic.$(OBJEXT) \
 	graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.$(OBJEXT) \
 	thread/@NB_THREAD@/nb_thread.$(OBJEXT) $(am__objects_1) \
@@ -253,9 +254,10 @@ am__depfiles_remade = ../external/lua/$(DEPDIR)/lapi.Po \
 	../external/zlib/$(DEPDIR)/zutil.Po ./$(DEPDIR)/nb_core.Po \
 	./$(DEPDIR)/nb_draw_common.Po ./$(DEPDIR)/nb_font.Po \
 	./$(DEPDIR)/nb_log.Po ./$(DEPDIR)/nb_math.Po \
-	./$(DEPDIR)/nb_mesh.Po ./$(DEPDIR)/nb_model.Po \
-	./$(DEPDIR)/nb_physics.Po ./$(DEPDIR)/nb_stb_image.Po \
-	./$(DEPDIR)/nb_texture.Po ./$(DEPDIR)/nb_version.Po \
+	./$(DEPDIR)/nb_mesh.Po ./$(DEPDIR)/nb_miniaudio.Po \
+	./$(DEPDIR)/nb_model.Po ./$(DEPDIR)/nb_physics.Po \
+	./$(DEPDIR)/nb_stb_image.Po ./$(DEPDIR)/nb_texture.Po \
+	./$(DEPDIR)/nb_version.Po \
 	graphic/@NB_DRIVER@/$(DEPDIR)/nb_driver.Po \
 	graphic/@NB_DRIVER@/$(DEPDIR)/nb_graphic.Po \
 	graphic/@NB_DRIVER@/@NB_BACKEND@/$(DEPDIR)/nb_draw.Po \
@@ -408,10 +410,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/deps/include
+AM_CPPFLAGS = @NB_CPPFLAGS@ -DDRV_@NB_DRIVER@ -DUSE_@NB_BACKEND@ -DTHREAD_@NB_THREAD@ -I$(top_srcdir)/engine/include -I$(top_srcdir)/external/lua -I$(top_srcdir)/external/stb -I$(top_srcdir)/external/zlib -I$(top_srcdir)/external/miniaudio -I$(top_srcdir)/deps/include
 lib_LIBRARIES = libnishbox.a
 libnishbox_a_SOURCES = \
-		       nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_texture.c nb_version.c \
+		       nb_core.c nb_draw_common.c nb_font.c nb_log.c nb_math.c nb_mesh.c nb_model.c nb_physics.c nb_stb_image.c nb_miniaudio.c nb_texture.c nb_version.c \
 		       graphic/@NB_DRIVER@/nb_driver.c graphic/@NB_DRIVER@/nb_graphic.c \
 		       graphic/@NB_DRIVER@/@NB_BACKEND@/nb_draw.c \
 		       thread/@NB_THREAD@/nb_thread.c \
@@ -699,6 +701,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_log.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_math.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_mesh.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_miniaudio.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_model.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_physics.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nb_stb_image.Po@am__quote@ # am--include-marker
@@ -922,6 +925,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
 	-rm -f ./$(DEPDIR)/nb_mesh.Po
+	-rm -f ./$(DEPDIR)/nb_miniaudio.Po
 	-rm -f ./$(DEPDIR)/nb_model.Po
 	-rm -f ./$(DEPDIR)/nb_physics.Po
 	-rm -f ./$(DEPDIR)/nb_stb_image.Po
@@ -1031,6 +1035,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/nb_log.Po
 	-rm -f ./$(DEPDIR)/nb_math.Po
 	-rm -f ./$(DEPDIR)/nb_mesh.Po
+	-rm -f ./$(DEPDIR)/nb_miniaudio.Po
 	-rm -f ./$(DEPDIR)/nb_model.Po
 	-rm -f ./$(DEPDIR)/nb_physics.Po
 	-rm -f ./$(DEPDIR)/nb_stb_image.Po
