@@ -22,7 +22,7 @@ while IFS= read -r a; do
 	fi
 done < Makefile.am.old
 echo "# DO NOT EDIT BELOW THIS COMMENT!!!" >> Makefile.am
-echo "# They are auto-generated" >> Makefile.am
+echo "# They are auto-generated using /tool/autogen.sh" >> Makefile.am
 echo "LUASRC =$LUASRC" >> Makefile.am
 echo "ZLIBSRC =$ZLIBSRC" >> Makefile.am
 
