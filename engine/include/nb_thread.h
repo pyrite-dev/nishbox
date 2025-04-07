@@ -12,5 +12,7 @@
 /* Standard */
 
 nb_thread_t* nb_create_thread(void (*func)(void*), void* userdata);
+void	     nb_join_thread(nb_thread_t* thread);
+void	     nb_destroy_thread(nb_thread_t* thread);
 
 #endif

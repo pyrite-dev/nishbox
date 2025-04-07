@@ -27,3 +27,10 @@ nb_thread_t* nb_create_thread(void (*func)(void*), void* userdata) {
 	free(thread);
 	return NULL;
 }
+
+void nb_join_thread(nb_thread_t* thread) {
+	void* value;
+	pthread_join(thread->thread, &value);
+}
+
+void nb_destroy_thread(nb_thread_t* thread) { free(thread); }
