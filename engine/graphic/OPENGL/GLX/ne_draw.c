@@ -124,7 +124,6 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 	XMapWindow(draw->platform->display, draw->platform->window);
 	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
 
-#if defined(GLX_EXT_swap_control)
 	if(ne_draw_platform_has_extension(draw, "GLX_EXT_swap_control")) {
 		unsigned int		  tmp  = -1;
 		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
@@ -133,9 +132,7 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 		}
 		glXQueryDrawable(draw->platform->display, draw->platform->window, GLX_SWAP_INTERVAL_EXT, &tmp);
 		interval = tmp;
-	} else
-#endif
-	    if(ne_draw_platform_has_extension(draw, "GLX_MESA_swap_control")) {
+	} else if(ne_draw_platform_has_extension(draw, "GLX_MESA_swap_control")) {
 		PFNGLXGETSWAPINTERVALMESAPROC proc  = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
 		PFNGLXSWAPINTERVALMESAPROC    proc2 = (PFNGLXSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXSwapIntervalMESA");
 		if(proc2 != NULL) {

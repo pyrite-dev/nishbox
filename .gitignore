@@ -6,6 +6,7 @@
 *.zip
 ext_*
 *~
+aclocal.m4
 config.log
 autom4te.cache
 config.status

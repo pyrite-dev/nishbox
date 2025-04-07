@@ -10,9 +10,6 @@
 ne_engine_t* engine;
 
 void draw_frame(ne_draw_t* draw) {
-	ne_graphic_text(draw, 0, 0, 32, "test text", 255, 0, 0, 128);
-	ne_graphic_text(draw, 8, 8, 32, "test text", 0, 255, 0, 128);
-	ne_graphic_text(draw, 16, 16, 32, "test text", 0, 0, 255, 128);
 }
 
 int main(int argc, char** argv) {
