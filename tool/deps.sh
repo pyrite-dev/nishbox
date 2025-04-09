@@ -17,4 +17,4 @@ solve () {
 	done
 }
 
-solve src/nishbox.exe
+solve bin/NishBox.exe

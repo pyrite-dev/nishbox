@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NE_VERSION PACKAGE_VERSION
+#define NE_VERSION "1.0.0"
 
 void ne_get_version(ne_version_t* version) {
 	char* cpstr = malloc(512);
