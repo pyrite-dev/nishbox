@@ -4,11 +4,15 @@ backends = {
 	glfw = {"GLFW", {"glfw"}}
 }
 
+configs = {}
+
+for k,v in pairs(backends) do
+	table.insert(configs, v[1] .. "-Release")
+	table.insert(configs, v[1] .. "-Debug")
+end
+
 workspace("NishBox")
-	configurations({
-		"Release",
-		"Debug"
-	})
+	configurations(configs)
 	platforms({
 		"Native",
 		"Win32",
@@ -33,19 +37,6 @@ newaction({
 		os.rmdir("obj")
 		os.rmdir("lib")
 	end
-})
-
-allowed = {}
-for k,v in pairs(backends) do
-	table.insert(allowed, {k, v[1]})
-end
-newoption({
-	trigger		= "draw",
-	value		= "API",
-	description	= "Choose a render backend",
-	default		= "glx",
-	category	= "Build Options",
-	allowed		= allowed
 })
 
 function default_stuffs()
@@ -82,7 +73,7 @@ function default_stuffs()
 		})
 
 	for k,v in pairs(backends) do
-		filter("options:draw=" .. k)
+		filter("configurations:" .. k .. "-*")
 			defines({
 				"DRV_OPENGL",
 				"USE_" .. string.upper(k)
@@ -115,7 +106,7 @@ project("NishBox")
 	})
 	default_stuffs()
 	for k,v in pairs(backends) do
-		filter("options:draw=" .. k)
+		filter("configurations:" .. k .. "-*")
 			links(v[2])
 	end
 	filter("toolset:gcc or toolset:clang")
@@ -134,12 +125,12 @@ project("NishBox")
 			"GLU",
 			"pthread"
 		})
-	filter("configurations:Debug")
+	filter("configurations:*-Debug")
 		defines({
 			"DEBUG"
 		})
 		symbols("On")
-	filter("configurations:Release")
+	filter("configurations:*-Release")
 		defines({
 			"NDEBUG"
 		})
@@ -178,7 +169,7 @@ project("NishEngine")
 			"engine/thread/posix/ne_thread.c"
 		})
 	for k,v in pairs(backends) do
-		filter("options:draw=" .. k)
+		filter("configurations:" .. k .. "-*")
 			files({
 				"engine/graphic/opengl/" .. k .. "/ne_draw.c",
 				"engine/graphic/opengl/*.c"
