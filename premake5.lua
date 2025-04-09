@@ -4,27 +4,30 @@ backends = {
 	glfw = {"GLFW", {"glfw"}}
 }
 
-configs = {}
+plt = {}
 
 for k,v in pairs(backends) do
-	table.insert(configs, v[1] .. "-Release")
-	table.insert(configs, v[1] .. "-Debug")
+	table.insert(plt, "Native-" .. v[1])
+	if not(v[1] == "GLX") then
+		table.insert(plt, "Win32-" .. v[1])
+		table.insert(plt, "Win64-" .. v[1])
+	end
 end
 
 workspace("NishBox")
-	configurations(configs)
-	platforms({
-		"Native",
-		"Win32",
-		"Win64"
+	configurations({
+		"Debug",
+		"Release"
 	})
+	platforms(plt)
+	defaultplatform("Native-GLX")
 
-filter("platforms:Win32")
+filter("platforms:Win32-*")
 	system("windows")
 	architecture("x86")
 	gccprefix("i686-w64-mingw32-")
 
-filter("platforms:Win64")
+filter("platforms:Win64-*")
 	system("windows")
 	architecture("x86_64")
 	gccprefix("x86_64-w64-mingw32-")
@@ -52,7 +55,7 @@ function default_stuffs()
 		defines({
 			"THREAD_POSIX"
 		})
-	filter("platforms:Native")
+	filter("platforms:Native-*")
 		includedirs({
 			"/usr/local/include",
 			"/usr/X11R*/include"
@@ -62,7 +65,7 @@ function default_stuffs()
 			"/usr/X11R*/lib"
 		})
 	filter({
-		"platforms:Native",
+		"platforms:Native-*",
 		"system:bsd"
 	})
 		includedirs({
@@ -73,7 +76,7 @@ function default_stuffs()
 		})
 
 	for k,v in pairs(backends) do
-		filter("configurations:" .. k .. "-*")
+		filter("platforms:*-" .. k)
 			defines({
 				"DRV_OPENGL",
 				"USE_" .. string.upper(k)
@@ -106,7 +109,7 @@ project("NishBox")
 	})
 	default_stuffs()
 	for k,v in pairs(backends) do
-		filter("configurations:" .. k .. "-*")
+		filter("platforms:*-" .. k)
 			links(v[2])
 	end
 	filter("toolset:gcc or toolset:clang")
@@ -125,12 +128,12 @@ project("NishBox")
 			"GLU",
 			"pthread"
 		})
-	filter("configurations:*-Debug")
+	filter("configurations:Debug")
 		defines({
 			"DEBUG"
 		})
 		symbols("On")
-	filter("configurations:*-Release")
+	filter("configurations:Release")
 		defines({
 			"NDEBUG"
 		})
@@ -169,7 +172,7 @@ project("NishEngine")
 			"engine/thread/posix/ne_thread.c"
 		})
 	for k,v in pairs(backends) do
-		filter("configurations:" .. k .. "-*")
+		filter("platforms:*-" .. k)
 			files({
 				"engine/graphic/opengl/" .. k .. "/ne_draw.c",
 				"engine/graphic/opengl/*.c"

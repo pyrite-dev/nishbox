@@ -1,2 +1,2 @@
 #!/bin/sh
-rm -rf obj lib bin
+rm -rf obj lib bin *.make Makefile

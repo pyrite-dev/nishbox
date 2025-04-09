@@ -34,5 +34,5 @@ cd ..
 
 cd ..
 
-premake5 --draw=wgl gmake2
-${MAKE} config=release_win${BITS} -j4
+premake5 gmake2
+${MAKE} config=release_win${BITS}-wgl -j4
