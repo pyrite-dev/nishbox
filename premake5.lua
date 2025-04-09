@@ -126,7 +126,7 @@ end
 project("NishBox")
 	kind("WindowedApp")
 	language("C")
-	targetdir("bin")
+	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("nishbox")
 	includedirs({
 		"engine/include"
