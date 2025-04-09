@@ -6,14 +6,6 @@ BASE=`pwd`
 mkdir -p contrib
 cd contrib
 
-if [ -d cmake-files ]; then
-	cd cmake-files
-	git pull
-	cd ..
-else
-	git clone https://github.com/nishiowo/cmake cmake-files --depth=1
-fi
-
 if [ ! -d ode-${ODE_VERSION} ]; then
 	wget https://sourceforge.net/projects/opende/files/ODE/${ODE_VERSION}/ode-${ODE_VERSION}.tar.gz/download -O - | tar xvzf -
 fi
