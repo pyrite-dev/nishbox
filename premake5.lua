@@ -1,7 +1,7 @@
 backends = {
-	glx = {"GLX", {"GL", "GLU", "X11"}},
-	wgl = {"WGL", {"opengl32", "glu32", "gdi32"}},
-	glfw = {"GLFW", {"glfw", "glu32"}}
+	glx = {"GLX", {"X11"}},
+	wgl = {"WGL", {"gdi32"}},
+	glfw = {"GLFW", {"glfw"}}
 }
 
 workspace("NishBox")
@@ -89,11 +89,6 @@ function default_stuffs()
 			})
 	end
 
-	for k,v in pairs(backends) do
-		filter("options:draw=" .. k)
-			links(v[2])
-	end
-
 	filter({})
 		includedirs({
 			"deps/include"
@@ -119,16 +114,24 @@ project("NishBox")
 		"ode"
 	})
 	default_stuffs()
+	for k,v in pairs(backends) do
+		filter("options:draw=" .. k)
+			links(v[2])
+	end
 	filter("toolset:gcc or toolset:clang")
 		links({
 			"stdc++"
 		})
 	filter("system:windows")
 		links({
+			"opengl32",
+			"glu32",
 			"ws2_32"
 		})
 	filter("system:not windows")
 		links({
+			"GL",
+			"GLU",
 			"pthread"
 		})
 	filter("configurations:Debug")
