@@ -34,5 +34,5 @@ cd ..
 
 cd ..
 
-./configure --host=${ARCH}-w64-mingw32 --with-backend=wgl PKG_CONFIG_LIBDIR=`pwd`/deps/lib/pkgconfig
-${MAKE}
+premake5 --draw=wgl gmake2
+${MAKE} config=release_win${BITS} -j4

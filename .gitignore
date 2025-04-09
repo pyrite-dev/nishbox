@@ -6,13 +6,10 @@
 *.zip
 ext_*
 *~
-aclocal.m4
-config.log
-autom4te.cache
-config.status
+*.make
 Makefile
-.deps
-.dirstamp
 /deps
 /contrib
-/src/nishbox
+/bin
+/obj
+/lib
