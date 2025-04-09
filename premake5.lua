@@ -170,6 +170,7 @@ project("NishBox")
 		})
 	filter("system:not windows")
 		links({
+			"m",
 			"pthread"
 		})
 	filter("configurations:Debug")
