@@ -117,6 +117,9 @@ project("NishBox")
 			"stdc++"
 		})
 	filter("system:windows")
+		files({
+			"src/*.rc"
+		})
 		links({
 			"opengl32",
 			"glu32",
