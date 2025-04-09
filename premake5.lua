@@ -35,17 +35,6 @@ newaction({
 	end
 })
 
-newoption({
-	trigger		= "driver",
-	value		= "API",
-	description	= "Choose a render driver",
-	default		= "opengl",
-	category	= "Build Options",
-	allowed		= {
-		{"opengl", "OpenGL"}
-	}
-})
-
 allowed = {}
 for k,v in pairs(backends) do
 	table.insert(allowed, {k, v[1]})
@@ -93,9 +82,7 @@ function default_stuffs()
 		})
 
 	for k,v in pairs(backends) do
-		filter({
-			"options:driver=opengl", "options:draw=" .. k
-		})
+		filter("options:draw=" .. k)
 			defines({
 				"DRV_OPENGL",
 				"USE_" .. string.upper(k)
@@ -103,9 +90,7 @@ function default_stuffs()
 	end
 
 	for k,v in pairs(backends) do
-		filter({
-			"options:draw=" .. k
-		})
+		filter("options:draw=" .. k)
 			links(v[2])
 	end
 
@@ -122,6 +107,7 @@ project("NishBox")
 	kind("WindowedApp")
 	language("C")
 	targetdir("bin")
+	targetname("nishbox")
 	includedirs({
 		"engine/include"
 	})
@@ -160,6 +146,7 @@ project("NishEngine")
 	kind("StaticLib")
 	language("C")
 	targetdir("lib")
+	targetname("nishengine")
 	includedirs({
 		"engine/include",
 		"external/lua",
@@ -188,9 +175,7 @@ project("NishEngine")
 			"engine/thread/posix/ne_thread.c"
 		})
 	for k,v in pairs(backends) do
-		filter({
-			"options:driver=opengl", "options:draw=" .. k
-		})
+		filter("options:draw=" .. k)
 			files({
 				"engine/graphic/opengl/" .. k .. "/ne_draw.c",
 				"engine/graphic/opengl/*.c"
