@@ -97,7 +97,7 @@ void ne_draw_platform_create(ne_draw_t* draw) {
 	}
 
 	attr.colormap	       = XCreateColormap(draw->platform->display, root, visual->visual, AllocNone);
-	attr.event_mask	       = StructureNotifyMask | ExposureMask;
+	attr.event_mask	       = StructureNotifyMask | ExposureMask | PointerMotionMask;
 	draw->platform->window = XCreateWindow(draw->platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
 
 	hints.x	     = draw->x;
