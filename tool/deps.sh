@@ -1,5 +1,8 @@
 #!/bin/sh
 
+CC=${CC:-${GCC_PREFIX}gcc}
+OBJDUMP=${OBJDUMP:-${GCC_PREFIX}objdump}
+
 solve () {
 	path=""
 	$OBJDUMP -p $1 | grep "DLL Name:" | rev | cut -d" " -f1 | rev | while read a; do
@@ -17,4 +20,4 @@ solve () {
 	done
 }
 
-solve bin/NishBox.exe
+solve bin/*/*/nishbox.exe

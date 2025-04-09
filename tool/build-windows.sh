@@ -26,5 +26,5 @@ cd ..
 
 cd ..
 
-premake5 gmake2
-${MAKE} config=release_win${BITS}-wgl -j4
+premake5 gmake2 --backend=opengl --opengl=wgl
+${MAKE} config=release_win${BITS} -j4
