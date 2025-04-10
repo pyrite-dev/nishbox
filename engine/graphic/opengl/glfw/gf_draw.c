@@ -71,7 +71,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	draw->platform->window = glfwCreateWindow(draw->width, draw->height, draw->title, NULL, NULL);
 	if(draw->platform->window == NULL) {
-		gf_function_log("Failed to create window", "");
+		gf_function_log(NULL, "Failed to create window", "");
 		gf_draw_destroy(draw);
 		return;
 	}

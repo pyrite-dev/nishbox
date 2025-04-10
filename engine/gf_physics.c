@@ -28,5 +28,5 @@ gf_physics_t* gf_physics_create(void) {
 void gf_physics_destroy(gf_physics_t* physics) {
 	dWorldDestroy(physics->id);
 	free(physics);
-	gf_function_log("Destroyed physics", "");
+	gf_function_log(NULL, "Destroyed physics", "");
 }

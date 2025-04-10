@@ -11,6 +11,7 @@
 #include <gf_type/draw_platform.h>
 #include <gf_type/draw_driver.h>
 #include <gf_type/texture.h>
+#include <gf_type/core.h>
 #include <gf_type/math.h>
 
 /* Standard */
@@ -18,6 +19,7 @@
 GF_DECLARE_TYPE(draw, );
 
 GF_DECLARE_TYPE(draw, {
+	gf_engine_t*	    engine;
 	gf_draw_platform_t* platform;
 	gf_draw_driver_t*   driver;
 	int		    close;

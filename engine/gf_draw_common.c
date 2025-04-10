@@ -8,6 +8,7 @@
 #include <gf_draw.h>
 
 /* Engine */
+#include <gf_core.h>
 #include <gf_log.h>
 #include <gf_draw_platform.h>
 #include <gf_draw_driver.h>
@@ -22,7 +23,7 @@ void gf_draw_begin(void) { gf_draw_platform_begin(); }
 
 void gf_draw_end(void) { gf_draw_platform_end(); }
 
-gf_draw_t* gf_draw_create(const char* title) {
+gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	gf_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
 	draw->x	      = 0;
@@ -33,7 +34,7 @@ gf_draw_t* gf_draw_create(const char* title) {
 	strcpy(draw->title, title);
 	gf_draw_platform_create(draw);
 	if(draw->platform != NULL) {
-		gf_function_log("Created drawing interface successfully", "");
+		gf_function_log(NULL, "Created drawing interface successfully", "");
 		gf_draw_driver_init(draw);
 		gf_draw_reshape(draw);
 		draw->running = 1;
@@ -77,5 +78,5 @@ void gf_draw_destroy(gf_draw_t* draw) {
 		gf_draw_driver_destroy(draw);
 	}
 	gf_draw_platform_destroy(draw);
-	gf_function_log("Destroyed drawing interface", "");
+	gf_function_log(NULL, "Destroyed drawing interface", "");
 }

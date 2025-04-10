@@ -103,7 +103,7 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 		draw->font[i] = gf_register_texture(draw, 8, 8, font);
 		free(font);
 	}
-	gf_function_log("Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
+	gf_function_log(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
 
 	glClearColor(0, 0, 0, 1);
 

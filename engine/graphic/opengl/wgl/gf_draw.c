@@ -108,11 +108,11 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	draw->platform->instance = (HINSTANCE)GetModuleHandle(NULL);
 	if(draw->platform->instance == NULL) {
-		gf_function_log("Failed to get instance", "");
+		gf_function_log(NULL, "Failed to get instance", "");
 		gf_draw_destroy(draw);
 		return;
 	} else {
-		gf_function_log("Got instance", "");
+		gf_function_log(NULL, "Got instance", "");
 	}
 
 	wc.cbSize	 = sizeof(wc);
@@ -128,20 +128,20 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	wc.lpszClassName = "goldfish";
 	wc.hIconSm	 = LoadIcon(NULL, IDI_WINLOGO);
 	if(!RegisterClassEx(&wc)) {
-		gf_function_log("Failed to register class", "");
+		gf_function_log(NULL, "Failed to register class", "");
 		gf_draw_destroy(draw);
 		return;
 	} else {
-		gf_function_log("Registered class", "");
+		gf_function_log(NULL, "Registered class", "");
 	}
 
 	draw->platform->window = CreateWindow("goldfish", draw->title, (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->platform->instance, NULL);
 	if(draw->platform->window == NULL) {
-		gf_function_log("Failed to create window", "");
+		gf_function_log(NULL, "Failed to create window", "");
 		gf_draw_destroy(draw);
 		return;
 	} else {
-		gf_function_log("Created window", "");
+		gf_function_log(NULL, "Created window", "");
 	}
 
 	SetWindowLongPtr(draw->platform->window, GWLP_USERDATA, (LONG_PTR)draw);
@@ -162,18 +162,18 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	draw->platform->glrc = wglCreateContext(draw->platform->dc);
 	if(draw->platform->glrc == NULL) {
-		gf_function_log("Failed to create OpenGL context", "");
+		gf_function_log(NULL, "Failed to create OpenGL context", "");
 		gf_draw_destroy(draw);
 		return;
 	} else {
-		gf_function_log("Created OpenGL context", "");
+		gf_function_log(NULL, "Created OpenGL context", "");
 	}
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
 #ifdef DO_SWAP_INTERVAL
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	if(wglSwapIntervalEXT != NULL) {
-		gf_function_log("Enabled VSync", "");
+		gf_function_log(NULL, "Enabled VSync", "");
 		wglSwapIntervalEXT(1);
 	}
 #endif

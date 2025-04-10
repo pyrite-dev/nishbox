@@ -12,10 +12,12 @@
 #include <gf_type/draw.h>
 
 /* Standard */
+#include <stdio.h>
 
 GF_DECLARE_TYPE(engine, {
 	gf_physics_t* physics;
 	gf_draw_t*    draw;
+	FILE*	      log;
 });
 #else
 typedef void gf_engine_t;
