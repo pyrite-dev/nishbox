@@ -153,6 +153,52 @@ function default_stuffs()
 		})
 end
 
+function link_stuffs(cond)
+	filter({
+		"toolset:gcc or toolset:clang",
+		cond
+	})
+		links({
+			"stdc++:static"
+		})
+	for k,v in pairs(backends) do
+		for k2,v2 in pairs(v["backends"]) do
+			filter({
+				"options:backend=" .. k,
+				"options:" .. k .. "=" .. k2,
+				"system:windows",
+				cond
+			})
+				links(v.windows)
+				links(v2[2])
+			filter({
+				"options:backend=" .. k,
+				"options:" .. k .. "=" .. k2,
+				"system:not windows",
+				cond
+			})
+				links(v.unix)
+				links(v2[2])
+		end
+	end
+	filter({
+		"system:windows",
+		cond
+	})
+		links({
+			"user32",
+			"ws2_32"
+		})
+	filter({
+		"system:not windows",
+		cond
+	})
+		links({
+			"m",
+			"pthread"
+		})
+end
+
 project("NishBox")
 	kind("ConsoleApp")
 	language("C")
@@ -168,40 +214,10 @@ project("NishBox")
 		"Engine"
 	})
 	default_stuffs()
-	filter("toolset:gcc or toolset:clang")
-		links({
-			"stdc++:static"
-		})
-	for k,v in pairs(backends) do
-		for k2,v2 in pairs(v["backends"]) do
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:windows"
-			})
-				links(v.windows)
-				links(v2[2])
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:not windows"
-			})
-				links(v.unix)
-				links(v2[2])
-		end
-	end
+	link_stuffs("options:engine=static")
 	filter("system:windows")
 		files({
 			"src/*.rc"
-		})
-		links({
-			"user32",
-			"ws2_32"
-		})
-	filter("system:not windows")
-		links({
-			"m",
-			"pthread"
 		})
 	filter("configurations:Debug")
 		defines({
@@ -227,6 +243,7 @@ project("Engine")
 			"ODE_DLL",
 			"_DLL"
 		})
+	link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
 			"DEBUG",
@@ -309,11 +326,6 @@ project("Engine")
 	files({
 		"external/ode/GIMPACT/**.h",
 		"external/ode/GIMPACT/**.cpp"
-	})
-
-	files({
-		"external/ode/OPCODE/**.h",
-		"external/ode/OPCODE/**.cpp"
 	})
 
 	removefiles({
