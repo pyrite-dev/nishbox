@@ -181,6 +181,7 @@ project("NishBox")
 			"src/*.rc"
 		})
 		links({
+			"user32",
 			"ws2_32"
 		})
 	filter("system:not windows")
