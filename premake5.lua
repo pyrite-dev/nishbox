@@ -220,7 +220,7 @@ project("Engine")
 		optimize("On")
 	filter({})
 	targetdir("lib")
-	targetname("nishengine")
+	targetname("goldfish")
 	includedirs({
 		"engine/include",
 		"external/lua",
@@ -242,11 +242,11 @@ project("Engine")
 
 	filter("system:windows")
 		files({
-			"engine/thread/win32/ne_thread.c"
+			"engine/thread/win32/gf_thread.c"
 		})
 	filter("system:not windows")
 		files({
-			"engine/thread/posix/ne_thread.c"
+			"engine/thread/posix/gf_thread.c"
 		})
 	filter({})
 
