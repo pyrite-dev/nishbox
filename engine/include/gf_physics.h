@@ -11,9 +11,9 @@
 
 /* Standard */
 
-void	      gf_physics_begin(void);
-void	      gf_physics_end(void);
-gf_physics_t* gf_physics_create(void);
-void	      gf_physics_destroy(gf_physics_t* physics);
+GF_EXPORT void		gf_physics_begin(void);
+GF_EXPORT void		gf_physics_end(void);
+GF_EXPORT gf_physics_t* gf_physics_create(void);
+GF_EXPORT void		gf_physics_destroy(gf_physics_t* physics);
 
 #endif

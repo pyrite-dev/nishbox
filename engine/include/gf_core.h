@@ -12,11 +12,11 @@
 
 /* Standard */
 
-void	     gf_engine_begin(void);
-void	     gf_engine_end(void);
-gf_engine_t* gf_engine_create(const char* title, int nogui);
-void	     gf_engine_loop(gf_engine_t* engine);
-void	     gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*));
-void	     gf_engine_destroy(gf_engine_t* engine);
+GF_EXPORT void	       gf_engine_begin(void);
+GF_EXPORT void	       gf_engine_end(void);
+GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui);
+GF_EXPORT void	       gf_engine_loop(gf_engine_t* engine);
+GF_EXPORT void	       gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*));
+GF_EXPORT void	       gf_engine_destroy(gf_engine_t* engine);
 
 #endif

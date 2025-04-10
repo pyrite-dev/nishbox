@@ -12,8 +12,8 @@
 
 /* Standard */
 
-gf_texture_t* gf_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data);
-void	      gf_destroy_texture(gf_texture_t* texture);
-void	      gf_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, float r, float g, float b, float a);
+GF_EXPORT gf_texture_t* gf_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data);
+GF_EXPORT void		gf_destroy_texture(gf_texture_t* texture);
+GF_EXPORT void		gf_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, float r, float g, float b, float a);
 
 #endif

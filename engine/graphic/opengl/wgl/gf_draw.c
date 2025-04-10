@@ -21,10 +21,10 @@
 typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
 
-void gf_draw_platform_begin(void) {}
-void gf_draw_platform_end(void) {}
+GF_EXPORT void gf_draw_platform_begin(void) {}
+GF_EXPORT void gf_draw_platform_end(void) {}
 
-LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
+GF_EXPORT LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
 	gf_draw_t*  draw = (gf_draw_t*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -54,7 +54,7 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 	return 0;
 }
 
-int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
+GF_EXPORT int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	const char*		     ext = NULL;
 	const char*		     ptr;
 	const int		     len = strlen(query);
@@ -72,7 +72,7 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	return 0;
 }
 
-int gf_draw_platform_step(gf_draw_t* draw) {
+GF_EXPORT int gf_draw_platform_step(gf_draw_t* draw) {
 	MSG msg;
 	int ret = 0;
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
@@ -95,7 +95,7 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 	return ret;
 }
 
-void gf_draw_platform_create(gf_draw_t* draw) {
+GF_EXPORT void gf_draw_platform_create(gf_draw_t* draw) {
 	WNDCLASSEX	       wc;
 	PIXELFORMATDESCRIPTOR  desc;
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
@@ -187,7 +187,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	UpdateWindow(draw->platform->window);
 }
 
-void gf_draw_platform_destroy(gf_draw_t* draw) {
+GF_EXPORT void gf_draw_platform_destroy(gf_draw_t* draw) {
 	if(draw->platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
 	}

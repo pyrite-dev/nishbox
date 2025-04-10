@@ -158,6 +158,10 @@ function link_stuffs(cond)
 		"toolset:gcc or toolset:clang",
 		cond
 	})
+		linkoptions({
+			"-static-libgcc",
+			"-static-libstdc++"
+		})
 		links({
 			"stdc++:static"
 		})

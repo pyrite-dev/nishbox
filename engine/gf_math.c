@@ -13,9 +13,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-float gf_log2(float x) { return log(x) / log(2); }
+GF_EXPORT float gf_log2(float x) { return log(x) / log(2); }
 
-void gf_calculate_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2) {
+GF_EXPORT void gf_calculate_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2) {
 	int	    i;
 	dReal	    length;
 	gf_vector_t vec;

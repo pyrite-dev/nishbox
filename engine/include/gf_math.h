@@ -16,7 +16,7 @@
 	to[1] = from[1]; \
 	to[2] = from[2]
 
-float gf_log2(float x);
-void  gf_calculate_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2);
+GF_EXPORT float gf_log2(float x);
+GF_EXPORT void	gf_calculate_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2);
 
 #endif

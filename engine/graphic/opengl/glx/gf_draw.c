@@ -38,10 +38,10 @@ typedef void (*PFNGLXSWAPINTERVALEXTPROC)(Display*, GLXDrawable, int);
 typedef void (*PFNGLXSWAPINTERVALSGIPROC)(int);
 #endif
 
-void gf_draw_platform_begin(void) {}
-void gf_draw_platform_end(void) {}
+GF_EXPORT void gf_draw_platform_begin(void) {}
+GF_EXPORT void gf_draw_platform_end(void) {}
 
-int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
+GF_EXPORT int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	const char* ext = NULL;
 	const char* ptr;
 	const int   len = strlen(query);
@@ -53,7 +53,7 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 }
 
-void gf_draw_platform_create(gf_draw_t* draw) {
+GF_EXPORT void gf_draw_platform_create(gf_draw_t* draw) {
 	int		     i = 0;
 	int		     attribs[64];
 	int		     screen;
@@ -151,7 +151,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 #endif
 }
 
-int gf_draw_platform_step(gf_draw_t* draw) {
+GF_EXPORT int gf_draw_platform_step(gf_draw_t* draw) {
 	int ret = 0;
 	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
 	while(XPending(draw->platform->display) > 0) {
@@ -183,7 +183,7 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 	return ret;
 }
 
-void gf_draw_platform_destroy(gf_draw_t* draw) {
+GF_EXPORT void gf_draw_platform_destroy(gf_draw_t* draw) {
 	if(draw->platform->context != NULL) {
 		glXMakeCurrent(draw->platform->display, None, NULL);
 		glXDestroyContext(draw->platform->display, draw->platform->context);

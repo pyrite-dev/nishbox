@@ -11,9 +11,9 @@
 
 /* Standard */
 
-void gf_graphic_clear(gf_draw_t* draw);
-void gf_graphic_begin_2d(gf_draw_t* draw);
-void gf_graphic_end_2d(gf_draw_t* draw);
-void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, float r, float g, float b, float a);
+GF_EXPORT void gf_graphic_clear(gf_draw_t* draw);
+GF_EXPORT void gf_graphic_begin_2d(gf_draw_t* draw);
+GF_EXPORT void gf_graphic_end_2d(gf_draw_t* draw);
+GF_EXPORT void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, float r, float g, float b, float a);
 
 #endif

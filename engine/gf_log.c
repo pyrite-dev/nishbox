@@ -15,7 +15,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-void gf_log(gf_engine_t* engine, const char* fmt, ...) {
+GF_EXPORT void gf_log(gf_engine_t* engine, const char* fmt, ...) {
 	va_list va;
 	FILE*	out = stderr;
 	if(engine != NULL) {

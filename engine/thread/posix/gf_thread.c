@@ -13,13 +13,13 @@
 /* Standard */
 #include <stdlib.h>
 
-void* gf_wrap_thread(void* arg) {
+GF_EXPORT void* gf_wrap_thread(void* arg) {
 	gf_thread_context_t* ctx = (gf_thread_context_t*)arg;
 	ctx->func(ctx->data);
 	return NULL;
 }
 
-gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata) {
+GF_EXPORT gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata) {
 	gf_thread_t* thread  = malloc(sizeof(*thread));
 	thread->context.func = func;
 	thread->context.data = userdata;
@@ -28,9 +28,9 @@ gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata) {
 	return NULL;
 }
 
-void gf_join_thread(gf_thread_t* thread) {
+GF_EXPORT void gf_join_thread(gf_thread_t* thread) {
 	void* value;
 	pthread_join(thread->thread, &value);
 }
 
-void gf_destroy_thread(gf_thread_t* thread) { free(thread); }
+GF_EXPORT void gf_destroy_thread(gf_thread_t* thread) { free(thread); }
