@@ -215,6 +215,7 @@ project("NishBox")
 		optimize("On")
 
 project("Engine")
+	language("C")
 	filter("options:engine=static")
 		kind("StaticLib")
 		defines({
@@ -226,10 +227,6 @@ project("Engine")
 			"ODE_DLL",
 			"_DLL"
 		})
-	filter("files:**.c")
-		language("C")
-	filter("files:**.cpp")
-		language("C++")
 	filter("configurations:Debug")
 		defines({
 			"DEBUG",
@@ -257,8 +254,8 @@ project("Engine")
 		"engine/*.c",
 		"external/zlib/*.h",
 		"external/zlib/*.c",
-		"external/lua/*.h",
-		"external/lua/*.c",
+		"external/lua/l*.h",
+		"external/lua/l*.c",
 	})
 	removefiles({
 		"external/lua/lua.c"
