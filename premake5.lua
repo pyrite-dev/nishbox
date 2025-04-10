@@ -58,6 +58,17 @@ newoption({
 	default = "opengl"
 })
 
+newoption({
+	trigger = "engine",
+	value = "type",
+	description = "Choose an engine type",
+	allowed = {
+		{"static", "Static library"},
+		{"dynamic", "Dynamic library"}
+	},
+	default = "static"
+})
+
 newaction({
 	trigger = "clean",
 	description = "Clean the files",
@@ -204,7 +215,17 @@ project("NishBox")
 		optimize("On")
 
 project("Engine")
-	kind("StaticLib")
+	filter("options:engine=static")
+		kind("StaticLib")
+		defines({
+			"ODE_LIB"
+		})
+	filter("options:engine=dynamic")
+		kind("SharedLib")
+		defines({
+			"ODE_DLL",
+			"_DLL"
+		})
 	filter("files:**.c")
 		language("C")
 	filter("files:**.cpp")
