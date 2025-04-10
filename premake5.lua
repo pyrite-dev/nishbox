@@ -69,6 +69,7 @@ newaction({
 })
 
 function default_stuffs()
+	characterset("MBCS")
 	defines({
 		"HAVE_UNISTD_H=1",
 		"HAVE_STDARG_H=1"
@@ -124,7 +125,7 @@ function default_stuffs()
 end
 
 project("NishBox")
-	kind("WindowedApp")
+	kind("ConsoleApp")
 	language("C")
 	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("nishbox")
@@ -135,7 +136,7 @@ project("NishBox")
 		"src/*.c"
 	})
 	links({
-		"NishEngine",
+		"Engine",
 		"ode"
 	})
 	default_stuffs()
@@ -184,7 +185,7 @@ project("NishBox")
 		})
 		optimize("On")
 
-project("NishEngine")
+project("Engine")
 	kind("StaticLib")
 	language("C")
 	targetdir("lib")
