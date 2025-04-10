@@ -69,6 +69,9 @@ newaction({
 })
 
 function generateheader(headerfile, placeholder, precstr)
+	if os.isfile(headerfile) then
+		return
+	end
 	local outfile = io.open(headerfile, "w")
 	for i in io.lines(headerfile .. ".in") do
 		local j,_ = string.gsub(i, placeholder, precstr)
@@ -334,7 +337,6 @@ project("Engine")
 
 if _ACTION and _ACTION ~= "clean" then
 	local text = ""
-	local outfile = io.open("external/ode/ode/src/config.h", "w")
 
 	text = text .. "#ifndef _ODE_CONFIG_H_\n"
 	text = text .. "#define _ODE_CONFIG_H_\n"
@@ -346,8 +348,11 @@ if _ACTION and _ACTION ~= "clean" then
 	text = text .. "#include \"typedefs.h\"\n"
 	text = text .. "#endif\n"
 
-	outfile:write(text)
-	outfile:close()
+	if not(os.isfile("external/ode/ode/src/config.h")) then
+		local outfile = io.open("external/ode/ode/src/config.h", "w")
+		outfile:write(text)
+		outfile:close()
+	end
 
 	generateheader("external/ode/include/ode/precision.h", "@ODE_PRECISION@", "dDOUBLE")
 	generateheader("external/ode/libccd/src/ccd/precision.h", "@CCD_PRECISION@", "CCD_DOUBLE")
