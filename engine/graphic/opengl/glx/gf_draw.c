@@ -106,7 +106,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	hints.height = draw->height;
 	hints.flags  = USSize | USPosition;
 	XSetNormalHints(draw->platform->display, draw->platform->window, &hints);
-	XSetStandardProperties(draw->platform->display, draw->platform->window, "NishBox (GLX)", "NishBox", None, (char**)NULL, 0, &hints);
+	XSetStandardProperties(draw->platform->display, draw->platform->window, draw->title, "GoldFish", None, (char**)NULL, 0, &hints);
 
 	draw->platform->wm_delete_window = XInternAtom(draw->platform->display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(draw->platform->display, draw->platform->window, &draw->platform->wm_delete_window, 1);

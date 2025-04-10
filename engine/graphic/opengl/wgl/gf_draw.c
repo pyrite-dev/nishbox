@@ -125,7 +125,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName	 = NULL;
-	wc.lpszClassName = "nishbox";
+	wc.lpszClassName = "goldfish";
 	wc.hIconSm	 = LoadIcon(NULL, IDI_WINLOGO);
 	if(!RegisterClassEx(&wc)) {
 		gf_function_log("Failed to register class", "");
@@ -135,7 +135,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 		gf_function_log("Registered class", "");
 	}
 
-	draw->platform->window = CreateWindow("nishbox", "NishBox (WGL)", (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->platform->instance, NULL);
+	draw->platform->window = CreateWindow("goldfish", draw->title, (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->platform->instance, NULL);
 	if(draw->platform->window == NULL) {
 		gf_function_log("Failed to create window", "");
 		gf_draw_destroy(draw);

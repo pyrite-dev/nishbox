@@ -30,7 +30,7 @@ void gf_engine_begin(void) {
 	gf_function_log("Lua %s", ver.lua);
 	gf_function_log("zlib %s", ver.zlib);
 	gf_function_log("Thread model: %s", ver.thread);
-	gf_function_log("OpenGL backend: %s", ver.opengl);
+	gf_function_log("Renderer: %s on %s", ver.driver, ver.backend);
 #ifdef _WIN32
 	WSAStartup(MAKEWORD(1, 1), &wsa);
 	gf_function_log("Winsock ready", "");
@@ -44,7 +44,7 @@ void gf_engine_end(void) {
 	gf_draw_end();
 }
 
-gf_engine_t* gf_engine_create(int nogui) {
+gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	gf_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
 	if(nogui) {
@@ -52,7 +52,7 @@ gf_engine_t* gf_engine_create(int nogui) {
 		engine->draw = NULL;
 	} else {
 		gf_function_log("GUI mode", "");
-		engine->draw = gf_draw_create();
+		engine->draw = gf_draw_create(title);
 		if(engine->draw == NULL) {
 			gf_function_log("Failed to create drawing interface", "");
 			free(engine);

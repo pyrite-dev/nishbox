@@ -22,7 +22,7 @@ void gf_draw_begin(void) { gf_draw_platform_begin(); }
 
 void gf_draw_end(void) { gf_draw_platform_end(); }
 
-gf_draw_t* gf_draw_create(void) {
+gf_draw_t* gf_draw_create(const char* title) {
 	gf_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
 	draw->x	      = 0;
@@ -30,6 +30,7 @@ gf_draw_t* gf_draw_create(void) {
 	draw->width   = 640;
 	draw->height  = 480;
 	draw->running = 0;
+	strcpy(draw->title, title);
 	gf_draw_platform_create(draw);
 	if(draw->platform != NULL) {
 		gf_function_log("Created drawing interface successfully", "");

@@ -3,6 +3,7 @@
 /* Engine */
 #include <gf_core.h>
 #include <gf_graphic.h>
+#include <gf_version.h>
 
 /* External library */
 
@@ -29,15 +30,15 @@ void draw_frame(gf_draw_t* draw) {
 			gf_graphic_text(draw, x, y, s, str, 255 / max * r, 255 / max * g, 255 / max * b, 255);
 
 			b++;
-			if(b == max + 1){
+			if(b == max + 1) {
 				b = 0;
 				g++;
 			}
-			if(g == max + 1){
+			if(g == max + 1) {
 				g = 0;
 				r++;
 			}
-			if(r == max + 1){
+			if(r == max + 1) {
 				r = 0;
 			}
 		}
@@ -45,8 +46,12 @@ void draw_frame(gf_draw_t* draw) {
 }
 
 int main(int argc, char** argv) {
+	char	     title[64];
+	gf_version_t ver;
+	gf_get_version(&ver);
+	sprintf(title, "NishBox %s (%s on %s)", ver.full, ver.driver, ver.backend);
 	gf_engine_begin();
-	engine = gf_engine_create(0);
+	engine = gf_engine_create(title, 0);
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
 		gf_engine_end();

@@ -69,7 +69,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	draw->platform = malloc(sizeof(*draw->platform));
 	memset(draw->platform, 0, sizeof(*draw->platform));
 
-	draw->platform->window = glfwCreateWindow(draw->width, draw->height, "NishBox (GLFW)", NULL, NULL);
+	draw->platform->window = glfwCreateWindow(draw->width, draw->height, draw->title, NULL, NULL);
 	if(draw->platform->window == NULL) {
 		gf_function_log("Failed to create window", "");
 		gf_draw_destroy(draw);

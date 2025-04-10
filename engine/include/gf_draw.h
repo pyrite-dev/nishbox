@@ -11,7 +11,7 @@
 
 /* Standard */
 
-gf_draw_t* gf_draw_create(void);
+gf_draw_t* gf_draw_create(const char* title);
 void	   gf_draw_destroy(gf_draw_t* draw);
 void	   gf_draw_frame(gf_draw_t* draw);
 int	   gf_draw_step(gf_draw_t* draw);
