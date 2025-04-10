@@ -71,9 +71,12 @@ newaction({
 function default_stuffs()
 	characterset("MBCS")
 	defines({
-		"HAVE_UNISTD_H=1",
-		"HAVE_STDARG_H=1"
+		"HAVE_UNISTD_H=1"
 	})
+	filter("toolset:not msc")
+		defines({
+			"HAVE_STDARG_H=1"
+		})
 	filter("system:windows")
 		defines({
 			"THREAD_WIN32"
