@@ -247,6 +247,13 @@ project("Engine")
 			"ODE_DLL",
 			"_DLL"
 		})
+	filter({
+		"options:engine=dynamic",
+		"system:windows"
+	})
+		files({
+			"engine/engine.rc"		
+		})
 	link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
