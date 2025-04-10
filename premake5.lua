@@ -68,18 +68,30 @@ newaction({
 	end
 })
 
+function generateheader(headerfile, placeholder, precstr)
+	local outfile = io.open(headerfile, "w")
+	for i in io.lines(headerfile .. ".in") do
+		local j,_ = string.gsub(i, placeholder, precstr)
+		outfile:write(j .. "\n")
+	end
+	outfile:close()
+end
+
 function default_stuffs()
 	characterset("MBCS")
 	defines({
-		"HAVE_UNISTD_H=1"
+		"HAVE_STDARG_H=1",
+		"dIDEDOUBLE",
+		"CCD_IDEDOUBLE"
 	})
 	filter("toolset:not msc")
 		defines({
-			"HAVE_STDARG_H=1"
+			"HAVE_UNISTD_H=1"
 		})
 	filter("system:windows")
 		defines({
-			"THREAD_WIN32"
+			"THREAD_WIN32",
+			"WIN32"
 		})
 	filter("system:not windows")
 		defines({
@@ -139,13 +151,12 @@ project("NishBox")
 		"src/*.c"
 	})
 	links({
-		"Engine",
-		"ode"
+		"Engine"
 	})
 	default_stuffs()
 	filter("toolset:gcc or toolset:clang")
 		links({
-			"stdc++"
+			"stdc++:static"
 		})
 	for k,v in pairs(backends) do
 		for k2,v2 in pairs(v["backends"]) do
@@ -190,7 +201,23 @@ project("NishBox")
 
 project("Engine")
 	kind("StaticLib")
-	language("C")
+	filter("files:**.c")
+		language("C")
+	filter("files:**.cpp")
+		language("C++")
+	filter("configurations:Debug")
+		defines({
+			"DEBUG",
+			"_DEBUG"
+		})
+		symbols("On")
+	filter("configurations:Release")
+		defines({
+			"NDEBUG",
+			"dNODEBUG",
+		})
+		optimize("On")
+	filter({})
 	targetdir("lib")
 	targetname("nishengine")
 	includedirs({
@@ -198,7 +225,7 @@ project("Engine")
 		"external/lua",
 		"external/zlib",
 		"external/miniaudio",
-		"external/stb",
+		"external/stb"
 	})
 	files({
 		"engine/include/**.h",
@@ -211,7 +238,7 @@ project("Engine")
 	removefiles({
 		"external/lua/lua.c"
 	})
-	default_stuffs()
+
 	filter("system:windows")
 		files({
 			"engine/thread/win32/ne_thread.c"
@@ -220,6 +247,77 @@ project("Engine")
 		files({
 			"engine/thread/posix/ne_thread.c"
 		})
+	filter({})
+
+	-- Begin ODE
+	includedirs({
+		"external/ode/include",
+		"external/ode/ode/src",
+		"external/ode/ode/src/joints",
+		"external/ode/OPCODE",
+		"external/ode/GIMPACT/include",
+		"external/ode/libccd/src/custom",
+		"external/ode/libccd/src"
+	})
+	files({
+		"external/ode/include/ode/*.h",
+		"external/ode/ode/src/joints/*.h",
+		"external/ode/ode/src/joints/*.cpp",
+		"external/ode/ode/src/*.h",
+		"external/ode/ode/src/*.c",
+		"external/ode/ode/src/*.cpp"
+	})
+	removefiles({
+		"external/ode/ode/src/collision_std.cpp"
+	})
+
+	includedirs({
+		"external/ode/ou/include"
+	})
+	files({
+		"external/ode/ou/include/**.h",
+		"external/ode/ou/src/**.h",
+		"external/ode/ou/src/**.cpp"
+	})
+	defines({
+		"_OU_NAMESPACE=odeou",
+		"_OU_FEATURE_SET=_OU_FEATURE_SET_TLS"
+	})
+
+	files({
+		"external/ode/GIMPACT/**.h",
+		"external/ode/GIMPACT/**.cpp"
+	})
+
+	files({
+		"external/ode/OPCODE/**.h",
+		"external/ode/OPCODE/**.cpp"
+	})
+
+	removefiles({
+		"external/ode/ode/src/collision_trimesh_opcode.cpp"
+	})
+
+	files({
+		"external/ode/libccd/src/custom/ccdcustom/*.h",
+		"external/ode/libccd/src/ccd/*.h",
+		"external/ode/libccd/src/*.c"
+	})
+	defines({
+		"dLIBCCD_ENABLED",
+		"dLIBCCD_INTERNAL",
+		"dLIBCCD_BOX_CYL",
+		"dLIBCCD_CYL_CYL",
+		"dLIBCCD_CAP_CYL",
+		"dLIBCCD_CONVEX_BOX",
+		"dLIBCCD_CONVEX_CAP",
+		"dLIBCCD_CONVEX_CYL",
+		"dLIBCCD_CONVEX_SPHERE",
+		"dLIBCCD_CONVEX_CONVEX"
+	})
+	-- End ODE
+
+	default_stuffs()
 	for k,v in pairs(backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
@@ -232,3 +330,25 @@ project("Engine")
 				})
 		end
 	end
+
+if _ACTION and _ACTION ~= "clean" then
+	local text = ""
+	local outfile = io.open("external/ode/ode/src/config.h", "w")
+
+	text = text .. "#ifndef _ODE_CONFIG_H_\n"
+	text = text .. "#define _ODE_CONFIG_H_\n"
+	text = text .. "#define dTRIMESH_GIMPACT 1\n"
+	text = text .. "#define dOU_ENABLED 1\n"
+	text = text .. "#define dATOMICS_ENABLED 1\n"
+	text = text .. "#define dTLS_ENABLED 1\n"
+	text = text .. "#define dBUILTIN_THREADING_IMPL_ENABLED 1\n"
+	text = text .. "#include \"typedefs.h\"\n"
+	text = text .. "#endif\n"
+
+	outfile:write(text)
+	outfile:close()
+
+	generateheader("external/ode/include/ode/precision.h", "@ODE_PRECISION@", "dDOUBLE")
+	generateheader("external/ode/libccd/src/ccd/precision.h", "@CCD_PRECISION@", "CCD_DOUBLE")
+	generateheader("external/ode/include/ode/version.h", "@ODE_VERSION@", "Custom-ODE")
+end

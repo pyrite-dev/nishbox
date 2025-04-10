@@ -11,3 +11,6 @@
 [submodule "external/miniaudio"]
 	path = external/miniaudio
 	url = https://github.com/mackron/miniaudio
+[submodule "external/ode"]
+	path = external/ode
+	url = https://github.com/thomasmarsh/ODE
