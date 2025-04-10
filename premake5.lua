@@ -261,7 +261,7 @@ project("Engine")
 		})
 		optimize("On")
 	filter({})
-	targetdir("lib")
+	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
 	includedirs({
 		"engine/include",
