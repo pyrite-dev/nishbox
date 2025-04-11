@@ -404,6 +404,7 @@ if _ACTION and _ACTION ~= "clean" then
 
 	text = text .. "#ifndef _ODE_CONFIG_H_\n"
 	text = text .. "#define _ODE_CONFIG_H_\n"
+	text = text .. "#define dTRIMESH_ENABLED 1\n"
 	text = text .. "#define dTRIMESH_GIMPACT 1\n"
 	text = text .. "#define dOU_ENABLED 1\n"
 	text = text .. "#define dATOMICS_ENABLED 1\n"
