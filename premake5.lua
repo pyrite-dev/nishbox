@@ -233,6 +233,24 @@ project("NishBox")
 			"NDEBUG"
 		})
 		optimize("On")
+	for k,rt in ipairs({"Debug", "Release"}) do
+	filter({
+			"options:cc=msc",
+			"options:engine=dynamic",
+			"configurations:" .. rt
+		})
+		linkoptions {"/MANIFEST"}
+		runtime(rt)
+		staticruntime("Off")
+	filter({
+			"options:cc=msc",
+			"options:engine=static",
+			"configurations:" .. rt
+		})
+		linkoptions {"/MANIFEST"}
+		runtime(rt)
+		staticruntime("On")
+	end
 
 project("Engine")
 	language("C")
@@ -267,6 +285,24 @@ project("Engine")
 			"dNODEBUG",
 		})
 		optimize("On")
+	for k,rt in ipairs({"Debug", "Release"}) do
+	filter({
+			"options:cc=msc",
+			"options:engine=dynamic",
+			"configurations:" .. rt
+		})
+		linkoptions {"/MANIFEST"}
+		runtime(rt)
+		staticruntime("Off")
+	filter({
+			"options:cc=msc",
+			"options:engine=static",
+			"configurations:" .. rt
+		})
+		linkoptions {"/MANIFEST"}
+		runtime(rt)
+		staticruntime("On")
+	end
 	filter({})
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
