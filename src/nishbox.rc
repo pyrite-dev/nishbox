@@ -1,5 +1,4 @@
 #include <windows.h>
 
 NISHBOX ICON "../internal/icon.ico"
-GOLDFISH ICON "../internal/goldfish.ico"
 GOLDFISH_BMP BITMAP "../internal/goldfish.bmp"
