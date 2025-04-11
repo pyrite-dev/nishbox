@@ -9,6 +9,7 @@ Building NishBox is simple.
 
 ## MSVC
 
-1. Run `premake5 gmake --opengl=wgl --cc=msc` or `premake5 gmake --opengl=glfw --cc=msc`.
+1. Run `premake5 vs<version> --opengl=wgl --cc=msc` or `premake5 vs<version> --opengl=glfw --cc=msc`.
+   `<version>` depends on the Visual Studio version. On VS2008, it should be `2008`.
    GLFW backend is untested.
 2. Run `msbuild NishBox.sln`.
