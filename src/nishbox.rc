@@ -1,3 +1,5 @@
 #include <windows.h>
 
-NISHBOX ICON "../texture/icon.ico"
+NISHBOX ICON "../internal/icon.ico"
+GOLDFISH ICON "../internal/goldfish.ico"
+GOLDFISH_BMP BITMAP "../internal/goldfish.bmp"

@@ -1,6 +1,6 @@
 #include <windows.h>
 
-ENGINE ICON "../texture/goldfish.ico"
+ENGINE ICON "../internal/goldfish.ico"
 VS_VERSION_INFO VERSIONINFO
         FILEVERSION 1,0,0,0
         PRODUCTVERSION 1,0,0,0

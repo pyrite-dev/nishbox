@@ -11,6 +11,8 @@ int main(int argc, char** argv) {
 	gf_get_version(&ver);
 
 	printf("GoldFish Engine version: %s\n", ver.full);
+	printf("Thread model: %s\n", ver.thread);
+	printf("Renderer: %s on %s\n", ver.driver, ver.backend);
 
 	return 0;
 }
