@@ -7,4 +7,6 @@ multiplayer sandbox game i might work on
  - [Open Dynamics Engine](https://ode.org)
  - [zlib](https://zlib.net)
  - [Lua](https://lua.org)
- - [stb_image](https://github.com/nothings/stb)
+ - [stb](https://github.com/nothings/stb)
+ - [miniaudio](https://github.com/mackron/miniaudio)
+ - [Premake5](https://premake.github.io)
