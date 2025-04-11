@@ -13,3 +13,5 @@ Makefile
 /bin
 /obj
 /lib
+/engine/obj
+/engine/lib
