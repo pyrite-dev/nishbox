@@ -156,6 +156,7 @@ end
 function link_stuffs(cond)
 	filter({
 		"toolset:gcc or toolset:clang",
+		"system:windows",
 		cond
 	})
 		linkoptions({
