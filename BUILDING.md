@@ -15,3 +15,9 @@ Building NishBox is simple.
    
    GLFW backend is untested.
 2. Run `msbuild NishBox.sln`.
+
+## Note
+
+*nix ones are tested on NetBSD/amd64 and Debian GNU/Linux 12 x86_64.
+
+MSVC ones are tested on VS2008.
