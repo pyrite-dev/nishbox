@@ -373,10 +373,6 @@ project("Engine")
 		"external/ode/libccd/src/ccd/*.h",
 		"external/ode/libccd/src/*.c"
 	})
-	removefiles({
-		"external/ode/ode/src/collision_libccd.cpp",
-		"external/ode/ode/src/collision_libccd.h"
-	})
 
 	defines({
 		"dLIBCCD_ENABLED",
