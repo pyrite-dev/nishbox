@@ -79,131 +79,6 @@ newaction({
 	end
 })
 
-function generateheader(headerfile, placeholder, precstr)
-	if os.isfile(headerfile) then
-		return
-	end
-	local outfile = io.open(headerfile, "w")
-	for i in io.lines(headerfile .. ".in") do
-		local j,_ = string.gsub(i, placeholder, precstr)
-		outfile:write(j .. "\n")
-	end
-	outfile:close()
-end
-
-function default_stuffs()
-	characterset("MBCS")
-	defines({
-		"HAVE_STDARG_H=1",
-		"dIDEDOUBLE",
-		"CCD_IDEDOUBLE"
-	})
-	filter("toolset:not msc")
-		defines({
-			"HAVE_UNISTD_H=1"
-		})
-	filter("system:windows")
-		defines({
-			"THREAD_WIN32",
-			"WIN32"
-		})
-	filter("system:not windows")
-		defines({
-			"THREAD_POSIX"
-		})
-	filter("platforms:Native")
-		includedirs({
-			"/usr/local/include",
-			"/usr/X11R*/include"
-		})
-		libdirs({
-			"/usr/local/lib",
-			"/usr/X11R*/lib"
-		})
-	filter({
-		"platforms:Native",
-		"system:bsd"
-	})
-		includedirs({
-			"/usr/pkg/include"
-		})
-		libdirs({
-			"/usr/pkg/lib"
-		})
-
-	for k,v in pairs(backends) do
-		for k2,v2 in pairs(v["backends"]) do
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2
-			})
-				defines({
-					"DRV_" .. string.upper(k),
-					"USE_" .. string.upper(k2)
-				})
-		end
-	end
-
-	filter({})
-		includedirs({
-			"deps/include"
-		})
-		libdirs({
-			"deps/lib"
-		})
-end
-
-function link_stuffs(cond)
-	filter({
-		"toolset:gcc or toolset:clang",
-		"system:windows",
-		cond
-	})
-		linkoptions({
-			"-static-libgcc",
-			"-static-libstdc++"
-		})
-		links({
-			"stdc++:static"
-		})
-	for k,v in pairs(backends) do
-		for k2,v2 in pairs(v["backends"]) do
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:windows",
-				cond
-			})
-				links(v.windows)
-				links(v2[2])
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:not windows",
-				cond
-			})
-				links(v.unix)
-				links(v2[2])
-		end
-	end
-	filter({
-		"system:windows",
-		cond
-	})
-		links({
-			"user32",
-			"ws2_32"
-		})
-	filter({
-		"system:not windows",
-		cond
-	})
-		links({
-			"m",
-			"pthread"
-		})
-end
-
 function msvc_filters()
 	for k,rt in ipairs({"Debug", "Release"}) do
 	filter({
@@ -224,6 +99,8 @@ function msvc_filters()
 	end
 end
 
+include "engine"
+
 project("NishBox")
 	kind("ConsoleApp")
 	language("C")
@@ -236,10 +113,10 @@ project("NishBox")
 		"src/*.c"
 	})
 	links({
-		"Engine"
+		"GoldFish"
 	})
-	default_stuffs()
-	link_stuffs("options:engine=static")
+	-- Call this if you are gonna use my engine...
+	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
 		files({
 			"src/*.rc"
@@ -256,10 +133,8 @@ project("NishBox")
 		optimize("On")
 	msvc_filters()
 	filter({
-			"options:cc=msc",
-			"options:engine=static"
-		})
+		"options:cc=msc",
+		"options:engine=static"
+	})
 		linkoptions({"/MANIFEST"})
 	filter({})
-
-include "engine"

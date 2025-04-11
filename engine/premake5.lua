@@ -1,4 +1,152 @@
-project("Engine")
+function gf_default_stuffs()
+	filter({})
+	characterset("MBCS")
+	defines({
+		"HAVE_STDARG_H=1",
+		"dIDEDOUBLE",
+		"CCD_IDEDOUBLE"
+	})
+	filter("toolset:not msc")
+		defines({
+			"HAVE_UNISTD_H=1"
+		})
+	filter("system:windows")
+		defines({
+			"THREAD_WIN32",
+			"WIN32"
+		})
+	filter("system:not windows")
+		defines({
+			"THREAD_POSIX"
+		})
+	filter("platforms:Native")
+		includedirs({
+			"/usr/local/include",
+			"/usr/X11R*/include"
+		})
+		libdirs({
+			"/usr/local/lib",
+			"/usr/X11R*/lib"
+		})
+	filter({
+		"platforms:Native",
+		"system:bsd"
+	})
+		includedirs({
+			"/usr/pkg/include"
+		})
+		libdirs({
+			"/usr/pkg/lib"
+		})
+
+	for k,v in pairs(backends) do
+		for k2,v2 in pairs(v["backends"]) do
+			filter({
+				"options:backend=" .. k,
+				"options:" .. k .. "=" .. k2
+			})
+				defines({
+					"DRV_" .. string.upper(k),
+					"USE_" .. string.upper(k2)
+				})
+		end
+	end
+
+	filter({})
+end
+
+function gf_generateheader(headerfile, placeholder, precstr)
+	if os.isfile(headerfile) then
+		return
+	end
+	local outfile = io.open(headerfile, "w")
+	for i in io.lines(headerfile .. ".in") do
+		local j,_ = string.gsub(i, placeholder, precstr)
+		outfile:write(j .. "\n")
+	end
+	outfile:close()
+end
+
+function gf_link_stuffs(cond)
+	filter({
+		"toolset:gcc or toolset:clang",
+		"system:windows",
+		cond
+	})
+		linkoptions({
+			"-static-libgcc",
+			"-static-libstdc++"
+		})
+		links({
+			"stdc++:static"
+		})
+	filter({
+		"toolset:gcc or toolset:clang",
+		"system:not windows",
+		cond
+	})
+		links({
+			"stdc++"
+		})
+	for k,v in pairs(backends) do
+		for k2,v2 in pairs(v["backends"]) do
+			filter({
+				"options:backend=" .. k,
+				"options:" .. k .. "=" .. k2,
+				"system:windows",
+				cond
+			})
+				links(v.windows)
+				links(v2[2])
+			filter({
+				"options:backend=" .. k,
+				"options:" .. k .. "=" .. k2,
+				"system:not windows",
+				cond
+			})
+				links(v.unix)
+				links(v2[2])
+		end
+	end
+	filter({
+		"system:windows",
+		cond
+	})
+		links({
+			"user32",
+			"ws2_32"
+		})
+	filter({
+		"system:not windows",
+		cond
+	})
+		links({
+			"m",
+			"pthread"
+		})
+end
+
+function gf_msvc_filters()
+	for k,rt in ipairs({"Debug", "Release"}) do
+	filter({
+			"options:cc=msc",
+			"options:engine=dynamic",
+			"configurations:" .. rt
+		})
+		linkoptions({"/MANIFEST"})
+		runtime(rt)
+		staticruntime("Off")
+	filter({
+			"options:cc=msc",
+			"options:engine=static",
+			"configurations:" .. rt
+		})
+		runtime(rt)
+		staticruntime("On")
+	end
+end
+
+project("GoldFish")
 	language("C")
 	filter("options:engine=static")
 		kind("StaticLib")
@@ -18,7 +166,7 @@ project("Engine")
 		files({
 			"engine.rc"		
 		})
-	link_stuffs("options:engine=dynamic")
+	gf_link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
 			"DEBUG",
@@ -31,7 +179,7 @@ project("Engine")
 			"dNODEBUG",
 		})
 		optimize("On")
-	msvc_filters()
+	gf_msvc_filters()
 	filter({})
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
@@ -131,7 +279,7 @@ project("Engine")
 	})
 	-- End ODE
 
-	default_stuffs()
+	gf_default_stuffs()
 	for k,v in pairs(backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
@@ -165,7 +313,7 @@ if _ACTION and _ACTION ~= "clean" then
 		outfile:close()
 	end
 
-	generateheader("external/ode/include/ode/precision.h", "@ODE_PRECISION@", "dDOUBLE")
-	generateheader("external/ode/libccd/src/ccd/precision.h", "@CCD_PRECISION@", "CCD_DOUBLE")
-	generateheader("external/ode/include/ode/version.h", "@ODE_VERSION@", "Custom-ODE")
+	gf_generateheader("external/ode/include/ode/precision.h", "@ODE_PRECISION@", "dDOUBLE")
+	gf_generateheader("external/ode/libccd/src/ccd/precision.h", "@CCD_PRECISION@", "CCD_DOUBLE")
+	gf_generateheader("external/ode/include/ode/version.h", "@ODE_VERSION@", "Custom-ODE")
 end
