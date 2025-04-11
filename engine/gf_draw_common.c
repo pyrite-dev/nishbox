@@ -19,11 +19,11 @@
 #include <string.h>
 #include <math.h>
 
-GF_EXPORT void gf_draw_begin(void) { gf_draw_platform_begin(); }
+void gf_draw_begin(void) { gf_draw_platform_begin(); }
 
-GF_EXPORT void gf_draw_end(void) { gf_draw_platform_end(); }
+void gf_draw_end(void) { gf_draw_platform_end(); }
 
-GF_EXPORT gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
+gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	gf_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
 	draw->x	      = 0;
@@ -55,16 +55,16 @@ GF_EXPORT gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	return draw;
 }
 
-GF_EXPORT void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
+void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 
 /* Runs every frame */
-GF_EXPORT void gf_draw_frame(gf_draw_t* draw) {
+void gf_draw_frame(gf_draw_t* draw) {
 	if(draw->draw != NULL) draw->draw(draw);
 }
 
-GF_EXPORT void gf_draw_set_draw(gf_draw_t* draw, void (*func)(gf_draw_t*)) { draw->draw = func; }
+void gf_draw_set_draw(gf_draw_t* draw, void (*func)(gf_draw_t*)) { draw->draw = func; }
 
-GF_EXPORT int gf_draw_step(gf_draw_t* draw) {
+int gf_draw_step(gf_draw_t* draw) {
 	int ret = gf_draw_platform_step(draw);
 	if(ret != 0) return ret;
 	draw->close = 0;
@@ -72,7 +72,7 @@ GF_EXPORT int gf_draw_step(gf_draw_t* draw) {
 	return 0;
 }
 
-GF_EXPORT void gf_draw_destroy(gf_draw_t* draw) {
+void gf_draw_destroy(gf_draw_t* draw) {
 	int i;
 	if(draw->running) {
 		gf_draw_driver_destroy(draw);

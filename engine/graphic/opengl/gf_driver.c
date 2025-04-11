@@ -30,7 +30,7 @@ GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
 #define NEAREST_POW2(x) pow((2), gf_log2((int)(x) + 1))
 
-GF_EXPORT gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data) {
+gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data) {
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
 	int			  w = NEAREST_POW2(width);
 	int			  h = NEAREST_POW2(height);
@@ -58,12 +58,12 @@ GF_EXPORT gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* d
 	return r;
 }
 
-GF_EXPORT void gf_draw_driver_destroy_texture(gf_draw_driver_texture_t* t) {
+void gf_draw_driver_destroy_texture(gf_draw_driver_texture_t* t) {
 	glDeleteTextures(1, &t->id);
 	free(t);
 }
 
-GF_EXPORT void gf_draw_driver_init(gf_draw_t* draw) {
+void gf_draw_driver_init(gf_draw_t* draw) {
 	int i;
 	int w, h, ch;
 	draw->driver = malloc(sizeof(*draw->driver));
@@ -110,7 +110,7 @@ GF_EXPORT void gf_draw_driver_init(gf_draw_t* draw) {
 	draw->driver->quadric = gluNewQuadric();
 }
 
-GF_EXPORT int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
+int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
 	int	    ret = gf_draw_platform_has_extension(draw, query);
 	const char* ext = NULL;
 	const char* ptr;
@@ -122,7 +122,7 @@ GF_EXPORT int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 }
 
-GF_EXPORT void gf_draw_driver_reshape(gf_draw_t* draw) {
+void gf_draw_driver_reshape(gf_draw_t* draw) {
 	glViewport(0, 0, (GLint)draw->width, (GLint)draw->height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -132,7 +132,7 @@ GF_EXPORT void gf_draw_driver_reshape(gf_draw_t* draw) {
 	glLoadIdentity();
 }
 
-GF_EXPORT void gf_draw_driver_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_draw_driver_texture_t* texture, float r, float g, float b, float a) {
+void gf_draw_driver_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_draw_driver_texture_t* texture, float r, float g, float b, float a) {
 	gf_graphic_begin_2d(draw);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
@@ -158,14 +158,14 @@ GF_EXPORT void gf_draw_driver_draw_texture(gf_draw_t* draw, float x, float y, fl
 	gf_graphic_end_2d(draw);
 }
 
-GF_EXPORT void gf_draw_driver_destroy(gf_draw_t* draw) {
+void gf_draw_driver_destroy(gf_draw_t* draw) {
 	int i;
 	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
 		gf_destroy_texture(draw->font[i]);
 	}
 }
 
-GF_EXPORT void gf_draw_driver_before(gf_draw_t* draw) {
+void gf_draw_driver_before(gf_draw_t* draw) {
 	GLfloat lightpos[3];
 	GF_VECTOR_COPY(draw->light, lightpos);
 
@@ -178,7 +178,7 @@ GF_EXPORT void gf_draw_driver_before(gf_draw_t* draw) {
 	gf_graphic_clear(draw);
 }
 
-GF_EXPORT void gf_draw_driver_after(gf_draw_t* draw) {
+void gf_draw_driver_after(gf_draw_t* draw) {
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
 }

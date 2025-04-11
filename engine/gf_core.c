@@ -21,7 +21,7 @@
 #include <string.h>
 #include <stdio.h>
 
-GF_EXPORT void gf_engine_begin(void) {
+void gf_engine_begin(void) {
 	gf_version_t ver;
 #ifdef _WIN32
 	WSADATA wsa;
@@ -40,12 +40,12 @@ GF_EXPORT void gf_engine_begin(void) {
 	gf_physics_begin();
 }
 
-GF_EXPORT void gf_engine_end(void) {
+void gf_engine_end(void) {
 	gf_physics_end();
 	gf_draw_end();
 }
 
-GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui) {
+gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	gf_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
 	engine->log = stderr;
@@ -66,7 +66,7 @@ GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	return engine;
 }
 
-GF_EXPORT void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*)) { gf_draw_set_draw(engine->draw, func); }
+void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*)) { gf_draw_set_draw(engine->draw, func); }
 
 /**
  * Writing this so I don't forget
@@ -81,7 +81,7 @@ GF_EXPORT void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*))
  * 6. _gf_draw_step swaps buffers
  * 7. Comes back here
  */
-GF_EXPORT void gf_engine_loop(gf_engine_t* engine) {
+void gf_engine_loop(gf_engine_t* engine) {
 	while(1) {
 		if(engine->draw != NULL) {
 			if(gf_draw_step(engine->draw) != 0) break;
@@ -89,7 +89,7 @@ GF_EXPORT void gf_engine_loop(gf_engine_t* engine) {
 	}
 }
 
-GF_EXPORT void gf_engine_destroy(gf_engine_t* engine) {
+void gf_engine_destroy(gf_engine_t* engine) {
 	if(engine->physics != NULL) gf_physics_destroy(engine->physics);
 	if(engine->draw != NULL) gf_draw_destroy(engine->draw);
 	free(engine);

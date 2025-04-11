@@ -58,7 +58,7 @@
 #if defined(_WIN32) && defined(_DLL)
 #define GF_EXPORT __declspec(dllexport)
 #else
-#define GF_EXPORT
+#define GF_EXPORT extern
 #endif
 
 /* Expose them by default */

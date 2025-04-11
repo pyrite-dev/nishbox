@@ -15,7 +15,7 @@
 
 #define GF_VERSION "1.0.0"
 
-GF_EXPORT void gf_get_version(gf_version_t* version) {
+void gf_get_version(gf_version_t* version) {
 	char* cpstr = malloc(512);
 	int   i;
 	int   incr = 0;

@@ -16,13 +16,13 @@ gf_engine_t* engine;
 void draw_frame(gf_draw_t* draw) {
 	char d[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	char str[2];
-	str[1] = 0;
-	int y, x;
-	int i = 0;
-	int s = 8;
+	int  y, x;
+	int  i = 0;
+	int  s = 8;
 
 	int r = 0, g = 0, b = 0;
 	int max = 5;
+	str[1]	= 0;
 
 	for(y = 0; y < draw->height; y += s) {
 		for(x = 0; x < draw->width; x += s / 2) {
