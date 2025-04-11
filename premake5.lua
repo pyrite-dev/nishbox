@@ -279,6 +279,7 @@ project("Engine")
 	link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
+			"LUA_DEBUG",
 			"DEBUG",
 			"_DEBUG"
 		})
@@ -307,6 +308,11 @@ project("Engine")
 		"external/lua/l*.h",
 		"external/lua/l*.c",
 	})
+	filter("configurations:Release")
+		removefiles({
+			"external/lua/ltests.c"
+		})
+	filter({})
 	removefiles({
 		"external/lua/lua.c"
 	})
@@ -340,7 +346,8 @@ project("Engine")
 		"external/ode/ode/src/*.cpp"
 	})
 	removefiles({
-		"external/ode/ode/src/collision_std.cpp"
+		"external/ode/ode/src/collision_trimesh_trimesh_old.cpp"
+		"external/ode/ode/src/collision_trimesh_opcode.cpp"
 	})
 
 	includedirs({
