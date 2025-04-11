@@ -221,7 +221,6 @@ function msvc_filters()
 		runtime(rt)
 		staticruntime("On")
 	end
-	filter({})
 end
 
 project("NishBox")
@@ -255,6 +254,7 @@ project("NishBox")
 		})
 		optimize("On")
 	msvc_filters()
+	filter({})
 
 project("Engine")
 	language("C")
@@ -279,7 +279,6 @@ project("Engine")
 	link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
-			"LUA_DEBUG",
 			"DEBUG",
 			"_DEBUG"
 		})
@@ -291,6 +290,7 @@ project("Engine")
 		})
 		optimize("On")
 	msvc_filters()
+	filter({})
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
 	includedirs({
@@ -308,10 +308,10 @@ project("Engine")
 		"external/lua/l*.h",
 		"external/lua/l*.c",
 	})
-	filter("configurations:Release")
-		removefiles({
-			"external/lua/ltests.c"
-		})
+	removefiles({
+		"external/lua/ltests.c",
+		"external/lua/ltests.h"
+	})
 	filter({})
 	removefiles({
 		"external/lua/lua.c"
