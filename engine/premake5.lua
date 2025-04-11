@@ -1,3 +1,52 @@
+gf_backends = {
+	opengl = {
+		name = "OpenGL",
+		default = "glfw",
+		unix = {"GL", "GLU"},
+		windows = {"opengl32", "glu32"},
+		backends = {
+			glx = {"GLX", {"X11"}},
+			wgl = {"WGL", {"gdi32"}},
+			glfw = {"GLFW", {"glfw"}}
+		}
+	}
+}
+
+gf_l = {}
+for k,v in pairs(gf_backends) do
+	allowed = {}
+	for k2,v2 in pairs(v["backends"]) do
+		table.insert(allowed, {k2, v2[1]})
+	end
+	newoption({
+		trigger = k,
+		value = "API",
+		description = "Choose a backend for " .. v["name"],
+		allowed = allowed,
+		default = v["default"]
+	})
+	table.insert(gf_l, {k, v["name"]})
+end
+
+newoption({
+	trigger = "backend",
+	value = "API",
+	description = "Choose a backend for rendering",
+	allowed = gf_l,
+	default = "opengl"
+})
+
+newoption({
+	trigger = "engine",
+	value = "type",
+	description = "Choose an engine type",
+	allowed = {
+		{"static", "Static library"},
+		{"dynamic", "Dynamic library"}
+	},
+	default = "static"
+})
+	
 function gf_default_stuffs()
 	filter({})
 	characterset("MBCS")
@@ -39,7 +88,7 @@ function gf_default_stuffs()
 			"/usr/pkg/lib"
 		})
 
-	for k,v in pairs(backends) do
+	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
 				"options:backend=" .. k,
@@ -88,7 +137,7 @@ function gf_link_stuffs(cond)
 		links({
 			"stdc++"
 		})
-	for k,v in pairs(backends) do
+	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
 				"options:backend=" .. k,
@@ -280,7 +329,7 @@ project("GoldFish")
 	-- End ODE
 
 	gf_default_stuffs()
-	for k,v in pairs(backends) do
+	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
 				"options:backend=" .. k,
