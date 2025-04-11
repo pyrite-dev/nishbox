@@ -203,6 +203,27 @@ function link_stuffs(cond)
 		})
 end
 
+function msvc_filters()
+	for k,rt in ipairs({"Debug", "Release"}) do
+	filter({
+			"options:cc=msc",
+			"options:engine=dynamic",
+			"configurations:" .. rt
+		})
+		linkoptions({"/MANIFEST"})
+		runtime(rt)
+		staticruntime("Off")
+	filter({
+			"options:cc=msc",
+			"options:engine=static",
+			"configurations:" .. rt
+		})
+		runtime(rt)
+		staticruntime("On")
+	end
+	filter({})
+end
+
 project("NishBox")
 	kind("ConsoleApp")
 	language("C")
@@ -233,24 +254,7 @@ project("NishBox")
 			"NDEBUG"
 		})
 		optimize("On")
-	for k,rt in ipairs({"Debug", "Release"}) do
-	filter({
-			"options:cc=msc",
-			"options:engine=dynamic",
-			"configurations:" .. rt
-		})
-		linkoptions {"/MANIFEST"}
-		runtime(rt)
-		staticruntime("Off")
-	filter({
-			"options:cc=msc",
-			"options:engine=static",
-			"configurations:" .. rt
-		})
-		linkoptions {"/MANIFEST"}
-		runtime(rt)
-		staticruntime("On")
-	end
+	msvc_filters()
 
 project("Engine")
 	language("C")
@@ -285,25 +289,7 @@ project("Engine")
 			"dNODEBUG",
 		})
 		optimize("On")
-	for k,rt in ipairs({"Debug", "Release"}) do
-	filter({
-			"options:cc=msc",
-			"options:engine=dynamic",
-			"configurations:" .. rt
-		})
-		linkoptions {"/MANIFEST"}
-		runtime(rt)
-		staticruntime("Off")
-	filter({
-			"options:cc=msc",
-			"options:engine=static",
-			"configurations:" .. rt
-		})
-		linkoptions {"/MANIFEST"}
-		runtime(rt)
-		staticruntime("On")
-	end
-	filter({})
+	msvc_filters()
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
 	includedirs({
@@ -375,15 +361,16 @@ project("Engine")
 		"external/ode/GIMPACT/**.cpp"
 	})
 
-	removefiles({
-		"external/ode/ode/src/collision_trimesh_opcode.cpp"
-	})
-
 	files({
 		"external/ode/libccd/src/custom/ccdcustom/*.h",
 		"external/ode/libccd/src/ccd/*.h",
 		"external/ode/libccd/src/*.c"
 	})
+	removefiles({
+		"external/ode/ode/src/collision_libccd.cpp",
+		"external/ode/ode/src/collision_libccd.h"
+	})
+
 	defines({
 		"dLIBCCD_ENABLED",
 		"dLIBCCD_INTERNAL",
