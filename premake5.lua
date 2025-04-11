@@ -254,6 +254,11 @@ project("NishBox")
 		})
 		optimize("On")
 	msvc_filters()
+	filter({
+			"options:cc=msc",
+			"options:engine=static"
+		})
+		linkoptions({"/MANIFEST"})
 	filter({})
 
 project("Engine")
