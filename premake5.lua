@@ -346,7 +346,7 @@ project("Engine")
 		"external/ode/ode/src/*.cpp"
 	})
 	removefiles({
-		"external/ode/ode/src/collision_trimesh_trimesh_old.cpp"
+		"external/ode/ode/src/collision_trimesh_trimesh_old.cpp",
 		"external/ode/ode/src/collision_trimesh_opcode.cpp"
 	})
 
