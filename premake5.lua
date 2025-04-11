@@ -55,6 +55,59 @@ end
 
 include "engine"
 
+project("EngineInfo")
+	filter("system:windows")
+		kind("WindowedApp")
+	filter("system:not windows")
+		kind("ConsoleApp")
+	filter({})
+	language("C")
+	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
+	targetname("nishbox_engineinfo")
+	includedirs({
+		"engine/include"
+	})
+	files({
+		"src/engineinfo/*.c"
+	})
+	removefiles({
+		"src/engineinfo/main_windows.c"
+	})
+	filter("system:windows")
+		removefiles({
+			"src/engineinfo/main_console.c"
+		})
+		files({
+			"src/engineinfo/main_windows.c"
+		})
+	filter({})
+	links({
+		"GoldFish"
+	})
+	-- Call this if you are gonna use my engine...
+	gf_link_stuffs("options:engine=static")
+	filter("system:windows")
+		files({
+			"src/*.rc"
+		})
+	filter("configurations:Debug")
+		defines({
+			"DEBUG"
+		})
+		symbols("On")
+	filter("configurations:Release")
+		defines({
+			"NDEBUG"
+		})
+		optimize("On")
+	msvc_filters()
+	filter({
+		"options:cc=msc",
+		"options:engine=static"
+	})
+		linkoptions({"/MANIFEST"})
+	filter({})
+
 project("NishBoxServer")
 	kind("ConsoleApp")
 	language("C")

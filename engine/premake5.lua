@@ -68,26 +68,6 @@ function gf_default_stuffs()
 		defines({
 			"THREAD_POSIX"
 		})
-	filter("platforms:Native")
-		includedirs({
-			"/usr/local/include",
-			"/usr/X11R*/include"
-		})
-		libdirs({
-			"/usr/local/lib",
-			"/usr/X11R*/lib"
-		})
-	filter({
-		"platforms:Native",
-		"system:bsd"
-	})
-		includedirs({
-			"/usr/pkg/include"
-		})
-		libdirs({
-			"/usr/pkg/lib"
-		})
-
 	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({
@@ -117,6 +97,30 @@ function gf_generateheader(headerfile, placeholder, precstr)
 end
 
 function gf_link_stuffs(cond)
+	filter({
+		"platforms:Native",
+		"system:not windows"
+	})
+		includedirs({
+			"/usr/local/include",
+			"/usr/X11R*/include"
+		})
+		libdirs({
+			"/usr/local/lib",
+			"/usr/X11R*/lib"
+		})
+	filter({
+		"platforms:Native",
+		"system:bsd"
+	})
+		includedirs({
+			"/usr/pkg/include"
+		})
+		libdirs({
+			"/usr/pkg/lib"
+		})
+
+
 	filter({
 		"toolset:gcc or toolset:clang",
 		"system:windows",
