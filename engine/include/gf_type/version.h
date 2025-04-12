@@ -15,6 +15,7 @@ GF_DECLARE_TYPE(version, {
 	int  major;
 	int  minor;
 	int  patch;
+	char date[64];
 	char full[64];
 	char backend[32];
 	char driver[32];

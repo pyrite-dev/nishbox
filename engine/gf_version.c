@@ -21,6 +21,8 @@ void gf_get_version(gf_version_t* version) {
 	int   incr = 0;
 	int   old  = 0;
 
+	strcpy(version->date, __DATE__);
+
 	strcpy(version->full, GF_VERSION);
 	strcpy(version->zlib, ZLIB_VERSION);
 

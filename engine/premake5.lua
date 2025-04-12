@@ -248,6 +248,14 @@ project("GoldFish")
 		"external/lua/l*.h",
 		"external/lua/l*.c",
 	})
+	filter({
+		"system:windows",
+		"options:engine=dynamic"
+	})
+		files({
+			"engine.rc"
+		})
+	filter({})
 	removefiles({
 		"external/lua/ltests.c",
 		"external/lua/ltests.h"

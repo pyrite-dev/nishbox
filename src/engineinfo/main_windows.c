@@ -7,7 +7,10 @@
 /* Standard */
 #include <stdio.h>
 
+#define GUI_BUTTON_OK 1000
+
 HINSTANCE    hInst;
+HWND	     button_ok;
 HFONT	     monospace;
 gf_version_t ver;
 char	     vertxt[512];
@@ -30,6 +33,14 @@ void ShowBitmapSize(HWND hWnd, HDC hdc, const char* name, int x, int y, int w, i
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	switch(msg) {
+	case WM_COMMAND: {
+		int trig = LOWORD(wp);
+		int ev	 = HIWORD(wp);
+		if(trig == GUI_BUTTON_OK && ev == BN_CLICKED) {
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
+		}
+		break;
+	}
 	case WM_CLOSE: {
 		DestroyWindow(hWnd);
 		break;
@@ -39,7 +50,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 		break;
 	}
 	case WM_CREATE: {
+		RECT rc;
+		int  sz;
+		int  width;
+		int  height;
+		int  padding;
+
+		GetClientRect(hWnd, &rc);
+		width	= rc.right - rc.left;
+		height	= rc.bottom - rc.top;
+		sz	= height * 4 / 5;
+		padding = height / 2 - sz / 2;
+
 		monospace = (HFONT)GetStockObject(SYSTEM_FIXED_FONT);
+		button_ok = CreateWindow("BUTTON", "&OK", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, width - padding - 40, height - padding - 20, 40, 20, hWnd, (HMENU)GUI_BUTTON_OK, hInst, NULL);
 		break;
 	}
 	case WM_PAINT: {
@@ -121,8 +145,9 @@ int WINAPI WinMain(HINSTANCE hCurInst, HINSTANCE hPrevInst, LPSTR lpsCmdLine, in
 	gf_get_version(&ver);
 	vertxt[0] = 0;
 	sprintf(vertxt + strlen(vertxt), "GoldFish Engine %s\n", ver.full);
-	sprintf(vertxt + strlen(vertxt), "Thread Model: %s\n", ver.thread);
-	sprintf(vertxt + strlen(vertxt), "Renderer    : %s on %s\n", ver.driver, ver.backend);
+	sprintf(vertxt + strlen(vertxt), "Build Date   : %s\n", ver.date);
+	sprintf(vertxt + strlen(vertxt), "Thread Model : %s\n", ver.thread);
+	sprintf(vertxt + strlen(vertxt), "Renderer     : %s on %s\n", ver.driver, ver.backend);
 
 	if(!InitApp()) {
 		return FALSE;

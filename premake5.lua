@@ -94,6 +94,9 @@ project("EngineInfo")
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
+		defines({
+			"FD_ENGINEINFO"
+		})
 		files({
 			"src/*.rc"
 		})
@@ -127,6 +130,9 @@ project("NishBoxServer")
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
+		defines({
+			"FD_SERVER"
+		})
 		files({
 			"src/*.rc"
 		})
@@ -160,6 +166,9 @@ project("NishBox")
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
+		defines({
+			"FD_NISHBOX"
+		})
 		files({
 			"src/*.rc"
 		})

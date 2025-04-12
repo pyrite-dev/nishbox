@@ -28,6 +28,7 @@ void gf_engine_begin(void) {
 #endif
 	gf_get_version(&ver);
 	gf_function_log(NULL, "GoldFish Engine %s", ver.full);
+	gf_function_log(NULL, "Build date: %s", ver.date);
 	gf_function_log(NULL, "Lua %s", ver.lua);
 	gf_function_log(NULL, "zlib %s", ver.zlib);
 	gf_function_log(NULL, "Thread model: %s", ver.thread);
