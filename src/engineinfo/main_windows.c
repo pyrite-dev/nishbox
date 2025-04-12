@@ -13,7 +13,7 @@ gf_version_t ver;
 char	     vertxt[512];
 
 void ShowBitmapSize(HWND hWnd, HDC hdc, const char* name, int x, int y, int w, int h) {
-	HBITMAP hBitmap = LoadBitmap((HINSTANCE)GetWindowLongPtr(hWnd, GWL_HINSTANCE), name);
+	HBITMAP hBitmap = LoadBitmap(hInst, name);
 	BITMAP	bmp;
 	HDC	hmdc;
 	GetObject(hBitmap, sizeof(bmp), &bmp);
