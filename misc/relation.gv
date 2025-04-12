@@ -1,0 +1,68 @@
+digraph relation {
+	graph [
+		label = "GoldFish Engine Relation",
+		rankdir = LR,
+		nodesep = 1.1,
+		ranksep = 1.05
+	];
+	node [
+		shape = box
+	];
+
+	subgraph cluster_e {
+		label = "GoldFish Engine";
+		gf [
+			label = "gf_engine_t"
+		];
+	};
+
+	subgraph cluster_d {
+		label = "Drawing Interface";
+		dd [
+			label = "gf_draw_driver_t"
+		];
+		ddopengl [
+			label = "OpenGL"
+		];
+		dp [
+			label = "gf_draw_platform_t"
+		];
+		dpglx [
+			label = "GLX"
+		];
+		dpwgl [
+			label = "WGL"
+		];
+		dpglfw [
+			label = "GLFW"
+		];
+		dt [
+			label = "gf_draw_t"
+		];
+	};
+
+	subgraph cluster_g {
+		label = "Graphic";
+		gi [
+			label = "Graphic Inteface"
+		];
+		gui [
+			label = "GUI"
+		];
+	};
+
+	gf -> dt;
+
+	dt -> dd;
+	dt -> dp;
+
+	dp -> dd;
+
+	dd -> {ddopengl};
+
+	dp -> {dpglx dpwgl dpglfw};
+
+	dt -> gi;
+	dt -> gui;
+	gui -> gi;
+}
