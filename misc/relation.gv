@@ -95,7 +95,6 @@ digraph relation {
 		glu [
 			label = "GLU"
 		];
-
 		glx [
 			label = "GLX"
 		];
