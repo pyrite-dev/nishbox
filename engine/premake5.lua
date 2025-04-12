@@ -212,13 +212,6 @@ project("GoldFish")
 			"ODE_DLL",
 			"_DLL"
 		})
-	filter({
-		"options:engine=dynamic",
-		"system:windows"
-	})
-		files({
-			"engine.rc"		
-		})
 	gf_link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
