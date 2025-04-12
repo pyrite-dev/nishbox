@@ -96,18 +96,35 @@ function gf_generateheader(headerfile, placeholder, precstr)
 end
 
 function gf_link_stuffs(cond)
+	filter({})
 	filter({
 		"platforms:Native",
 		"system:not windows"
 	})
 		includedirs({
 			"/usr/local/include",
-			"/usr/X11R*/include"
+			"/usr/X11R6/include",
+			"/usr/X11R7/include",
+			"/usr/X11/include"
 		})
 		libdirs({
 			"/usr/local/lib",
-			"/usr/X11R*/lib"
+			"/usr/X11R6/lib",
+			"/usr/X11R7/lib",
+			"/usr/X11/lib"
 		})
+	filter({
+		"platforms:Native",
+		"system:not windows",
+		"toolset:gcc or toolset:clang"
+	})
+		linkoptions({
+			"-Wl,-R/usr/local/lib",
+			"-Wl,-R/usr/X11R6/lib",
+			"-Wl,-R/usr/X11R7/lib",
+			"-Wl,-R/usr/X11/lib"
+		})
+
 	filter({
 		"platforms:Native",
 		"system:bsd"
@@ -118,7 +135,14 @@ function gf_link_stuffs(cond)
 		libdirs({
 			"/usr/pkg/lib"
 		})
-
+	filter({
+		"platforms:Native",
+		"system:bsd",
+		"toolset:gcc or toolset:clang"
+	})
+		linkoptions({
+			"-Wl,-R/usr/pkg/lib"
+		})
 
 	filter({
 		"toolset:gcc or toolset:clang",
@@ -176,6 +200,7 @@ function gf_link_stuffs(cond)
 			"m",
 			"pthread"
 		})
+	filter({})
 end
 
 function gf_msvc_filters()
@@ -201,10 +226,10 @@ function gf_msvc_filters()
 		runtime(rt)
 		staticruntime("On")
 	end
+	filter({})
 end
 
 project("GoldFish")
-	language("C")
 	filter("options:engine=static")
 		kind("StaticLib")
 		defines({
@@ -216,7 +241,6 @@ project("GoldFish")
 			"ODE_DLL",
 			"_DLL"
 		})
-	gf_link_stuffs("options:engine=dynamic")
 	filter("configurations:Debug")
 		defines({
 			"DEBUG",
@@ -226,11 +250,10 @@ project("GoldFish")
 	filter("configurations:Release")
 		defines({
 			"NDEBUG",
-			"dNODEBUG",
+			"dNODEBUG"
 		})
 		optimize("On")
 	gf_msvc_filters()
-	filter({})
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
 	targetname("goldfish")
 	includedirs({
@@ -272,7 +295,6 @@ project("GoldFish")
 		files({
 			"thread/posix/gf_thread.c"
 		})
-	filter({})
 
 	-- Begin ODE
 	includedirs({
@@ -337,6 +359,7 @@ project("GoldFish")
 	-- End ODE
 
 	gf_default_stuffs()
+	gf_link_stuffs("options:engine=dynamic")
 	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
 			filter({

@@ -20,6 +20,8 @@ filter("platforms:Win64")
 	architecture("x86_64")
 	gccprefix("x86_64-w64-mingw32-")
 
+filter({})
+
 newaction({
 	trigger = "clean",
 	description = "Clean the files",
@@ -58,6 +60,7 @@ function msvc_filters()
 		postbuildcommands({
 			"mt -manifest $(TargetDir)$(TargetName).exe.manifest -outputresource:$(TargetDir)$(TargetName).exe"
 		})
+	filter({})
 end
 
 include "engine"
@@ -111,7 +114,6 @@ project("EngineInfo")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({})
 
 project("NishBoxServer")
 	kind("ConsoleApp")
@@ -147,7 +149,6 @@ project("NishBoxServer")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({})
 
 project("NishBox")
 	kind("ConsoleApp")
@@ -183,4 +184,3 @@ project("NishBox")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({})
