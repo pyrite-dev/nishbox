@@ -13,13 +13,9 @@ gf_version_t ver;
 char	     vertxt[512];
 
 void ShowBitmapSize(HWND hWnd, HDC hdc, const char* name, int x, int y, int w, int h) {
-	HBITMAP hBitmap = LoadBitmap(hInst, name);
+	HBITMAP hBitmap = LoadBitmap((HINSTANCE)GetWindowLongPtr(hWnd, GWL_HINSTANCE), name);
 	BITMAP	bmp;
 	HDC	hmdc;
-	if(hBitmap == NULL){
-		MessageBox(NULL, "error", "error", MB_ICONERROR);
-		exit(0);
-	}
 	GetObject(hBitmap, sizeof(bmp), &bmp);
 	hmdc = CreateCompatibleDC(hdc);
 	SelectObject(hmdc, hBitmap);
