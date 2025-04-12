@@ -1,4 +1,4 @@
 #include <windows.h>
 
-NISHBOX ICON "../internal/icon.ico"
+GAME ICON "../internal/icon.ico"
 GOLDFISH_BMP BITMAP "../internal/goldfish.bmp"

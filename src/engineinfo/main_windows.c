@@ -85,12 +85,12 @@ BOOL InitApp(void) {
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
 	wc.hInstance	 = hInst;
-	wc.hIcon	 = LoadIcon(hInst, "NISHBOX");
+	wc.hIcon	 = LoadIcon(hInst, "GOLDFISH");
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = GetSysColorBrush(COLOR_MENU);
 	wc.lpszMenuName	 = NULL;
 	wc.lpszClassName = "nishbox";
-	wc.hIconSm	 = LoadIcon(hInst, "NISHBOX");
+	wc.hIconSm	 = LoadIcon(hInst, "GOLDFISH");
 	return RegisterClassEx(&wc);
 }
 

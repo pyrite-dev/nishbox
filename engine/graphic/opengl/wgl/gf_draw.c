@@ -121,12 +121,12 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
 	wc.hInstance	 = draw->platform->instance;
-	wc.hIcon	 = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hIcon	 = LoadIcon(draw->platform->instance, "GAME");
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName	 = NULL;
 	wc.lpszClassName = "goldfish";
-	wc.hIconSm	 = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hIconSm	 = LoadIcon(draw->platform->instance, "GAME");
 	if(!RegisterClassEx(&wc)) {
 		gf_function_log(NULL, "Failed to register class", "");
 		gf_draw_destroy(draw);
