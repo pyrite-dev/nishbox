@@ -2,67 +2,178 @@ digraph relation {
 	graph [
 		label = "GoldFish Engine Relation",
 		rankdir = LR,
-		nodesep = 1.1,
-		ranksep = 1.05
+		nodesep = 0.5,
+		ranksep = 1
+//		nodesep = 1.1,
+//		ranksep = 1.05
 	];
 	node [
 		shape = box
 	];
 
-	subgraph cluster_e {
+	subgraph cluster_user {
+		label = "Game";
+		up [
+			label = "Program"
+		];
+		uf [
+			label = "Frame callback"
+		];
+	};
+
+	subgraph cluster_engine {
 		label = "GoldFish Engine";
 		gf [
 			label = "gf_engine_t"
 		];
+		subgraph cluster_drawing {
+			label = "Drawing Interface";
+			dd [
+				label = "gf_draw_driver_t"
+			];
+			dp [
+				label = "gf_draw_platform_t"
+			];
+			dt [
+				label = "gf_draw_t"
+			];
+
+			subgraph cluster_graphic {
+				label = "Graphic";
+				gi [
+					label = "Graphic Inteface"
+				];
+				gui [
+					label = "GUI"
+				];
+			};
+		};
+
+		subgraph cluster_physics {
+			label = "Physics Interface";
+			pt [
+				label = "gf_physics_t"
+			];
+		};
+
+		subgraph cluster_thread {
+			label = "Thread Interface";
+			tt [
+				label = "gf_thread_t";
+			];
+			tct [
+				label = "gf_thread_context_t";
+			];
+		};
+
+		subgraph cluster_integrated {
+			label = "Integrated";
+			ode [
+				label = "ODE"
+			];
+			miniaudio [
+				label = "miniaudio"
+			];
+
+			subgraph cluster_stb {
+				label = "stb";
+				stb_image [
+					label = "stb_image"
+				];
+			};
+		};
 	};
 
-	subgraph cluster_d {
-		label = "Drawing Interface";
-		dd [
-			label = "gf_draw_driver_t"
+	subgraph cluster_external {
+		label = "External";
+		pthread [
+			label = "POSIX Thread"
 		];
-		ddopengl [
+		opengl [
 			label = "OpenGL"
 		];
-		dp [
-			label = "gf_draw_platform_t"
+		glu [
+			label = "GLU"
 		];
-		dpglx [
+
+		glx [
 			label = "GLX"
 		];
-		dpwgl [
-			label = "WGL"
-		];
-		dpglfw [
+		glfw [
 			label = "GLFW"
 		];
-		dt [
-			label = "gf_draw_t"
-		];
+
+		subgraph cluster_win32 {
+			label = "Win32 API";
+			win32thread [
+				label = "Win32 Thread"
+			];
+			wgl [
+				label = "WGL"
+			];
+		};
 	};
 
-	subgraph cluster_g {
-		label = "Graphic";
-		gi [
-			label = "Graphic Inteface"
-		];
-		gui [
-			label = "GUI"
-		];
-	};
+	// Game
+	up -> uf [
+		dir = none
+	];
 
+	up -> gf;
+
+	// Engine
 	gf -> dt;
+	
+	gf -> pt [
+		dir = both
+	];
 
-	dt -> dd;
-	dt -> dp;
+	// Drawing
+	dt -> dd [
+		dir = both
+	];
+	dt -> dp [
+		dir = both
+	];
 
-	dp -> dd;
+	dp -> dd [
+		dir = both
+	];
 
-	dd -> {ddopengl};
+	dt -> uf [
+		dir = both
+	];
 
-	dp -> {dpglx dpwgl dpglfw};
+	dd -> {opengl};
 
+	dp -> {glx wgl glfw};
+
+	// Graphic
 	dt -> gi;
 	dt -> gui;
 	gui -> gi;
+
+	gi -> dd;
+
+	// Physics
+	pt -> ode [
+		dir = both
+	];
+
+	// Thread
+	tt -> tct [
+		dir = none
+	];
+
+	tt -> {pthread win32thread};
+	{pthread win32thread} -> tct;
+
+	// External
+	glu -> opengl [
+		dir = both
+	];
+
+	opengl -> {glx wgl glfw} [
+		dir = both
+	];
 }
