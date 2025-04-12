@@ -190,6 +190,9 @@ function gf_msvc_filters()
 		linkoptions({"/MANIFEST"})
 		runtime(rt)
 		staticruntime("Off")
+		postbuildcommands({
+			"mt -manifest $(TargetDir)$(TargetName).dll.manifest -outputresource:$(TargetDir)$(TargetName).dll"
+		})
 	filter({
 			"options:cc=msc",
 			"options:engine=static",

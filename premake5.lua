@@ -54,6 +54,10 @@ function msvc_filters()
 		runtime(rt)
 		staticruntime("On")
 	end
+	filter("options:cc=msc")
+		postbuildcommands({
+			"mt -manifest $(TargetDir)$(TargetName).exe.manifest -outputresource:$(TargetDir)$(TargetName).exe"
+		})
 end
 
 include "engine"
