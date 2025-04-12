@@ -65,6 +65,22 @@ void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, floa
 	gf_graphic_end_2d(draw);
 }
 
+void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, float r, float g, float b, float a) {
+	gf_graphic_begin_2d(draw);
+
+	gf_draw_driver_set_color(draw, r, g, b, a);
+	glBegin(GL_QUADS);
+
+	glVertex2f(x, y);
+	glVertex2f(x, y + h);
+	glVertex2f(x + w, y + h);
+	glVertex2f(x + w, y);
+
+	glEnd();
+
+	gf_graphic_end_2d(draw);
+}
+
 void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, float r, float g, float b, float a) {
 	int i;
 	for(i = 0; text[i] != 0; i++) {
