@@ -40,7 +40,7 @@ function msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		linkoptions({"/MANIFEST"})
+		--linkoptions({"/MANIFEST"})
 		runtime(rt)
 		characterset("MBCS")
 		staticruntime("Off")
