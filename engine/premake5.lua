@@ -295,6 +295,7 @@ project("GoldFish")
 		files({
 			"thread/posix/gf_thread.c"
 		})
+	filter({})
 
 	-- Begin ODE
 	includedirs({
