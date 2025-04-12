@@ -34,22 +34,24 @@ newaction({
 })
 
 function msvc_filters()
+	filter({})
+	characterset("MBCS")
 	for k,rt in ipairs({"Debug", "Release"}) do
 	filter({
 			"options:cc=msc",
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		runtime(rt)
-		characterset("MBCS")
+		buildoptions({"/MT"})
+		runtime("Release")
 		staticruntime("On")
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
 			"configurations:" .. rt
 		})
-		runtime(rt)
-		characterset("MBCS")
+		buildoptions({"/MT"})
+		runtime("Release")
 		staticruntime("On")
 	end
 end

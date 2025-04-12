@@ -49,7 +49,6 @@ newoption({
 	
 function gf_default_stuffs()
 	filter({})
-	characterset("MBCS")
 	defines({
 		"HAVE_STDARG_H=1",
 		"dIDEDOUBLE",
@@ -180,20 +179,24 @@ function gf_link_stuffs(cond)
 end
 
 function gf_msvc_filters()
+	filter({})
+	characterset("MBCS")
 	for k,rt in ipairs({"Debug", "Release"}) do
 	filter({
 			"options:cc=msc",
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		runtime(rt)
+		buildoptions({"/MT"})
+		runtime("Release")
 		staticruntime("On")
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
 			"configurations:" .. rt
 		})
-		runtime(rt)
+		buildoptions({"/MT"})
+		runtime("Release")
 		staticruntime("On")
 	end
 end
