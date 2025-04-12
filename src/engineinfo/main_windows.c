@@ -85,12 +85,12 @@ BOOL InitApp(void) {
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
 	wc.hInstance	 = hInst;
-	wc.hIcon	 = LoadIcon(hInst, "GOLDFISH");
+	wc.hIcon	 = LoadIcon(hInst, "NISHBOX");
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = GetSysColorBrush(COLOR_MENU);
 	wc.lpszMenuName	 = NULL;
-	wc.lpszClassName = "goldfish";
-	wc.hIconSm	 = LoadIcon(hInst, "GOLDFISH");
+	wc.lpszClassName = "nishbox";
+	wc.hIconSm	 = LoadIcon(hInst, "NISHBOX");
 	return RegisterClassEx(&wc);
 }
 
@@ -99,7 +99,7 @@ BOOL InitWindow(int nCmdShow) {
 	RECT deskrc, rc;
 	HWND hDeskWnd = GetDesktopWindow();
 	GetWindowRect(hDeskWnd, &deskrc);
-	hWnd = CreateWindow("goldfish", "GoldFish Engine Info", (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME) ^ WS_MAXIMIZEBOX, 0, 0, 500, 250, NULL, 0, hInst, NULL);
+	hWnd = CreateWindow("nishbox", "GoldFish Engine Info", (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME) ^ WS_MAXIMIZEBOX, 0, 0, 500, 250, NULL, 0, hInst, NULL);
 
 	if(!hWnd) {
 		return FALSE;
