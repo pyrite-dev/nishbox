@@ -42,6 +42,7 @@ function msvc_filters()
 		})
 		linkoptions({"/MANIFEST"})
 		runtime(rt)
+		characterset("MBCS")
 		staticruntime("Off")
 	filter({
 			"options:cc=msc",
@@ -49,6 +50,7 @@ function msvc_filters()
 			"configurations:" .. rt
 		})
 		runtime(rt)
+		characterset("MBCS")
 		staticruntime("On")
 	end
 end
