@@ -40,10 +40,9 @@ function msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		--linkoptions({"/MANIFEST"})
 		runtime(rt)
 		characterset("MBCS")
-		staticruntime("Off")
+		staticruntime("On")
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
@@ -103,11 +102,6 @@ project("EngineInfo")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({
-		"options:cc=msc",
-		"options:engine=static"
-	})
-		linkoptions({"/MANIFEST"})
 	filter({})
 
 project("NishBoxServer")
@@ -141,11 +135,6 @@ project("NishBoxServer")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({
-		"options:cc=msc",
-		"options:engine=static"
-	})
-		linkoptions({"/MANIFEST"})
 	filter({})
 
 project("NishBox")
@@ -179,9 +168,4 @@ project("NishBox")
 		})
 		optimize("On")
 	msvc_filters()
-	filter({
-		"options:cc=msc",
-		"options:engine=static"
-	})
-		linkoptions({"/MANIFEST"})
 	filter({})

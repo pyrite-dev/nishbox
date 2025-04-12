@@ -186,9 +186,8 @@ function gf_msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		--linkoptions({"/MANIFEST"})
 		runtime(rt)
-		staticruntime("Off")
+		staticruntime("On")
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
