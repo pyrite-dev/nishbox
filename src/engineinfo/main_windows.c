@@ -66,6 +66,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 		tx.right  = rc.right;
 		tx.top	  = padding;
 		tx.bottom = rc.bottom - padding * 2;
+		SetBkMode(hdc, TRANSPARENT);
 		DrawText(hdc, vertxt, strlen(vertxt), &tx, DT_LEFT);
 		EndPaint(hWnd, &ps);
 		break;
