@@ -1,3 +1,10 @@
+/**
+ * Math
+ *
+ * Provides the functions missing in C89, and ones useful
+ * for 3D stuffs.
+ */
+
 #ifndef __GF_MATH_H__
 #define __GF_MATH_H__
 

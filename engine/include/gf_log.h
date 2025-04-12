@@ -1,3 +1,10 @@
+/**
+ * Log
+ *
+ * Provides useful function/macro for logging.
+ * Uses the graphical console if possible.
+ */
+
 #ifndef __GF_LOG_H__
 #define __GF_LOG_H__
 

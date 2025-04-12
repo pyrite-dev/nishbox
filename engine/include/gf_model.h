@@ -1,3 +1,7 @@
+/**
+ * Model
+ */
+
 #ifndef __GF_MODEL_H__
 #define __GF_MODEL_H__
 

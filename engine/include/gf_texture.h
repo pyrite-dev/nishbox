@@ -1,3 +1,9 @@
+/**
+ * Texture
+ *
+ * Provides a wrapper for drawing driver.
+ */
+
 #ifndef __GF_TEXTURE_H__
 #define __GF_TEXTURE_H__
 

@@ -1,3 +1,9 @@
+/**
+ * Thread
+ *
+ * Wrapper for platform-dependent thread.
+ */
+
 #ifndef __GF_THREAD_H__
 #define __GF_THREAD_H__
 

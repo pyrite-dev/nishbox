@@ -1,3 +1,7 @@
+/**
+ * Version
+ */
+
 #ifndef __GF_VERSION_H__
 #define __GF_VERSION_H__
 

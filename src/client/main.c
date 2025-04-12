@@ -2,6 +2,7 @@
 
 /* Engine */
 #include <gf_core.h>
+#include <gf_draw.h>
 #include <gf_graphic.h>
 #include <gf_version.h>
 

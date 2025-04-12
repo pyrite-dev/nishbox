@@ -1,3 +1,7 @@
+/**
+ * Macro
+ */
+
 #ifndef __GF_MACRO_H__
 #define __GF_MACRO_H__
 

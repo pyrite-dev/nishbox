@@ -1,3 +1,10 @@
+/**
+ * Core of the engine
+ *
+ * Including this should (will) be enough for usual case,
+ * at least in the future.
+ */
+
 #ifndef __GF_CORE_H__
 #define __GF_CORE_H__
 

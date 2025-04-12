@@ -1,3 +1,9 @@
+/**
+ * Renderer backend (e.g. GLX)
+ *
+ * Provides the lowest layer for graphics.
+ */
+
 #ifndef __GF_DRAW_PLATFORM_H__
 #define __GF_DRAW_PLATFORM_H__
 

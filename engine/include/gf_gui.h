@@ -1,3 +1,7 @@
+/**
+ * GUI
+ */
+
 #ifndef __GF_GUI_H__
 #define __GF_GUI_H__
 

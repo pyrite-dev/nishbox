@@ -1,3 +1,9 @@
+/**
+ * Drawing interface
+ *
+ * Handles rendering.
+ */
+
 #ifndef __GF_DRAW_H__
 #define __GF_DRAW_H__
 

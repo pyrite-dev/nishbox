@@ -1,3 +1,9 @@
+/**
+ * Renderer driver (e.g. OpenGL)
+ *
+ * Handles driver-specific parts, like lighting.
+ */
+
 #ifndef __GF_DRAW_DRIVER_H__
 #define __GF_DRAW_DRIVER_H__
 

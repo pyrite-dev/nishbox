@@ -1,3 +1,10 @@
+/**
+ * Graphic
+ *
+ * Provides the function to draw textures, text, and etc for
+ * GUI and 3D rendering.
+ */
+
 #ifndef __GF_GRAPHIC_H__
 #define __GF_GRAPHIC_H__
 
