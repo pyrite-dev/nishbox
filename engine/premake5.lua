@@ -187,16 +187,15 @@ function gf_msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		buildoptions({"/MD"})
-		runtime("Release")
-		staticruntime("On")
+		linkoptions({"/MANIFEST"})
+		runtime(rt)
+		staticruntime("Off")
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
 			"configurations:" .. rt
 		})
-		buildoptions({"/MT"})
-		runtime("Release")
+		runtime(rt)
 		staticruntime("On")
 	end
 end
@@ -250,7 +249,6 @@ project("GoldFish")
 		"external/lua/ltests.c",
 		"external/lua/ltests.h"
 	})
-	filter({})
 	removefiles({
 		"external/lua/lua.c"
 	})
