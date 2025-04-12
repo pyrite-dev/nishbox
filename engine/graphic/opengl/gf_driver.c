@@ -1,5 +1,6 @@
 #define GF_EXPOSE_DRAW_DRIVER
 #define GF_EXPOSE_DRAW
+#define GF_EXPOSE_TEXTURE
 
 #include <gf_pre.h>
 
@@ -132,31 +133,17 @@ void gf_draw_driver_reshape(gf_draw_t* draw) {
 	glLoadIdentity();
 }
 
-void gf_draw_driver_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_draw_driver_texture_t* texture, float r, float g, float b, float a) {
-	gf_graphic_begin_2d(draw);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
+void gf_draw_driver_begin_texture_2d(gf_draw_t* draw, gf_texture_t* texture) {
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glBindTexture(GL_TEXTURE_2D, texture->draw_driver_texture->id);
+}
 
-	glColor4f(r / 255, g / 255, b / 255, a / 255);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex2f(x, y);
-	glTexCoord2f(0, 1);
-	glVertex2f(x, y + h);
-	glTexCoord2f(1, 1);
-	glVertex2f(x + w, y + h);
-	glTexCoord2f(1, 0);
-	glVertex2f(x + w, y);
-	glEnd();
-
+void gf_draw_driver_end_texture_2d(gf_draw_t* draw) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	gf_graphic_end_2d(draw);
 }
+
+void gf_draw_driver_set_color(gf_draw_t* draw, float r, float g, float b, float a) { glColor4f(r / 255, g / 255, b / 255, a / 255); }
 
 void gf_draw_driver_destroy(gf_draw_t* draw) {
 	int i;

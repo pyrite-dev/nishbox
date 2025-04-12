@@ -9,6 +9,7 @@
 
 /* Engine */
 #include <gf_type/draw.h>
+#include <gf_type/texture.h>
 
 /* Standard */
 
@@ -19,8 +20,13 @@ GF_EXPORT void gf_draw_driver_reshape(gf_draw_t* draw);
 
 GF_EXPORT gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data);
 GF_EXPORT void			    gf_draw_driver_destroy_texture(gf_draw_driver_texture_t* texture);
-GF_EXPORT void			    gf_draw_driver_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_draw_driver_texture_t* texture, float r, float g, float b, float a);
-GF_EXPORT void			    gf_draw_driver_before(gf_draw_t* draw);
-GF_EXPORT void			    gf_draw_driver_after(gf_draw_t* draw);
+
+GF_EXPORT void gf_draw_driver_begin_texture_2d(gf_draw_t* draw, gf_texture_t* texture);
+GF_EXPORT void gf_draw_driver_end_texture_2d(gf_draw_t* draw);
+
+GF_EXPORT void gf_draw_driver_set_color(gf_draw_t* draw, float r, float g, float b, float a);
+
+GF_EXPORT void gf_draw_driver_before(gf_draw_t* draw);
+GF_EXPORT void gf_draw_driver_after(gf_draw_t* draw);
 
 #endif

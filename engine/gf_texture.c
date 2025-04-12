@@ -30,5 +30,3 @@ void gf_destroy_texture(gf_texture_t* texture) {
 	gf_draw_driver_destroy_texture(texture->draw_driver_texture);
 	free(texture);
 }
-
-void gf_draw_texture(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, float r, float g, float b, float a) { gf_draw_driver_draw_texture(draw, x, y, w, h, texture->draw_driver_texture, r, g, b, a); }
