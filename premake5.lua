@@ -42,7 +42,7 @@ function msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		buildoptions({"/MT"})
+		buildoptions({"/MD"})
 		runtime("Release")
 		staticruntime("On")
 	filter({
