@@ -60,7 +60,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 
 		hdc = BeginPaint(hWnd, &ps);
 		SelectObject(hdc, monospace);
-		ShowBitmapSize(hWnd, hdc, "GOLDFISH_BMP", padding, padding, sz, sz);
+		ShowBitmapSize(hWnd, hdc, "GOLDFISHBMP", padding, padding, sz, sz);
 
 		tx.left	  = padding * 2 + sz;
 		tx.right  = rc.right;

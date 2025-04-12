@@ -1,4 +1,4 @@
 #include <windows.h>
 
 GAME ICON "./internal/icon.ico"
-GOLDFISH_BMP BITMAP "./internal/goldfish.bmp"
+GOLDFISHBMP BITMAP "./internal/goldfish.bmp"
