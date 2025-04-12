@@ -16,6 +16,10 @@ void ShowBitmapSize(HWND hWnd, HDC hdc, const char* name, int x, int y, int w, i
 	HBITMAP hBitmap = LoadBitmap(hInst, name);
 	BITMAP	bmp;
 	HDC	hmdc;
+	if(hBitmap == NULL){
+		MessageBox(NULL, "error", "error", MB_ICONERROR);
+		exit(0);
+	}
 	GetObject(hBitmap, sizeof(bmp), &bmp);
 	hmdc = CreateCompatibleDC(hdc);
 	SelectObject(hmdc, hBitmap);
