@@ -9,4 +9,4 @@ multiplayer sandbox game i might work on
 
 Both NishBox and GoldFish are under Unlicense.
 
-Check /engine/COPYING and /engine/LICENSE for engine license-related stuffs.
+Check [/engine/COPYING](/engine/COPYING) and [/engine/LICENSE](/engine/LICENSE) for engine license-related stuffs.
