@@ -89,8 +89,6 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightwht);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
 
-	glLoadIdentity();
-
 	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
 		unsigned char* font = malloc(8 * 8 * 4);
 		int	       j;
@@ -139,8 +137,8 @@ void gf_draw_driver_begin_texture_2d(gf_draw_t* draw, gf_texture_t* texture) {
 }
 
 void gf_draw_driver_end_texture_2d(gf_draw_t* draw) {
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void gf_draw_driver_set_color(gf_draw_t* draw, float r, float g, float b, float a) { glColor4f(r / 255, g / 255, b / 255, a / 255); }
@@ -156,16 +154,11 @@ void gf_draw_driver_before(gf_draw_t* draw) {
 	GLfloat lightpos[3];
 	GF_VECTOR_COPY(draw->light, lightpos);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	gf_draw_driver_reshape(draw);
 
 	gluLookAt(draw->camera[0], draw->camera[1], draw->camera[2], draw->lookat[0], draw->lookat[1], draw->lookat[2], 0, 1, 0);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-	glPushMatrix();
 	gf_graphic_clear(draw);
 }
 
-void gf_draw_driver_after(gf_draw_t* draw) {
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
-}
+void gf_draw_driver_after(gf_draw_t* draw) { glFlush(); }

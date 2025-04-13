@@ -59,7 +59,7 @@
 
 #define GF_DECLARE_TYPE(n, b) typedef struct _gf_##n b gf_##n##_t;
 
-#if defined(_WIN32) && defined(_DLL)
+#if defined(_WIN32) && defined(GF_DLL)
 #define GF_EXPORT __declspec(dllexport)
 #else
 #define GF_EXPORT extern

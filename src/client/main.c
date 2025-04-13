@@ -25,10 +25,12 @@ void draw_frame(gf_draw_t* draw) {
 	int max = 5;
 	str[1]	= 0;
 
+	gf_graphic_fill_rect(draw, 200, 200, 200, 200, 0, 0, 255, 255);
+
 	for(y = 0; y < draw->height; y += s) {
 		for(x = 0; x < draw->width; x += s / 2) {
 			str[0] = d[(i++) % strlen(d)];
-			gf_graphic_text(draw, x, y, s, str, 255 / max * r, 255 / max * g, 255 / max * b, 255);
+			gf_graphic_text(draw, x, y, s, str, 255.0f / max * r, 255.0f / max * g, 255.0f / max * b, 255);
 
 			b++;
 			if(b == max + 1) {
@@ -44,6 +46,8 @@ void draw_frame(gf_draw_t* draw) {
 			}
 		}
 	}
+
+	gf_graphic_fill_rect(draw, 0, 0, 200, 200, 255, 0, 0, 255);
 }
 
 int main(int argc, char** argv) {

@@ -233,13 +233,14 @@ project("GoldFish")
 	filter("options:engine=static")
 		kind("StaticLib")
 		defines({
-			"ODE_LIB"
+			"ODE_LIB",
+			"GF_LIB"
 		})
 	filter("options:engine=dynamic")
 		kind("SharedLib")
 		defines({
 			"ODE_DLL",
-			"_DLL"
+			"GF_DLL"
 		})
 	filter("configurations:Debug")
 		defines({
