@@ -3,10 +3,10 @@
 multiplayer sandbox game i might work on
 
 ## Stack
- - OpenGL 1.1 (probably) on WGL/GLX/[GLFW](https://www.glfw.org/)
- - [Open Dynamics Engine](https://ode.org)
- - [zlib](https://zlib.net)
- - [Lua](https://lua.org)
- - [stb](https://github.com/nothings/stb)
- - [miniaudio](https://github.com/mackron/miniaudio)
  - [Premake5](https://premake.github.io)
+
+## License
+
+Both NishBox and GoldFish are under Unlicense.
+
+Check /engine/COPYING and /engine/LICENSE for engine license-related stuffs.
