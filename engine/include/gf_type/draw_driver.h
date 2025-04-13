@@ -17,7 +17,11 @@
 
 #ifdef DRV_OPENGL
 GF_DECLARE_TYPE(draw_driver, { GLUquadric* quadric; });
-GF_DECLARE_TYPE(draw_driver_texture, { GLuint id; });
+GF_DECLARE_TYPE(draw_driver_texture, {
+	GLuint id;
+	int    width;
+	int    height;
+});
 #endif
 #else
 typedef void gf_draw_driver_t;

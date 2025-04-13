@@ -31,12 +31,15 @@ GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
 #define NEAREST_POW2(x) pow((2), gf_log2((int)(x) + 1))
 
-gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, unsigned char* data) {
+gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
 	int			  w = NEAREST_POW2(width);
 	int			  h = NEAREST_POW2(height);
 	int			  x, y;
 	unsigned char*		  d = malloc(w * h * 4);
+
+	*iwidth	 = w;
+	*iheight = h;
 
 	memset(d, 0, w * h);
 	for(y = 0; y < height; y++) {

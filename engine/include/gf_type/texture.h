@@ -16,6 +16,8 @@ GF_DECLARE_TYPE(texture, {
 	gf_draw_driver_texture_t* draw_driver_texture;
 	int			  width;
 	int			  height;
+	int			  internal_width;
+	int			  internal_height;
 });
 #else
 typedef void gf_texture_t;
