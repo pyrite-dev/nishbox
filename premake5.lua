@@ -36,6 +36,13 @@ newaction({
 })
 
 function msvc_filters()
+	-- Manifest fix by penguin2233
+	require('vstudio')
+	premake.override(premake.vstudio.vc200x, "generateManifest", function(base, cfg, toolset)
+		if cfg.flags.NoManifest then
+			premake.w('GenerateManifest="false"')
+		end
+	end)
 	filter({})
 	characterset("MBCS")
 	for k,rt in ipairs({"Debug", "Release"}) do
@@ -44,7 +51,6 @@ function msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		linkoptions({"/MANIFEST"})
 		runtime(rt)
 		staticruntime("Off")
 	filter({
@@ -52,14 +58,9 @@ function msvc_filters()
 			"options:engine=static",
 			"configurations:" .. rt
 		})
-		linkoptions({"/MANIFEST"})
 		runtime(rt)
 		staticruntime("On")
 	end
-	filter("options:cc=msc")
-		postbuildcommands({
-			"mt -manifest $(TargetDir)$(TargetName).exe.manifest -outputresource:$(TargetDir)$(TargetName).exe"
-		})
 	filter({})
 end
 

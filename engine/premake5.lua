@@ -204,6 +204,13 @@ function gf_link_stuffs(cond)
 end
 
 function gf_msvc_filters()
+	-- Manifest fix by penguin2233
+	require('vstudio')
+	premake.override(premake.vstudio.vc200x, "generateManifest", function(base, cfg, toolset)
+		if cfg.flags.NoManifest then
+			premake.w('GenerateManifest="false"')
+		end
+	end)
 	filter({})
 	characterset("MBCS")
 	for k,rt in ipairs({"Debug", "Release"}) do
@@ -212,12 +219,8 @@ function gf_msvc_filters()
 			"options:engine=dynamic",
 			"configurations:" .. rt
 		})
-		linkoptions({"/MANIFEST"})
 		runtime(rt)
 		staticruntime("Off")
-		postbuildcommands({
-			"mt -manifest $(TargetDir)$(TargetName).dll.manifest -outputresource:$(TargetDir)$(TargetName).dll"
-		})
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
