@@ -10,7 +10,11 @@
 #define FILE_DESCRIPTION "GoldFish Engine Info\0"
 #endif
 
+#ifdef FD_ENGINEINFO
+GAME ICON "./internal/goldfish.ico"
+#else
 GAME ICON "./internal/icon.ico"
+#endif
 GOLDFISH_BMP BITMAP "./internal/goldfish.bmp"
 
 VS_VERSION_INFO VERSIONINFO
