@@ -1,18 +1,62 @@
 digraph relation {
+	newrank = true;
+	splines = "ortho";
+	overlap = "vpsc";
 	graph [
+		rankdir = "LR",
 		label = "GoldFish Engine Relation",
-		rankdir = LR,
-		nodesep = 0.5,
-		ranksep = 1
+		nodesep = 0.75,
+		ranksep = 1,
 //		nodesep = 1.1,
-//		ranksep = 1.05
+//		ranksep = 1.05,
+		bgcolor = "#343434",
+		fontcolor = "white",
+		style = "solid",
+		color = "white"
 	];
 	node [
-		shape = box
+		shape = "box",
+		style = "solid,filled",
+		fixedsize = true,
+		width = "2",
+		height = "0.5",
+		colorscheme = "rdylgn11",
+		color = 7,
+		fillcolor = 11,
+		fontcolor = 6
+	];
+	edge [
+		colorscheme = "rdylgn11",
+		style = "solid",
+		fontcolor = "white",
+		color = 3
+	];
+
+	opengl [
+		label = "OpenGL"
+	];
+	glu [
+		label = "GLU"
+	];
+	glfw [
+		label = "GLFW"
+	];
+	glx [
+		label = "GLX/X11"
+	];
+	pthread [
+		label = "POSIX Thread"
+	];
+	win32thread [
+		label = "Win32 Thread"
+	];
+	wgl [
+		label = "WGL/GDI"
 	];
 
 	subgraph cluster_user {
 		label = "Game";
+		rank = "same";
 		up [
 			label = "Program"
 		];
@@ -26,34 +70,53 @@ digraph relation {
 		gf [
 			label = "gf_engine_t"
 		];
-		subgraph cluster_drawing {
-			label = "Drawing Interface";
-			dd [
-				label = "gf_draw_driver_t"
-			];
-			dp [
-				label = "gf_draw_platform_t"
+		log [
+			label = "Logger"
+		];
+
+		subgraph cluster_client {
+			label = "Client Interface";
+			gui [
+				label = "GUI"
 			];
 			dt [
 				label = "gf_draw_t"
 			];
+			ii [
+				label = "Input Interface"
+			];
 
-			subgraph cluster_graphic {
-				label = "Graphic";
-				gi [
-					label = "Graphic Inteface"
+			subgraph cluster_cplatform {
+				label = "Platform-dependent";
+				ii [
+					label = "Input Interface"
 				];
-				gui [
-					label = "GUI"
-				];
+
+				subgraph cluster_drawing {
+					label = "Drawing Interface";
+					rank = "same";
+					dd [
+						label = "gf_draw_driver_t"
+					];
+					dp [
+						label = "gf_draw_platform_t"
+					];
+					gi [
+						label = "Graphic Inteface"
+					];
+				};
 			};
 		};
 
-		subgraph cluster_physics {
-			label = "Physics Interface";
-			pt [
-				label = "gf_physics_t"
-			];
+		subgraph cluster_server {
+			label = "Server Interface";
+
+			subgraph cluster_physics {
+				label = "Physics Interface";
+				pt [
+					label = "gf_physics_t"
+				];
+			};
 		};
 
 		subgraph cluster_thread {
@@ -68,6 +131,7 @@ digraph relation {
 
 		subgraph cluster_integrated {
 			label = "Integrated";
+			rank = "same";
 			ode [
 				label = "ODE"
 			];
@@ -84,95 +148,91 @@ digraph relation {
 		};
 	};
 
-	subgraph cluster_external {
-		label = "External";
-		pthread [
-			label = "POSIX Thread"
-		];
-		opengl [
-			label = "OpenGL"
-		];
-		glu [
-			label = "GLU"
-		];
-		glx [
-			label = "GLX"
-		];
-		glfw [
-			label = "GLFW"
-		];
-
-		subgraph cluster_win32 {
-			label = "Win32 API";
-			win32thread [
-				label = "Win32 Thread"
-			];
-			wgl [
-				label = "WGL"
-			];
-		};
-	};
-
 	// Game
+	up -> gf;
+
 	up -> uf [
-		dir = none
+		dir = "none"
 	];
 
-	up -> gf;
+	uf -> gf;
 
 	// Engine
 	gf -> dt;
 	
-	gf -> pt [
-		dir = both
-	];
+	gf -> pt;
+
+	gf -> log;
+
+	// Log
+	log -> dt;
 
 	// Drawing
-	dt -> dd [
-		dir = both
-	];
-	dt -> dp [
-		dir = both
-	];
+	dt -> {dd dp};
 
-	dp -> dd [
-		dir = both
-	];
+	dt -> gi;
 
 	dt -> uf [
-		dir = both
+		dir = "both"
 	];
 
-	dd -> {opengl};
+	dd -> {opengl glu};
 
-	dp -> {glx wgl glfw};
+	dp -> glx;
+
+	dp -> {wgl glfw} [ // These APIs are callback-based
+		dir = "both"
+	];
+
+	dt -> gui;
+
+	dt -> ii;
+
+	// Input
+	ii -> dp [
+		dir = "both"
+	];
 
 	// Graphic
-	dt -> gi;
-	dt -> gui;
 	gui -> gi;
+	gui -> ii;
 
 	gi -> dd;
 
-	// Physics
+	// Server
 	pt -> ode [
-		dir = both
+		dir = "both"
 	];
 
 	// Thread
-	tt -> tct [
-		dir = none
-	];
-
 	tt -> {pthread win32thread};
 	{pthread win32thread} -> tct;
 
-	// External
-	glu -> opengl [
-		dir = both
+	tct -> tt [
+		dir = "none"
 	];
 
-	opengl -> {glx wgl glfw} [
-		dir = both
-	];
+	// External
+	glu -> opengl;
+
+	// Rank
+	{
+		rank = "same";
+		glx; wgl; glfw;
+	};
+
+	{
+		rank = "same";
+		pthread; win32thread;
+	};
+
+	{
+		rank = "same";
+		tt; tct;
+	};
+
+	{
+		rank = "same";
+		opengl; glu;
+	};
 }
