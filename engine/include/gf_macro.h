@@ -35,6 +35,10 @@
 #define GF_EXPOSE_PHYSICS
 #endif
 
+#ifndef GF_EXPOSE_GRAPHIC
+#define GF_EXPOSE_GRAPHIC
+#endif
+
 #ifndef GF_EXPOSE_MATH
 #define GF_EXPOSE_MATH
 #endif
@@ -66,6 +70,10 @@
 #endif
 
 /* Expose them by default */
+#ifndef GF_EXPOSE_GRAPHIC
+#define GF_EXPOSE_GRAPHIC
+#endif
+
 #ifndef GF_EXPOSE_MATH
 #define GF_EXPOSE_MATH
 #endif

@@ -141,7 +141,7 @@ void gf_draw_driver_end_texture_2d(gf_draw_t* draw) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void gf_draw_driver_set_color(gf_draw_t* draw, float r, float g, float b, float a) { glColor4f(r / 255, g / 255, b / 255, a / 255); }
+void gf_draw_driver_set_color(gf_draw_t* draw, gf_color_t color) { glColor4f(color.r / 255, color.g / 255, color.b / 255, color.a / 255); }
 
 void gf_draw_driver_destroy(gf_draw_t* draw) {
 	int i;

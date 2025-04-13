@@ -23,14 +23,16 @@ void draw_frame(gf_draw_t* draw) {
 
 	int r = 0, g = 0, b = 0;
 	int max = 5;
-	str[1]	= 0;
 
-	gf_graphic_fill_rect(draw, 200, 200, 200, 200, 0, 0, 255, 255);
+	gf_color_t col;
+
+	str[1] = 0;
 
 	for(y = 0; y < draw->height; y += s) {
 		for(x = 0; x < draw->width; x += s / 2) {
 			str[0] = d[(i++) % strlen(d)];
-			gf_graphic_text(draw, x, y, s, str, 255.0f / max * r, 255.0f / max * g, 255.0f / max * b, 255);
+			col    = (gf_color_t){255.0f / max * r, 255.0f / max * g, 255.0f / max * b, 255};
+			gf_graphic_text(draw, x, y, s, str, col);
 
 			b++;
 			if(b == max + 1) {
@@ -46,8 +48,6 @@ void draw_frame(gf_draw_t* draw) {
 			}
 		}
 	}
-
-	gf_graphic_fill_rect(draw, 0, 0, 200, 200, 255, 0, 0, 255);
 }
 
 int main(int argc, char** argv) {

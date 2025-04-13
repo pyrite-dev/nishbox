@@ -40,10 +40,10 @@ void gf_graphic_end_2d(gf_draw_t* draw) {
 
 void gf_graphic_clear(gf_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 
-void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, float r, float g, float b, float a) {
+void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color) {
 	gf_graphic_begin_2d(draw);
 
-	gf_draw_driver_set_color(draw, r, g, b, a);
+	gf_draw_driver_set_color(draw, color);
 	gf_draw_driver_begin_texture_2d(draw, texture);
 	glBegin(GL_QUADS);
 
@@ -65,10 +65,10 @@ void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, floa
 	gf_graphic_end_2d(draw);
 }
 
-void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, float r, float g, float b, float a) {
+void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color) {
 	gf_graphic_begin_2d(draw);
 
-	gf_draw_driver_set_color(draw, r, g, b, a);
+	gf_draw_driver_set_color(draw, color);
 	glBegin(GL_QUADS);
 
 	glVertex2f(x, y);
@@ -81,9 +81,9 @@ void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, f
 	gf_graphic_end_2d(draw);
 }
 
-void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, float r, float g, float b, float a) {
+void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color) {
 	int i;
 	for(i = 0; text[i] != 0; i++) {
-		gf_graphic_draw_texture_2d(draw, x + i * (size / 2), y, size / 2, size, draw->font[text[i]], r, g, b, a);
+		gf_graphic_draw_texture_2d(draw, x + i * (size / 2), y, size / 2, size, draw->font[text[i]], color);
 	}
 }

@@ -14,9 +14,9 @@
 /* Type */
 
 /* Engine */
+#include <gf_type/core.h>
 
 /* Standard */
-#include <gf_type/core.h>
 
 #define gf_function_log(engine, fmt, ...) gf_log(engine, "%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, __VA_ARGS__)
 
