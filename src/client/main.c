@@ -31,7 +31,10 @@ void draw_frame(gf_draw_t* draw) {
 	for(y = 0; y < draw->height; y += s) {
 		for(x = 0; x < draw->width; x += s / 2) {
 			str[0] = d[(i++) % strlen(d)];
-			col    = (gf_color_t){255.0f / max * r, 255.0f / max * g, 255.0f / max * b, 255};
+			col.r  = 255.0f / max * r;
+			col.g  = 255.0f / max * g;
+			col.b  = 255.0f / max * b;
+			col.a  = 255;
 			gf_graphic_text(draw, x, y, s, str, col);
 
 			b++;
