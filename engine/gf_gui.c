@@ -71,13 +71,15 @@ gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id) {
 gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, float x, float y, float w, float h, const char* text) {
 	gf_gui_id_t	    id;
 	gf_gui_component_t* c = gf_gui_first_unused(gui, &id);
-	c->type		      = GF_GUI_BUTTON;
-	c->x		      = x;
-	c->y		      = y;
-	c->w		      = w;
-	c->h		      = h;
-	c->u.button.pressed   = 0;
-	c->u.button.text      = malloc(strlen(text) + 1);
+
+	c->type = GF_GUI_BUTTON;
+	c->x	= x;
+	c->y	= y;
+	c->w	= w;
+	c->h	= h;
+
+	c->u.button.pressed = 0;
+	c->u.button.text    = malloc(strlen(text) + 1);
 	strcpy(c->u.button.text, text);
 	return id;
 }
