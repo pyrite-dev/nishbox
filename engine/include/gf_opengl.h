@@ -1,5 +1,7 @@
 /**
  * OpenGL
+ *
+ * Includes OpenGL headers.
  */
 
 #ifndef __GF_OPENGL_H__
