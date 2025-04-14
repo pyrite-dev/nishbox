@@ -6,22 +6,15 @@
 
 #ifdef GF_EXPOSE_DRAW_PLATFORM
 /* External library */
-#include <GL/gl.h>
-#include <GL/glu.h>
-#if defined(USE_GLX)
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <GL/glx.h>
-#elif defined(USE_WGL)
-/* Should require nothing... for now? */
-#elif defined(USE_GLFW)
-#include <GLFW/glfw3.h>
+#ifdef DRV_OPENGL
+#include <gf_opengl.h>
 #endif
 
 /* Engine */
 
 /* Standard */
 
+#ifdef DRV_OPENGL
 #if defined(USE_GLX)
 GF_DECLARE_TYPE(draw_platform, {
 	Display*   display;
@@ -38,6 +31,7 @@ GF_DECLARE_TYPE(draw_platform, {
 });
 #elif defined(USE_GLFW)
 GF_DECLARE_TYPE(draw_platform, { GLFWwindow* window; });
+#endif
 #endif
 #else
 typedef void gf_draw_platform_t;

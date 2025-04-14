@@ -4,11 +4,7 @@
 #include <gf_pre.h>
 
 /* External library */
-#include <GL/gl.h>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <GL/glx.h>
-#include <GL/glxext.h>
+#include <gf_opengl.h>
 
 /* Interface */
 #include <gf_draw_platform.h>
@@ -193,4 +189,5 @@ void gf_draw_platform_destroy(gf_draw_t* draw) {
 		XCloseDisplay(draw->platform->display);
 	}
 	free(draw->platform);
+	draw->platform = NULL;
 }

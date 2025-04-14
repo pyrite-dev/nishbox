@@ -31,14 +31,13 @@ void gf_get_version(gf_version_t* version) {
 
 #if defined(DRV_OPENGL)
 	strcpy(version->driver, "OpenGL");
-#endif
-
 #if defined(USE_GLX)
 	strcpy(version->backend, "GLX");
 #elif defined(USE_WGL)
 	strcpy(version->backend, "WGL");
 #elif defined(USE_GLFW)
 	strcpy(version->backend, "GLFW");
+#endif
 #endif
 
 #if defined(THREAD_WIN32)

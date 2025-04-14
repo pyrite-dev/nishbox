@@ -7,8 +7,7 @@
 #ifdef GF_EXPOSE_DRAW_DRIVER
 /* External library */
 #ifdef DRV_OPENGL
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <gf_opengl.h>
 #endif
 
 /* Engine */

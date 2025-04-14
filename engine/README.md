@@ -2,7 +2,6 @@
 
 ## Stack
  - OpenGL 1.1 (probably) on WGL/GLX/[GLFW](https://www.glfw.org/)
- - DirectX 8?
  - [Open Dynamics Engine](https://ode.org)
  - [zlib](https://zlib.net)
  - [Lua](https://lua.org)

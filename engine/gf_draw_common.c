@@ -51,6 +51,9 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[0] = 0;
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;
+	} else {
+		free(draw);
+		draw = NULL;
 	}
 	return draw;
 }

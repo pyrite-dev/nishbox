@@ -4,9 +4,7 @@
 #include <gf_pre.h>
 
 /* External library */
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GLFW/glfw3.h>
+#include <gf_opengl.h>
 
 /* Interface */
 #include <gf_draw_platform.h>
@@ -90,4 +88,5 @@ void gf_draw_platform_destroy(gf_draw_t* draw) {
 		glfwDestroyWindow(draw->platform->window);
 	}
 	free(draw->platform);
+	draw->platform = NULL;
 }

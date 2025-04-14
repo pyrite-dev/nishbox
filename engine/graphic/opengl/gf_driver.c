@@ -5,8 +5,7 @@
 #include <gf_pre.h>
 
 /* External library */
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <gf_opengl.h>
 
 /* Interface */
 #include <gf_draw_driver.h>
