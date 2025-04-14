@@ -20,6 +20,12 @@
 
 /* Standard */
 
+#define GF_SET_COLOR(color, red, green, blue, alpha) \
+	color.r = (red); \
+	color.g = (green); \
+	color.b = (blue); \
+	color.a = (alpha)
+
 GF_EXPORT void gf_graphic_clear(gf_draw_t* draw);
 
 GF_EXPORT void gf_graphic_begin_2d(gf_draw_t* draw);
