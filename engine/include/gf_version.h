@@ -15,6 +15,6 @@
 
 /* Standard */
 
-GF_EXPORT void gf_get_version(gf_version_t* version);
+GF_EXPORT void gf_version_get(gf_version_t* version);
 
 #endif

@@ -17,8 +17,8 @@
 
 /* Standard */
 
-GF_EXPORT gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata);
-GF_EXPORT void	       gf_join_thread(gf_thread_t* thread);
-GF_EXPORT void	       gf_destroy_thread(gf_thread_t* thread);
+GF_EXPORT gf_thread_t* gf_thread_create(void (*func)(void*), void* userdata);
+GF_EXPORT void	       gf_thread_join(gf_thread_t* thread);
+GF_EXPORT void	       gf_thread_destroy(gf_thread_t* thread);
 
 #endif

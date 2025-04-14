@@ -13,6 +13,7 @@
 #include <gf_draw_platform.h>
 #include <gf_draw_driver.h>
 #include <gf_graphic.h>
+#include <gf_gui.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -34,7 +35,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	strcpy(draw->title, title);
 	gf_draw_platform_create(draw);
 	if(draw->platform != NULL) {
-		gf_function_log(NULL, "Created drawing interface successfully", "");
+		gf_log_function(NULL, "Created drawing interface successfully", "");
 		gf_draw_driver_init(draw);
 		gf_draw_reshape(draw);
 		draw->running = 1;
@@ -51,6 +52,8 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[0] = 0;
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;
+
+		draw->gui = gf_gui_create(draw);
 	} else {
 		free(draw);
 		draw = NULL;
@@ -81,5 +84,5 @@ void gf_draw_destroy(gf_draw_t* draw) {
 		gf_draw_driver_destroy(draw);
 	}
 	gf_draw_platform_destroy(draw);
-	gf_function_log(NULL, "Destroyed drawing interface", "");
+	gf_log_function(NULL, "Destroyed drawing interface", "");
 }

@@ -2,8 +2,7 @@
 
 /* Engine */
 #include <gf_core.h>
-#include <gf_draw.h>
-#include <gf_graphic.h>
+#include <gf_gui.h>
 #include <gf_version.h>
 
 /* External library */
@@ -14,46 +13,17 @@
 
 gf_engine_t* engine;
 
+gf_gui_id_t button1 = -1;
+
 void draw_frame(gf_draw_t* draw) {
-	char d[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char str[2];
-	int  y, x;
-	int  i = 0;
-	int  s = 8;
-
-	int r = 0, g = 0, b = 0;
-	int max = 5;
-
-	gf_color_t col;
-
-	str[1] = 0;
-
-	for(y = 0; y < draw->height; y += s) {
-		for(x = 0; x < draw->width; x += s / 2) {
-			str[0] = d[(i++) % strlen(d)];
-			GF_SET_COLOR(col, 255.0f / max * r, 255.0f / max * g, 255.0f / max * b, 255);
-			gf_graphic_text(draw, x, y, s, str, col);
-
-			b++;
-			if(b == max + 1) {
-				b = 0;
-				g++;
-			}
-			if(g == max + 1) {
-				g = 0;
-				r++;
-			}
-			if(r == max + 1) {
-				r = 0;
-			}
-		}
-	}
+	if(button1 == -1) button1 = gf_gui_create_button(draw->gui, 10, 10, 100, 50, "Test");
+	gf_gui_render(draw->gui);
 }
 
 int main(int argc, char** argv) {
 	char	     title[64];
 	gf_version_t ver;
-	gf_get_version(&ver);
+	gf_version_get(&ver);
 	sprintf(title, "NishBox %s (%s on %s)", ver.full, ver.driver, ver.backend);
 	gf_engine_begin();
 	engine = gf_engine_create(title, 0);

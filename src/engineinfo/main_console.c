@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv) {
 	gf_version_t ver;
-	gf_get_version(&ver);
+	gf_version_get(&ver);
 
 	printf("GoldFish Engine %s\n", ver.full);
 	printf("Build Date   : %s\n", ver.date);

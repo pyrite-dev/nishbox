@@ -13,6 +13,7 @@
 #include <gf_type/texture.h>
 #include <gf_type/core.h>
 #include <gf_type/math.h>
+#include <gf_type/gui.h>
 
 /* Standard */
 
@@ -22,6 +23,7 @@ GF_DECLARE_TYPE(draw, {
 	gf_engine_t*	    engine;
 	gf_draw_platform_t* platform;
 	gf_draw_driver_t*   driver;
+	gf_gui_t*	    gui;
 	int		    close;
 	int		    x;
 	int		    y;

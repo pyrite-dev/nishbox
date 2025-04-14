@@ -19,7 +19,7 @@ DWORD WINAPI gf_wrap_thread(void* arg) {
 	return 0;
 }
 
-gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata) {
+gf_thread_t* gf_thread_create(void (*func)(void*), void* userdata) {
 	gf_thread_t* thread  = malloc(sizeof(*thread));
 	thread->context.func = func;
 	thread->context.data = userdata;
@@ -28,9 +28,9 @@ gf_thread_t* gf_create_thread(void (*func)(void*), void* userdata) {
 	return NULL;
 }
 
-void gf_join_thread(gf_thread_t* thread) { WaitForSingleObject(thread->thread, INFINITE); }
+void gf_thread_join(gf_thread_t* thread) { WaitForSingleObject(thread->thread, INFINITE); }
 
-void gf_destroy_thread(gf_thread_t* thread) {
+void gf_thread_destroy(gf_thread_t* thread) {
 	CloseHandle(thread->thread);
 	free(thread);
 }

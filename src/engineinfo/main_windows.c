@@ -142,7 +142,7 @@ int WINAPI WinMain(HINSTANCE hCurInst, HINSTANCE hPrevInst, LPSTR lpsCmdLine, in
 
 	hInst = hCurInst;
 
-	gf_get_version(&ver);
+	gf_version_get(&ver);
 	vertxt[0] = 0;
 	sprintf(vertxt + strlen(vertxt), "GoldFish Engine %s\n", ver.full);
 	sprintf(vertxt + strlen(vertxt), "Build Date   : %s\n", ver.date);

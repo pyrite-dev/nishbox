@@ -15,6 +15,7 @@
 #include <gf_draw_driver.h>
 
 /* Standard */
+#include <stdarg.h>
 
 void gf_graphic_begin_2d(gf_draw_t* draw) {
 	glDisable(GL_LIGHTING);
@@ -68,25 +69,24 @@ void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, floa
 	gf_graphic_end_2d(draw);
 }
 
-void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color) {
+void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int npair, ...) {
+	int	i;
+	va_list va;
+	va_start(va, npair);
+
 	gf_graphic_begin_2d(draw);
 
 	gf_draw_driver_set_color(draw, color);
-	glBegin(GL_QUADS);
+	glBegin(GL_TRIANGLE_FAN);
 
-	glVertex2f(x, y);
-	glVertex2f(x, y + h);
-	glVertex2f(x + w, y + h);
-	glVertex2f(x + w, y);
+	for(i = 0; i < npair; i++) {
+		float x = va_arg(va, double);
+		float y = va_arg(va, double);
+		glVertex2f(x, y);
+	}
 
 	glEnd();
-
 	gf_graphic_end_2d(draw);
-}
 
-void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color) {
-	int i;
-	for(i = 0; text[i] != 0; i++) {
-		gf_graphic_draw_texture_2d(draw, x + i * (size / 2), y, size / 2, size, draw->font[text[i]], color);
-	}
+	va_end(va);
 }

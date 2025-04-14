@@ -28,7 +28,7 @@ GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
-#define NEAREST_POW2(x) pow((2), gf_log2((int)(x) + 1))
+#define NEAREST_POW2(x) pow((2), gf_math_log2((int)(x) + 1))
 
 gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
@@ -104,7 +104,7 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 		draw->font[i] = gf_register_texture(draw, 8, 8, font);
 		free(font);
 	}
-	gf_function_log(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
+	gf_log_function(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
 
 	glClearColor(0, 0, 0, 1);
 

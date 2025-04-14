@@ -64,7 +64,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	draw->platform->display = XOpenDisplay(NULL);
 	if(draw->platform->display == NULL) {
-		gf_function_log(NULL, "Failed to open display", "");
+		gf_log_function(NULL, "Failed to open display", "");
 		gf_draw_destroy(draw);
 		return;
 	}
@@ -87,7 +87,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	visual = glXChooseVisual(draw->platform->display, screen, attribs);
 	if(visual == NULL) {
-		gf_function_log(NULL, "Failed to get visual", "");
+		gf_log_function(NULL, "Failed to get visual", "");
 		gf_draw_destroy(draw);
 		return;
 	}
@@ -110,7 +110,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	draw->platform->context = glXCreateContext(draw->platform->display, visual, NULL, True);
 	if(draw->platform->context == NULL) {
 		XFree(visual);
-		gf_function_log(NULL, "Failed to get OpenGL context", "");
+		gf_log_function(NULL, "Failed to get OpenGL context", "");
 		gf_draw_destroy(draw);
 		return;
 	}
@@ -142,7 +142,7 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 		interval = 1;
 	}
 	if(interval > 0) {
-		gf_function_log(NULL, "Enabled VSync", "");
+		gf_log_function(NULL, "Enabled VSync", "");
 	}
 #endif
 }

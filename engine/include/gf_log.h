@@ -18,7 +18,7 @@
 
 /* Standard */
 
-#define gf_function_log(engine, fmt, ...) gf_log(engine, "%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, __VA_ARGS__)
+#define gf_log_function(engine, fmt, ...) gf_log(engine, "%6d %24s: " fmt "\n", __LINE__, __FUNCTION_NAME__, __VA_ARGS__)
 
 GF_EXPORT void gf_log(gf_engine_t* engine, const char* fmt, ...);
 

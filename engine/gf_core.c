@@ -26,16 +26,16 @@ void gf_engine_begin(void) {
 #ifdef _WIN32
 	WSADATA wsa;
 #endif
-	gf_get_version(&ver);
-	gf_function_log(NULL, "GoldFish Engine %s", ver.full);
-	gf_function_log(NULL, "Build date: %s", ver.date);
-	gf_function_log(NULL, "Lua %s", ver.lua);
-	gf_function_log(NULL, "zlib %s", ver.zlib);
-	gf_function_log(NULL, "Thread model: %s", ver.thread);
-	gf_function_log(NULL, "Renderer: %s on %s", ver.driver, ver.backend);
+	gf_version_get(&ver);
+	gf_log_function(NULL, "GoldFish Engine %s", ver.full);
+	gf_log_function(NULL, "Build date: %s", ver.date);
+	gf_log_function(NULL, "Lua %s", ver.lua);
+	gf_log_function(NULL, "zlib %s", ver.zlib);
+	gf_log_function(NULL, "Thread model: %s", ver.thread);
+	gf_log_function(NULL, "Renderer: %s on %s", ver.driver, ver.backend);
 #ifdef _WIN32
 	WSAStartup(MAKEWORD(1, 1), &wsa);
-	gf_function_log(NULL, "Winsock ready", "");
+	gf_log_function(NULL, "Winsock ready", "");
 #endif
 	gf_draw_begin();
 	gf_physics_begin();
@@ -51,17 +51,17 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	memset(engine, 0, sizeof(*engine));
 	engine->log = stderr;
 	if(nogui) {
-		gf_function_log(NULL, "No GUI mode", "");
+		gf_log_function(NULL, "No GUI mode", "");
 		engine->draw = NULL;
 	} else {
-		gf_function_log(NULL, "GUI mode", "");
+		gf_log_function(NULL, "GUI mode", "");
 		engine->draw = gf_draw_create(engine, title);
 		if(engine->draw == NULL) {
-			gf_function_log(NULL, "Failed to create drawing interface", "");
+			gf_log_function(NULL, "Failed to create drawing interface", "");
 			free(engine);
 			return NULL;
 		}
-		gf_function_log(engine, "Switching to graphical console", "");
+		gf_log_function(engine, "Switching to graphical console", "");
 	}
 	engine->physics = gf_physics_create();
 	return engine;
@@ -95,5 +95,5 @@ void gf_engine_destroy(gf_engine_t* engine) {
 	if(engine->physics != NULL) gf_physics_destroy(engine->physics);
 	if(engine->draw != NULL) gf_draw_destroy(engine->draw);
 	free(engine);
-	gf_function_log(NULL, "Destroyed engine", "");
+	gf_log_function(NULL, "Destroyed engine", "");
 }
