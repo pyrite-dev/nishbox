@@ -24,8 +24,8 @@ gf_gui_t* gf_gui_create(gf_draw_t* draw) {
 	gf_gui_id_t i;
 	gui->draw = draw;
 
-	GF_SET_COLOR(gf_gui_base_color, 32, 64, 32, 255);
-	GF_SET_COLOR(gf_gui_font_color, 220, 220, 220, 255);
+	GF_SET_COLOR(gf_gui_base_color, 48, 96, 48, 255);
+	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);
 
 	for(i = 0; i < GF_GUI_MAX_COMPONENTS; i++) gui->area[i].type = -1;
 
