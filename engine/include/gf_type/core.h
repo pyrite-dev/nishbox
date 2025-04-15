@@ -32,6 +32,12 @@
  * @var gf_engine_t::draw
  * @brief Draw part
  * @todo Create gf_client_t and move draw there
+ *
+ * @var gf_engine_t::log
+ * @brief Log output
+ * @note Default is `stderr`
+ * @warning This is `NULL` when logger is using graphical console
+ * @warning Destroying engien instance **does not** `fclose` this
  */
 GF_DECLARE_TYPE(engine, {
 	gf_physics_t* physics;

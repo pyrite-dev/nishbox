@@ -18,7 +18,7 @@
 /* Standard */
 
 /**
- * @typedef gf_version_t
+ * @struct gf_version_t
  * @~english
  * @brief Version
  *
