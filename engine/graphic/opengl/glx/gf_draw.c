@@ -1,9 +1,3 @@
-/**
- * @file
- * @~english
- * @brief GLX-dependent part of drawing driver
- */
-
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 

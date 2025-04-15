@@ -1,9 +1,3 @@
-/**
- * @file
- * @~english
- * @brief OpenGL drawing driver
- */
-
 #define GF_EXPOSE_DRAW_DRIVER
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_TEXTURE

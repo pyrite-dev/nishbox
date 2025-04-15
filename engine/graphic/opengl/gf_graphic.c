@@ -1,10 +1,3 @@
-/**
- * @file
- * @~english
- * @brief OpenGL graphic interface
- */
-
-#include <gf_macro.h>
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_TEXTURE
 

@@ -1,9 +1,3 @@
-/**
- * @file
- * @~english
- * @brief WGL-dependent part of drawing driver
- */
-
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 
@@ -32,15 +26,6 @@ typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
 void gf_draw_platform_begin(void) {}
 void gf_draw_platform_end(void) {}
 
-/**
- * @~english
- * @brief Win32 API event handler
- * @param hWnd Window
- * @param msg Message
- * @param wp Word parameter
- * @param lp Long parameter
- * @return Result
- */
 LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
