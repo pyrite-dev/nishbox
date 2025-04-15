@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @~english
+ * @brief OpenGL drawing driver
+ */
+
 #define GF_EXPOSE_DRAW_DRIVER
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_TEXTURE
@@ -24,11 +30,35 @@
 #include <string.h>
 #include <math.h>
 
+/**
+ * @~english
+ * @brief White light
+ */
 GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
+
+/**
+ * @~english
+ * @brief Gray light
+ */
 GLfloat lightgry[] = {0.6, 0.6, 0.6, 1.0};
+
+/**
+ * @~english
+ * @brief Dim light
+ */
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
+
+/**
+ * @~english
+ * @brief Black light
+ */
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
+/**
+ * @~english
+ * @brief Calculate the nearest 2^n value to x
+ * @param x Number
+ */
 #define NEAREST_POW2(x) pow((2), gf_math_log2((int)(x) + 1))
 
 gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {

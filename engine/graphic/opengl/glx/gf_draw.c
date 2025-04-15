@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @~english
+ * @brief GLX-dependent part of drawing driver
+ */
+
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 
@@ -18,6 +24,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef DO_SWAP_INTERVAL
 #ifndef GLX_MESA_swap_control
 #define GLX_MESA_swap_control 1
 typedef int (*PFNGLXGETSWAPINTERVALMESAPROC)(void);
@@ -32,6 +39,7 @@ typedef void (*PFNGLXSWAPINTERVALEXTPROC)(Display*, GLXDrawable, int);
 #ifndef GLX_SGI_swap_control
 #define GLX_SGI_swap_control 1
 typedef void (*PFNGLXSWAPINTERVALSGIPROC)(int);
+#endif
 #endif
 
 void gf_draw_platform_begin(void) {}

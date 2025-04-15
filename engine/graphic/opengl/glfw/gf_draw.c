@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @~english
+ * @brief GLFW-dependent part of drawing driver
+ */
+
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 
@@ -28,6 +34,13 @@ void gf_draw_platform_begin(void) {
 
 void gf_draw_platform_end(void) {}
 
+/**
+ * @~english
+ * @brief GLFW resize handler
+ * @param window GLFW window
+ * @param w Width of window
+ * @param h Height of window
+ */
 void gf_glfw_size(GLFWwindow* window, int w, int h) {
 	gf_draw_t* draw = (gf_draw_t*)glfwGetWindowUserPointer(window);
 	draw->width	= w;

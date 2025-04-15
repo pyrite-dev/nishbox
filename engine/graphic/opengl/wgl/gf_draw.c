@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @~english
+ * @brief WGL-dependent part of drawing driver
+ */
+
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 
@@ -19,11 +25,22 @@
 #include <stdlib.h>
 
 typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
+#ifdef DO_SWAP_INTERVAL
 typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
+#endif
 
 void gf_draw_platform_begin(void) {}
 void gf_draw_platform_end(void) {}
 
+/**
+ * @~english
+ * @brief Win32 API event handler
+ * @param hWnd Window
+ * @param msg Message
+ * @param wp Word parameter
+ * @param lp Long parameter
+ * @return Result
+ */
 LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	PAINTSTRUCT ps;
 	RECT	    rect;
@@ -96,12 +113,14 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 }
 
 void gf_draw_platform_create(gf_draw_t* draw) {
-	WNDCLASSEX	       wc;
-	PIXELFORMATDESCRIPTOR  desc;
+	WNDCLASSEX	      wc;
+	PIXELFORMATDESCRIPTOR desc;
+#ifdef DO_SWAP_INTERVAL
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
-	RECT		       rect;
-	int		       fmt;
-	DWORD		       style;
+#endif
+	RECT  rect;
+	int   fmt;
+	DWORD style;
 
 	draw->platform = malloc(sizeof(*draw->platform));
 	memset(draw->platform, 0, sizeof(*draw->platform));
