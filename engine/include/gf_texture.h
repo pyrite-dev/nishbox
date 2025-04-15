@@ -21,6 +21,7 @@
 /**
  * @~english
  * @brief Register texture
+ * @param draw Drawing interface
  * @param width Width of texture
  * @param height Height of texture
  * @param data Texture data

@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @~english
+ * @brief POSIX thread
+ */
+
 #define GF_EXPOSE_THREAD
 
 #include <gf_pre.h>
@@ -13,6 +19,12 @@
 /* Standard */
 #include <stdlib.h>
 
+/**
+ * @~english
+ * @brief Wrap thread
+ * @param arg Thread context
+ * @return NULL
+ */
 void* gf_wrap_thread(void* arg) {
 	gf_thread_context_t* ctx = (gf_thread_context_t*)arg;
 	ctx->func(ctx->data);
