@@ -77,10 +77,25 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_color_t color;
+	float	   z = 16;
 	color.r = color.g = color.b = color.a = 255;
 	if(draw->draw_3d) {
 	}
-	gf_graphic_draw_texture_polygon(draw, test_texture, color, 3, 4, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 1.0, -1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, -1.0);
+	gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,
+					/* clang-format off */
+		0.0, 0.0,
+		-1.0, 0.0, -1.0,
+
+		0.0, 1.0 * z,
+		-1.0, 0.0, 1.0,
+
+		1.0 * z, 1.0 * z,
+		1.0, 0.0, 1.0,
+
+		1.0 * z, 0.0,
+		1.0, 0.0, -1.0
+					/* clang-format on */
+	);
 	if(draw->draw != NULL) draw->draw(draw);
 }
 

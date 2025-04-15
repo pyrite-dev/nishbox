@@ -25,4 +25,4 @@ void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* 
 
 float gf_graphic_text_width(gf_draw_t* draw, float size, const char* text) { return (float)strlen(text) * (size * GF_GRAPHIC_FONT_ASPECT_X / GF_GRAPHIC_FONT_ASPECT_Y); }
 
-void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color) { gf_graphic_draw_texture_polygon(draw, texture, color, 2, 4, 0.0, 0.0, x, y, 0.0, 1.0, x, y + h, 1.0, 1.0, x + w, y + h, 1.0, 0.0, x + w, y); }
+void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color) { gf_graphic_draw_texture_polygon(draw, texture, color, GF_GRAPHIC_2D, 4, 0.0, 0.0, x, y, 0.0, 1.0, x, y + h, 1.0, 1.0, x + w, y + h, 1.0, 0.0, x + w, y); }

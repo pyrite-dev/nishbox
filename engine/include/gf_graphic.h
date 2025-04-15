@@ -23,6 +23,9 @@
 #define GF_GRAPHIC_FONT_ASPECT_X 1
 #define GF_GRAPHIC_FONT_ASPECT_Y 2
 
+#define GF_GRAPHIC_2D 2
+#define GF_GRAPHIC_3D 3
+
 #define GF_SET_COLOR(color, red, green, blue, alpha) \
 	color.r = (red); \
 	color.g = (green); \
