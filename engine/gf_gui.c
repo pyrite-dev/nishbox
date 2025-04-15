@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define GF_GUI_FONT_SIZE 16
 gf_color_t gf_gui_base_color;
 gf_color_t gf_gui_font_color;
 

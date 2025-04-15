@@ -10,6 +10,10 @@
 #include <gf_pre.h>
 #include <gf_macro.h>
 
+/**
+ * @~english
+ * @brief Component ID
+ */
 typedef int gf_gui_id_t;
 
 #ifdef GF_EXPOSE_GUI

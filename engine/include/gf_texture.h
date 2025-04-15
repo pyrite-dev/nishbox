@@ -1,7 +1,7 @@
 /**
- * Texture
- *
- * Provides a wrapper for drawing driver.
+ * @file gf_texture.h
+ * @~english
+ * @brief Texture
  */
 
 #ifndef __GF_TEXTURE_H__
@@ -18,7 +18,21 @@
 
 /* Standard */
 
+/**
+ * @~english
+ * @brief Register texture
+ * @param width Width of texture
+ * @param height Height of texture
+ * @param data Texture data
+ * @return Texture
+ */
 GF_EXPORT gf_texture_t* gf_texture_register(gf_draw_t* draw, int width, int height, unsigned char* data);
-GF_EXPORT void		gf_texture_destroy(gf_texture_t* texture);
+
+/**
+ * @~english
+ * @brief Destroy texture
+ * @param texture Texture
+ */
+GF_EXPORT void gf_texture_destroy(gf_texture_t* texture);
 
 #endif

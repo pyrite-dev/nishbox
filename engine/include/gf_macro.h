@@ -121,7 +121,7 @@
 /**
  * @def __FUNCTION_NAME__
  * @~english
- * @brief Defined as `__FUNCTION__` on MSVC, otherwise defined as `__func__`
+ * @brief Macro for compiler-dependent function name macro
  */
 #ifndef __FUNCTION_NAME__
 #ifdef _MSC_VER
@@ -139,6 +139,11 @@
  */
 #define GF_DECLARE_TYPE(n, b) typedef struct gf_##n##_t b gf_##n##_t;
 
+/**
+ * @def GF_EXPORT
+ * @~english
+ * @brief Macro for platform-dependent symbol export/import
+ */
 #if defined(_WIN32) && defined(GF_DLL)
 #define GF_EXPORT __declspec(dllexport)
 #else

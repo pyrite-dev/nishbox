@@ -1,7 +1,7 @@
 /**
- * Thread
- *
- * Wrapper for platform-dependent thread.
+ * @file gf_thread.h
+ * @~english
+ * @brief Thread interface
  */
 
 #ifndef __GF_THREAD_H__
@@ -17,8 +17,27 @@
 
 /* Standard */
 
+/**
+ * @~english
+ * @brief Create thread
+ * @param func Function to be called for thread
+ * @param userdata Data to be passed to thread
+ * @return Thread
+ */
 GF_EXPORT gf_thread_t* gf_thread_create(void (*func)(void*), void* userdata);
-GF_EXPORT void	       gf_thread_join(gf_thread_t* thread);
-GF_EXPORT void	       gf_thread_destroy(gf_thread_t* thread);
+
+/**
+ * @~english
+ * @brief Join thread
+ * @param thread Thread
+ */
+GF_EXPORT void gf_thread_join(gf_thread_t* thread);
+
+/**
+ * @~english
+ * @brief Destroy thread
+ * @param thread Thread
+ */
+GF_EXPORT void gf_thread_destroy(gf_thread_t* thread);
 
 #endif

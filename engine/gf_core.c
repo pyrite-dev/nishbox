@@ -72,16 +72,16 @@ void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*)) { gf_draw
 /**
  * Writing this so I don't forget
  *
- * 1. Calls gf_draw_step
- * 2. gf_draw_step calls gf_draw_platform_step (Platform-dependent)
- * 3. gf_draw_platform_step processes platform-dependent stuffs (e.g. events)
- * 4. gf_draw_platform_step calls gf_draw_driver_before
- * 5. gf_draw_platform_step calls gf_draw_frame
- * 6. gf_draw_frame calls gf_draw_t.draw to draw frame
- * 7. gf_draw_frame draws more stuffs if required
- * 8. gf_draw_platform_step calls gf_draw_driver_after
- * 9. gf_draw_platform_step swaps buffers
- *10. Comes back here
+ * 1.  Calls gf_draw_step
+ * 2.  gf_draw_step calls gf_draw_platform_step (Platform-dependent)
+ * 3.  gf_draw_platform_step processes platform-dependent stuffs (e.g. events)
+ * 4.  gf_draw_platform_step calls gf_draw_driver_before
+ * 5.  gf_draw_platform_step calls gf_draw_frame
+ * 6.  gf_draw_frame calls gf_draw_t.draw to draw frame
+ * 7.  gf_draw_frame draws more stuffs if required
+ * 8.  gf_draw_platform_step calls gf_draw_driver_after
+ * 9.  gf_draw_platform_step swaps buffers
+ * 10. Comes back here
  */
 void gf_engine_loop(gf_engine_t* engine) {
 	while(1) {

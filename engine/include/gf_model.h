@@ -1,5 +1,7 @@
 /**
- * Model
+ * @file gf_model.h
+ * @~english
+ * @brief Model
  */
 
 #ifndef __GF_MODEL_H__

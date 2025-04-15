@@ -1,5 +1,7 @@
 /**
- * Physics
+ * @file gf_physics.h
+ * @~english
+ * @brief Physics interface
  */
 
 #ifndef __GF_PHYSICS_H__
@@ -15,9 +17,30 @@
 
 /* Standard */
 
-GF_EXPORT void		gf_physics_begin(void);
-GF_EXPORT void		gf_physics_end(void);
+/**
+ * @~english
+ * @brief Initialize physics interface
+ */
+GF_EXPORT void gf_physics_begin(void);
+
+/**
+ * @~english
+ * @brief Cleanup physics interface
+ */
+GF_EXPORT void gf_physics_end(void);
+
+/**
+ * @~english
+ * @brief Create physics interface
+ * @return Physics interface
+ */
 GF_EXPORT gf_physics_t* gf_physics_create(void);
-GF_EXPORT void		gf_physics_destroy(gf_physics_t* physics);
+
+/**
+ * @~english
+ * @brief Destroy physics interface
+ * @param physics Physics interface
+ */
+GF_EXPORT void gf_physics_destroy(gf_physics_t* physics);
 
 #endif

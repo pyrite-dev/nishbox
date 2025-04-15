@@ -89,6 +89,7 @@ GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int di
 /**
  * @~english
  * @brief Calculate text width
+ * @return Text width
  */
 GF_EXPORT float gf_graphic_text_width(gf_draw_t* draw, float size, const char* text);
 

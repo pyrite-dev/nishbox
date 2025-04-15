@@ -35,6 +35,7 @@ GF_EXPORT void gf_engine_end(void);
  * @brief Create engine instance
  * @param title Title to be shown on the window
  * @param nogui `0` to enable client-part, otherwise disable client-part
+ * @return Engine instance
  */
 GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui);
 
