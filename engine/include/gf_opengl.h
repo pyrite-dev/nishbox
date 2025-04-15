@@ -1,7 +1,8 @@
 /**
- * OpenGL
- *
- * Includes OpenGL headers.
+ * @file gf_opengl.h
+ * @~english
+ * @brief Includes OpenGL headers
+ * @note User should not include this, this header is used internally
  */
 
 #ifndef __GF_OPENGL_H__
