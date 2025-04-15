@@ -26,11 +26,11 @@
  * @brief Engine instance
  *
  * @var gf_engine_t::physics
- * @brief Physics part
+ * @brief Physics interface
  * @todo Create gf_server_t and move physics there
  *
  * @var gf_engine_t::draw
- * @brief Draw part
+ * @brief Drawing interface
  * @todo Create gf_client_t and move draw there
  *
  * @var gf_engine_t::log

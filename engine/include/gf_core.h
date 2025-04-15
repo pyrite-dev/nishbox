@@ -42,6 +42,7 @@ GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui);
  * @~english
  * @brief Start engine main loop
  * @param engine Engine instance
+ * @note How engine draws a frame internally is explained in gf_core.c
  */
 GF_EXPORT void gf_engine_loop(gf_engine_t* engine);
 
