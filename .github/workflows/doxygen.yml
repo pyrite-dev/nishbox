@@ -21,7 +21,7 @@ jobs:
     - name: Build engine document
       run: cd engine && doxygen && mv doc/html build/engine
     - name: Deploy
-      uses: DamesIves/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages
