@@ -25,6 +25,7 @@
 #include <math.h>
 
 GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat lightgry[] = {0.6, 0.6, 0.6, 1.0};
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
@@ -79,17 +80,18 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glCullFace(GL_BACK);
 
-	glShadeModel(GL_FLAT);
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightdim);
+	glShadeModel(GL_SMOOTH);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightgry);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightwht);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightwht);
 
 	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
 		unsigned char* font = malloc(8 * 8 * 4);
@@ -101,7 +103,7 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 			font[j * 4 + 2]	  = val;
 			font[j * 4 + 3]	  = val;
 		}
-		draw->font[i] = gf_register_texture(draw, 8, 8, font);
+		draw->font[i] = gf_texture_register(draw, 8, 8, font);
 		free(font);
 	}
 	gf_log_function(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
@@ -148,13 +150,14 @@ void gf_draw_driver_set_color(gf_draw_t* draw, gf_color_t color) { glColor4f(col
 void gf_draw_driver_destroy(gf_draw_t* draw) {
 	int i;
 	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
-		gf_destroy_texture(draw->font[i]);
+		gf_texture_destroy(draw->font[i]);
 	}
 }
 
 void gf_draw_driver_before(gf_draw_t* draw) {
-	GLfloat lightpos[3];
+	GLfloat lightpos[4];
 	GF_VECTOR_COPY(draw->light, lightpos);
+	lightpos[3] = draw->light[3];
 
 	gf_draw_driver_reshape(draw);
 

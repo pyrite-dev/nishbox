@@ -39,34 +39,41 @@ void gf_graphic_end_2d(gf_draw_t* draw) {
 	glEnable(GL_LIGHTING);
 }
 
-void gf_graphic_clear(gf_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
+void gf_graphic_clear(gf_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); }
 
-void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color) {
-	double tw = (double)texture->width / texture->internal_width;
-	double th = (double)texture->height / texture->internal_height;
+void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_color_t color, int dim, int npair, ...) {
+	double	tw = (double)texture->width / texture->internal_width;
+	double	th = (double)texture->height / texture->internal_height;
+	int	i;
+	va_list va;
+	va_start(va, npair);
 
-	gf_graphic_begin_2d(draw);
+	if(dim == 2) gf_graphic_begin_2d(draw);
+	gf_draw_driver_begin_texture_2d(draw, texture);
 
 	gf_draw_driver_set_color(draw, color);
-	gf_draw_driver_begin_texture_2d(draw, texture);
-	glBegin(GL_QUADS);
+	glBegin(GL_TRIANGLE_FAN);
 
-	glTexCoord2d(0, 0);
-	glVertex2f(x, y);
-
-	glTexCoord2d(0, th);
-	glVertex2f(x, y + h);
-
-	glTexCoord2d(tw, th);
-	glVertex2f(x + w, y + h);
-
-	glTexCoord2d(tw, 0);
-	glVertex2f(x + w, y);
+	for(i = 0; i < npair; i++) {
+		float tx = va_arg(va, double) * tw;
+		float ty = va_arg(va, double) * th;
+		float x	 = va_arg(va, double);
+		float y	 = va_arg(va, double);
+		glTexCoord2f(tx, ty);
+		if(dim == 2) {
+			glVertex2f(x, y);
+		} else if(dim == 3) {
+			float z = va_arg(va, double);
+			glVertex3f(x, y, z);
+		}
+	}
 
 	glEnd();
-	gf_draw_driver_end_texture_2d(draw);
 
-	gf_graphic_end_2d(draw);
+	gf_draw_driver_end_texture_2d(draw);
+	if(dim == 2) gf_graphic_end_2d(draw);
+
+	va_end(va);
 }
 
 void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int npair, ...) {

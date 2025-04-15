@@ -30,6 +30,7 @@ GF_DECLARE_TYPE(draw, {
 	int		    width;
 	int		    height;
 	int		    running;
+	int		    draw_3d;
 	char		    title[128];
 	gf_texture_t*	    font[128];
 	gf_vector_t	    light;
