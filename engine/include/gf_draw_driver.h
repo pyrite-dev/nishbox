@@ -1,7 +1,7 @@
 /**
- * Renderer driver (e.g. OpenGL)
- *
- * Handles driver-specific parts, like lighting.
+ * @file gf_draw_driver.h
+ * @~english
+ * @brief Drawing driver
  */
 
 #ifndef __GF_DRAW_DRIVER_H__

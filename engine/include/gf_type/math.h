@@ -1,3 +1,9 @@
+/**
+ * @file gf_type/math.h
+ * @~english
+ * @brief Type definitions related to math
+ */
+
 #ifndef __GF_TYPE_MATH_H__
 #define __GF_TYPE_MATH_H__
 
@@ -11,6 +17,11 @@
 
 /* Standard */
 
+/**
+ * @~english
+ * @brief Vector
+ * @note gf_vector_t[3] is used internally
+ */
 typedef double gf_vector_t[4];
 #else
 #error "should not happen!"

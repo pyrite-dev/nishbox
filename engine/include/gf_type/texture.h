@@ -1,3 +1,9 @@
+/**
+ * @file gf_type/texture.h
+ * @~english
+ * @brief Type definitions related to texture
+ */
+
 #ifndef __GF_TYPE_TEXTURE_H__
 #define __GF_TYPE_TEXTURE_H__
 
@@ -12,6 +18,26 @@
 
 /* Standard */
 
+/**
+ * @struct gf_texture_t
+ * @~english
+ * @brief Texture
+ *
+ * @var gf_texture_t::draw_driver_texture
+ * @brief Driver-dependent texture
+ *
+ * @var gf_texture_t::width
+ * @brief Width of texture
+ *
+ * @var gf_texture_t::height
+ * @brief Height of texture
+ *
+ * @var gf_texture_t::internal_width
+ * @brief Internal width of texture
+ *
+ * @var gf_texture_t::internal_height
+ * @brief Internal height of texture
+ */
 GF_DECLARE_TYPE(texture, {
 	gf_draw_driver_texture_t* draw_driver_texture;
 	int			  width;

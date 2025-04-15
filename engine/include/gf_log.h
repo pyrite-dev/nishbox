@@ -1,8 +1,7 @@
 /**
- * Log
- *
- * Provides useful function/macro for logging.
- * Uses the graphical console if possible.
+ * @file gf_log.h
+ * @~english
+ * @brief Logger
  */
 
 #ifndef __GF_LOG_H__

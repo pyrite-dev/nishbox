@@ -1,3 +1,9 @@
+/**
+ * @file gf_type/model.h
+ * @~english
+ * @brief Type definitions related to model
+ */
+
 #ifndef __GF_TYPE_MODEL_H__
 #define __GF_TYPE_MODEL_H__
 
@@ -13,6 +19,17 @@
 
 /* Standard */
 
+/**
+ * @struct gf_model_t
+ * @~english
+ * @brief Model
+ *
+ * @var gf_model_t::mesh
+ * @brief Mesh
+ *
+ * @var gf_model_t::texture
+ * @brief Texture
+ */
 GF_DECLARE_TYPE(model, {
 	gf_mesh_t*    mesh;
 	gf_texture_t* texture;

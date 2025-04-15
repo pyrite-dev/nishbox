@@ -1,7 +1,7 @@
 /**
- * Renderer backend (e.g. GLX)
- *
- * Provides the lowest layer for graphics.
+ * @file gf_draw_platform.h
+ * @~english
+ * @brief Platform-dependent part of drawing driver
  */
 
 #ifndef __GF_DRAW_PLATFORM_H__

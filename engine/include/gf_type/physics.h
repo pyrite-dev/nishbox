@@ -1,3 +1,9 @@
+/**
+ * @file gf_type/physics.h
+ * @~english
+ * @brief Type definitions related to physics interface
+ */
+
 #ifndef __GF_TYPE_PHYSICS_H__
 #define __GF_TYPE_PHYSICS_H__
 
@@ -12,6 +18,14 @@
 
 /* Standard */
 
+/**
+ * @struct gf_physics_t
+ * @~english
+ * @brief Physics interface
+ *
+ * @var gf_physics_t::id
+ * @brief ODE's world ID
+ */
 GF_DECLARE_TYPE(physics, { dWorldID id; });
 #else
 typedef void gf_physics_t;

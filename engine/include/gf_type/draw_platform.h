@@ -1,3 +1,9 @@
+/**
+ * @file gf_type/draw_platform.h
+ * @~english
+ * @brief Type definitions related to platform-dependent part of drawing driver
+ */
+
 #ifndef __GF_TYPE_DRAW_PLATFORM_H__
 #define __GF_TYPE_DRAW_PLATFORM_H__
 
@@ -6,7 +12,7 @@
 
 #ifdef GF_EXPOSE_DRAW_PLATFORM
 /* External library */
-#ifdef DRV_OPENGL
+#if defined(DRV_OPENGL)
 #include <gf_opengl.h>
 #endif
 
@@ -14,7 +20,7 @@
 
 /* Standard */
 
-#ifdef DRV_OPENGL
+#if defined(DRV_OPENGL)
 #if defined(USE_GLX)
 GF_DECLARE_TYPE(draw_platform, {
 	Display*   display;
@@ -32,6 +38,14 @@ GF_DECLARE_TYPE(draw_platform, {
 #elif defined(USE_GLFW)
 GF_DECLARE_TYPE(draw_platform, { GLFWwindow* window; });
 #endif
+#else
+/**
+ * @struct gf_draw_platform_t
+ * @~english
+ * @brief Platform-dependent part of drawing driver
+ * @note Definition depends on the drawing driver and the platform, read the header file for definition
+ */
+GF_DECLARE_TYPE(draw_platform, {});
 #endif
 #else
 typedef void gf_draw_platform_t;

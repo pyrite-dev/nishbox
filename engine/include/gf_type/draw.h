@@ -31,10 +31,10 @@ GF_DECLARE_TYPE(draw, );
  * @brief Drawing interface
  *
  * @var gf_draw_t::platform
- * @brief Platform-dependent part of drawing
+ * @brief Platform-dependent part of drawing driver
  *
  * @var gf_draw_t::driver
- * @brief Driver-dependent part of drawing
+ * @brief Drawing driver
  *
  * @var gf_draw_t::gui
  * @brief GUI

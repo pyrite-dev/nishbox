@@ -72,11 +72,11 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, float x, float y, float w, float
 	gf_gui_id_t	    id;
 	gf_gui_component_t* c = gf_gui_first_unused(gui, &id);
 
-	c->type = GF_GUI_BUTTON;
-	c->x	= x;
-	c->y	= y;
-	c->w	= w;
-	c->h	= h;
+	c->type	  = GF_GUI_BUTTON;
+	c->x	  = x;
+	c->y	  = y;
+	c->width  = w;
+	c->height = h;
 
 	c->u.button.pressed = 0;
 	c->u.button.text    = malloc(strlen(text) + 1);
@@ -87,12 +87,16 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, float x, float y, float w, float
 void gf_gui_render(gf_gui_t* gui) {
 	gf_gui_id_t i;
 	for(i = 0; i < GF_GUI_MAX_COMPONENTS; i++) {
-		gf_gui_component_t* c = &gui->area[i];
+		gf_gui_component_t* c  = &gui->area[i];
+		float		    cx = c->x;
+		float		    cy = c->y;
+		float		    cw = c->width;
+		float		    ch = c->height;
 		switch(c->type) {
 		case GF_GUI_BUTTON: {
-			float x = c->x + c->w / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
-			float y = c->y + c->h / 2 - GF_GUI_FONT_SIZE / 2;
-			gf_gui_draw_box(gui, GF_GUI_NORMAL, c->x, c->y, c->w, c->h);
+			float x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
+			float y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
+			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
 			gf_graphic_text(gui->draw, x, y, GF_GUI_FONT_SIZE, c->u.button.text, gf_gui_font_color);
 			break;
 		}

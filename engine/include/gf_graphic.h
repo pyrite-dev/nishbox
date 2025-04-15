@@ -1,7 +1,7 @@
 /**
  * @file gf_graphic.h
  * @~english
- * @brief Graphic
+ * @brief Graphic interface
  */
 
 #ifndef __GF_GRAPHIC_H__
@@ -96,18 +96,18 @@ GF_EXPORT float gf_graphic_text_width(gf_draw_t* draw, float size, const char* t
  * @~english
  * @brief Draw text
  */
-GF_EXPORT void	gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color);
+GF_EXPORT void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color);
 
 /**
  * @~english
  * @brief Draw filled rectangle
  */
-GF_EXPORT void	gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color);
+GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color);
 
 /**
  * @~english
  * @brief Draw rectangle with texture
  */
-GF_EXPORT void	gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color);
+GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color);
 
 #endif
