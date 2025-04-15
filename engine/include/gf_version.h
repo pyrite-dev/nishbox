@@ -1,5 +1,7 @@
 /**
- * Version
+ * @file gf_version.h
+ * @~english
+ * @brief Version
  */
 
 #ifndef __GF_VERSION_H__
@@ -15,6 +17,10 @@
 
 /* Standard */
 
+/**
+ * @~english
+ * @brief Get version of engine
+ */
 GF_EXPORT void gf_version_get(gf_version_t* version);
 
 #endif
