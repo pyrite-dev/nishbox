@@ -5,7 +5,11 @@ on:
     branches:
     - master
   workflow_dispatch:
- 
+
+concurrency:
+  group: "doxygen"
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
