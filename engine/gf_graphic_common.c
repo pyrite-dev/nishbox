@@ -14,7 +14,7 @@
 /* Standard */
 #include <string.h>
 
-void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color) { gf_graphic_fill_polygon(draw, color, 4, x, y, x, y + h, x + w, y + h, x + w, y); }
+void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color) { gf_graphic_fill_polygon(draw, color, GF_GRAPHIC_2D, 4, x, y, x, y + h, x + w, y + h, x + w, y); }
 
 void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color) {
 	int i;

@@ -51,7 +51,7 @@ void gf_gui_draw_box(gf_gui_t* gui, int mul, float x, float y, float w, float h)
 	col.r -= cd;
 	col.g -= cd;
 	col.b -= cd;
-	gf_graphic_fill_polygon(gui->draw, col, 5, x + w, y + h, x + w, y, x + w - bw, y + bw, x + bw, y + h - bw, x, y + h);
+	gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 5, x + w, y + h, x + w, y, x + w - bw, y + bw, x + bw, y + h - bw, x, y + h);
 
 	col = gf_gui_base_color;
 	gf_graphic_fill_rect(gui->draw, x + bw, y + bw, w - bw * 2, h - bw * 2, col);

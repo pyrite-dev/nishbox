@@ -22,13 +22,13 @@
  * @~english
  * @brief Initialize engine
  */
-GF_EXPORT void	       gf_engine_begin(void);
+GF_EXPORT void gf_engine_begin(void);
 
 /**
  * @~english
  * @brief Cleanup engine
  */
-GF_EXPORT void	       gf_engine_end(void);
+GF_EXPORT void gf_engine_end(void);
 
 /**
  * @~english
@@ -43,7 +43,7 @@ GF_EXPORT gf_engine_t* gf_engine_create(const char* title, int nogui);
  * @brief Start engine main loop
  * @param engine Engine instance
  */
-GF_EXPORT void	       gf_engine_loop(gf_engine_t* engine);
+GF_EXPORT void gf_engine_loop(gf_engine_t* engine);
 
 /**
  * @~english
@@ -51,13 +51,13 @@ GF_EXPORT void	       gf_engine_loop(gf_engine_t* engine);
  * @param engine Engine instance
  * @param func Callback
  */
-GF_EXPORT void	       gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*));
+GF_EXPORT void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*));
 
 /**
  * @~english
  * @brief Destroy engine instance
  * @param engine Engine instance
  */
-GF_EXPORT void	       gf_engine_destroy(gf_engine_t* engine);
+GF_EXPORT void gf_engine_destroy(gf_engine_t* engine);
 
 #endif

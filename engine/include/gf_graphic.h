@@ -1,8 +1,7 @@
 /**
- * Graphic
- *
- * Provides the function to draw textures, text, and etc for
- * GUI and 3D rendering.
+ * @file gf_graphic.h
+ * @~english
+ * @brief Graphic
  */
 
 #ifndef __GF_GRAPHIC_H__
@@ -20,10 +19,28 @@
 
 /* Standard */
 
+/**
+ * @~english
+ * @brief Aspect of font width
+ */
 #define GF_GRAPHIC_FONT_ASPECT_X 1
+
+/**
+ * @~english
+ * @brief Aspect of font height
+ */
 #define GF_GRAPHIC_FONT_ASPECT_Y 2
 
+/**
+ * @~english
+ * @brief Dimension parameter for 2D
+ */
 #define GF_GRAPHIC_2D 2
+
+/**
+ * @~english
+ * @brief Dimension parameter for 3D
+ */
 #define GF_GRAPHIC_3D 3
 
 #define GF_SET_COLOR(color, red, green, blue, alpha) \
@@ -38,7 +55,7 @@ GF_EXPORT void gf_graphic_begin_2d(gf_draw_t* draw);
 GF_EXPORT void gf_graphic_end_2d(gf_draw_t* draw);
 
 GF_EXPORT void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_color_t color, int dim, int npair, ...);
-GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int npair, ...);
+GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int dim, int npair, ...);
 
 /* Common */
 GF_EXPORT float gf_graphic_text_width(gf_draw_t* draw, float size, const char* text);
