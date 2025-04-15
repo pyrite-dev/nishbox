@@ -1,4 +1,4 @@
-name: "Publish Doxygen page"
+name: "Publish GitHub Pages"
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "doxygen"
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -19,9 +19,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Install packages
-      run: sudo apt-get install doxygen
+      run: sudo apt-get install doxygen tcl
+    - name: Get docgen
+      run: wget https://github.com/nishistack/docgen/raw/refs/heads/master/docgen -O docgen && chmod +x docgen
     - name: Create directory
       run: mkdir -p build
+    - name: Build main page
+      run: ./docgen
     - name: Build engine document
       run: cd engine && doxygen && mv doc/html ../build/engine
     - name: Deploy
