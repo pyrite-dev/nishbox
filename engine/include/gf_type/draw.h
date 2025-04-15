@@ -29,9 +29,60 @@ GF_DECLARE_TYPE(draw, );
  * @struct gf_draw_t
  * @~english
  * @brief Drawing interface
+ *
+ * @var gf_draw_t::platform
+ * @brief Platform-dependent part of drawing
+ *
+ * @var gf_draw_t::driver
+ * @brief Driver-dependent part of drawing
+ *
+ * @var gf_draw_t::gui
+ * @brief GUI
+ *
+ * @var gf_draw_t::close
+ * @brief `1` if it was requested to be closed, otherwise `0`
+ *
+ * @var gf_draw_t::x
+ * @brief X coord of window
+ *
+ * @var gf_draw_t::y
+ * @brief Y coord of window
+ *
+ * @var gf_draw_t::width
+ * @brief Width of window
+ *
+ * @var gf_draw_t::height
+ * @brief Height of window
+ *
+ * @var gf_draw_t::running
+ * @brief `1` if running, otherwise `0`
+ *
+ * @var gf_draw_t::draw_3d
+ * @brief `1` if engine should start rendering 3D stuffs, otherwise `0`
+ *
+ * @var gf_draw_t::title
+ * @brief Window title
+ *
+ * @var gf_draw_t::font
+ * @brief Array of texture of glyphs
+ *
+ * @var gf_draw_t::light
+ * @brief Light location
+ * @note gf_draw_t::light[3] should be 1
+ *
+ * @var gf_draw_t::lookat
+ * @brief Where to look at
+ *
+ * @var gf_draw_t::camera
+ * @brief Camera location
+ *
+ * @var gf_draw_t::camera
+ * @brief Camera location
+ *
+ * @var gf_draw_t::draw
+ * @brief User-drawing callback
  */
 GF_DECLARE_TYPE(draw, {
-	gf_engine_t*	    engine;
 	gf_draw_platform_t* platform;
 	gf_draw_driver_t*   driver;
 	gf_gui_t*	    gui;
