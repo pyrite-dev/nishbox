@@ -39,6 +39,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->height  = 480;
 	draw->running = 0;
 	draw->draw_3d = 0;
+	draw->font    = NULL;
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
@@ -61,6 +62,8 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;
 
+		draw->font = gf_font_create("font/helvR24.bdf");
+
 		draw->gui = gf_gui_create(engine, draw);
 		if(1) {
 			int	       w, h, c;
@@ -68,29 +71,6 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 			test_texture	 = gf_texture_create(draw, w, h, d);
 			free(d);
 		}
-
-		regcount = 0;
-		for(i = 0; i < 128; i++) {
-			unsigned char* font = malloc(8 * 8 * 4);
-			int	       j;
-			/* TODO: check font here */
-			draw->font[i] = 0;
-			if(1) {
-				free(font);
-				continue;
-			}
-			regcount++;
-			for(j = 0; j < 8 * 8; j++) {
-				unsigned char val = 255;
-				font[j * 4 + 0]	  = val;
-				font[j * 4 + 1]	  = val;
-				font[j * 4 + 2]	  = val;
-				font[j * 4 + 3]	  = val;
-			}
-			draw->font[i] = gf_texture_create(draw, 8, 8, font);
-			free(font);
-		}
-		gf_log_function(engine, "Registered %d glyphs", regcount);
 	} else {
 		gf_draw_destroy(draw);
 		draw = NULL;
@@ -138,12 +118,6 @@ int gf_draw_step(gf_draw_t* draw) {
 }
 
 void gf_draw_destroy(gf_draw_t* draw) {
-	if(draw->running) {
-		int i;
-		for(i = 0; i < 128; i++) {
-			if(draw->font[i] != NULL) gf_texture_destroy(draw->font[i]);
-		}
-	}
 	if(draw->driver != NULL) gf_draw_driver_destroy(draw->driver);
 	if(draw->platform != NULL) gf_draw_platform_destroy(draw->platform);
 	gf_log_function(draw->engine, "Destroyed drawing interface", "");

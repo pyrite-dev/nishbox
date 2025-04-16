@@ -20,6 +20,7 @@
 #include <gf_type/core.h>
 #include <gf_type/math.h>
 #include <gf_type/gui.h>
+#include <gf_type/font.h>
 
 /* Standard */
 
@@ -65,7 +66,7 @@
  * @brief Window title
  *
  * @var gf_draw_t::font
- * @brief Array of texture of glyphs
+ * @brief Current font
  *
  * @var gf_draw_t::light
  * @brief Light location
@@ -93,7 +94,7 @@ GF_DECLARE_TYPE(draw, {
 	int		    running;
 	int		    draw_3d;
 	char		    title[128];
-	gf_texture_t*	    font[128];
+	gf_font_t*	    font;
 	gf_math_vector_t    light;
 	gf_math_vector_t    lookat;
 	gf_math_vector_t    camera;

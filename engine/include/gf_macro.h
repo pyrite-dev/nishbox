@@ -105,6 +105,14 @@
 #define GF_EXPOSE_SERVER
 #endif
 
+#ifndef GF_EXPOSE_FONT
+/**
+ * @~english
+ * @brief Expose font properties
+ */
+#define GF_EXPOSE_FONT
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english

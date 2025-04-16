@@ -21,18 +21,6 @@
 
 /**
  * @~english
- * @brief Aspect of font width
- */
-#define GF_GRAPHIC_FONT_ASPECT_X 1
-
-/**
- * @~english
- * @brief Aspect of font height
- */
-#define GF_GRAPHIC_FONT_ASPECT_Y 2
-
-/**
- * @~english
  * @brief Dimension parameter for 2D
  */
 #define GF_GRAPHIC_2D 2
