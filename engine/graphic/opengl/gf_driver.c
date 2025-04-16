@@ -24,35 +24,11 @@
 #include <string.h>
 #include <math.h>
 
-/**
- * @~english
- * @brief White light
- */
 GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
-
-/**
- * @~english
- * @brief Gray light
- */
 GLfloat lightgry[] = {0.6, 0.6, 0.6, 1.0};
-
-/**
- * @~english
- * @brief Dim light
- */
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
-
-/**
- * @~english
- * @brief Black light
- */
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
-/**
- * @~english
- * @brief Calculate the nearest 2^n value to x
- * @param x Number
- */
 #define NEAREST_POW2(x) pow((2), gf_math_log2((int)(x) + 1))
 
 gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {
@@ -98,6 +74,8 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 	int w, h, ch;
 	draw->driver = malloc(sizeof(*draw->driver));
 
+	gf_log_function(NULL, "OpenGL renderer: %s", (char*)glGetString(GL_RENDERER));
+
 	glEnable(GL_BLEND);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
@@ -135,8 +113,6 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 	gf_log_function(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
 
 	glClearColor(0, 0, 0, 1);
-
-	draw->driver->quadric = gluNewQuadric();
 }
 
 int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
@@ -154,8 +130,7 @@ int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
 void gf_draw_driver_reshape(gf_draw_t* draw) {
 	glViewport(0, 0, (GLint)draw->width, (GLint)draw->height);
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(30, (double)draw->width / (double)draw->height, 1.0, 1000.0);
+	gf_graphic_perspective(draw, 30, 1.0, 1000.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -171,7 +146,7 @@ void gf_draw_driver_end_texture_2d(gf_draw_t* draw) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void gf_draw_driver_set_color(gf_draw_t* draw, gf_color_t color) { glColor4f(color.r / 255, color.g / 255, color.b / 255, color.a / 255); }
+void gf_draw_driver_set_color(gf_draw_t* draw, gf_graphic_color_t color) { glColor4f(color.r / 255, color.g / 255, color.b / 255, color.a / 255); }
 
 void gf_draw_driver_destroy(gf_draw_t* draw) {
 	int i;
@@ -182,12 +157,13 @@ void gf_draw_driver_destroy(gf_draw_t* draw) {
 
 void gf_draw_driver_before(gf_draw_t* draw) {
 	GLfloat lightpos[4];
-	GF_VECTOR_COPY(draw->light, lightpos);
+	GF_MATH_VECTOR_COPY(draw->light, lightpos);
 	lightpos[3] = draw->light[3];
 
 	gf_draw_driver_reshape(draw);
 
-	gluLookAt(draw->camera[0], draw->camera[1], draw->camera[2], draw->lookat[0], draw->lookat[1], draw->lookat[2], 0, 1, 0);
+	gf_graphic_set_camera(draw);
+
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 	gf_graphic_clear(draw);
 }

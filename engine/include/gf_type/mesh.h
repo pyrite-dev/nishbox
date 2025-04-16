@@ -15,6 +15,7 @@
 
 /* Engine */
 #include <gf_type/math.h>
+#include <gf_type/graphic.h>
 
 /* Standard */
 
@@ -30,8 +31,8 @@
  * @brief Triangle color
  */
 GF_DECLARE_TYPE(triangle, {
-	gf_vector_t points[3];
-	gf_vector_t color;
+	gf_math_vector_t   points[3];
+	gf_graphic_color_t color;
 });
 
 /**

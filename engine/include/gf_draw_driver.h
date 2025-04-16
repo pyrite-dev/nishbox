@@ -92,7 +92,7 @@ GF_EXPORT void gf_draw_driver_end_texture_2d(gf_draw_t* draw);
  * @param draw Drawing interface
  * @param color Color
  */
-GF_EXPORT void gf_draw_driver_set_color(gf_draw_t* draw, gf_color_t color);
+GF_EXPORT void gf_draw_driver_set_color(gf_draw_t* draw, gf_graphic_color_t color);
 
 /**
  * @~english

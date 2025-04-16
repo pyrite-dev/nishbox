@@ -19,11 +19,17 @@
 
 /**
  * @~english
+ * @brief Pi
+ */
+#define GF_MATH_PI 3.14159265
+
+/**
+ * @~english
  * @brief Copy vector
  * @param from Source
  * @param to Destination
  */
-#define GF_VECTOR_COPY(from, to) \
+#define GF_MATH_VECTOR_COPY(from, to) \
 	to[0] = from[0]; \
 	to[1] = from[1]; \
 	to[2] = from[2]
@@ -33,7 +39,7 @@
  * @brief Calculate log2(x)
  * @param x Input
  */
-GF_EXPORT float gf_math_log2(float x);
+GF_EXPORT double gf_math_log2(double x);
 
 /**
  * @~english
@@ -43,6 +49,38 @@ GF_EXPORT float gf_math_log2(float x);
  * @param v1 Input
  * @param v2 Input
  */
-GF_EXPORT void gf_math_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2);
+GF_EXPORT void gf_math_normal(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1, gf_math_vector_t v2);
+
+/**
+ * @~english
+ * @brief Calculate cot(x)
+ * @param x Input
+ */
+GF_EXPORT double gf_math_cot(double x);
+
+/**
+ * @~english
+ * @brief Normalize vector
+ * @param v Input/Output
+ */
+GF_EXPORT void gf_math_normalize(gf_math_vector_t v);
+
+/**
+ * @~english
+ * @brief Multiply vector by vector
+ * @param r Result
+ * @param v0 Input
+ * @param v1 Input
+ */
+GF_EXPORT void gf_math_multiply(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1);
+
+/**
+ * @~english
+ * @brief Subtract vector by vector
+ * @param r Result
+ * @param v0 Input
+ * @param v1 Input
+ */
+GF_EXPORT void gf_math_subtract(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1);
 
 #endif

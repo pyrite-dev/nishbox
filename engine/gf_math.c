@@ -1,7 +1,6 @@
 #include <gf_pre.h>
 
 /* External library */
-#include <ode/odemath.h>
 
 /* Interface */
 #include <gf_math.h>
@@ -13,34 +12,51 @@
 #include <stdlib.h>
 #include <math.h>
 
-float gf_math_log2(float x) { return log(x) / log(2); }
+double gf_math_log2(double x) { return log(x) / log(2); }
 
-void gf_math_normal(gf_vector_t* r, gf_vector_t v0, gf_vector_t v1, gf_vector_t v2) {
-	int	    i;
-	dReal	    length;
-	gf_vector_t vec;
-	dReal	    res[3];
-	dReal	    tmp0[3];
-	dReal	    tmp1[3];
-	dReal	    a[3]; /* v1 - v0 */
-	dReal	    b[3]; /* v2 - v0 */
+void gf_math_normalize(gf_math_vector_t v) {
+	double x = v[0];
+	double y = v[1];
+	double z = v[2];
+	double length;
 
-	GF_VECTOR_COPY(tmp0, v1);
-	GF_VECTOR_COPY(tmp1, v0);
-	dSubtractVectors3(a, tmp0, tmp1); /* v1 - v0 */
+	x *= x;
+	y *= y;
+	z *= z;
 
-	GF_VECTOR_COPY(tmp0, v2);
-	GF_VECTOR_COPY(tmp1, v0);
-	dSubtractVectors3(b, tmp0, tmp1); /* v2 - v0 */
-
-	dCalcVectorCross3(res, a, b);
-
-	length = dCalcVectorLength3(res);
-	GF_VECTOR_COPY(res, vec);
-
-	vec[0] /= length;
-	vec[1] /= length;
-	vec[2] /= length;
-
-	memcpy(*r, vec, sizeof(vec));
+	length = sqrt(x + y + z);
+	if(length > 0) {
+		length = (double)1 / length;
+	} else {
+		length = 0;
+	}
+	v[0] *= length;
+	v[1] *= length;
+	v[2] *= length;
 }
+
+void gf_math_normal(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1, gf_math_vector_t v2) {
+	gf_math_vector_t tmp0;
+	gf_math_vector_t tmp1;
+
+	gf_math_subtract(tmp0, v1, v0);
+	gf_math_subtract(tmp1, v2, v0);
+
+	gf_math_multiply(r, tmp0, tmp1);
+
+	gf_math_normalize(r);
+}
+
+void gf_math_subtract(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1) {
+	r[0] = v0[0] - v1[0];
+	r[1] = v0[1] - v1[1];
+	r[2] = v0[2] - v1[2];
+}
+
+void gf_math_multiply(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1) {
+	r[0] = v0[1] * v1[2] - v0[2] * v1[1];
+	r[1] = v0[2] * v1[0] - v0[0] * v1[2];
+	r[2] = v0[0] * v1[1] - v0[1] * v1[0];
+}
+
+double gf_math_cot(double x) { return (double)1 / tan(x); }

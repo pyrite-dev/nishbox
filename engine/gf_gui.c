@@ -15,8 +15,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-gf_color_t gf_gui_base_color;
-gf_color_t gf_gui_font_color;
+gf_graphic_color_t gf_gui_base_color;
+gf_graphic_color_t gf_gui_font_color;
 
 gf_gui_t* gf_gui_create(gf_draw_t* draw) {
 	gf_gui_t*   gui = malloc(sizeof(*gui));
@@ -34,9 +34,9 @@ gf_gui_t* gf_gui_create(gf_draw_t* draw) {
 /* note... left top should be the lightest in the border */
 
 void gf_gui_draw_box(gf_gui_t* gui, int mul, float x, float y, float w, float h) {
-	const int   color_diff = 32; /* color diff */
-	const float bw	       = 2;  /* border width */
-	gf_color_t  col;
+	const int	   color_diff = 32; /* color diff */
+	const float	   bw	      = 2;  /* border width */
+	gf_graphic_color_t col;
 
 	int cd = mul * color_diff;
 

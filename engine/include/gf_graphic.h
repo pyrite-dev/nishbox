@@ -46,7 +46,7 @@
 /**
  * @~english
  * @brief Macro to set color safely and shorter
- * @param color gf_color_t
+ * @param color gf_graphic_color_t
  */
 #define GF_SET_COLOR(color, red, green, blue, alpha) \
 	color.r = (red); \
@@ -76,13 +76,30 @@ GF_EXPORT void gf_graphic_end_2d(gf_draw_t* draw);
  * @~english
  * @brief Draw polygon with texture
  */
-GF_EXPORT void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_color_t color, int dim, int npair, ...);
+GF_EXPORT void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...);
 
 /**
  * @~english
  * @brief Draw polygon
  */
-GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_color_t color, int dim, int npair, ...);
+GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...);
+
+/**
+ * @~english
+ * @brief Set perspective
+ * @param draw Drawing interface
+ * @param fovy FOV
+ * @param znear Distance from viewer to the near clipping plane
+ * @param zfar Distance from viewer to the far clipping plane
+ */
+GF_EXPORT void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double zfar);
+
+/**
+ * @~english
+ * @brief Set camera
+ * @param draw Drawing interface
+ */
+GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw);
 
 /* Common */
 
@@ -97,18 +114,18 @@ GF_EXPORT float gf_graphic_text_width(gf_draw_t* draw, float size, const char* t
  * @~english
  * @brief Draw text
  */
-GF_EXPORT void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_color_t color);
+GF_EXPORT void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_graphic_color_t color);
 
 /**
  * @~english
  * @brief Draw filled rectangle
  */
-GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_color_t color);
+GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_graphic_color_t color);
 
 /**
  * @~english
  * @brief Draw rectangle with texture
  */
-GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_color_t color);
+GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_graphic_color_t color);
 
 #endif

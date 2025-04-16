@@ -21,7 +21,7 @@
 /* Standard */
 
 #if defined(DRV_OPENGL)
-GF_DECLARE_TYPE(draw_driver, { GLUquadric* quadric; });
+GF_DECLARE_TYPE(draw_driver, { int unused; });
 GF_DECLARE_TYPE(draw_driver_texture, {
 	GLuint id;
 	int    width;

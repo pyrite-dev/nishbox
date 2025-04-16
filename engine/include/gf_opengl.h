@@ -12,7 +12,6 @@
 #include <windows.h>
 #endif
 #include <GL/gl.h>
-#include <GL/glu.h>
 #if defined(USE_GLX)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>

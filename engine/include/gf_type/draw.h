@@ -95,9 +95,9 @@ GF_DECLARE_TYPE(draw, {
 	int		    draw_3d;
 	char		    title[128];
 	gf_texture_t*	    font[128];
-	gf_vector_t	    light;
-	gf_vector_t	    lookat;
-	gf_vector_t	    camera;
+	gf_math_vector_t    light;
+	gf_math_vector_t    lookat;
+	gf_math_vector_t    camera;
 	void (*draw)(gf_draw_t*);
 });
 #else

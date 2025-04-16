@@ -20,9 +20,9 @@
 /**
  * @~english
  * @brief Vector
- * @note gf_vector_t[3] is used internally
+ * @note gf_math_vector_t[3] is used internally
  */
-typedef double gf_vector_t[4];
+typedef double gf_math_vector_t[4];
 #else
 #error "should not happen!"
 #endif
