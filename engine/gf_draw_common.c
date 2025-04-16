@@ -43,6 +43,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
 		int i;
+		int regcount;
 		draw->driver = gf_draw_driver_create(engine, draw);
 		gf_draw_reshape(draw);
 		draw->running = 1;
@@ -68,11 +69,19 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 			free(d);
 		}
 
-		for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
+		regcount = 0;
+		for(i = 0; i < 128; i++) {
 			unsigned char* font = malloc(8 * 8 * 4);
 			int	       j;
+			/* TODO: check font here */
+			draw->font[i] = 0;
+			if(1) {
+				free(font);
+				continue;
+			}
+			regcount++;
 			for(j = 0; j < 8 * 8; j++) {
-				unsigned char val = (gf_font[i][j / 8] >> (j % 8)) & 1 ? 255 : 0;
+				unsigned char val = 255;
 				font[j * 4 + 0]	  = val;
 				font[j * 4 + 1]	  = val;
 				font[j * 4 + 2]	  = val;
@@ -81,7 +90,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 			draw->font[i] = gf_texture_create(draw, 8, 8, font);
 			free(font);
 		}
-		gf_log_function(engine, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
+		gf_log_function(engine, "Registered %d glyphs", regcount);
 	} else {
 		gf_draw_destroy(draw);
 		draw = NULL;
@@ -131,8 +140,8 @@ int gf_draw_step(gf_draw_t* draw) {
 void gf_draw_destroy(gf_draw_t* draw) {
 	if(draw->running) {
 		int i;
-		for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
-			gf_texture_destroy(draw->font[i]);
+		for(i = 0; i < 128; i++) {
+			if(draw->font[i] != NULL) gf_texture_destroy(draw->font[i]);
 		}
 	}
 	if(draw->driver != NULL) gf_draw_driver_destroy(draw->driver);

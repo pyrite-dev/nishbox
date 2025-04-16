@@ -16,10 +16,4 @@
 
 /* Standard */
 
-/**
- * @~english
- * @brief Font data
- */
-GF_EXPORT unsigned char gf_font[128][8];
-
 #endif
