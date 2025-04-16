@@ -106,6 +106,9 @@ GF_DECLARE_TYPE(gui_component, {
  * @~english
  * @brief GUI
  *
+ * @var gf_gui_t::engine
+ * @brief Engine instance
+ *
  * @var gf_gui_t::draw
  * @brief Drawing interface
  *

@@ -19,6 +19,17 @@
 
 /* Standard */
 
+/**
+ * @struct gf_client_t
+ * @~english
+ * @brief Client interface
+ *
+ * @var gf_client_t::engine
+ * @brief Engine instance
+ *
+ * @var gf_client_t::draw
+ * @brief Drawing interface
+ */
 GF_DECLARE_TYPE(client, {
 	gf_engine_t* engine;
 	gf_draw_t*   draw;

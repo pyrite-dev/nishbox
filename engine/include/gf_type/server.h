@@ -19,6 +19,17 @@
 
 /* Standard */
 
+/**
+ * @struct gf_server_t
+ * @~english
+ * @brief Server interface
+ *
+ * @var gf_server_t::engine
+ * @brief Engine instance
+ *
+ * @var gf_server_t::physics
+ * @brief Physics interface
+ */
 GF_DECLARE_TYPE(server, {
 	gf_engine_t*  engine;
 	gf_physics_t* physics;
