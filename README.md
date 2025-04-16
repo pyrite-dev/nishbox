@@ -7,6 +7,6 @@ multiplayer sandbox game i might work on
 
 ## License
 
-Both NishBox and GoldFish are under Unlicense.
+Both NishBox and GoldFish are under 3-clause BSD license.
 
 Check [/engine/COPYING](/engine/COPYING) and [/engine/LICENSE](/engine/LICENSE) for engine license-related stuffs.
