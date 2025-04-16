@@ -24,8 +24,8 @@ void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* 
 	gf_font_glyph_t* glyph;
 	for(i = 0; text[i] != 0; i++) {
 		if(draw->font != NULL && (glyph = gf_font_get(draw->font, text[i])) != NULL) {
-			double fax = 64;
-			double fay = 64;
+			double fax = glyph->bbox.height;
+			double fay = glyph->bbox.width;
 			gf_graphic_draw_texture_2d(draw, x + mx, y, size * fax / fay, size, glyph->texture, color);
 			mx += (size * glyph->dwidth[0]);
 		}
