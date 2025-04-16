@@ -76,6 +76,9 @@ digraph relation {
 
 		subgraph cluster_client {
 			label = "Client Interface";
+			ct [
+				label = "gf_client_t"
+			];
 			gui [
 				label = "GUI"
 			];
@@ -110,6 +113,9 @@ digraph relation {
 
 		subgraph cluster_server {
 			label = "Server Interface";
+			st [
+				label = "gf_server_t"
+			];
 
 			subgraph cluster_physics {
 				label = "Physics Interface";
@@ -158,11 +164,17 @@ digraph relation {
 	uf -> gf;
 
 	// Engine
-	gf -> dt;
+	gf -> ct;
 	
-	gf -> pt;
+	gf -> st;
 
 	gf -> log;
+
+	// Client
+	ct -> dt;
+
+	// Server
+	st -> pt;
 
 	// Log
 	log -> dt;
