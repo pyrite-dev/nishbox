@@ -34,12 +34,16 @@ gf_font_glyph_t* gf_font_get(gf_font_t* font, int code) {
 #define gf_stat stat
 #endif
 
-GF_DECLARE_TYPE(font_store, { int glyph_index; });
+GF_DECLARE_TYPE(font_store, {
+	int	       glyph_index;
+	int	       line_index;
+	unsigned char* buffer;
+});
 
 /**
  * This is a private method to parse BDF line
  */
-void gf_font_parse_line(const char* path, gf_font_store_t* store, gf_font_t* font, char* line) {
+void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* store, gf_font_t* font, char* line) {
 	int   i;
 	char* args[32];
 	int   argc = 0;
@@ -67,7 +71,11 @@ void gf_font_parse_line(const char* path, gf_font_store_t* store, gf_font_t* fon
 		font->glyph[store->glyph_index] = malloc(sizeof(**font->glyph));
 		memset(font->glyph[store->glyph_index], 0, sizeof(**font->glyph));
 	} else if(argc > 0 && strcmp(args[0], "ENDCHAR") == 0) {
+		font->glyph[store->glyph_index]->texture = gf_texture_create(draw, font->glyph[store->glyph_index]->bbox.width, font->glyph[store->glyph_index]->bbox.height, store->buffer);
+		free(store->buffer);
 		store->glyph_index++;
+	} else if(argc > 0 && strcmp(args[0], "BITMAP") == 0) {
+		store->line_index = 0;
 	} else if(argc == 2) {
 		if(strcmp(args[0], "COPYRIGHT") == 0) {
 			gf_log_function(NULL, "%s: %s", path, args[1]);
@@ -101,11 +109,13 @@ void gf_font_parse_line(const char* path, gf_font_store_t* store, gf_font_t* fon
 			font->glyph[store->glyph_index]->bbox.height = atoi(args[2]);
 			font->glyph[store->glyph_index]->bbox.x	     = atoi(args[3]);
 			font->glyph[store->glyph_index]->bbox.y	     = atoi(args[4]);
+			store->buffer				     = malloc(atoi(args[1]) * atoi(args[2]) * 4);
+			memset(store->buffer, 0, atoi(args[1]) * atoi(args[2]) * 4);
 		}
 	}
 }
 
-gf_font_t* gf_font_create(const char* path) {
+gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
 	gf_font_t*	font = malloc(sizeof(*font));
 	struct gf_stat	s;
 	char*		buf;
@@ -132,7 +142,7 @@ gf_font_t* gf_font_create(const char* path) {
 			buf[i]	   = 0;
 			incr	   = i + 1;
 
-			gf_font_parse_line(path, &store, font, line);
+			gf_font_parse_line(draw, path, &store, font, line);
 
 			if(oldc == 0) break;
 		}

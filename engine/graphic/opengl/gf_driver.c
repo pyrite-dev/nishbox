@@ -37,11 +37,11 @@ gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int w
 	*iwidth	 = w;
 	*iheight = h;
 
-	memset(d, 0, w * h);
+	memset(d, 0, w * h * 4);
 	for(y = 0; y < height; y++) {
 		for(x = 0; x < width; x++) {
-			int pos	  = (y * h + x) * 4;
-			int ogpos = (y * height + x) * 4;
+			int pos	  = (y * w + x) * 4;
+			int ogpos = (y * width + x) * 4;
 			memcpy(d + pos + 0, data + ogpos + 0, 4);
 		}
 	}
