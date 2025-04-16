@@ -13,6 +13,7 @@ Makefile
 /bin
 /obj
 /lib
+/build
 /engine/obj
 /engine/lib
 /engine/doc

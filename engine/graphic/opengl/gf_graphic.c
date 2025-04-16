@@ -83,7 +83,7 @@ void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim,
 	va_list va;
 	va_start(va, npair);
 
-	gf_graphic_begin_2d(draw);
+	if(dim == 2) gf_graphic_begin_2d(draw);
 
 	gf_draw_driver_set_color(draw, color);
 	glBegin(GL_TRIANGLE_FAN);
@@ -100,7 +100,7 @@ void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim,
 	}
 
 	glEnd();
-	gf_graphic_end_2d(draw);
+	if(dim == 2) gf_graphic_end_2d(draw);
 
 	va_end(va);
 }

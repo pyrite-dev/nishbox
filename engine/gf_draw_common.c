@@ -77,7 +77,6 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
-	float		   z = 16;
 	color.r = color.g = color.b = color.a = 255;
 	if(draw->draw_3d) {
 	}
@@ -86,13 +85,13 @@ void gf_draw_frame(gf_draw_t* draw) {
 		0.0, 0.0,
 		-1.0, 0.0, -1.0,
 
-		0.0, 1.0 * z,
+		0.0, 8.0,
 		-1.0, 0.0, 1.0,
 
-		1.0 * z, 1.0 * z,
+		8.0, 8.0,
 		1.0, 0.0, 1.0,
 
-		1.0 * z, 0.0,
+		8.0, 0.0,
 		1.0, 0.0, -1.0
 					/* clang-format on */
 	);

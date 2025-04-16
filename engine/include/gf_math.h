@@ -38,6 +38,7 @@
  * @~english
  * @brief Calculate log2(x)
  * @param x Input
+ * @return log2(x)
  */
 GF_EXPORT double gf_math_log2(double x);
 
@@ -55,8 +56,17 @@ GF_EXPORT void gf_math_normal(gf_math_vector_t r, gf_math_vector_t v0, gf_math_v
  * @~english
  * @brief Calculate cot(x)
  * @param x Input
+ * @return cot(x)
  */
 GF_EXPORT double gf_math_cot(double x);
+
+/**
+ * @~english
+ * @brief Get nearest 2^n
+ * @param x Input
+ * @return Nearest 2^n
+ */
+GF_EXPORT double gf_math_nearest_2pow(double x);
 
 /**
  * @~english

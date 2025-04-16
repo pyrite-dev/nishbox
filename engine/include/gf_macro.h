@@ -145,7 +145,7 @@
  * @brief Macro for platform-dependent symbol export/import
  */
 #if defined(_WIN32) && defined(GF_DLL)
-#define GF_EXPORT __declspec(dllexport)
+#define GF_EXPORT extern __declspec(dllexport)
 #else
 #define GF_EXPORT extern
 #endif

@@ -60,3 +60,12 @@ void gf_math_multiply(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t 
 }
 
 double gf_math_cot(double x) { return (double)1 / tan(x); }
+
+double gf_math_nearest_2pow(double x) {
+	double l = gf_math_log2(x);
+	double r = pow(2, (int)l);
+	if(x == r) {
+		return r;
+	}
+	return pow(2, 1 + (int)l);
+}

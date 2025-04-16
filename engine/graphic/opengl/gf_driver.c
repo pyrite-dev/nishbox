@@ -22,19 +22,16 @@
 /* Standard */
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat lightgry[] = {0.6, 0.6, 0.6, 1.0};
 GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
 
-#define NEAREST_POW2(x) pow((2), gf_math_log2((int)(x) + 1))
-
 gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
-	int			  w = NEAREST_POW2(width);
-	int			  h = NEAREST_POW2(height);
+	int			  w = gf_math_nearest_2pow(width);
+	int			  h = gf_math_nearest_2pow(height);
 	int			  x, y;
 	unsigned char*		  d = malloc(w * h * 4);
 
