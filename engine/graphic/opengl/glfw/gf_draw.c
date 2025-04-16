@@ -63,30 +63,32 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 	return ret;
 }
 
-void gf_draw_platform_create(gf_draw_t* draw) {
-	draw->platform = malloc(sizeof(*draw->platform));
-	memset(draw->platform, 0, sizeof(*draw->platform));
+gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
+	gf_draw_platform_t* platform = malloc(sizeof(*platform));
+	memset(platform, 0, sizeof(*platform));
+	platform->engine = engine;
 
-	draw->platform->window = glfwCreateWindow(draw->width, draw->height, draw->title, NULL, NULL);
-	if(draw->platform->window == NULL) {
-		gf_log_function(NULL, "Failed to create window", "");
-		gf_draw_destroy(draw);
-		return;
+	platform->window = glfwCreateWindow(draw->width, draw->height, draw->title, NULL, NULL);
+	if(platform->window == NULL) {
+		gf_log_function(engine, "Failed to create window", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
-	glfwSetWindowUserPointer(draw->platform->window, draw);
-	glfwSetWindowSizeCallback(draw->platform->window, gf_glfw_size);
+	glfwSetWindowUserPointer(platform->window, draw);
+	glfwSetWindowSizeCallback(platform->window, gf_glfw_size);
 
-	glfwMakeContextCurrent(draw->platform->window);
+	glfwMakeContextCurrent(platform->window);
 #ifdef DO_SWAP_INTERVAL
 	glfwSwapInterval(1);
 #endif
+	return platform;
 }
 
-void gf_draw_platform_destroy(gf_draw_t* draw) {
-	if(draw->platform->window != NULL) {
-		glfwDestroyWindow(draw->platform->window);
+void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
+	if(platform->window != NULL) {
+		glfwDestroyWindow(platform->window);
 	}
-	free(draw->platform);
-	draw->platform = NULL;
+	gf_log_function(platform->engine, "Destroyed platform-dependent part of drawing driver", "");
+	free(platform);
 }

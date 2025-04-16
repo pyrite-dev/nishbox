@@ -49,14 +49,6 @@ GF_EXPORT void gf_engine_loop(gf_engine_t* engine);
 
 /**
  * @~english
- * @brief Set user-drawing callback
- * @param engine Engine instance
- * @param func Callback
- */
-GF_EXPORT void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*));
-
-/**
- * @~english
  * @brief Destroy engine instance
  * @param engine Engine instance
  */

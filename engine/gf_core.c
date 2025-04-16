@@ -11,8 +11,8 @@
 #include <gf_core.h>
 
 /* Engine */
-#include <gf_draw.h>
-#include <gf_physics.h>
+#include <gf_client.h>
+#include <gf_server.h>
 #include <gf_log.h>
 #include <gf_version.h>
 
@@ -37,13 +37,13 @@ void gf_engine_begin(void) {
 	WSAStartup(MAKEWORD(1, 1), &wsa);
 	gf_log_function(NULL, "Winsock ready", "");
 #endif
-	gf_draw_begin();
-	gf_physics_begin();
+	gf_client_begin();
+	gf_server_begin();
 }
 
 void gf_engine_end(void) {
-	gf_physics_end();
-	gf_draw_end();
+	gf_server_end();
+	gf_client_end();
 }
 
 gf_engine_t* gf_engine_create(const char* title, int nogui) {
@@ -51,49 +51,47 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	memset(engine, 0, sizeof(*engine));
 	engine->log = stderr;
 	if(nogui) {
-		gf_log_function(NULL, "No GUI mode", "");
-		engine->draw = NULL;
+		gf_log_function(engine, "No GUI mode", "");
+		engine->client = NULL;
 	} else {
-		gf_log_function(NULL, "GUI mode", "");
-		engine->draw = gf_draw_create(engine, title);
-		if(engine->draw == NULL) {
-			gf_log_function(NULL, "Failed to create drawing interface", "");
-			free(engine);
+		gf_log_function(engine, "GUI mode", "");
+		engine->client = gf_client_create(engine, title);
+		if(engine->client == NULL) {
+			gf_log_function(engine, "Failed to create client interface", "");
+			gf_engine_destroy(engine);
 			return NULL;
 		}
 		gf_log_function(engine, "Switching to graphical console", "");
 	}
-	engine->physics = gf_physics_create();
+	engine->server = gf_server_create(engine);
 	return engine;
 }
-
-void gf_engine_set_draw(gf_engine_t* engine, void (*func)(gf_draw_t*)) { gf_draw_set_draw(engine->draw, func); }
 
 /**
  * Writing this so I don't forget
  *
- * 1.  Calls gf_draw_step
- * 2.  gf_draw_step calls gf_draw_platform_step (Platform-dependent)
- * 3.  gf_draw_platform_step processes platform-dependent stuffs (e.g. events)
- * 4.  gf_draw_platform_step calls gf_draw_driver_before
- * 5.  gf_draw_platform_step calls gf_draw_frame
- * 6.  gf_draw_frame calls gf_draw_t.draw to draw frame
- * 7.  gf_draw_frame draws more stuffs if required
+ * 1.  Calls gf_client_step
+ * 2.  gf_client_step calls gf_draw_step
+ * 3.  gf_draw_step calls gf_draw_platform_step (Platform-dependent)
+ * 4.  gf_draw_platform_step processes platform-dependent stuffs (e.g. events)
+ * 5.  gf_draw_platform_step calls gf_draw_driver_before
+ * 6.  gf_draw_platform_step calls gf_draw_frame
+ * 7.  gf_draw_frame draws stuffs
  * 8.  gf_draw_platform_step calls gf_draw_driver_after
  * 9.  gf_draw_platform_step swaps buffers
  * 10. Comes back here
  */
 void gf_engine_loop(gf_engine_t* engine) {
 	while(1) {
-		if(engine->draw != NULL) {
-			if(gf_draw_step(engine->draw) != 0) break;
+		if(engine->client != NULL) {
+			if(gf_client_step(engine->client) != 0) break;
 		}
 	}
 }
 
 void gf_engine_destroy(gf_engine_t* engine) {
-	if(engine->physics != NULL) gf_physics_destroy(engine->physics);
-	if(engine->draw != NULL) gf_draw_destroy(engine->draw);
+	if(engine->server != NULL) gf_server_destroy(engine->server);
+	if(engine->client != NULL) gf_client_destroy(engine->client);
 	free(engine);
 	gf_log_function(NULL, "Destroyed engine", "");
 }

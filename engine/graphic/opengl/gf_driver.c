@@ -15,7 +15,6 @@
 #include <gf_texture.h>
 #include <gf_draw.h>
 #include <gf_log.h>
-#include <gf_font.h>
 #include <gf_math.h>
 #include <gf_graphic.h>
 
@@ -66,12 +65,14 @@ void gf_draw_driver_destroy_texture(gf_draw_driver_texture_t* t) {
 	free(t);
 }
 
-void gf_draw_driver_init(gf_draw_t* draw) {
-	int i;
-	int w, h, ch;
-	draw->driver = malloc(sizeof(*draw->driver));
+gf_draw_driver_t* gf_draw_driver_create(gf_engine_t* engine, gf_draw_t* draw) {
+	int		  i;
+	int		  w, h, ch;
+	gf_draw_driver_t* draw_driver = malloc(sizeof(*draw_driver));
+	memset(draw_driver, 0, sizeof(*draw_driver));
+	draw_driver->engine = engine;
 
-	gf_log_function(NULL, "OpenGL renderer: %s", (char*)glGetString(GL_RENDERER));
+	gf_log_function(engine, "OpenGL renderer: %s", (char*)glGetString(GL_RENDERER));
 
 	glEnable(GL_BLEND);
 	glEnable(GL_NORMALIZE);
@@ -94,22 +95,9 @@ void gf_draw_driver_init(gf_draw_t* draw) {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightwht);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightwht);
 
-	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
-		unsigned char* font = malloc(8 * 8 * 4);
-		int	       j;
-		for(j = 0; j < 8 * 8; j++) {
-			unsigned char val = (gf_font[i][j / 8] >> (j % 8)) & 1 ? 255 : 0;
-			font[j * 4 + 0]	  = val;
-			font[j * 4 + 1]	  = val;
-			font[j * 4 + 2]	  = val;
-			font[j * 4 + 3]	  = val;
-		}
-		draw->font[i] = gf_texture_register(draw, 8, 8, font);
-		free(font);
-	}
-	gf_log_function(NULL, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
-
 	glClearColor(0, 0, 0, 1);
+
+	return draw_driver;
 }
 
 int gf_draw_driver_has_extension(gf_draw_t* draw, const char* query) {
@@ -145,11 +133,9 @@ void gf_draw_driver_end_texture_2d(gf_draw_t* draw) {
 
 void gf_draw_driver_set_color(gf_draw_t* draw, gf_graphic_color_t color) { glColor4f(color.r / 255, color.g / 255, color.b / 255, color.a / 255); }
 
-void gf_draw_driver_destroy(gf_draw_t* draw) {
-	int i;
-	for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
-		gf_texture_destroy(draw->font[i]);
-	}
+void gf_draw_driver_destroy(gf_draw_driver_t* driver) {
+	gf_log_function(driver->engine, "Destroyed drawing driver", "");
+	free(driver);
 }
 
 void gf_draw_driver_before(gf_draw_t* draw) {

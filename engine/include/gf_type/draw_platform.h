@@ -17,26 +17,32 @@
 #endif
 
 /* Engine */
+#include <gf_type/core.h>
 
 /* Standard */
 
 #if defined(DRV_OPENGL)
 #if defined(USE_GLX)
 GF_DECLARE_TYPE(draw_platform, {
-	Display*   display;
-	Window	   window;
-	GLXContext context;
-	Atom	   wm_delete_window;
+	gf_engine_t* engine;
+	Display*     display;
+	Window	     window;
+	GLXContext   context;
+	Atom	     wm_delete_window;
 });
 #elif defined(USE_WGL)
 GF_DECLARE_TYPE(draw_platform, {
-	HINSTANCE instance;
-	HWND	  window;
-	HDC	  dc;
-	HGLRC	  glrc;
+	gf_engine_t* engine;
+	HINSTANCE    instance;
+	HWND	     window;
+	HDC	     dc;
+	HGLRC	     glrc;
 });
 #elif defined(USE_GLFW)
-GF_DECLARE_TYPE(draw_platform, { GLFWwindow* window; });
+GF_DECLARE_TYPE(draw_platform, {
+	gf_engine_t* engine;
+	GLFWwindow*  window;
+});
 #endif
 #else
 /**

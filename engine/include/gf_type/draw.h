@@ -23,12 +23,13 @@
 
 /* Standard */
 
-GF_DECLARE_TYPE(draw, );
-
 /**
  * @struct gf_draw_t
  * @~english
  * @brief Drawing interface
+ *
+ * @var gf_draw_t::engine
+ * @brief Engine instance
  *
  * @var gf_draw_t::platform
  * @brief Platform-dependent part of drawing driver
@@ -78,11 +79,9 @@ GF_DECLARE_TYPE(draw, );
  *
  * @var gf_draw_t::camera
  * @brief Camera location
- *
- * @var gf_draw_t::draw
- * @brief User-drawing callback
  */
 GF_DECLARE_TYPE(draw, {
+	gf_engine_t*	    engine;
 	gf_draw_platform_t* platform;
 	gf_draw_driver_t*   driver;
 	gf_gui_t*	    gui;
@@ -98,7 +97,6 @@ GF_DECLARE_TYPE(draw, {
 	gf_math_vector_t    light;
 	gf_math_vector_t    lookat;
 	gf_math_vector_t    camera;
-	void (*draw)(gf_draw_t*);
 });
 #else
 typedef void gf_draw_t;

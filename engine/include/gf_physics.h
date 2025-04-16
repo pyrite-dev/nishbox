@@ -12,6 +12,7 @@
 
 /* Type */
 #include <gf_type/physics.h>
+#include <gf_type/core.h>
 
 /* Engine */
 
@@ -32,9 +33,10 @@ GF_EXPORT void gf_physics_end(void);
 /**
  * @~english
  * @brief Create physics interface
+ * @param engine Engine instance
  * @return Physics interface
  */
-GF_EXPORT gf_physics_t* gf_physics_create(void);
+GF_EXPORT gf_physics_t* gf_physics_create(gf_engine_t* engine);
 
 /**
  * @~english

@@ -15,6 +15,7 @@
 
 /* Engine */
 #include <gf_type/draw.h>
+#include <gf_type/core.h>
 
 /* Standard */
 
@@ -39,11 +40,12 @@
 /**
  * @~english
  * @brief Create GUI
+ * @param engine Engine instance
  * @param draw Drawing interface
  * @return GUI
  * @note You should not have to call this - simply use gf_draw_t::gui
  */
-GF_EXPORT gf_gui_t* gf_gui_create(gf_draw_t* draw);
+GF_EXPORT gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw);
 
 /**
  * @~english

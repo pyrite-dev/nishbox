@@ -64,14 +64,6 @@ GF_EXPORT void gf_draw_end(void);
 
 /**
  * @~english
- * @brief Set user-drawing callback
- * @param engine Engine instance
- * @param func User-drawing callback
- */
-GF_EXPORT void gf_draw_set_draw(gf_draw_t* engine, void (*func)(gf_draw_t*));
-
-/**
- * @~english
  * @brief Do stuffs required on resizing window
  * @param draw Drawing interface
  */

@@ -15,6 +15,7 @@
 #include <gf_draw_driver.h>
 #include <gf_texture.h>
 #include <gf_graphic.h>
+#include <gf_font.h>
 #include <gf_gui.h>
 
 /* Standard */
@@ -31,6 +32,7 @@ gf_texture_t* test_texture;
 gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	gf_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
+	draw->engine  = engine;
 	draw->x	      = 0;
 	draw->y	      = 0;
 	draw->width   = 640;
@@ -38,10 +40,10 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->running = 0;
 	draw->draw_3d = 0;
 	strcpy(draw->title, title);
-	gf_draw_platform_create(draw);
+	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
-		gf_log_function(NULL, "Created drawing interface successfully", "");
-		gf_draw_driver_init(draw);
+		int i;
+		draw->driver = gf_draw_driver_create(engine, draw);
 		gf_draw_reshape(draw);
 		draw->running = 1;
 
@@ -58,15 +60,30 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;
 
-		draw->gui = gf_gui_create(draw);
+		draw->gui = gf_gui_create(engine, draw);
 		if(1) {
 			int	       w, h, c;
 			unsigned char* d = stbi_load("texture/test.bmp", &w, &h, &c, 4);
-			test_texture	 = gf_texture_register(draw, w, h, d);
+			test_texture	 = gf_texture_create(draw, w, h, d);
 			free(d);
 		}
+
+		for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
+			unsigned char* font = malloc(8 * 8 * 4);
+			int	       j;
+			for(j = 0; j < 8 * 8; j++) {
+				unsigned char val = (gf_font[i][j / 8] >> (j % 8)) & 1 ? 255 : 0;
+				font[j * 4 + 0]	  = val;
+				font[j * 4 + 1]	  = val;
+				font[j * 4 + 2]	  = val;
+				font[j * 4 + 3]	  = val;
+			}
+			draw->font[i] = gf_texture_create(draw, 8, 8, font);
+			free(font);
+		}
+		gf_log_function(engine, "Registered %d glyphs", sizeof(gf_font) / sizeof(gf_font[0]));
 	} else {
-		free(draw);
+		gf_draw_destroy(draw);
 		draw = NULL;
 	}
 	return draw;
@@ -78,27 +95,24 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
 	color.r = color.g = color.b = color.a = 255;
-	if(draw->draw_3d) {
+	if(!draw->draw_3d) {
+		gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,
+						/* clang-format off */
+			0.0, 0.0,
+			-1.0, 0.0, -1.0,
+
+			0.0, 4.0,
+			-1.0, 0.0, 1.0,
+
+			4.0, 4.0,
+			1.0, 0.0, 1.0,
+
+			4.0, 0.0,
+			1.0, 0.0, -1.0
+						/* clang-format on */
+		);
 	}
-	gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,
-					/* clang-format off */
-		0.0, 0.0,
-		-1.0, 0.0, -1.0,
-
-		0.0, 8.0,
-		-1.0, 0.0, 1.0,
-
-		8.0, 8.0,
-		1.0, 0.0, 1.0,
-
-		8.0, 0.0,
-		1.0, 0.0, -1.0
-					/* clang-format on */
-	);
-	if(draw->draw != NULL) draw->draw(draw);
 }
-
-void gf_draw_set_draw(gf_draw_t* draw, void (*func)(gf_draw_t*)) { draw->draw = func; }
 
 int gf_draw_step(gf_draw_t* draw) {
 	int ret = gf_draw_platform_step(draw);
@@ -109,10 +123,14 @@ int gf_draw_step(gf_draw_t* draw) {
 }
 
 void gf_draw_destroy(gf_draw_t* draw) {
-	int i;
 	if(draw->running) {
-		gf_draw_driver_destroy(draw);
+		int i;
+		for(i = 0; i < sizeof(gf_font) / sizeof(gf_font[0]); i++) {
+			gf_texture_destroy(draw->font[i]);
+		}
 	}
-	gf_draw_platform_destroy(draw);
-	gf_log_function(NULL, "Destroyed drawing interface", "");
+	if(draw->driver != NULL) gf_draw_driver_destroy(draw->driver);
+	if(draw->platform != NULL) gf_draw_platform_destroy(draw->platform);
+	gf_log_function(draw->engine, "Destroyed drawing interface", "");
+	free(draw);
 }

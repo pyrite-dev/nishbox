@@ -15,6 +15,7 @@
 #include <ode/ode.h>
 
 /* Engine */
+#include <gf_type/core.h>
 
 /* Standard */
 
@@ -23,10 +24,16 @@
  * @~english
  * @brief Physics interface
  *
+ * @var gf_physics_t::engine
+ * @brief Engine instance
+ *
  * @var gf_physics_t::id
  * @brief ODE's world ID
  */
-GF_DECLARE_TYPE(physics, { dWorldID id; });
+GF_DECLARE_TYPE(physics, {
+	gf_engine_t* engine;
+	dWorldID     id;
+});
 #else
 typedef void gf_physics_t;
 #endif

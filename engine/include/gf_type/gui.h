@@ -21,6 +21,7 @@ typedef int gf_gui_id_t;
 
 /* Engine */
 #include <gf_type/draw.h>
+#include <gf_type/core.h>
 
 /* Standard */
 
@@ -112,6 +113,7 @@ GF_DECLARE_TYPE(gui_component, {
  * @brief Created components
  */
 GF_DECLARE_TYPE(gui, {
+	gf_engine_t*	   engine;
 	gf_draw_t*	   draw;
 	gf_gui_component_t area[GF_GUI_MAX_COMPONENTS];
 });

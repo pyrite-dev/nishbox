@@ -14,7 +14,7 @@
 /* Standard */
 #include <stdlib.h>
 
-gf_texture_t* gf_texture_register(gf_draw_t* draw, int width, int height, unsigned char* data) {
+gf_texture_t* gf_texture_create(gf_draw_t* draw, int width, int height, unsigned char* data) {
 	gf_texture_t*		  texture = malloc(sizeof(*texture));
 	gf_draw_driver_texture_t* ddtexture;
 	texture->internal_width	 = width;

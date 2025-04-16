@@ -16,22 +16,25 @@
 
 /* Engine */
 #include <gf_type/draw.h>
+#include <gf_type/core.h>
 
 /* Standard */
 
 /**
  * @~english
  * @brief Create platform-dependent part of drawing driver
+ * @param engine Engine instance
  * @param draw Drawing interface
+ * @return Platform-dependent part of drawing driver
  */
-GF_EXPORT void gf_draw_platform_create(gf_draw_t* draw);
+GF_EXPORT gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw);
 
 /**
  * @~english
  * @brief Destroy platform-dependent part of drawing driver
- * @param draw Drawing interface
+ * @param platform Platform-dependent part of drawing driver
  */
-GF_EXPORT void gf_draw_platform_destroy(gf_draw_t* draw);
+GF_EXPORT void gf_draw_platform_destroy(gf_draw_platform_t* platform);
 
 /**
  * @~english

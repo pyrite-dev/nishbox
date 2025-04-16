@@ -97,26 +97,24 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 	return ret;
 }
 
-void gf_draw_platform_create(gf_draw_t* draw) {
+gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
 	WNDCLASSEX	      wc;
 	PIXELFORMATDESCRIPTOR desc;
 #ifdef DO_SWAP_INTERVAL
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 #endif
-	RECT  rect;
-	int   fmt;
-	DWORD style;
+	RECT		    rect;
+	int		    fmt;
+	DWORD		    style;
+	gf_draw_platform_t* platform = malloc(sizeof(*platform));
+	memset(platform, 0, sizeof(*platform));
+	platform->engine = engine;
 
-	draw->platform = malloc(sizeof(*draw->platform));
-	memset(draw->platform, 0, sizeof(*draw->platform));
-
-	draw->platform->instance = (HINSTANCE)GetModuleHandle(NULL);
-	if(draw->platform->instance == NULL) {
-		gf_log_function(NULL, "Failed to get instance", "");
-		gf_draw_destroy(draw);
-		return;
-	} else {
-		gf_log_function(NULL, "Got instance", "");
+	platform->instance = (HINSTANCE)GetModuleHandle(NULL);
+	if(platform->instance == NULL) {
+		gf_log_function(engine, "Failed to get instance", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
 	wc.cbSize	 = sizeof(wc);
@@ -124,31 +122,27 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	wc.lpfnWndProc	 = gf_draw_platform_proc;
 	wc.cbClsExtra	 = 0;
 	wc.cbWndExtra	 = 0;
-	wc.hInstance	 = draw->platform->instance;
-	wc.hIcon	 = LoadIcon(draw->platform->instance, "GAME");
+	wc.hInstance	 = platform->instance;
+	wc.hIcon	 = LoadIcon(platform->instance, "GAME");
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName	 = NULL;
 	wc.lpszClassName = "goldfish";
-	wc.hIconSm	 = LoadIcon(draw->platform->instance, "GAME");
+	wc.hIconSm	 = LoadIcon(platform->instance, "GAME");
 	if(!RegisterClassEx(&wc)) {
-		gf_log_function(NULL, "Failed to register class", "");
-		gf_draw_destroy(draw);
-		return;
-	} else {
-		gf_log_function(NULL, "Registered class", "");
+		gf_log_function(engine, "Failed to register class", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
-	draw->platform->window = CreateWindow("goldfish", draw->title, (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, draw->platform->instance, NULL);
-	if(draw->platform->window == NULL) {
-		gf_log_function(NULL, "Failed to create window", "");
-		gf_draw_destroy(draw);
-		return;
-	} else {
-		gf_log_function(NULL, "Created window", "");
+	platform->window = CreateWindow("goldfish", draw->title, (WS_OVERLAPPEDWINDOW), draw->x, draw->y, draw->width, draw->height, NULL, 0, platform->instance, NULL);
+	if(platform->window == NULL) {
+		gf_log_function(engine, "Failed to create window", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
-	SetWindowLongPtr(draw->platform->window, GWLP_USERDATA, (LONG_PTR)draw);
+	SetWindowLongPtr(platform->window, GWLP_USERDATA, (LONG_PTR)draw);
 
 	memset(&desc, 0, sizeof(desc));
 	desc.nSize	= sizeof(desc);
@@ -159,51 +153,51 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	desc.cAlphaBits = 8;
 	desc.cDepthBits = 32;
 
-	draw->platform->dc = GetDC(draw->platform->window);
+	platform->dc = GetDC(platform->window);
 
-	fmt = ChoosePixelFormat(draw->platform->dc, &desc);
-	SetPixelFormat(draw->platform->dc, fmt, &desc);
+	fmt = ChoosePixelFormat(platform->dc, &desc);
+	SetPixelFormat(platform->dc, fmt, &desc);
 
-	draw->platform->glrc = wglCreateContext(draw->platform->dc);
-	if(draw->platform->glrc == NULL) {
-		gf_log_function(NULL, "Failed to create OpenGL context", "");
-		gf_draw_destroy(draw);
-		return;
-	} else {
-		gf_log_function(NULL, "Created OpenGL context", "");
+	platform->glrc = wglCreateContext(platform->dc);
+	if(platform->glrc == NULL) {
+		gf_log_function(engine, "Failed to create OpenGL context", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
-	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
+	wglMakeCurrent(platform->dc, platform->glrc);
 
 #ifdef DO_SWAP_INTERVAL
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	if(wglSwapIntervalEXT != NULL) {
-		gf_log_function(NULL, "Enabled VSync", "");
+		gf_log_function(engine, "Enabled VSync", "");
 		wglSwapIntervalEXT(1);
 	}
 #endif
 
 	SetRect(&rect, 0, 0, draw->width, draw->height);
-	style = (DWORD)GetWindowLongPtr(draw->platform->window, GWL_STYLE);
+	style = (DWORD)GetWindowLongPtr(platform->window, GWL_STYLE);
 	AdjustWindowRect(&rect, style, FALSE);
-	SetWindowPos(draw->platform->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
+	SetWindowPos(platform->window, NULL, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, SWP_NOMOVE);
 
-	ShowWindow(draw->platform->window, SW_NORMAL);
-	UpdateWindow(draw->platform->window);
+	ShowWindow(platform->window, SW_NORMAL);
+	UpdateWindow(platform->window);
+
+	return platform;
 }
 
-void gf_draw_platform_destroy(gf_draw_t* draw) {
-	if(draw->platform->glrc != NULL) {
+void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
+	if(platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
 	}
-	if(draw->platform->dc != NULL) {
-		ReleaseDC(draw->platform->window, draw->platform->dc);
+	if(platform->dc != NULL) {
+		ReleaseDC(platform->window, platform->dc);
 	}
-	if(draw->platform->glrc != NULL) {
-		wglDeleteContext(draw->platform->glrc);
+	if(platform->glrc != NULL) {
+		wglDeleteContext(platform->glrc);
 	}
-	if(draw->platform->window != NULL) {
-		DestroyWindow(draw->platform->window);
+	if(platform->window != NULL) {
+		DestroyWindow(platform->window);
 	}
-	free(draw->platform);
-	draw->platform = NULL;
+	gf_log_function(platform->engine, "Destroyed platform-dependent part of drawing driver", "");
+	free(platform);
 }

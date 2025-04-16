@@ -17,15 +17,17 @@
 #endif
 
 /* Engine */
+#include <gf_type/core.h>
 
 /* Standard */
 
 #if defined(DRV_OPENGL)
-GF_DECLARE_TYPE(draw_driver, { int unused; });
+GF_DECLARE_TYPE(draw_driver, { gf_engine_t* engine; });
 GF_DECLARE_TYPE(draw_driver_texture, {
-	GLuint id;
-	int    width;
-	int    height;
+	gf_engine_t* engine;
+	GLuint	     id;
+	int	     width;
+	int	     height;
 });
 #else
 /**

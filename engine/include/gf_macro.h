@@ -89,6 +89,22 @@
 #define GF_EXPOSE_THREAD
 #endif
 
+#ifndef GF_EXPOSE_CLIENT
+/**
+ * @~english
+ * @brief Expose client interface properties
+ */
+#define GF_EXPOSE_CLIENT
+#endif
+
+#ifndef GF_EXPOSE_SERVER
+/**
+ * @~english
+ * @brief Expose server interface properties
+ */
+#define GF_EXPOSE_SERVER
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english

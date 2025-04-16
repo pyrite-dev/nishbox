@@ -18,22 +18,25 @@
 #include <gf_type/draw.h>
 #include <gf_type/texture.h>
 #include <gf_type/graphic.h>
+#include <gf_type/core.h>
 
 /* Standard */
 
 /**
  * @~english
  * @brief Initialize drawing driver
+ * @param engine Engine instance
  * @param draw Drawing interface
+ * @return Drawing driver
  */
-GF_EXPORT void gf_draw_driver_init(gf_draw_t* draw);
+GF_EXPORT gf_draw_driver_t* gf_draw_driver_create(gf_engine_t* engine, gf_draw_t* draw);
 
 /**
  * @~english
  * @brief Destroy drawing driver
- * @param draw Drawing interface
+ * @param driver Drawing driver
  */
-GF_EXPORT void gf_draw_driver_destroy(gf_draw_t* draw);
+GF_EXPORT void gf_draw_driver_destroy(gf_draw_driver_t* driver);
 
 /**
  * @~english

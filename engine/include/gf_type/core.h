@@ -14,8 +14,8 @@
 /* External library */
 
 /* Engine */
-#include <gf_type/physics.h>
-#include <gf_type/draw.h>
+#include <gf_type/server.h>
+#include <gf_type/client.h>
 
 /* Standard */
 #include <stdio.h>
@@ -25,13 +25,11 @@
  * @~english
  * @brief Engine instance
  *
- * @var gf_engine_t::physics
- * @brief Physics interface
- * @todo Create gf_server_t and move physics there
+ * @var gf_engine_t::server
+ * @brief Server interface
  *
- * @var gf_engine_t::draw
- * @brief Drawing interface
- * @todo Create gf_client_t and move draw there
+ * @var gf_engine_t::client
+ * @brief Client interface
  *
  * @var gf_engine_t::log
  * @brief Log output
@@ -40,9 +38,9 @@
  * @warning Destroying engien instance **does not** `fclose` this
  */
 GF_DECLARE_TYPE(engine, {
-	gf_physics_t* physics;
-	gf_draw_t*    draw;
-	FILE*	      log;
+	gf_server_t* server;
+	gf_client_t* client;
+	FILE*	     log;
 });
 #else
 typedef void gf_engine_t;

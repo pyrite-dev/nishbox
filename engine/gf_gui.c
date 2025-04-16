@@ -18,10 +18,12 @@
 gf_graphic_color_t gf_gui_base_color;
 gf_graphic_color_t gf_gui_font_color;
 
-gf_gui_t* gf_gui_create(gf_draw_t* draw) {
+gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 	gf_gui_t*   gui = malloc(sizeof(*gui));
 	gf_gui_id_t i;
-	gui->draw = draw;
+	memset(gui, 0, sizeof(*gui));
+	gui->engine = engine;
+	gui->draw   = draw;
 
 	GF_SET_COLOR(gf_gui_base_color, 48, 96, 48, 255);
 	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);

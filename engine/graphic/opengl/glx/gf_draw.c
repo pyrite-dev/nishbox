@@ -51,7 +51,7 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 }
 
-void gf_draw_platform_create(gf_draw_t* draw) {
+gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
 	int		     i = 0;
 	int		     attribs[64];
 	int		     screen;
@@ -60,15 +60,15 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 	XSetWindowAttributes attr;
 	XSizeHints	     hints;
 	int		     interval = 0;
+	gf_draw_platform_t*  platform = malloc(sizeof(*platform));
+	memset(platform, 0, sizeof(*platform));
+	platform->engine = engine;
 
-	draw->platform = malloc(sizeof(*draw->platform));
-	memset(draw->platform, 0, sizeof(*draw->platform));
-
-	draw->platform->display = XOpenDisplay(NULL);
-	if(draw->platform->display == NULL) {
-		gf_log_function(NULL, "Failed to open display", "");
-		gf_draw_destroy(draw);
-		return;
+	platform->display = XOpenDisplay(NULL);
+	if(platform->display == NULL) {
+		gf_log_function(engine, "Failed to open display", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 	attribs[i++] = GLX_RGBA;
 	attribs[i++] = GLX_DOUBLEBUFFER;
@@ -84,52 +84,52 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 
 	attribs[i++] = None;
 
-	screen = DefaultScreen(draw->platform->display);
-	root   = RootWindow(draw->platform->display, screen);
+	screen = DefaultScreen(platform->display);
+	root   = RootWindow(platform->display, screen);
 
-	visual = glXChooseVisual(draw->platform->display, screen, attribs);
+	visual = glXChooseVisual(platform->display, screen, attribs);
 	if(visual == NULL) {
-		gf_log_function(NULL, "Failed to get visual", "");
-		gf_draw_destroy(draw);
-		return;
+		gf_log_function(engine, "Failed to get visual", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
-	attr.colormap	       = XCreateColormap(draw->platform->display, root, visual->visual, AllocNone);
-	attr.event_mask	       = StructureNotifyMask | ExposureMask | PointerMotionMask;
-	draw->platform->window = XCreateWindow(draw->platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
+	attr.colormap	 = XCreateColormap(platform->display, root, visual->visual, AllocNone);
+	attr.event_mask	 = StructureNotifyMask | ExposureMask | PointerMotionMask;
+	platform->window = XCreateWindow(platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
 
 	hints.x	     = draw->x;
 	hints.y	     = draw->y;
 	hints.width  = draw->width;
 	hints.height = draw->height;
 	hints.flags  = USSize | USPosition;
-	XSetNormalHints(draw->platform->display, draw->platform->window, &hints);
-	XSetStandardProperties(draw->platform->display, draw->platform->window, draw->title, "GoldFish", None, (char**)NULL, 0, &hints);
+	XSetNormalHints(platform->display, platform->window, &hints);
+	XSetStandardProperties(platform->display, platform->window, draw->title, "GoldFish", None, (char**)NULL, 0, &hints);
 
-	draw->platform->wm_delete_window = XInternAtom(draw->platform->display, "WM_DELETE_WINDOW", False);
-	XSetWMProtocols(draw->platform->display, draw->platform->window, &draw->platform->wm_delete_window, 1);
+	platform->wm_delete_window = XInternAtom(platform->display, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(platform->display, platform->window, &platform->wm_delete_window, 1);
 
-	draw->platform->context = glXCreateContext(draw->platform->display, visual, NULL, True);
-	if(draw->platform->context == NULL) {
+	platform->context = glXCreateContext(platform->display, visual, NULL, True);
+	if(platform->context == NULL) {
 		XFree(visual);
-		gf_log_function(NULL, "Failed to get OpenGL context", "");
-		gf_draw_destroy(draw);
-		return;
+		gf_log_function(engine, "Failed to get OpenGL context", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
 	}
 
 	XFree(visual);
 
-	XMapWindow(draw->platform->display, draw->platform->window);
-	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
+	XMapWindow(platform->display, platform->window);
+	glXMakeCurrent(platform->display, platform->window, platform->context);
 
 #ifdef DO_SWAP_INTERVAL
 	if(gf_draw_platform_has_extension(draw, "GLX_EXT_swap_control")) {
 		unsigned int		  tmp  = -1;
 		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
 		if(proc != NULL) {
-			proc(draw->platform->display, draw->platform->window, 1);
+			proc(platform->display, platform->window, 1);
 		}
-		glXQueryDrawable(draw->platform->display, draw->platform->window, GLX_SWAP_INTERVAL_EXT, &tmp);
+		glXQueryDrawable(platform->display, platform->window, GLX_SWAP_INTERVAL_EXT, &tmp);
 		interval = tmp;
 	} else if(gf_draw_platform_has_extension(draw, "GLX_MESA_swap_control")) {
 		PFNGLXGETSWAPINTERVALMESAPROC proc  = (PFNGLXGETSWAPINTERVALMESAPROC)glXGetProcAddressARB("glXGetSwapIntervalMESA");
@@ -144,9 +144,10 @@ void gf_draw_platform_create(gf_draw_t* draw) {
 		interval = 1;
 	}
 	if(interval > 0) {
-		gf_log_function(NULL, "Enabled VSync", "");
+		gf_log_function(engine, "Enabled VSync", "");
 	}
 #endif
+	return platform;
 }
 
 int gf_draw_platform_step(gf_draw_t* draw) {
@@ -181,15 +182,15 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 	return ret;
 }
 
-void gf_draw_platform_destroy(gf_draw_t* draw) {
-	if(draw->platform->context != NULL) {
-		glXMakeCurrent(draw->platform->display, None, NULL);
-		glXDestroyContext(draw->platform->display, draw->platform->context);
+void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
+	if(platform->context != NULL) {
+		glXMakeCurrent(platform->display, None, NULL);
+		glXDestroyContext(platform->display, platform->context);
 	}
-	if(draw->platform->display != NULL) {
-		XDestroyWindow(draw->platform->display, draw->platform->window);
-		XCloseDisplay(draw->platform->display);
+	if(platform->display != NULL) {
+		XDestroyWindow(platform->display, platform->window);
+		XCloseDisplay(platform->display);
 	}
-	free(draw->platform);
-	draw->platform = NULL;
+	gf_log_function(platform->engine, "Destroyed platform-dependent part of drawing driver", "");
+	free(platform);
 }

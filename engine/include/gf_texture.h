@@ -20,14 +20,14 @@
 
 /**
  * @~english
- * @brief Register texture
+ * @brief Create texture
  * @param draw Drawing interface
  * @param width Width of texture
  * @param height Height of texture
  * @param data Texture data
  * @return Texture
  */
-GF_EXPORT gf_texture_t* gf_texture_register(gf_draw_t* draw, int width, int height, unsigned char* data);
+GF_EXPORT gf_texture_t* gf_texture_create(gf_draw_t* draw, int width, int height, unsigned char* data);
 
 /**
  * @~english
