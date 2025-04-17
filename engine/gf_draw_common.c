@@ -87,7 +87,7 @@ void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
 	color.r = color.g = color.b = color.a = 255;
 	if(button == -1) {
-		button = gf_gui_create_button(draw->gui, 0, 0, 200, 100, "Test");
+		button = gf_gui_create_button(draw->gui, 0, 0, 200, 100, "\"Test\" text");
 	}
 	if(draw->draw_3d) {
 		gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,

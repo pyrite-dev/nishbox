@@ -35,9 +35,9 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 /* note... left top should be the lightest in the border */
 
-void gf_gui_draw_box(gf_gui_t* gui, int mul, float x, float y, float w, float h) {
+void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h) {
 	const int	   color_diff = 32; /* color diff */
-	const float	   bw	      = 2;  /* border width */
+	const double	   bw	      = 2;  /* border width */
 	gf_graphic_color_t col;
 
 	int cd = mul * color_diff;
@@ -69,7 +69,7 @@ gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id) {
 	return NULL;
 }
 
-gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, float x, float y, float w, float h, const char* text) {
+gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text) {
 	gf_gui_id_t	    id;
 	gf_gui_component_t* c = gf_gui_first_unused(gui, &id);
 
@@ -89,14 +89,14 @@ void gf_gui_render(gf_gui_t* gui) {
 	gf_gui_id_t i;
 	for(i = 0; i < GF_GUI_MAX_COMPONENTS; i++) {
 		gf_gui_component_t* c  = &gui->area[i];
-		float		    cx = c->x;
-		float		    cy = c->y;
-		float		    cw = c->width;
-		float		    ch = c->height;
+		double		    cx = c->x;
+		double		    cy = c->y;
+		double		    cw = c->width;
+		double		    ch = c->height;
 		switch(c->type) {
 		case GF_GUI_BUTTON: {
-			float x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
-			float y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
+			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
+			double y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
 			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
 			gf_graphic_text(gui->draw, x, y, GF_GUI_FONT_SIZE, c->u.button.text, gf_gui_font_color);
 			break;

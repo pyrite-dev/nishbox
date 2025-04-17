@@ -94,10 +94,10 @@ typedef union gf_gui_union_t {
  */
 GF_DECLARE_TYPE(gui_component, {
 	int	       type;
-	float	       x;
-	float	       y;
-	float	       width;
-	float	       height;
+	double	       x;
+	double	       y;
+	double	       width;
+	double	       height;
 	gf_gui_union_t u;
 });
 

@@ -67,13 +67,36 @@ void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* stor
 			dq = 1 - dq;
 		}
 	}
-	if(argc > 0 && strcmp(args[0], "STARTCHAR") == 0) {
+	if(store->line_index != -1 && store->line_index < font->glyph[store->glyph_index]->bbox.height) {
+		int	       wid     = font->glyph[store->glyph_index]->bbox.width;
+		unsigned char* linebuf = store->buffer + store->line_index * wid * 4;
+		for(i = 0; line[i] != 0; i++) {
+			int n = 0;
+			int j;
+			if('0' <= line[i] && line[i] <= '9') {
+				n = line[i] - '0';
+			} else if('a' <= line[i] && line[i] <= 'f') {
+				n = 10 + line[i] - 'a';
+			} else if('A' <= line[i] && line[i] <= 'F') {
+				n = 10 + line[i] - 'A';
+			}
+			for(j = 0; j < (wid > 4 ? 4 : wid); j++) {
+				if((n >> 3) & 1) {
+					memset(linebuf + 16 * i + 4 * j, 255, 4);
+				}
+				n = n << 1;
+			}
+			wid -= 4;
+		}
+		store->line_index++;
+	} else if(argc > 0 && strcmp(args[0], "STARTCHAR") == 0) {
 		font->glyph[store->glyph_index] = malloc(sizeof(**font->glyph));
 		memset(font->glyph[store->glyph_index], 0, sizeof(**font->glyph));
 	} else if(argc > 0 && strcmp(args[0], "ENDCHAR") == 0) {
 		font->glyph[store->glyph_index]->texture = gf_texture_create(draw, font->glyph[store->glyph_index]->bbox.width, font->glyph[store->glyph_index]->bbox.height, store->buffer);
 		free(store->buffer);
 		store->glyph_index++;
+		store->line_index = -1;
 	} else if(argc > 0 && strcmp(args[0], "BITMAP") == 0) {
 		store->line_index = 0;
 	} else if(argc == 2) {
@@ -89,7 +112,6 @@ void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* stor
 			font->count = atoi(args[1]);
 			font->glyph = malloc(font->count * sizeof(*font->glyph));
 			for(j = 0; j < font->count; j++) font->glyph[j] = NULL;
-			store->glyph_index = 0;
 		} else if(strcmp(args[0], "ENCODING") == 0) {
 			font->glyph[store->glyph_index]->code = atoi(args[1]);
 		}
@@ -109,7 +131,8 @@ void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* stor
 			font->glyph[store->glyph_index]->bbox.height = atoi(args[2]);
 			font->glyph[store->glyph_index]->bbox.x	     = atoi(args[3]);
 			font->glyph[store->glyph_index]->bbox.y	     = atoi(args[4]);
-			store->buffer				     = malloc(atoi(args[1]) * atoi(args[2]) * 4);
+
+			store->buffer = malloc(atoi(args[1]) * atoi(args[2]) * 4);
 			memset(store->buffer, 0, atoi(args[1]) * atoi(args[2]) * 4);
 		}
 	}
@@ -123,6 +146,8 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
 	int		i    = 0;
 	int		incr = 0;
 	gf_font_store_t store;
+	store.line_index  = -1;
+	store.glyph_index = 0;
 	memset(font, 0, sizeof(*font));
 	if(gf_stat(path, &s) != 0) {
 		free(font);

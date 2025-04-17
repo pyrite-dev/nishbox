@@ -35,7 +35,7 @@
  * @~english
  * @brief Default GUI font size
  */
-#define GF_GUI_FONT_SIZE 16
+#define GF_GUI_FONT_SIZE 32
 
 /**
  * @~english
@@ -58,7 +58,7 @@ GF_EXPORT gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw);
  * @param text Button text
  * @return Component ID
  */
-GF_EXPORT gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, float x, float y, float w, float h, const char* text);
+GF_EXPORT gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text);
 
 /**
  * @~english
@@ -86,6 +86,6 @@ gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id);
  * @param w Width of box
  * @param h Height of box
  */
-GF_EXPORT void gf_gui_draw_box(gf_gui_t* gui, int mul, float x, float y, float w, float h);
+GF_EXPORT void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h);
 
 #endif

@@ -96,24 +96,24 @@ GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw);
  * @brief Calculate text width
  * @return Text width
  */
-GF_EXPORT float gf_graphic_text_width(gf_draw_t* draw, float size, const char* text);
+GF_EXPORT double gf_graphic_text_width(gf_draw_t* draw, double size, const char* text);
 
 /**
  * @~english
  * @brief Draw text
  */
-GF_EXPORT void gf_graphic_text(gf_draw_t* draw, float x, float y, float size, const char* text, gf_graphic_color_t color);
+GF_EXPORT void gf_graphic_text(gf_draw_t* draw, double x, double y, double size, const char* text, gf_graphic_color_t color);
 
 /**
  * @~english
  * @brief Draw filled rectangle
  */
-GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, float x, float y, float w, float h, gf_graphic_color_t color);
+GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, double x, double y, double w, double h, gf_graphic_color_t color);
 
 /**
  * @~english
  * @brief Draw rectangle with texture
  */
-GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, float x, float y, float w, float h, gf_texture_t* texture, gf_graphic_color_t color);
+GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, double x, double y, double w, double h, gf_texture_t* texture, gf_graphic_color_t color);
 
 #endif
