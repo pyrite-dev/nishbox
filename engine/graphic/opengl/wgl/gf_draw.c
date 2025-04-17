@@ -36,13 +36,15 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_SIZE:
-		GetClientRect(hWnd, &rect);
-		draw->x	     = rect.left;
-		draw->y	     = rect.top;
-		draw->width  = rect.right - rect.left;
-		draw->height = rect.bottom - rect.top;
-		wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
-		gf_draw_reshape(draw);
+		if(draw->platform != NULL) {
+			GetClientRect(hWnd, &rect);
+			draw->x	     = rect.left;
+			draw->y	     = rect.top;
+			draw->width  = rect.right - rect.left;
+			draw->height = rect.bottom - rect.top;
+			wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
+			gf_draw_reshape(draw);
+		}
 		break;
 	case WM_CLOSE:
 		draw->close = 1;
