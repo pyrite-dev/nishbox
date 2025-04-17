@@ -154,7 +154,7 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
 		return NULL;
 	}
 	gf_log_function(NULL, "%s: %lu bytes", path, (unsigned long)s.st_size);
-	buf	       = malloc(s.st_size + 0);
+	buf	       = malloc(s.st_size + 1);
 	buf[s.st_size] = 0;
 	f	       = fopen(path, "r");
 	fread(buf, s.st_size, 1, f);
