@@ -22,10 +22,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-GLfloat lightwht[] = {1.0, 1.0, 1.0, 1.0};
-GLfloat lightgry[] = {0.6, 0.6, 0.6, 1.0};
-GLfloat lightdim[] = {0.2, 0.2, 0.2, 1.0};
-GLfloat lightblk[] = {0.0, 0.0, 0.0, 1.0};
+GLfloat lightwht[] = {1.0f, 1.0f, 1.0f, 1.0f};
+GLfloat lightgry[] = {0.6f, 0.6f, 0.6f, 1.0f};
+GLfloat lightdim[] = {0.2f, 0.2f, 0.2f, 1.0f};
+GLfloat lightblk[] = {0.0f, 0.0f, 0.0f, 1.0f};
 
 gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int width, int height, int* iwidth, int* iheight, unsigned char* data) {
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
