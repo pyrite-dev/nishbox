@@ -43,8 +43,6 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
-		int i;
-		int regcount;
 		draw->driver = gf_draw_driver_create(engine, draw);
 		gf_draw_reshape(draw);
 		draw->running = 1;
