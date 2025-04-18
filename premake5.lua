@@ -53,6 +53,9 @@ function msvc_filters()
 		})
 		runtime(rt)
 		staticruntime("Off")
+		buildoptions({
+			"/wd4819"
+		})
 	filter({
 			"options:cc=msc",
 			"options:engine=static",
@@ -60,6 +63,9 @@ function msvc_filters()
 		})
 		runtime(rt)
 		staticruntime("On")
+		buildoptions({
+			"/wd4819"
+		})
 	end
 	filter({})
 end
