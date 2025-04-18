@@ -66,8 +66,6 @@ void gf_draw_driver_destroy_texture(gf_draw_driver_texture_t* t) {
 }
 
 gf_draw_driver_t* gf_draw_driver_create(gf_engine_t* engine, gf_draw_t* draw) {
-	int		  i;
-	int		  w, h, ch;
 	gf_draw_driver_t* draw_driver = malloc(sizeof(*draw_driver));
 	memset(draw_driver, 0, sizeof(*draw_driver));
 	draw_driver->engine = engine;
