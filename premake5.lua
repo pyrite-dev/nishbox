@@ -56,6 +56,7 @@ function msvc_filters()
 		buildoptions({
 			"/wd4819",
 			"/wd4996",
+			"/wd4244",
 			"/wd4779"
 		})
 	filter({
@@ -68,6 +69,7 @@ function msvc_filters()
 		buildoptions({
 			"/wd4819",
 			"/wd4996",
+			"/wd4244",
 			"/wd4779"
 		})
 	end
