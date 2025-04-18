@@ -57,15 +57,15 @@ void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_
 	glBegin(GL_TRIANGLE_FAN);
 
 	for(i = 0; i < npair; i++) {
-		float tx = va_arg(va, double) * tw;
-		float ty = va_arg(va, double) * th;
-		float x	 = va_arg(va, double);
-		float y	 = va_arg(va, double);
+		double tx = va_arg(va, double) * tw;
+		double ty = va_arg(va, double) * th;
+		double x  = va_arg(va, double);
+		double y  = va_arg(va, double);
 		glTexCoord2f(tx, ty);
 		if(dim == GF_GRAPHIC_2D) {
 			glVertex2f(x, y);
 		} else if(dim == GF_GRAPHIC_3D) {
-			float z = va_arg(va, double);
+			double z = va_arg(va, double);
 			glVertex3f(x, y, z);
 		}
 	}
@@ -89,12 +89,12 @@ void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim,
 	glBegin(GL_TRIANGLE_FAN);
 
 	for(i = 0; i < npair; i++) {
-		float x = va_arg(va, double);
-		float y = va_arg(va, double);
+		double x = va_arg(va, double);
+		double y = va_arg(va, double);
 		if(dim == GF_GRAPHIC_2D) {
 			glVertex2f(x, y);
 		} else if(dim == GF_GRAPHIC_3D) {
-			float z = va_arg(va, double);
+			double z = va_arg(va, double);
 			glVertex3f(x, y, z);
 		}
 	}

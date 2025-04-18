@@ -222,7 +222,8 @@ function gf_msvc_filters()
 		runtime(rt)
 		staticruntime("Off")
 		buildoptions({
-			"/wd4819"
+			"/wd4819",
+			"/wd4996"
 		})
 	filter({
 			"options:cc=msc",
@@ -232,7 +233,8 @@ function gf_msvc_filters()
 		runtime(rt)
 		staticruntime("On")
 		buildoptions({
-			"/wd4819"
+			"/wd4819",
+			"/wd4996"
 		})
 	end
 	filter({})
