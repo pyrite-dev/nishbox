@@ -224,8 +224,7 @@ function gf_msvc_filters()
 		buildoptions({
 			"/wd4819",
 			"/wd4996",
-			"/wd4244",
-			"/wd4305"
+			"/wd4779"
 		})
 	filter({
 			"options:cc=msc",
@@ -237,8 +236,7 @@ function gf_msvc_filters()
 		buildoptions({
 			"/wd4819",
 			"/wd4996",
-			"/wd4244",
-			"/wd4305"
+			"/wd4779"
 		})
 	end
 	filter({})
