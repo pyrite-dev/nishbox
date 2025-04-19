@@ -9,6 +9,15 @@ gf_backends = {
 			wgl = {"WGL", {"gdi32"}},
 			glfw = {"GLFW", {"glfw"}}
 		}
+	},
+	directx = {
+		name = "DirectX",
+		default = "dx11",
+		unix = {},
+		windows = {},
+		backends = {
+			dx11 = {"DirectX 11", {"dxguid", "dxgi", "d3d11", "d3dcompiler", "gdi32"}}
+		}
 	}
 }
 

@@ -14,6 +14,8 @@
 /* External library */
 #if defined(DRV_OPENGL)
 #include <gf_opengl.h>
+#elif defined(DRV_DIRECTX)
+#include <gf_directx.h>
 #endif
 
 /* Engine */
@@ -42,6 +44,15 @@ GF_DECLARE_TYPE(draw_platform, {
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;
 	GLFWwindow*  window;
+});
+#endif
+#elif defined(DRV_DIRECTX)
+#if defined(USE_DX11)
+GF_DECLARE_TYPE(draw_platform, {
+	gf_engine_t* engine;
+	HINSTANCE    instance;
+	HWND	     window;
+	HDC	     dc;
 });
 #endif
 #else

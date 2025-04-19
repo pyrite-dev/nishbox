@@ -14,6 +14,8 @@
 /* External library */
 #if defined(DRV_OPENGL)
 #include <gf_opengl.h>
+#elif defined(DRV_DIRECTX)
+#include <gf_directx.h>
 #endif
 
 /* Engine */
@@ -26,6 +28,13 @@ GF_DECLARE_TYPE(draw_driver, { gf_engine_t* engine; });
 GF_DECLARE_TYPE(draw_driver_texture, {
 	gf_engine_t* engine;
 	GLuint	     id;
+	int	     width;
+	int	     height;
+});
+#elif defined(DRV_DIRECTX)
+GF_DECLARE_TYPE(draw_driver, { gf_engine_t* engine; });
+GF_DECLARE_TYPE(draw_driver_texture, {
+	gf_engine_t* engine;
 	int	     width;
 	int	     height;
 });

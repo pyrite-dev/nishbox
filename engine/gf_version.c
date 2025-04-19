@@ -40,6 +40,13 @@ void gf_version_get(gf_version_t* version) {
 #endif
 #endif
 
+#if defined(DRV_DIRECTX)
+	strcpy(version->driver, "DirectX");
+#if defined(USE_DX11)
+	strcpy(version->backend, "DirectX 11");
+#endif
+#endif
+
 #if defined(THREAD_WIN32)
 	strcpy(version->thread, "Win32");
 #elif defined(THREAD_POSIX)
