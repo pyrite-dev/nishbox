@@ -1,5 +1,6 @@
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
+#define GF_EXPOSE_INPUT
 
 #include <gf_pre.h>
 
@@ -13,6 +14,7 @@
 #include <gf_draw_driver.h>
 #include <gf_log.h>
 #include <gf_draw.h>
+#include <gf_input.h>
 
 /* Standard */
 #include <string.h>
@@ -34,6 +36,14 @@ void gf_glfw_size(GLFWwindow* window, int w, int h) {
 	draw->height	= h;
 	glfwSetWindowSize(window, w, h);
 	gf_draw_reshape(draw);
+}
+
+void gf_glfw_cursor(GLFWwindow* window, double x, double y) {
+	gf_draw_t* draw = (gf_draw_t*)glfwGetWindowUserPointer(window);
+	if(draw->input != NULL) {
+		draw->input->mouse_x = x;
+		draw->input->mouse_y = y;
+	}
 }
 
 int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
@@ -76,6 +86,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	}
 
 	glfwSetWindowUserPointer(platform->window, draw);
+	glfwSetCursorPosCallback(platform->window, gf_glfw_cursor);
 	glfwSetWindowSizeCallback(platform->window, gf_glfw_size);
 
 	glfwMakeContextCurrent(platform->window);

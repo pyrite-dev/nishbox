@@ -1,4 +1,5 @@
 #define GF_EXPOSE_CLIENT
+#define GF_EXPOSE_DRAW
 
 #include <gf_pre.h>
 
@@ -10,6 +11,7 @@
 /* Engine */
 #include <gf_draw.h>
 #include <gf_log.h>
+#include <gf_input.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -29,11 +31,14 @@ gf_client_t* gf_client_create(gf_engine_t* engine, const char* title) {
 		gf_client_destroy(client);
 		return NULL;
 	}
+	client->input = gf_input_create(engine);
+	gf_draw_set_input(client->draw, client->input);
 	return client;
 }
 
 void gf_client_destroy(gf_client_t* client) {
 	if(client->draw != NULL) gf_draw_destroy(client->draw);
+	if(client->input != NULL) gf_input_destroy(client->input);
 	gf_log_function(client->engine, "Destroyed client interface", "");
 	free(client);
 }

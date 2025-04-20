@@ -11,6 +11,8 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_VERSION
+typedef struct gf_version_t gf_version_t;
+
 /* External library */
 
 /* Engine */

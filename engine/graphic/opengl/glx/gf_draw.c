@@ -1,5 +1,6 @@
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
+#define GF_EXPOSE_INPUT
 
 #include <gf_pre.h>
 
@@ -11,6 +12,7 @@
 
 /* Engine */
 #include <gf_draw_driver.h>
+#include <gf_input.h>
 #include <gf_log.h>
 #include <gf_draw.h>
 
@@ -158,6 +160,11 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 		XNextEvent(draw->platform->display, &event);
 		if(event.type == Expose) {
 			break;
+		} else if(event.type == MotionNotify) {
+			if(draw->input != NULL) {
+				draw->input->mouse_x = event.xmotion.x;
+				draw->input->mouse_y = event.xmotion.y;
+			}
 		} else if(event.type == ConfigureNotify) {
 			draw->x	     = event.xconfigure.x;
 			draw->y	     = event.xconfigure.y;

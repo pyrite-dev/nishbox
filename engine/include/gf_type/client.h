@@ -11,11 +11,14 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_CLIENT
+typedef struct gf_client_t gf_client_t;
+
 /* External library */
 
 /* Engine */
 #include <gf_type/core.h>
 #include <gf_type/draw.h>
+#include <gf_type/input.h>
 
 /* Standard */
 
@@ -29,10 +32,14 @@
  *
  * @var gf_client_t::draw
  * @brief Drawing interface
+ *
+ * @var gf_client_t::input
+ * @brief Input interface
  */
 GF_DECLARE_TYPE(client, {
 	gf_engine_t* engine;
 	gf_draw_t*   draw;
+	gf_input_t*  input;
 });
 #else
 typedef void gf_client_t;

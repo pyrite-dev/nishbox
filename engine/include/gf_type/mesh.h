@@ -11,6 +11,9 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_MESH
+typedef struct gf_mesh_triangle_t gf_mesh_triangle_t;
+typedef struct gf_mesh_t	  gf_mesh_t;
+
 /* External library */
 
 /* Engine */
@@ -20,17 +23,17 @@
 /* Standard */
 
 /**
- * @struct gf_triangle_t
+ * @struct gf_mesh_triangle_t
  * @~english
  * @brief Triangle
  *
- * @var gf_triangle_t::points
+ * @var gf_mesh_triangle_t::points
  * @brief Triangle points
  *
- * @var gf_triangle_t::color
+ * @var gf_mesh_triangle_t::color
  * @brief Triangle color
  */
-GF_DECLARE_TYPE(triangle, {
+GF_DECLARE_TYPE(mesh_triangle, {
 	gf_math_vector_t   points[3];
 	gf_graphic_color_t color;
 });
@@ -47,12 +50,12 @@ GF_DECLARE_TYPE(triangle, {
  * @brief Triangle count
  */
 GF_DECLARE_TYPE(mesh, {
-	gf_triangle_t* triangles;
-	int	       triangle_count;
+	gf_mesh_triangle_t* triangles;
+	int		    triangle_count;
 });
 #else
 typedef void gf_mesh_t;
-typedef void gf_triangle_t;
+typedef void gf_mesh_triangle_t;
 #endif
 
 #endif

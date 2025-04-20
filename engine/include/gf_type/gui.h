@@ -17,6 +17,12 @@
 typedef int gf_gui_id_t;
 
 #ifdef GF_EXPOSE_GUI
+typedef struct gf_gui_button_t gf_gui_button_t;
+
+typedef struct gf_gui_t		  gf_gui_t;
+typedef struct gf_gui_component_t gf_gui_component_t;
+typedef union gf_gui_union_t	  gf_gui_union_t;
+
 /* External library */
 
 /* Engine */

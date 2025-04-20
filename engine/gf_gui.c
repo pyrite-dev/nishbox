@@ -1,4 +1,6 @@
 #define GF_EXPOSE_GUI
+#define GF_EXPOSE_DRAW
+#define GF_EXPOSE_INPUT
 
 #include <gf_pre.h>
 

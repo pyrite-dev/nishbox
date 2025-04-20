@@ -16,6 +16,7 @@
 
 /* Engine */
 #include <gf_type/core.h>
+#include <gf_type/input.h>
 
 /* Standard */
 
@@ -34,6 +35,14 @@ GF_EXPORT gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title);
  * @param draw Drawing interface
  */
 GF_EXPORT void gf_draw_destroy(gf_draw_t* draw);
+
+/**
+ * @~english
+ * @brief Set input interface
+ * @param draw Drawing interface
+ * @param input Input interface
+ */
+GF_EXPORT void gf_draw_set_input(gf_draw_t* draw, gf_input_t* input);
 
 /**
  * @~english

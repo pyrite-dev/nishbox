@@ -11,6 +11,9 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_THREAD
+typedef struct gf_thread_context_t gf_thread_context_t;
+typedef struct gf_thread_t	   gf_thread_t;
+
 /* External library */
 #if defined(THREAD_POSIX)
 #include <pthread.h>

@@ -19,6 +19,7 @@
 #include <gf_type/texture.h>
 #include <gf_type/graphic.h>
 #include <gf_type/core.h>
+#include <gf_type/input.h>
 
 /* Standard */
 

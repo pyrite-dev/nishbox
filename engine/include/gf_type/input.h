@@ -11,6 +11,8 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_INPUT
+typedef struct gf_input_t gf_input_t;
+
 /* External library */
 
 /* Engine */
@@ -18,7 +20,28 @@
 #include <gf_type/core.h>
 
 /* Standard */
+
+/**
+ * @struct gf_input_t
+ * @~english
+ * @brief Input interface
+ *
+ * @var gf_input_t::engine
+ * @brief Engine instance
+ *
+ * @var gf_input_t::mouse_x
+ * @brief X coord of mouse
+ *
+ * @var gf_input_t::mouse_y
+ * @brief Y coord of mouse
+ */
+GF_DECLARE_TYPE(input, {
+	gf_engine_t* engine;
+	int	     mouse_x;
+	int	     mouse_y;
+});
 #else
+typedef void gf_input_t;
 #endif
 
 #endif

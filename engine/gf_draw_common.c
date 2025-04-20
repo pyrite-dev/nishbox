@@ -121,3 +121,5 @@ void gf_draw_destroy(gf_draw_t* draw) {
 	gf_log_function(draw->engine, "Destroyed drawing interface", "");
 	free(draw);
 }
+
+void gf_draw_set_input(gf_draw_t* draw, gf_input_t* input) { draw->input = input; }
