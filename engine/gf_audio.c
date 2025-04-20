@@ -94,9 +94,11 @@ int gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 
 			if(mod_cond) {
 				int j;
+				int mod_sig_cond = 0;
 				for(j = 0; j < sizeof(gf_audio_mod_sig) / sizeof(gf_audio_mod_sig[0]); j++) {
-					mod_cond = mod_cond || (memcmp(data + 1080, gf_audio_mod_sig[j], 4) == 0);
+					mod_sig_cond = mod_sig_cond || (memcmp(data + 1080, gf_audio_mod_sig[j], 4) == 0);
 				}
+				mod_cond = mod_cond && mod_sig_cond;
 			}
 
 			if(xm_cond) {
