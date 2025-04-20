@@ -36,6 +36,13 @@ GF_EXPORT void gf_audio_destroy(gf_audio_t* audio);
 
 /**
  * @~english
+ * @brief Destroy audio decoder
+ * @param decoder Audio decoder
+ */
+GF_EXPORT void gf_audio_decoder_destroy(gf_audio_decoder_t* decoder);
+
+/**
+ * @~english
  * @brief Load and play file
  * @param audio Audio interface
  * @param path Path

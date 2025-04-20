@@ -16,6 +16,8 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
 
 /* External library */
 #include <miniaudio.h>
+#include <jar_xm.h>
+#include <jar_mod.h>
 
 /* Engine */
 #include <gf_type/core.h>
@@ -39,13 +41,25 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
  * @var gf_audio_decoder_t::decoder
  * @brief miniaudio decoder
  *
+ * @var gf_audio_decoder_t::xm
+ * @brief XM context
+ *
+ * @var gf_audio_decoder_t::mod
+ * @brief MOD context
+ *
+ * @var gf_audio_decoder_t::samples
+ * @brief Remaining samples
+ *
  * @var gf_audio_decoder_t::used
  * @brief `1` if used, otherwise `0`
  */
 GF_DECLARE_TYPE(audio_decoder, {
-	ma_decoder_config decoder_config;
-	ma_decoder*	  decoder;
-	int		  used;
+	ma_decoder_config  decoder_config;
+	ma_decoder*	   decoder;
+	jar_xm_context_t*  xm;
+	jar_mod_context_t* mod;
+	int		   samples;
+	int		   used;
 });
 
 /**

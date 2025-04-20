@@ -254,6 +254,7 @@ gf_bool_t jar_mod_setcfg(jar_mod_context_t* modctx, int samplerate, int bits, in
 void	  jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsigned long nbsample, jar_mod_tracker_buffer_state* trkbuf);
 void	  jar_mod_unload(jar_mod_context_t* modctx);
 mulong	  jar_mod_load_file(jar_mod_context_t* modctx, const char* filename);
+gf_bool_t jar_mod_load(jar_mod_context_t* modctx, void* mod_data, int mod_data_size);
 mulong	  jar_mod_current_samples(jar_mod_context_t* modctx);
 mulong	  jar_mod_max_samples(jar_mod_context_t* modctx);
 void	  jar_mod_seek_start(jar_mod_context_t* ctx);
@@ -969,7 +970,7 @@ gf_bool_t jar_mod_setcfg(jar_mod_context_t* modctx, int samplerate, int bits, in
 }
 
 /* make certain that mod_data stays in memory while playing */
-static gf_bool_t jar_mod_load(jar_mod_context_t* modctx, void* mod_data, int mod_data_size) {
+gf_bool_t jar_mod_load(jar_mod_context_t* modctx, void* mod_data, int mod_data_size) {
 	muint	       i, max;
 	unsigned short t;
 	sample*	       sptr;
@@ -1090,7 +1091,7 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 	note*	      nptr;
 	channel*      cptr;
 
-	if(modctx && outbuffer) {
+	if(modctx) {
 		if(modctx->mod_loaded) {
 			state_remaining_steps = 0;
 
@@ -1247,8 +1248,10 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 				if(r < -32768) r = -32768;
 
 				/* Store the final sample. */
-				outbuffer[(i * 2)]     = l;
-				outbuffer[(i * 2) + 1] = r;
+				if(outbuffer != NULL) {
+					outbuffer[(i * 2)]     = l;
+					outbuffer[(i * 2) + 1] = r;
+				}
 
 				ll = tl;
 				lr = tr;
@@ -1257,6 +1260,7 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 			modctx->last_l_sample = ll;
 			modctx->last_r_sample = lr;
 
+		skip:;
 			modctx->samplenb = modctx->samplenb + nbsample;
 		} else {
 			for(i = 0; i < nbsample; i++) {
@@ -1351,14 +1355,16 @@ mulong jar_mod_current_samples(jar_mod_context_t* modctx) {
 
 /* Works, however it is very slow, this data should be cached to ensure it is run only once per file */
 mulong jar_mod_max_samples(jar_mod_context_t* ctx) {
-	mint   buff[2];
 	mulong len;
 	mulong lastcount = ctx->loopcount;
 
-	while(ctx->loopcount <= lastcount) jar_mod_fillbuffer(ctx, buff, 1, 0);
+	while(ctx->loopcount <= lastcount) jar_mod_fillbuffer(ctx, NULL, 1, 0);
 
 	len = ctx->samplenb;
 	jar_mod_seek_start(ctx);
+	ctx->samplenb	= 0;
+	ctx->tablepos	= 0;
+	ctx->patternpos = 0;
 
 	return len;
 }
