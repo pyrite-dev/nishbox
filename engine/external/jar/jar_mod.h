@@ -1317,7 +1317,7 @@ void jar_mod_unload(jar_mod_context_t* modctx) {
 
 mulong jar_mod_load_file(jar_mod_context_t* modctx, const char* filename) {
 	mulong fsize = 0;
-	FILE* f;
+	FILE*  f;
 	if(modctx->modfile) {
 		JARMOD_FREE(modctx->modfile);
 		modctx->modfile = 0;

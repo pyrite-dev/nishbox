@@ -871,8 +871,8 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	jar_xm_module_t* mod	= &(ctx->module);
 	gf_uint16_t	 i;
 	gf_uint16_t	 j;
-	gf_uint32_t header_size;
-	gf_uint16_t flags;
+	gf_uint32_t	 header_size;
+	gf_uint16_t	 flags;
 
 	/* Read XM header */
 	READ_MEMCPY(mod->name, offset + 17, MODULE_NAME_LENGTH);
@@ -894,7 +894,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	mod->instruments = (jar_xm_instrument_t*)mempool;
 	mempool += mod->num_instruments * sizeof(jar_xm_instrument_t);
 
-	flags   = READ_U32(offset + 14);
+	flags		    = READ_U32(offset + 14);
 	mod->frequency_type = (flags & (1 << 0)) ? jar_xm_LINEAR_FREQUENCIES : jar_xm_AMIGA_FREQUENCIES;
 
 	ctx->tempo = READ_U16(offset + 16);
@@ -1020,7 +1020,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			instr->panning_envelope.loop_start_point = READ_U8(offset + 231);
 			instr->panning_envelope.loop_end_point	 = READ_U8(offset + 232);
 
-			flags		       = READ_U8(offset + 233);
+			flags				       = READ_U8(offset + 233);
 			instr->volume_envelope.enabled	       = flags & (1 << 0);
 			instr->volume_envelope.sustain_enabled = flags & (1 << 1);
 			instr->volume_envelope.loop_enabled    = flags & (1 << 2);
@@ -1052,7 +1052,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 
 		for(j = 0; j < instr->num_samples; ++j) {
 			/* Read sample header */
-			gf_uint8_t flags;
+			gf_uint8_t	 flags;
 			jar_xm_sample_t* sample = instr->samples + j;
 
 			sample->length	    = READ_U32(offset);
@@ -1266,8 +1266,8 @@ static float jar_xm_waveform(jar_xm_waveform_type_t waveform, gf_uint8_t step) {
 
 static void jar_xm_autovibrato(jar_xm_context_t* ctx, jar_xm_channel_context_t* ch) {
 	jar_xm_instrument_t* instr;
-	float sweep;
-	unsigned int step;
+	float		     sweep;
+	unsigned int	     step;
 	if(ch->instrument == NULL || ch->instrument->vibrato_depth == 0) return;
 	instr = ch->instrument;
 	sweep = 1.f;
@@ -1277,7 +1277,7 @@ static void jar_xm_autovibrato(jar_xm_context_t* ctx, jar_xm_channel_context_t* 
 		sweep = jar_xm_LERP(0.f, 1.f, (float)ch->autovibrato_ticks / (float)instr->vibrato_sweep);
 	}
 
-	step	    = ((ch->autovibrato_ticks++) * instr->vibrato_rate) >> 2;
+	step			    = ((ch->autovibrato_ticks++) * instr->vibrato_rate) >> 2;
 	ch->autovibrato_note_offset = .25f * jar_xm_waveform(instr->vibrato_type, step) * (float)instr->vibrato_depth / (float)0xF * sweep;
 	jar_xm_update_frequency(ctx, ch);
 }
@@ -1443,7 +1443,7 @@ static float jar_xm_frequency(jar_xm_context_t* ctx, float period, float note_of
 	gf_int8_t   octave;
 	float	    note;
 	gf_uint16_t p1, p2;
-	gf_uint8_t i;
+	gf_uint8_t  i;
 
 	switch(ctx->module.frequency_type) {
 
@@ -1930,8 +1930,8 @@ static void jar_xm_key_off(jar_xm_channel_context_t* ch) {
 
 static void jar_xm_row(jar_xm_context_t* ctx) {
 	jar_xm_pattern_t* cur;
-	gf_bool_t in_a_loop;
-	gf_uint8_t i;
+	gf_bool_t	  in_a_loop;
+	gf_uint8_t	  i;
 	if(ctx->position_jump) {
 		ctx->current_table_index = ctx->jump_dest;
 		ctx->current_row	 = ctx->jump_row;
@@ -1947,7 +1947,7 @@ static void jar_xm_row(jar_xm_context_t* ctx) {
 		jar_xm_post_pattern_change(ctx);
 	}
 
-	cur	    = ctx->module.patterns + ctx->module.pattern_table[ctx->current_table_index];
+	cur	  = ctx->module.patterns + ctx->module.pattern_table[ctx->current_table_index];
 	in_a_loop = gf_false;
 
 	/* Read notes… */
@@ -2294,7 +2294,7 @@ static void jar_xm_tick(jar_xm_context_t* ctx) {
 static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 	float	    u, v, t;
 	gf_uint32_t a, b;
-	float endval;
+	float	    endval;
 
 	if(ch->instrument == NULL || ch->sample == NULL || ch->sample_position < 0) {
 #if JAR_XM_RAMPING
@@ -2396,8 +2396,8 @@ static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 }
 
 static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
-gf_uint8_t i;
-float fgvol;
+	gf_uint8_t i;
+	float	   fgvol;
 	if(ctx->remaining_samples_in_tick <= 0) {
 		jar_xm_tick(ctx);
 	}
@@ -2412,7 +2412,7 @@ float fgvol;
 
 	for(i = 0; i < ctx->module.num_channels; ++i) {
 		jar_xm_channel_context_t* ch = ctx->channels + i;
-		float fval;
+		float			  fval;
 
 		if(ch->instrument == NULL || ch->sample == NULL || ch->sample_position < 0) {
 			continue;
