@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+const double gf_gui_border_width = 2;
+
 gf_graphic_color_t gf_gui_base_color;
 gf_graphic_color_t gf_gui_font_color;
 
@@ -42,7 +44,6 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h) {
 	const int	   color_diff = 32; /* color diff */
-	const double	   bw	      = 2;  /* border width */
 	gf_graphic_color_t col;
 
 	int cd = mul * color_diff;
@@ -57,10 +58,10 @@ void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, doubl
 	col.r -= cd;
 	col.g -= cd;
 	col.b -= cd;
-	gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 5, x + w, y + h, x + w, y, x + w - bw, y + bw, x + bw, y + h - bw, x, y + h);
+	gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 5, x + w, y + h, x + w, y, x + w - gf_gui_border_width, y + gf_gui_border_width, x + gf_gui_border_width, y + h - gf_gui_border_width, x, y + h);
 
 	col = gf_gui_base_color;
-	gf_graphic_fill_rect(gui->draw, x + bw, y + bw, w - bw * 2, h - bw * 2, col);
+	gf_graphic_fill_rect(gui->draw, x + gf_gui_border_width, y + gf_gui_border_width, w - gf_gui_border_width * 2, h - gf_gui_border_width * 2, col);
 }
 
 gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id) {
@@ -122,6 +123,10 @@ void gf_gui_render(gf_gui_t* gui) {
 		case GF_GUI_BUTTON: {
 			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
 			double y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
+			if(gui->pressed == i) {
+				x += gf_gui_border_width / 1;
+				y += gf_gui_border_width / 1;
+			}
 			gf_gui_draw_box(gui, (gui->pressed == i) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
 			gf_graphic_text(gui->draw, x, y, GF_GUI_FONT_SIZE, c->u.button.text, gf_gui_font_color);
 			break;
