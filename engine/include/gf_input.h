@@ -11,6 +11,7 @@
 #include <gf_macro.h>
 
 /* Type */
+#include <gf_type/input.h>
 
 /* Engine */
 

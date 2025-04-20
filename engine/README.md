@@ -7,4 +7,5 @@
  - [Lua](https://lua.org)
  - [stb](https://github.com/nothings/stb)
  - [miniaudio](https://github.com/mackron/miniaudio)
+ - [jar](https://github.com/kd7tck/jar)
  - [Premake5](https://premake.github.io)

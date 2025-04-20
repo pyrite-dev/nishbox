@@ -286,7 +286,8 @@ project("GoldFish")
 		"external/lua",
 		"external/zlib",
 		"external/miniaudio",
-		"external/stb"
+		"external/stb",
+		"external/jar",
 	})
 	files({
 		"include/**.h",

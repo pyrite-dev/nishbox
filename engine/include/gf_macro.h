@@ -113,6 +113,14 @@
 #define GF_EXPOSE_FONT
 #endif
 
+#ifndef GF_EXPOSE_INPUT
+/**
+ * @~english
+ * @brief Expose input interface properties
+ */
+#define GF_EXPOSE_INPUT
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english
