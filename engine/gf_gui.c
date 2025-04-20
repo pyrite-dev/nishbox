@@ -101,7 +101,7 @@ void gf_gui_render(gf_gui_t* gui) {
 		double		    ch = c->height;
 		switch(c->type) {
 		case GF_GUI_BUTTON: {
-			if((gui->pressed == -1) && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
+			if(input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
 				gui->pressed = i;
 			} else if(gui->pressed == -1) {
 				c->pressed = 0;

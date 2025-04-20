@@ -19,8 +19,8 @@ gf_input_t* gf_input_create(gf_engine_t* engine) {
 	memset(input, 0, sizeof(input));
 	input->engine = engine;
 
-	input->mouse_x	  = 0;
-	input->mouse_y	  = 0;
+	input->mouse_x	  = -1;
+	input->mouse_y	  = -1;
 	input->mouse_flag = 0;
 
 	return input;
