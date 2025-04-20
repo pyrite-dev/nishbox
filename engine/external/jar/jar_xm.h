@@ -1441,6 +1441,7 @@ static float jar_xm_frequency(jar_xm_context_t* ctx, float period, float note_of
 	gf_int8_t   octave;
 	float	    note;
 	gf_uint16_t p1, p2;
+	gf_uint8_t i;
 
 	switch(ctx->module.frequency_type) {
 
@@ -1466,7 +1467,7 @@ static float jar_xm_frequency(jar_xm_context_t* ctx, float period, float note_of
 		}
 
 		/* Find the smallest note closest to the current period */
-		for(gf_uint8_t i = 0; i < 12; ++i) {
+		for(i = 0; i < 12; ++i) {
 			p1 = amiga_frequencies[i], p2 = amiga_frequencies[i + 1];
 
 			if(octave > 0) {
@@ -1536,7 +1537,8 @@ static void jar_xm_handle_note_and_instrument(jar_xm_context_t* ctx, jar_xm_chan
 		} else {
 			if(instr->sample_of_notes[s->note - 1] < instr->num_samples) {
 #if JAR_XM_RAMPING
-				for(unsigned int z = 0; z < jar_xm_SAMPLE_RAMPING_POINTS; ++z) {
+				unsigned int z;
+				for(z = 0; z < jar_xm_SAMPLE_RAMPING_POINTS; ++z) {
 					ch->end_of_previous_sample[z] = jar_xm_next_of_sample(ch);
 				}
 				ch->frame_count = 0;
