@@ -1263,16 +1263,19 @@ static float jar_xm_waveform(jar_xm_waveform_type_t waveform, gf_uint8_t step) {
 }
 
 static void jar_xm_autovibrato(jar_xm_context_t* ctx, jar_xm_channel_context_t* ch) {
+	jar_xm_instrument_t* instr;
+	float sweep;
+	unsigned int step;
 	if(ch->instrument == NULL || ch->instrument->vibrato_depth == 0) return;
-	jar_xm_instrument_t* instr = ch->instrument;
-	float		     sweep = 1.f;
+	instr = ch->instrument;
+	sweep = 1.f;
 
 	if(ch->autovibrato_ticks < instr->vibrato_sweep) {
 		/* No idea if this is correct, but it sounds close enough… */
 		sweep = jar_xm_LERP(0.f, 1.f, (float)ch->autovibrato_ticks / (float)instr->vibrato_sweep);
 	}
 
-	unsigned int step	    = ((ch->autovibrato_ticks++) * instr->vibrato_rate) >> 2;
+	step	    = ((ch->autovibrato_ticks++) * instr->vibrato_rate) >> 2;
 	ch->autovibrato_note_offset = .25f * jar_xm_waveform(instr->vibrato_type, step) * (float)instr->vibrato_depth / (float)0xF * sweep;
 	jar_xm_update_frequency(ctx, ch);
 }
