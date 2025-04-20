@@ -992,6 +992,8 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 
 		if(instr->num_samples > 0) {
 			/* Read extra header properties */
+			gf_uint8_t flags;
+
 			sample_header_size = READ_U32(offset + 29);
 			READ_MEMCPY(instr->sample_of_notes, offset + 33, NUM_NOTES);
 
@@ -1016,7 +1018,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			instr->panning_envelope.loop_start_point = READ_U8(offset + 231);
 			instr->panning_envelope.loop_end_point	 = READ_U8(offset + 232);
 
-			gf_uint8_t flags		       = READ_U8(offset + 233);
+			flags		       = READ_U8(offset + 233);
 			instr->volume_envelope.enabled	       = flags & (1 << 0);
 			instr->volume_envelope.sustain_enabled = flags & (1 << 1);
 			instr->volume_envelope.loop_enabled    = flags & (1 << 2);
@@ -1048,6 +1050,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 
 		for(j = 0; j < instr->num_samples; ++j) {
 			/* Read sample header */
+			gf_uint8_t flags;
 			jar_xm_sample_t* sample = instr->samples + j;
 
 			sample->length	    = READ_U32(offset);
@@ -1057,7 +1060,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			sample->volume	    = (float)READ_U8(offset + 12) / (float)0x40;
 			sample->finetune    = (gf_int8_t)READ_U8(offset + 13);
 
-			gf_uint8_t flags = READ_U8(offset + 14);
+			flags = READ_U8(offset + 14);
 			if((flags & 3) == 0) {
 				sample->loop_type = jar_xm_NO_LOOP;
 			} else if((flags & 3) == 1) {
