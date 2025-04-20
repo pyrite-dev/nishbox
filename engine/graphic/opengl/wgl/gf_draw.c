@@ -1,5 +1,6 @@
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
+#define GF_EXPOSE_INPUT
 
 #include <gf_pre.h>
 
@@ -13,6 +14,7 @@
 #include <gf_draw_driver.h>
 #include <gf_log.h>
 #include <gf_draw.h>
+#include <gf_input.h>
 
 /* Standard */
 #include <string.h>
@@ -44,6 +46,12 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 			draw->height = rect.bottom - rect.top;
 			wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 			gf_draw_reshape(draw);
+		}
+		break;
+	case WM_MOUSEMOVE:
+		if(draw->input != NULL) {
+			draw->input->mouse_x = LOWORD(lp);
+			draw->input->mouse_y = HIWORD(lp);
 		}
 		break;
 	case WM_CLOSE:
