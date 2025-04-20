@@ -792,6 +792,7 @@ size_t jar_xm_get_memory_needed_for_context(const char* moddata, size_t moddata_
 	gf_uint16_t num_channels;
 	gf_uint16_t num_patterns;
 	gf_uint16_t num_instruments;
+	gf_uint16_t i;
 
 	/* Read the module header */
 
@@ -810,7 +811,7 @@ size_t jar_xm_get_memory_needed_for_context(const char* moddata, size_t moddata_
 	offset += READ_U32(offset);
 
 	/* Read pattern headers */
-	for(gf_uint16_t i = 0; i < num_patterns; ++i) {
+	for(i = 0; i < num_patterns; ++i) {
 		gf_uint16_t num_rows;
 
 		num_rows = READ_U16(offset + 5);
@@ -821,10 +822,11 @@ size_t jar_xm_get_memory_needed_for_context(const char* moddata, size_t moddata_
 	}
 
 	/* Read instrument headers */
-	for(gf_uint16_t i = 0; i < num_instruments; ++i) {
+	for(i = 0; i < num_instruments; ++i) {
 		gf_uint16_t num_samples;
 		gf_uint32_t sample_header_size	  = 0;
 		gf_uint32_t sample_size_aggregate = 0;
+		gf_uint16_t j;
 
 		num_samples = READ_U16(offset + 27);
 		memory_needed += num_samples * sizeof(jar_xm_sample_t);
@@ -836,7 +838,7 @@ size_t jar_xm_get_memory_needed_for_context(const char* moddata, size_t moddata_
 		/* Instrument header size */
 		offset += READ_U32(offset);
 
-		for(gf_uint16_t j = 0; j < num_samples; ++j) {
+		for(j = 0; j < num_samples; ++j) {
 			gf_uint32_t sample_size;
 			gf_uint8_t  flags;
 
@@ -867,6 +869,8 @@ size_t jar_xm_get_memory_needed_for_context(const char* moddata, size_t moddata_
 char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t moddata_length, char* mempool) {
 	size_t		 offset = 0;
 	jar_xm_module_t* mod	= &(ctx->module);
+	gf_uint16_t	 i;
+	gf_uint16_t	 j;
 
 	/* Read XM header */
 	READ_MEMCPY(mod->name, offset + 17, MODULE_NAME_LENGTH);
@@ -898,7 +902,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	offset += header_size;
 
 	/* Read patterns */
-	for(gf_uint16_t i = 0; i < mod->num_patterns; ++i) {
+	for(i = 0; i < mod->num_patterns; ++i) {
 		gf_uint16_t	  packed_patterndata_size = READ_U16(offset + 7);
 		jar_xm_pattern_t* pat			  = mod->patterns + i;
 
@@ -914,8 +918,9 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			/* No pattern data is present */
 			memset(pat->slots, 0, sizeof(jar_xm_pattern_slot_t) * pat->num_rows * mod->num_channels);
 		} else {
+			gf_uint16_t k;
 			/* This isn't your typical for loop */
-			for(gf_uint16_t j = 0, k = 0; j < packed_patterndata_size; ++k) {
+			for(j = 0, k = 0; j < packed_patterndata_size; ++k) {
 				gf_uint8_t	       note = READ_U8(offset + j);
 				jar_xm_pattern_slot_t* slot = pat->slots + k;
 
@@ -978,7 +983,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	}
 
 	/* Read instruments */
-	for(gf_uint16_t i = 0; i < ctx->module.num_instruments; ++i) {
+	for(i = 0; i < ctx->module.num_instruments; ++i) {
 		gf_uint32_t	     sample_header_size = 0;
 		jar_xm_instrument_t* instr		= mod->instruments + i;
 
@@ -993,12 +998,12 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			instr->volume_envelope.num_points  = READ_U8(offset + 225);
 			instr->panning_envelope.num_points = READ_U8(offset + 226);
 
-			for(gf_uint8_t j = 0; j < instr->volume_envelope.num_points; ++j) {
+			for(j = 0; j < instr->volume_envelope.num_points; ++j) {
 				instr->volume_envelope.points[j].frame = READ_U16(offset + 129 + 4 * j);
 				instr->volume_envelope.points[j].value = READ_U16(offset + 129 + 4 * j + 2);
 			}
 
-			for(gf_uint8_t j = 0; j < instr->panning_envelope.num_points; ++j) {
+			for(j = 0; j < instr->panning_envelope.num_points; ++j) {
 				instr->panning_envelope.points[j].frame = READ_U16(offset + 177 + 4 * j);
 				instr->panning_envelope.points[j].value = READ_U16(offset + 177 + 4 * j + 2);
 			}
@@ -1041,7 +1046,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 		/* Instrument header size */
 		offset += READ_U32(offset);
 
-		for(gf_uint16_t j = 0; j < instr->num_samples; ++j) {
+		for(j = 0; j < instr->num_samples; ++j) {
 			/* Read sample header */
 			jar_xm_sample_t* sample = instr->samples + j;
 
@@ -1083,21 +1088,22 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 			offset += sample_header_size;
 		}
 
-		for(gf_uint16_t j = 0; j < instr->num_samples; ++j) {
+		for(j = 0; j < instr->num_samples; ++j) {
 			/* Read sample data */
 			jar_xm_sample_t* sample = instr->samples + j;
 			gf_uint32_t	 length = sample->length;
+			gf_uint32_t	 k;
 
 			if(sample->bits == 16) {
 				gf_int16_t v = 0;
-				for(gf_uint32_t k = 0; k < length; ++k) {
+				for(k = 0; k < length; ++k) {
 					v		= v + (gf_int16_t)READ_U16(offset + (k << 1));
 					sample->data[k] = (float)v / (float)(1 << 15);
 				}
 				offset += sample->length << 1;
 			} else {
 				gf_int8_t v = 0;
-				for(gf_uint32_t k = 0; k < length; ++k) {
+				for(k = 0; k < length; ++k) {
 					v		= v + (gf_int8_t)READ_U8(offset + k);
 					sample->data[k] = (float)v / (float)(1 << 7);
 				}
