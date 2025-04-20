@@ -97,7 +97,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	}
 
 	attr.colormap	 = XCreateColormap(platform->display, root, visual->visual, AllocNone);
-	attr.event_mask	 = StructureNotifyMask | ExposureMask | PointerMotionMask;
+	attr.event_mask	 = StructureNotifyMask | ExposureMask | PointerMotionMask | ButtonPressMask | ButtonReleaseMask;
 	platform->window = XCreateWindow(platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
 
 	hints.x	     = draw->x;
@@ -172,6 +172,18 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 			draw->height = event.xconfigure.height;
 			glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
 			gf_draw_reshape(draw);
+		} else if(event.type == ButtonPress) {
+			if(draw->input != NULL) {
+				if(event.xbutton.button == Button1) draw->input->mouse_flag |= GF_INPUT_MOUSE_LEFT_MASK;
+				if(event.xbutton.button == Button2) draw->input->mouse_flag |= GF_INPUT_MOUSE_MIDDLE_MASK;
+				if(event.xbutton.button == Button3) draw->input->mouse_flag |= GF_INPUT_MOUSE_RIGHT_MASK;
+			}
+		} else if(event.type == ButtonRelease) {
+			if(draw->input != NULL) {
+				if(event.xbutton.button == Button1) draw->input->mouse_flag ^= GF_INPUT_MOUSE_LEFT_MASK;
+				if(event.xbutton.button == Button2) draw->input->mouse_flag ^= GF_INPUT_MOUSE_MIDDLE_MASK;
+				if(event.xbutton.button == Button3) draw->input->mouse_flag ^= GF_INPUT_MOUSE_RIGHT_MASK;
+			}
 		} else if(event.type == ClientMessage) {
 			if(event.xclient.data.l[0] == draw->platform->wm_delete_window) {
 				draw->close = 1;

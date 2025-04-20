@@ -22,6 +22,24 @@ typedef struct gf_input_t gf_input_t;
 /* Standard */
 
 /**
+ * @~english
+ * @brief Mask for left mouse button
+ */
+#define GF_INPUT_MOUSE_LEFT_MASK (1 << 0)
+
+/**
+ * @~english
+ * @brief Mask for middle mouse button
+ */
+#define GF_INPUT_MOUSE_MIDDLE_MASK (1 << 1)
+
+/**
+ * @~english
+ * @brief Mask for right mouse button
+ */
+#define GF_INPUT_MOUSE_RIGHT_MASK (1 << 2)
+
+/**
  * @struct gf_input_t
  * @~english
  * @brief Input interface
@@ -34,11 +52,15 @@ typedef struct gf_input_t gf_input_t;
  *
  * @var gf_input_t::mouse_y
  * @brief Y coord of mouse
+ *
+ * @var gf_input_t::mouse_flag
+ * @brief Mouse flag
  */
 GF_DECLARE_TYPE(input, {
 	gf_engine_t* engine;
 	int	     mouse_x;
 	int	     mouse_y;
+	int	     mouse_flag;
 });
 #else
 typedef void gf_input_t;

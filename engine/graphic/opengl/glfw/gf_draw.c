@@ -38,6 +38,20 @@ void gf_glfw_size(GLFWwindow* window, int w, int h) {
 	gf_draw_reshape(draw);
 }
 
+void gf_glfw_button(GLFWwindow* window, int button, int action, int mods) {
+	gf_draw_t* draw = (gf_draw_t*)glfwGetWindowUserPointer(window);
+	if(draw->input != NULL) {
+		if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) draw->input->mouse_flag |= GF_INPUT_MOUSE_LEFT_MASK;
+		if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) draw->input->mouse_flag ^= GF_INPUT_MOUSE_LEFT_MASK;
+
+		if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) draw->input->mouse_flag |= GF_INPUT_MOUSE_RIGHT_MASK;
+		if(button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) draw->input->mouse_flag ^= GF_INPUT_MOUSE_RIGHT_MASK;
+
+		if(button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS) draw->input->mouse_flag |= GF_INPUT_MOUSE_MIDDLE_MASK;
+		if(button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE) draw->input->mouse_flag ^= GF_INPUT_MOUSE_MIDDLE_MASK;
+	}
+}
+
 void gf_glfw_cursor(GLFWwindow* window, double x, double y) {
 	gf_draw_t* draw = (gf_draw_t*)glfwGetWindowUserPointer(window);
 	if(draw->input != NULL) {
@@ -88,6 +102,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	glfwSetWindowUserPointer(platform->window, draw);
 	glfwSetCursorPosCallback(platform->window, gf_glfw_cursor);
 	glfwSetWindowSizeCallback(platform->window, gf_glfw_size);
+	glfwSetMouseButtonCallback(platform->window, gf_glfw_button);
 
 	glfwMakeContextCurrent(platform->window);
 #ifdef DO_SWAP_INTERVAL

@@ -48,6 +48,36 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 			draw->input->mouse_y = HIWORD(lp);
 		}
 		break;
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+		if(draw->input != NULL) {
+			if(msg == WM_LBUTTONDOWN) {
+				draw->input->mouse_flag |= GF_INPUT_MOUSE_LEFT_MASK;
+			} else {
+				draw->input->mouse_flag ^= GF_INPUT_MOUSE_LEFT_MASK;
+			}
+		}
+		break;
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+		if(draw->input != NULL) {
+			if(msg == WM_MBUTTONDOWN) {
+				draw->input->mouse_flag |= GF_INPUT_MOUSE_MIDDLE_MASK;
+			} else {
+				draw->input->mouse_flag ^= GF_INPUT_MOUSE_MIDDLE_MASK;
+			}
+		}
+		break;
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+		if(draw->input != NULL) {
+			if(msg == WM_RBUTTONDOWN) {
+				draw->input->mouse_flag |= GF_INPUT_MOUSE_RIGHT_MASK;
+			} else {
+				draw->input->mouse_flag ^= GF_INPUT_MOUSE_RIGHT_MASK;
+			}
+		}
+		break;
 	case WM_CLOSE:
 		draw->close = 1;
 		break;

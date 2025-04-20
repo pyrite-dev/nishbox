@@ -12,6 +12,7 @@
 /* Engine */
 #include <gf_graphic.h>
 #include <gf_draw.h>
+#include <gf_log.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -26,6 +27,8 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 	memset(gui, 0, sizeof(*gui));
 	gui->engine = engine;
 	gui->draw   = draw;
+
+	gui->pressed = -1;
 
 	GF_SET_COLOR(gf_gui_base_color, 48, 96, 48, 255);
 	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);
@@ -81,14 +84,32 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, do
 	c->width  = w;
 	c->height = h;
 
-	c->u.button.pressed = 0;
-	c->u.button.text    = malloc(strlen(text) + 1);
+	c->pressed	 = 0;
+	c->u.button.text = malloc(strlen(text) + 1);
 	strcpy(c->u.button.text, text);
 	return id;
 }
 
 void gf_gui_render(gf_gui_t* gui) {
 	gf_gui_id_t i;
+	gf_input_t* input = gui->draw->input;
+	for(i = GF_GUI_MAX_COMPONENTS - 1; i >= 0; i--) {
+		gf_gui_component_t* c  = &gui->area[i];
+		double		    cx = c->x;
+		double		    cy = c->y;
+		double		    cw = c->width;
+		double		    ch = c->height;
+		switch(c->type) {
+		case GF_GUI_BUTTON: {
+			if((gui->pressed == -1) && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
+				gui->pressed = i;
+			} else if(gui->pressed == -1) {
+				c->pressed = 0;
+			}
+			break;
+		}
+		}
+	}
 	for(i = 0; i < GF_GUI_MAX_COMPONENTS; i++) {
 		gf_gui_component_t* c  = &gui->area[i];
 		double		    cx = c->x;
@@ -99,10 +120,15 @@ void gf_gui_render(gf_gui_t* gui) {
 		case GF_GUI_BUTTON: {
 			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
 			double y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
-			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
+			gf_gui_draw_box(gui, (gui->pressed == i) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
 			gf_graphic_text(gui->draw, x, y, GF_GUI_FONT_SIZE, c->u.button.text, gf_gui_font_color);
 			break;
 		}
 		}
+	}
+	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
+		gf_log_function(gui->engine, "GUI component %d was pressed", gui->pressed);
+		gui->area[gui->pressed].pressed = 1;
+		gui->pressed			= -1;
 	}
 }
