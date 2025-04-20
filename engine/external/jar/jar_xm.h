@@ -2052,6 +2052,8 @@ static void jar_xm_tick(jar_xm_context_t* ctx) {
 	for(i = 0; i < ctx->module.num_channels; ++i) {
 		jar_xm_channel_context_t* ch = ctx->channels + i;
 
+		float panning, volume;
+
 		jar_xm_envelopes(ch);
 		jar_xm_autovibrato(ctx, ch);
 
@@ -2259,8 +2261,6 @@ static void jar_xm_tick(jar_xm_context_t* ctx) {
 			break;
 		}
 
-		float panning, volume;
-
 		panning = ch->panning + (ch->panning_envelope_panning - .5f) * (.5f - fabsf(ch->panning - .5f)) * 2.0f;
 
 		if(ch->tremor_on) {
@@ -2291,6 +2291,10 @@ static void jar_xm_tick(jar_xm_context_t* ctx) {
 }
 
 static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
+	float	    u, v, t;
+	gf_uint32_t a, b;
+	float endval;
+
 	if(ch->instrument == NULL || ch->sample == NULL || ch->sample_position < 0) {
 #if JAR_XM_RAMPING
 		if(ch->frame_count < jar_xm_SAMPLE_RAMPING_POINTS) {
@@ -2303,8 +2307,6 @@ static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 		return .0f;
 	}
 
-	float	    u, v, t;
-	gf_uint32_t a, b;
 	a = (gf_uint32_t)ch->sample_position; /* This cast is fine,
 					       * sample_position will not
 					       * go above integer
@@ -2380,7 +2382,7 @@ static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 		break;
 	}
 
-	float endval = JAR_XM_LINEAR_INTERPOLATION ? jar_xm_LERP(u, v, t) : u;
+	endval = JAR_XM_LINEAR_INTERPOLATION ? jar_xm_LERP(u, v, t) : u;
 
 #if JAR_XM_RAMPING
 	if(ch->frame_count < jar_xm_SAMPLE_RAMPING_POINTS) {
