@@ -569,7 +569,7 @@ void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, gf_int16_t* output, si
 	jar_xm_generate_samples(ctx, musicBuffer, numsamples);
 
 	if(output) {
-		int x;
+		size_t x;
 		for(x = 0; x < 2 * numsamples; x++) output[x] = musicBuffer[x] * SHRT_MAX;
 	}
 
@@ -581,7 +581,7 @@ void jar_xm_generate_samples_8bit(jar_xm_context_t* ctx, gf_int8_t* output, size
 	jar_xm_generate_samples(ctx, musicBuffer, numsamples);
 
 	if(output) {
-		int x;
+		size_t x;
 		for(x = 0; x < 2 * numsamples; x++) output[x] = musicBuffer[x] * CHAR_MAX;
 	}
 
@@ -2500,9 +2500,9 @@ gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
 	} while(0)
 
 int jar_xm_create_context_from_file(jar_xm_context_t** ctx, gf_uint32_t rate, const char* filename) {
-	FILE* xmf;
-	int   size;
-	char* data;
+	FILE*  xmf;
+	size_t size;
+	char*  data;
 
 	xmf = fopen(filename, "rb");
 	if(xmf == NULL) {
