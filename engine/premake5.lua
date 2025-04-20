@@ -297,6 +297,9 @@ project("GoldFish")
 		"external/lua/l*.h",
 		"external/lua/l*.c",
 	})
+	files({
+		"audio/*.c"
+	})
 	filter({
 		"system:windows",
 		"options:engine=dynamic"

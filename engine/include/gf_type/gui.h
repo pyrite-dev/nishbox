@@ -43,7 +43,7 @@ typedef void (*gf_gui_callback_t)(gf_engine_t* engine, gf_draw_t* draw, gf_gui_i
 
 /**
  * @~english
- * @brief Max components engine GUI can handle
+ * @brief Max components GUI can handle
  */
 #define GF_GUI_MAX_COMPONENTS 64
 

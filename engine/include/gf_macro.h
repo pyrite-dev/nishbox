@@ -121,6 +121,14 @@
 #define GF_EXPOSE_INPUT
 #endif
 
+#ifndef GF_EXPOSE_AUDIO
+/**
+ * @~english
+ * @brief Expose audio interface properties
+ */
+#define GF_EXPOSE_AUDIO
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english
