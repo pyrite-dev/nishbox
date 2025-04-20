@@ -131,14 +131,14 @@ void jar_xm_generate_samples(jar_xm_context_t*, float* output, size_t numsamples
  * @param output buffer of 2*numsamples elements (A left and right value for each sample)
  * @param numsamples number of samples to generate
  */
-void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, short* output, size_t numsamples);
+void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, gf_int16_t* output, size_t numsamples);
 
 /** Play the module, resample from 32 bit to 8 bit, and put the sound samples in an output buffer.
  *
  * @param output buffer of 2*numsamples elements (A left and right value for each sample)
  * @param numsamples number of samples to generate
  */
-void jar_xm_generate_samples_8bit(jar_xm_context_t* ctx, char* output, size_t numsamples);
+void jar_xm_generate_samples_8bit(jar_xm_context_t* ctx, gf_int8_t* output, size_t numsamples);
 
 /** Set the maximum number of times a module can loop. After the
  * specified number of loops, calls to jar_xm_generate_samples will only
@@ -564,7 +564,7 @@ size_t jar_xm_get_memory_needed_for_context(const char*, size_t);
  */
 char* jar_xm_load_module(jar_xm_context_t*, const char*, size_t, char*);
 
-void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, short* output, size_t numsamples) {
+void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, gf_int16_t* output, size_t numsamples) {
 	float* musicBuffer = malloc((2 * numsamples) * sizeof(float));
 	jar_xm_generate_samples(ctx, musicBuffer, numsamples);
 
@@ -576,7 +576,7 @@ void jar_xm_generate_samples_16bit(jar_xm_context_t* ctx, short* output, size_t 
 	free(musicBuffer);
 }
 
-void jar_xm_generate_samples_8bit(jar_xm_context_t* ctx, char* output, size_t numsamples) {
+void jar_xm_generate_samples_8bit(jar_xm_context_t* ctx, gf_int8_t* output, size_t numsamples) {
 	float* musicBuffer = malloc((2 * numsamples) * sizeof(float));
 	jar_xm_generate_samples(ctx, musicBuffer, numsamples);
 

@@ -251,7 +251,7 @@ extern "C" {
 
 gf_bool_t jar_mod_init(jar_mod_context_t* modctx);
 gf_bool_t jar_mod_setcfg(jar_mod_context_t* modctx, int samplerate, int bits, int stereo, int stereo_separation, int filter);
-void	  jar_mod_fillbuffer(jar_mod_context_t* modctx, short* outbuffer, unsigned long nbsample, jar_mod_tracker_buffer_state* trkbuf);
+void	  jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsigned long nbsample, jar_mod_tracker_buffer_state* trkbuf);
 void	  jar_mod_unload(jar_mod_context_t* modctx);
 mulong	  jar_mod_load_file(jar_mod_context_t* modctx, const char* filename);
 mulong	  jar_mod_current_samples(jar_mod_context_t* modctx);
@@ -1078,7 +1078,7 @@ static gf_bool_t jar_mod_load(jar_mod_context_t* modctx, void* mod_data, int mod
 	return 0;
 }
 
-void jar_mod_fillbuffer(jar_mod_context_t* modctx, short* outbuffer, unsigned long nbsample, jar_mod_tracker_buffer_state* trkbuf) {
+void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsigned long nbsample, jar_mod_tracker_buffer_state* trkbuf) {
 	unsigned long i, j;
 	unsigned long k;
 	unsigned char c;
