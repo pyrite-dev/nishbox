@@ -168,9 +168,8 @@ gf_audio_id_t gf_audio_load_file(gf_audio_t* audio, const char* path) {
 }
 
 gf_audio_t* gf_audio_create(gf_engine_t* engine) {
-	gf_audio_t*   audio = malloc(sizeof(*audio));
-	int	      i;
-	gf_audio_id_t id;
+	gf_audio_t* audio = malloc(sizeof(*audio));
+	int	    i;
 
 	memset(audio, 0, sizeof(*audio));
 	audio->engine = engine;
@@ -219,9 +218,7 @@ gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 		audio->decoder[i].audio = audio;
 	}
 
-	gf_log_function(engine, "Audio interface started", "");
-
-	gf_audio_resume(audio, (id = gf_audio_load_file(audio, "test.xm")));
+	gf_log_function(engine, "Audio interface started, max %d decoders", GF_AUDIO_MAX_DECODERS);
 
 	return audio;
 }
@@ -274,3 +271,5 @@ void gf_audio_pause(gf_audio_t* audio, gf_audio_id_t id) {
 	if(audio->decoder[id].used != 0) audio->decoder[id].used = -1;
 	ma_mutex_unlock(audio->mutex);
 }
+
+void gf_audio_stop(gf_audio_t* audio, gf_audio_id_t id) { gf_audio_decoder_destroy(&audio->decoder[id]); }

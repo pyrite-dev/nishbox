@@ -76,4 +76,12 @@ GF_EXPORT void gf_audio_pause(gf_audio_t* audio, gf_audio_id_t id);
  */
 GF_EXPORT void gf_audio_resume(gf_audio_t* audio, gf_audio_id_t id);
 
+/**
+ * @~english
+ * @brief Stop audio
+ * @param audio Audio interface
+ * @param id Audio ID
+ */
+GF_EXPORT void gf_audio_stop(gf_audio_t* audio, gf_audio_id_t id);
+
 #endif
