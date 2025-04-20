@@ -46,9 +46,9 @@ GF_EXPORT void gf_audio_decoder_destroy(gf_audio_decoder_t* decoder);
  * @brief Load and play file
  * @param audio Audio interface
  * @param path Path
- * @return `0` if successful, otherwise `-1`
+ * @return ID if successful, otherwise `-1`
  */
-int gf_audio_load_file(gf_audio_t* audio, const char* path);
+GF_EXPORT gf_audio_id_t gf_audio_load_file(gf_audio_t* audio, const char* path);
 
 /**
  * @~english
@@ -56,8 +56,24 @@ int gf_audio_load_file(gf_audio_t* audio, const char* path);
  * @param audio Audio interface
  * @param data Data
  * @param size Data size
- * @return `0` if successful, otherwise `-1`
+ * @return ID if successful, otherwise `-1`
  */
-int gf_audio_load(gf_audio_t* audio, const void* data, size_t size);
+GF_EXPORT gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size);
+
+/**
+ * @~english
+ * @brief Pause audio
+ * @param audio Audio interface
+ * @param id Audio ID
+ */
+GF_EXPORT void gf_audio_pause(gf_audio_t* audio, gf_audio_id_t id);
+
+/**
+ * @~english
+ * @brief Resume audio
+ * @param audio Audio interface
+ * @param id Audio ID
+ */
+GF_EXPORT void gf_audio_resume(gf_audio_t* audio, gf_audio_id_t id);
 
 #endif

@@ -10,6 +10,8 @@
 #include <gf_pre.h>
 #include <gf_macro.h>
 
+typedef int gf_audio_id_t;
+
 #ifdef GF_EXPOSE_AUDIO
 typedef struct gf_audio_t	  gf_audio_t;
 typedef struct gf_audio_decoder_t gf_audio_decoder_t;
@@ -35,6 +37,9 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
  * @~english
  * @brief Audio decoder
  *
+ * @var gf_audio_decoder_t::audio
+ * @brief Audio interface
+ *
  * @var gf_audio_decoder_t::decoder_config
  * @brief miniaudio decoder config
  *
@@ -51,9 +56,10 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
  * @brief Remaining samples
  *
  * @var gf_audio_decoder_t::used
- * @brief `1` if used, otherwise `0`
+ * @brief `1` if used, `-1` if used but paused, otherwise `0`
  */
 GF_DECLARE_TYPE(audio_decoder, {
+	gf_audio_t*	   audio;
 	ma_decoder_config  decoder_config;
 	ma_decoder*	   decoder;
 	jar_xm_context_t*  xm;
@@ -78,12 +84,16 @@ GF_DECLARE_TYPE(audio_decoder, {
  *
  * @var gf_audio_t::decoder
  * @brief Decoder
+ *
+ * @var gf_audio_t::mutex
+ * @brief Mutex
  */
 GF_DECLARE_TYPE(audio, {
 	gf_engine_t*	   engine;
 	ma_device_config   device_config;
 	ma_device*	   device;
 	gf_audio_decoder_t decoder[GF_AUDIO_MAX_DECODERS];
+	ma_mutex*	   mutex;
 });
 #else
 typedef void gf_audio_decoder_t;
