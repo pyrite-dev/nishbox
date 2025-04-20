@@ -82,7 +82,7 @@ gf_gui_id_t button1 = -1;
 gf_gui_id_t button2 = -1;
 
 void gf_button_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
-	if(type == GF_GUI_PRESS) {
+	if(type == GF_GUI_PRESS_EVENT) {
 		gf_log_function(engine, "GUI component %d was pressed", id);
 	}
 }

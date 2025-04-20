@@ -21,7 +21,7 @@ typedef int gf_gui_id_t;
  * @brief GUI events
  */
 enum GF_GUI_EVENTS {
-	GF_GUI_PRESS = 0
+	GF_GUI_PRESS_EVENT = 0
 };
 
 #ifdef GF_EXPOSE_GUI

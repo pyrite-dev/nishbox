@@ -130,7 +130,7 @@ void gf_gui_render(gf_gui_t* gui) {
 	}
 	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
 		if(gui->area[gui->pressed].callback != NULL) {
-			gui->area[gui->pressed].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS);
+			gui->area[gui->pressed].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
 		}
 		gui->area[gui->pressed].pressed = 1;
 		gui->pressed			= -1;
