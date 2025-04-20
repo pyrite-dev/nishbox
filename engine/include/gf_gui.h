@@ -74,7 +74,7 @@ GF_EXPORT void gf_gui_render(gf_gui_t* gui);
  * @param id Component ID to be returned
  * @return Pointer to component
  */
-gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id);
+GF_EXPORT gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id);
 
 /**
  * @~english
@@ -87,5 +87,14 @@ gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id);
  * @param h Height of box
  */
 GF_EXPORT void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h);
+
+/**
+ * @~english
+ * @brief Set callback
+ * @param gui GUI
+ * @param id Component ID
+ * @param callback Callback
+ */
+GF_EXPORT void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callback_t callback);
 
 #endif

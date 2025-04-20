@@ -16,6 +16,14 @@
  */
 typedef int gf_gui_id_t;
 
+/**
+ * @~english
+ * @brief GUI events
+ */
+enum GF_GUI_EVENTS {
+	GF_GUI_PRESS = 0
+};
+
 #ifdef GF_EXPOSE_GUI
 typedef struct gf_gui_button_t gf_gui_button_t;
 
@@ -30,6 +38,8 @@ typedef union gf_gui_union_t	  gf_gui_union_t;
 #include <gf_type/core.h>
 
 /* Standard */
+
+typedef void (*gf_gui_callback_t)(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type);
 
 /**
  * @~english
@@ -89,20 +99,24 @@ typedef union gf_gui_union_t {
  * @var gf_gui_component_t::height
  * @brief Height of component
  *
- * @var gf_gui_component_t::u
- * @brief Component union
- *
  * @var gf_gui_component_t::pressed
  * @brief `1` if pressed, otherwise `0`
+ *
+ * @var gf_gui_component_t::callback
+ * @brief Event callback
+ *
+ * @var gf_gui_component_t::u
+ * @brief Component union
  */
 GF_DECLARE_TYPE(gui_component, {
-	int	       type;
-	double	       x;
-	double	       y;
-	double	       width;
-	double	       height;
-	int	       pressed;
-	gf_gui_union_t u;
+	int		  type;
+	double		  x;
+	double		  y;
+	double		  width;
+	double		  height;
+	int		  pressed;
+	gf_gui_callback_t callback;
+	gf_gui_union_t	  u;
 });
 
 /**
@@ -129,6 +143,8 @@ GF_DECLARE_TYPE(gui, {
 	gf_gui_component_t area[GF_GUI_MAX_COMPONENTS];
 });
 #else
+typedef void* gf_gui_callback_t;
+
 typedef void gf_gui_button_t;
 
 typedef void gf_gui_t;

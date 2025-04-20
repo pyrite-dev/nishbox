@@ -81,15 +81,23 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 gf_gui_id_t button1 = -1;
 gf_gui_id_t button2 = -1;
 
+void gf_button_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
+	if(type == GF_GUI_PRESS) {
+		gf_log_function(engine, "GUI component %d was pressed", id);
+	}
+}
+
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
 	color.r = color.g = color.b = color.a = 255;
 	if(button1 == -1) {
 		button1 = gf_gui_create_button(draw->gui, 0, 0, 200, 50, "\"Test\" text");
+		gf_gui_set_callback(draw->gui, button1, gf_button_callback);
 	}
 	if(button2 == -1) {
 		button2 = gf_gui_create_button(draw->gui, 100, 25, 200, 50, "\"Test\" text");
+		gf_gui_set_callback(draw->gui, button2, gf_button_callback);
 	}
 	if(draw->draw_3d) {
 		gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,

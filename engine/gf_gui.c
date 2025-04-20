@@ -84,7 +84,9 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, do
 	c->width  = w;
 	c->height = h;
 
-	c->pressed	 = 0;
+	c->pressed  = 0;
+	c->callback = NULL;
+
 	c->u.button.text = malloc(strlen(text) + 1);
 	strcpy(c->u.button.text, text);
 	return id;
@@ -127,8 +129,12 @@ void gf_gui_render(gf_gui_t* gui) {
 		}
 	}
 	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
-		gf_log_function(gui->engine, "GUI component %d was pressed", gui->pressed);
+		if(gui->area[gui->pressed].callback != NULL) {
+			gui->area[gui->pressed].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS);
+		}
 		gui->area[gui->pressed].pressed = 1;
 		gui->pressed			= -1;
 	}
 }
+
+void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callback_t callback) { gui->area[id].callback = callback; }
