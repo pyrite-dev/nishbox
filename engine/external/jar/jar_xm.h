@@ -871,6 +871,8 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	jar_xm_module_t* mod	= &(ctx->module);
 	gf_uint16_t	 i;
 	gf_uint16_t	 j;
+	gf_uint32_t header_size;
+	gf_uint16_t flags;
 
 	/* Read XM header */
 	READ_MEMCPY(mod->name, offset + 17, MODULE_NAME_LENGTH);
@@ -878,7 +880,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	offset += 60;
 
 	/* Read module header */
-	gf_uint32_t header_size = READ_U32(offset);
+	header_size = READ_U32(offset);
 
 	mod->length	      = READ_U16(offset + 4);
 	mod->restart_position = READ_U16(offset + 6);
@@ -892,7 +894,7 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	mod->instruments = (jar_xm_instrument_t*)mempool;
 	mempool += mod->num_instruments * sizeof(jar_xm_instrument_t);
 
-	gf_uint16_t flags   = READ_U32(offset + 14);
+	flags   = READ_U32(offset + 14);
 	mod->frequency_type = (flags & (1 << 0)) ? jar_xm_LINEAR_FREQUENCIES : jar_xm_AMIGA_FREQUENCIES;
 
 	ctx->tempo = READ_U16(offset + 16);
