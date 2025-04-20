@@ -1931,6 +1931,7 @@ static void jar_xm_key_off(jar_xm_channel_context_t* ch) {
 static void jar_xm_row(jar_xm_context_t* ctx) {
 	jar_xm_pattern_t* cur;
 	gf_bool_t in_a_loop;
+	gf_uint8_t i;
 	if(ctx->position_jump) {
 		ctx->current_table_index = ctx->jump_dest;
 		ctx->current_row	 = ctx->jump_row;
@@ -1950,7 +1951,7 @@ static void jar_xm_row(jar_xm_context_t* ctx) {
 	in_a_loop = gf_false;
 
 	/* Read notes… */
-	for(gf_uint8_t i = 0; i < ctx->module.num_channels; ++i) {
+	for(i = 0; i < ctx->module.num_channels; ++i) {
 		jar_xm_pattern_slot_t*	  s  = cur->slots + ctx->current_row * ctx->module.num_channels + i;
 		jar_xm_channel_context_t* ch = ctx->channels + i;
 
@@ -2395,6 +2396,8 @@ static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 }
 
 static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
+gf_uint8_t i;
+float fgvol;
 	if(ctx->remaining_samples_in_tick <= 0) {
 		jar_xm_tick(ctx);
 	}
@@ -2407,14 +2410,15 @@ static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
 		return;
 	}
 
-	for(gf_uint8_t i = 0; i < ctx->module.num_channels; ++i) {
+	for(i = 0; i < ctx->module.num_channels; ++i) {
 		jar_xm_channel_context_t* ch = ctx->channels + i;
+		float fval;
 
 		if(ch->instrument == NULL || ch->sample == NULL || ch->sample_position < 0) {
 			continue;
 		}
 
-		const float fval = jar_xm_next_of_sample(ch);
+		fval = jar_xm_next_of_sample(ch);
 
 		if(!ch->muted && !ch->instrument->muted) {
 			*left += fval * ch->actual_volume * (1.f - ch->actual_panning);
@@ -2428,7 +2432,7 @@ static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
 #endif
 	}
 
-	const float fgvol = ctx->global_volume * ctx->amplification;
+	fgvol = ctx->global_volume * ctx->amplification;
 	*left *= fgvol;
 	*right *= fgvol;
 
