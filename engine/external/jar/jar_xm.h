@@ -1927,6 +1927,8 @@ static void jar_xm_key_off(jar_xm_channel_context_t* ch) {
 }
 
 static void jar_xm_row(jar_xm_context_t* ctx) {
+	jar_xm_pattern_t* cur;
+	gf_bool_t in_a_loop;
 	if(ctx->position_jump) {
 		ctx->current_table_index = ctx->jump_dest;
 		ctx->current_row	 = ctx->jump_row;
@@ -1942,8 +1944,8 @@ static void jar_xm_row(jar_xm_context_t* ctx) {
 		jar_xm_post_pattern_change(ctx);
 	}
 
-	jar_xm_pattern_t* cur	    = ctx->module.patterns + ctx->module.pattern_table[ctx->current_table_index];
-	gf_bool_t	  in_a_loop = gf_false;
+	cur	    = ctx->module.patterns + ctx->module.pattern_table[ctx->current_table_index];
+	in_a_loop = gf_false;
 
 	/* Read notes… */
 	for(gf_uint8_t i = 0; i < ctx->module.num_channels; ++i) {
