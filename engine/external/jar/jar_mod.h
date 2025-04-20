@@ -1317,12 +1317,13 @@ void jar_mod_unload(jar_mod_context_t* modctx) {
 
 mulong jar_mod_load_file(jar_mod_context_t* modctx, const char* filename) {
 	mulong fsize = 0;
+	FILE* f;
 	if(modctx->modfile) {
 		JARMOD_FREE(modctx->modfile);
 		modctx->modfile = 0;
 	}
 
-	FILE* f = fopen(filename, "rb");
+	f = fopen(filename, "rb");
 	if(f) {
 		fseek(f, 0, SEEK_END);
 		fsize = ftell(f);
