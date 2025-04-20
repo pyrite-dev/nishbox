@@ -2445,8 +2445,9 @@ float fgvol;
 
 void jar_xm_generate_samples(jar_xm_context_t* ctx, float* output, size_t numsamples) {
 	if(ctx && output) {
+		size_t i;
 		ctx->generated_samples += numsamples;
-		for(size_t i = 0; i < numsamples; i++) {
+		for(i = 0; i < numsamples; i++) {
 			jar_xm_sample(ctx, output + (2 * i), output + (2 * i + 1));
 		}
 	}
@@ -2501,6 +2502,7 @@ gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
 int jar_xm_create_context_from_file(jar_xm_context_t** ctx, gf_uint32_t rate, const char* filename) {
 	FILE* xmf;
 	int   size;
+	char* data;
 
 	xmf = fopen(filename, "rb");
 	if(xmf == NULL) {
@@ -2519,7 +2521,7 @@ int jar_xm_create_context_from_file(jar_xm_context_t** ctx, gf_uint32_t rate, co
 		return 4;
 	}
 
-	char* data = malloc(size + 1);
+	data = malloc(size + 1);
 	if(fread(data, 1, size, xmf) < size) {
 		fclose(xmf);
 		JX_DEBUG_ERR("fread() failed");
