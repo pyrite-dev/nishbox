@@ -727,7 +727,7 @@ gf_uint64_t jar_xm_get_latest_trigger_of_channel(jar_xm_context_t* ctx, gf_uint1
 #define READ_U32(offset) ((gf_uint32_t)READ_U16(offset) | ((gf_uint32_t)READ_U16((offset) + 2) << 16))
 #define READ_MEMCPY(ptr, offset, length) memcpy_pad(ptr, length, moddata, moddata_length, offset)
 
-static inline void memcpy_pad(void* dst, size_t dst_len, const void* src, size_t src_len, size_t offset) {
+static void memcpy_pad(void* dst, size_t dst_len, const void* src, size_t src_len, size_t offset) {
 	gf_uint8_t*	  dst_c = dst;
 	const gf_uint8_t* src_c = src;
 
