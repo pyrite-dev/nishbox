@@ -2042,11 +2042,12 @@ static void jar_xm_envelopes(jar_xm_channel_context_t* ch) {
 }
 
 static void jar_xm_tick(jar_xm_context_t* ctx) {
+	gf_uint8_t i;
 	if(ctx->current_tick == 0) {
 		jar_xm_row(ctx);
 	}
 
-	for(gf_uint8_t i = 0; i < ctx->module.num_channels; ++i) {
+	for(i = 0; i < ctx->module.num_channels; ++i) {
 		jar_xm_channel_context_t* ch = ctx->channels + i;
 
 		jar_xm_envelopes(ch);
