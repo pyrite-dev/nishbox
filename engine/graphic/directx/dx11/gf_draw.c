@@ -52,9 +52,11 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 	case WM_LBUTTONUP:
 		if(draw->input != NULL) {
 			if(msg == WM_LBUTTONDOWN) {
+				SetCapture(hWnd);
 				draw->input->mouse_flag |= GF_INPUT_MOUSE_LEFT_MASK;
 			} else {
 				draw->input->mouse_flag ^= GF_INPUT_MOUSE_LEFT_MASK;
+				ReleaseCapture();
 			}
 		}
 		break;
@@ -62,9 +64,11 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 	case WM_MBUTTONUP:
 		if(draw->input != NULL) {
 			if(msg == WM_MBUTTONDOWN) {
+				SetCapture(hWnd);
 				draw->input->mouse_flag |= GF_INPUT_MOUSE_MIDDLE_MASK;
 			} else {
 				draw->input->mouse_flag ^= GF_INPUT_MOUSE_MIDDLE_MASK;
+				ReleaseCapture();
 			}
 		}
 		break;
@@ -72,9 +76,11 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 	case WM_RBUTTONUP:
 		if(draw->input != NULL) {
 			if(msg == WM_RBUTTONDOWN) {
+				SetCapture(hWnd);
 				draw->input->mouse_flag |= GF_INPUT_MOUSE_RIGHT_MASK;
 			} else {
 				draw->input->mouse_flag ^= GF_INPUT_MOUSE_RIGHT_MASK;
+				ReleaseCapture();
 			}
 		}
 		break;
