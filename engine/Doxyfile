@@ -7,8 +7,7 @@ EXTRACT_ALL = NO
 RECURSIVE = YES
 
 FILE_PATTERNS = *.c *.h
-INPUT = . include graphic README.md
-EXCLUDE_PATTERNS = external
+INPUT = src include graphic README.md
 
 SOURCE_BROWSER = YES
 HTML_DYNAMIC_MENUS = YES
@@ -16,7 +15,7 @@ GENERATE_TREEVIEW = YES
 FULL_SIDEBAR = NO
 DISABLE_INDEX = NO
 HAVE_DOT = NO
-PROJECT_LOGO = "goldfish.png"
+PROJECT_LOGO = "images/goldfish.png"
 PROJECT_BRIEF = "Quite simple and lightweight game engine"
 GENERATE_MAN = NO
 USE_MDFILE_AS_MAINPAGE = "README.md"

@@ -8,7 +8,6 @@
 #endif
 
 GAME ICON "./internal/icon.ico"
-GOLDFISH_BMP BITMAP "./internal/goldfish.bmp"
 
 VS_VERSION_INFO VERSIONINFO
         FILEVERSION 0,0,0,0
