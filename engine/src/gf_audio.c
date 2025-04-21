@@ -34,7 +34,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 	}
 
 	ma_mutex_lock(audio->mutex);
-	for(i = 0; i < hmlen(audio->decoder); i++) {
+	for(i = 0; i < (ma_uint32)hmlen(audio->decoder); i++) {
 		if(audio->decoder[i].used == 1 && audio->decoder[i].decoder != NULL) {
 			ma_uint64 readframe;
 			int	  j;
