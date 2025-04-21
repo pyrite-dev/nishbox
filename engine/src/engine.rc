@@ -1,22 +1,5 @@
 #include <windows.h>
 
-VS_VERSION_INFO VERSIONINFO
-        FILEVERSION 0,0,0,0
-BEGIN
-        BLOCK "StringFileInfo"
-        BEGIN
-                BLOCK "040904E4"
-                BEGIN
-                        VALUE "CompanyName", "GoldFish contributors\0"
-                        VALUE "FileDescription", "GoldFish Engine\0"
-                        VALUE "LegalCopyright", "3-clause BSD, original by GoldFish contributors\0"
-                        VALUE "FileVersion", "0.0.0.0\0"
-                        VALUE "ProductName", "GoldFish Engine\0"
-                END
-        END
+#define FILE_DESCRIPTION "GoldFish Engine"
 
-        BLOCK "VarFileInfo"
-        BEGIN
-                VALUE "Translation", 0x409, 65001
-        END
-END
+#include "../common.rc"

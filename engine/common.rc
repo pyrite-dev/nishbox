@@ -1,14 +1,3 @@
-#include <windows.h>
-
-#ifdef FD_NISHBOX
-#define FILE_DESCRIPTION "NishBox\0"
-#endif
-#ifdef FD_SERVER
-#define FILE_DESCRIPTION "NishBox Dedicated Server\0"
-#endif
-
-GAME ICON "./internal/icon.ico"
-
 VS_VERSION_INFO VERSIONINFO
         FILEVERSION 0,0,0,0
 BEGIN
@@ -16,11 +5,11 @@ BEGIN
         BEGIN
                 BLOCK "040904E4"
                 BEGIN
-                        VALUE "CompanyName", "NishBox contributors\0"
+                        VALUE "CompanyName", "GoldFish contributors\0"
                         VALUE "FileDescription", FILE_DESCRIPTION
                         VALUE "LegalCopyright", "3-clause BSD\0"
                         VALUE "FileVersion", "0.0.0.0\0"
-                        VALUE "ProductName", "NishBox Component\0"
+                        VALUE "ProductName", "GoldFish Engine\0"
                 END
         END
 

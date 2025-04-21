@@ -1,3 +1,31 @@
+project("Pack")
+	kind("ConsoleApp")
+	filter({})
+	language("C")
+	targetdir("../bin/%{cfg.buildcfg}/%{cfg.platform}")
+	objdir("../obj")
+	targetname("pack")
+	files({
+		"pack/*.c"
+	})
+	-- Call this if you are gonna use my engine...
+	gf_link_stuffs("options:engine=static")
+	filter("system:windows")
+		files({
+			"pack/*.rc"
+		})
+	filter("configurations:Debug")
+		defines({
+			"DEBUG"
+		})
+		symbols("On")
+	filter("configurations:Release")
+		defines({
+			"NDEBUG"
+		})
+		optimize("On")
+	gf_msvc_filters()
+
 project("EngineInfo")
 	filter("system:windows")
 		kind("WindowedApp")

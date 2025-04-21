@@ -1,0 +1,7 @@
+#include <windows.h>
+
+#define FILE_DESCRIPTION "GoldFish Engine Resource Packer"
+
+GAME ICON "../images/goldfish.ico"
+
+#include "../../common.rc"
