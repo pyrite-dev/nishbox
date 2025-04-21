@@ -157,7 +157,8 @@ int main(int argc, char** argv) {
 	gf_version_t   version;
 	gf_resource_t* resource;
 	int	       i;
-	int	       st = 0;
+	int	       st    = 0;
+	char**	       start = NULL;
 
 	gf_log_default = NULL;
 
@@ -172,7 +173,12 @@ int main(int argc, char** argv) {
 				return 1;
 			}
 		} else {
-			out = argv[i];
+			if(out != NULL) {
+				start = &argv[i];
+				break;
+			} else {
+				out = argv[i];
+			}
 		}
 	}
 
@@ -183,8 +189,23 @@ int main(int argc, char** argv) {
 
 	resource = gf_resource_create(NULL, NULL);
 	if(resource != NULL) {
-		if(add_all(resource, "") != 0) {
-			st = 1;
+		if(start == NULL) {
+			if(add_all(resource, "") != 0) {
+				st = 1;
+			}
+		} else {
+			for(i = 0; start[i] != NULL; i++) {
+				char* cp = malloc(strlen(start[i]) + 1 + 1);
+				cp[0]	 = 0;
+				strcat(cp, start[i]);
+				strcat(cp, "/");
+				if(add_all(resource, cp) != 0) {
+					free(cp);
+					st = 1;
+					break;
+				}
+				free(cp);
+			}
 		}
 		printf("Found %d files\n", count);
 		gf_resource_write(resource, out, 1);
