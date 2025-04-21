@@ -32,6 +32,9 @@ newaction({
 		os.rmdir("engine/bin")
 		os.rmdir("engine/obj")
 		os.rmdir("engine/lib")
+		os.rmdir("engine/util/bin")
+		os.rmdir("engine/util/obj")
+		os.rmdir("engine/util/lib")
 	end
 })
 
@@ -77,56 +80,6 @@ function msvc_filters()
 end
 
 include "engine"
-
-project("EngineInfo")
-	filter("system:windows")
-		kind("WindowedApp")
-	filter("system:not windows")
-		kind("ConsoleApp")
-	filter({})
-	language("C")
-	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
-	targetname("nishbox_engineinfo")
-	includedirs({
-		"engine/include"
-	})
-	files({
-		"src/engineinfo/*.c"
-	})
-	removefiles({
-		"src/engineinfo/main_windows.c"
-	})
-	filter("system:windows")
-		removefiles({
-			"src/engineinfo/main_console.c"
-		})
-		files({
-			"src/engineinfo/main_windows.c"
-		})
-	filter({})
-	links({
-		"GoldFish"
-	})
-	-- Call this if you are gonna use my engine...
-	gf_link_stuffs("options:engine=static")
-	filter("system:windows")
-		defines({
-			"FD_ENGINEINFO"
-		})
-		files({
-			"src/*.rc"
-		})
-	filter("configurations:Debug")
-		defines({
-			"DEBUG"
-		})
-		symbols("On")
-	filter("configurations:Release")
-		defines({
-			"NDEBUG"
-		})
-		optimize("On")
-	msvc_filters()
 
 project("NishBoxServer")
 	kind("ConsoleApp")

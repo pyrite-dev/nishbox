@@ -16,4 +16,6 @@ Makefile
 /build
 /engine/obj
 /engine/lib
+/engine/util/obj
+/engine/util/bin
 /engine/doc

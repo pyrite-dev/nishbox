@@ -1,0 +1,46 @@
+project("EngineInfo")
+	filter("system:windows")
+		kind("WindowedApp")
+	filter("system:not windows")
+		kind("ConsoleApp")
+	filter({})
+	language("C")
+	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
+	targetname("engineinfo")
+	includedirs({
+		"../include"
+	})
+	files({
+		"engineinfo/*.c"
+	})
+	removefiles({
+		"engineinfo/main_windows.c"
+	})
+	filter("system:windows")
+		removefiles({
+			"engineinfo/main_console.c"
+		})
+		files({
+			"engineinfo/main_windows.c"
+		})
+	filter({})
+	links({
+		"GoldFish"
+	})
+	-- Call this if you are gonna use my engine...
+	gf_link_stuffs("options:engine=static")
+	filter("system:windows")
+		files({
+			"engineinfo/*.rc"
+		})
+	filter("configurations:Debug")
+		defines({
+			"DEBUG"
+		})
+		symbols("On")
+	filter("configurations:Release")
+		defines({
+			"NDEBUG"
+		})
+		optimize("On")
+	gf_msvc_filters()

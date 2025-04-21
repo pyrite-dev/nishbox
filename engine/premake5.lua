@@ -253,6 +253,8 @@ function gf_msvc_filters()
 	filter({})
 end
 
+include("util")
+
 project("GoldFish")
 	filter("options:engine=static")
 		kind("StaticLib")
