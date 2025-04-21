@@ -46,7 +46,8 @@ typedef void (*gf_gui_callback_t)(gf_engine_t* engine, gf_draw_t* draw, gf_gui_i
  * @brief GUI component types
  */
 enum GF_GUI_COMPONENT_TYPES {
-	GF_GUI_BUTTON = 0
+	GF_GUI_BUTTON = 0,
+	GF_GUI_WINDOW
 };
 
 /**
@@ -60,15 +61,29 @@ enum GF_GUI_COMPONENT_TYPES {
 GF_DECLARE_TYPE(gui_button, { char* text; });
 
 /**
+ * @struct gf_gui_window_t
+ * @~english
+ * @brief Window component
+ *
+ * @var gf_gui_window_t::title
+ * @brief Window title
+ */
+GF_DECLARE_TYPE(gui_window, { char* title; });
+
+/**
  * @union gf_gui_union_t
  * @~english
  * @brief Component union
  *
  * @var gf_gui_union_t::button
  * @brief Button component
+ *
+ * @var gf_gui_union_t::window
+ * @brief Window component
  */
 typedef union gf_gui_union_t {
 	gf_gui_button_t button;
+	gf_gui_window_t window;
 } gf_gui_union_t;
 
 /**
@@ -147,6 +162,7 @@ GF_DECLARE_TYPE(gui, {
 typedef void* gf_gui_callback_t;
 
 typedef void gf_gui_button_t;
+typedef void gf_gui_window_t;
 
 typedef void gf_gui_t;
 typedef void gf_gui_component_t;

@@ -73,34 +73,16 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 
 int made = 0;
 
-void gf_button_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
-	if(type == GF_GUI_PRESS_EVENT) {
-		gf_log_function(engine, "GUI component %d was pressed", id);
-	}
-}
-
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
 	color.r = color.g = color.b = color.a = 255;
 	if(made == 0) {
-		int i;
-		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
+		gf_gui_id_t window;
 		made = 1;
-		for(i = 0; i < 5; i++) {
-			double	    p = 50;
-			double	    s = 300 - i * p;
-			gf_gui_id_t id;
+		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 
-			if(i > 0) {
-				p = (s + p) / 2 - (s / 2);
-			}
-
-			id = gf_gui_create_button(draw->gui, p, p, s, s, "test");
-			if(i > 0) {
-				gf_gui_set_parent(draw->gui, id, id - 1);
-			}
-		}
+		window = gf_gui_create_window(draw->gui, 50, 50, draw->width - 100, draw->height - 100, "Test Window");
 	}
 	if(draw->draw_3d) {
 	}

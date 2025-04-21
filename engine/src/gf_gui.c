@@ -33,7 +33,7 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 	gui->pressed = -1;
 
-	GF_SET_COLOR(gf_gui_base_color, 48, 96, 48, 255);
+	GF_SET_COLOR(gf_gui_base_color, 64, 80, 64, 255);
 	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);
 
 	return gui;
@@ -51,6 +51,7 @@ void gf_gui_destroy(gf_gui_t* gui) {
 }
 
 void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
+	int		    i;
 	int		    ind = hmgeti(gui->area, id);
 	gf_gui_component_t* c;
 	if(ind == -1) return;
@@ -61,6 +62,15 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 		if(c->u.button.text != NULL) free(c->u.button.text);
 		c->u.button.text = NULL;
 	}
+	case GF_GUI_WINDOW: {
+		if(c->u.window.title != NULL) free(c->u.window.title);
+		c->u.window.title = NULL;
+	}
+	}
+	for(i = 0; i < hmlen(gui->area); i++) {
+		if(gui->area[i].parent == id) {
+			gf_gui_destroy_id(gui, gui->area[i].key);
+		}
 	}
 	hmdel(gui->area, id);
 }
@@ -118,6 +128,25 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, do
 	strcpy(c.u.button.text, text);
 
 	hmputs(gui->area, c);
+
+	return c.key;
+}
+
+gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, double h, const char* title) {
+	gf_gui_component_t c;
+	gf_gui_id_t	   close_button;
+
+	gf_gui_create_component(gui, &c, x, y, w, h);
+
+	c.type		 = GF_GUI_WINDOW;
+	c.u.window.title = malloc(strlen(title) + 1);
+	strcpy(c.u.window.title, title);
+
+	hmputs(gui->area, c);
+
+	close_button = gf_gui_create_button(gui, -5 - GF_GUI_SMALL_FONT_SIZE, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE, "X");
+
+	gf_gui_set_parent(gui, close_button, c.key);
 
 	return c.key;
 }
@@ -200,14 +229,19 @@ void gf_gui_render(gf_gui_t* gui) {
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 		switch(c->type) {
 		case GF_GUI_BUTTON: {
-			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_FONT_SIZE, c->u.button.text) / 2;
-			double y = cy + ch / 2 - GF_GUI_FONT_SIZE / 2;
+			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_SMALL_FONT_SIZE, c->u.button.text) / 2;
+			double y = cy + ch / 2 - GF_GUI_SMALL_FONT_SIZE / 2;
 			if(gui->pressed == c->key) {
-				x += gf_gui_border_width / 1;
-				y += gf_gui_border_width / 1;
+				x += gf_gui_border_width / 2;
+				y += gf_gui_border_width / 2;
 			}
 			gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
-			gf_graphic_text(gui->draw, x, y, GF_GUI_FONT_SIZE, c->u.button.text, gf_gui_font_color);
+			gf_graphic_text(gui->draw, x, y, GF_GUI_SMALL_FONT_SIZE, c->u.button.text, gf_gui_font_color);
+			break;
+		}
+		case GF_GUI_WINDOW: {
+			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
+			gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->u.window.title, gf_gui_font_color);
 			break;
 		}
 		}

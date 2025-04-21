@@ -39,6 +39,12 @@
 
 /**
  * @~english
+ * @brief Default GUI small font size
+ */
+#define GF_GUI_SMALL_FONT_SIZE 20
+
+/**
+ * @~english
  * @brief Create GUI
  * @param engine Engine instance
  * @param draw Drawing interface
@@ -76,19 +82,23 @@ GF_EXPORT gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, do
 
 /**
  * @~english
+ * @brief Create window component
+ * @param gui GUI
+ * @param x X coord of window
+ * @param y Y coord of window
+ * @param w Width of window
+ * @param h Height of window
+ * @param title Window title
+ * @return Component ID
+ */
+GF_EXPORT gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, double h, const char* title);
+
+/**
+ * @~english
  * @brief Render GUI
  * @param gui GUI
  */
 GF_EXPORT void gf_gui_render(gf_gui_t* gui);
-
-/**
- * @~english
- * @brief Get first unused component entry
- * @param gui GUI
- * @param id Component ID to be returned
- * @return Pointer to component
- */
-GF_EXPORT gf_gui_component_t* gf_gui_first_unused(gf_gui_t* gui, gf_gui_id_t* id);
 
 /**
  * @~english
