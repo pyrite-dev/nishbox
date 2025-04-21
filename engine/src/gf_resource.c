@@ -23,6 +23,10 @@
 
 #pragma pack(1)
 
+/**
+ * @brief tar header
+ * @warning Used internally, never exported
+ */
 struct tar_header {
 	char filename[100];
 	char mode[8];
