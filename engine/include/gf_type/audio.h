@@ -27,18 +27,15 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
 /* Standard */
 
 /**
- * @~english
- * @brief Max decoders audio interface can handle
- */
-#define GF_AUDIO_MAX_DECODERS 64
-
-/**
  * @struct gf_audio_decoder_t
  * @~english
  * @brief Audio decoder
  *
  * @var gf_audio_decoder_t::audio
  * @brief Audio interface
+ *
+ * @var gf_audio_decoder_t::key
+ * @brief Decoder ID
  *
  * @var gf_audio_decoder_t::decoder_config
  * @brief miniaudio decoder config
@@ -59,6 +56,7 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
  * @brief `1` if used, `-1` if used but paused, otherwise `0`
  */
 GF_DECLARE_TYPE(audio_decoder, {
+	gf_audio_id_t	   key;
 	gf_audio_t*	   audio;
 	ma_decoder_config  decoder_config;
 	ma_decoder*	   decoder;
@@ -89,11 +87,11 @@ GF_DECLARE_TYPE(audio_decoder, {
  * @brief Mutex
  */
 GF_DECLARE_TYPE(audio, {
-	gf_engine_t*	   engine;
-	ma_device_config   device_config;
-	ma_device*	   device;
-	gf_audio_decoder_t decoder[GF_AUDIO_MAX_DECODERS];
-	ma_mutex*	   mutex;
+	gf_engine_t*	    engine;
+	ma_device_config    device_config;
+	ma_device*	    device;
+	gf_audio_decoder_t* decoder;
+	ma_mutex*	    mutex;
 });
 #else
 typedef void gf_audio_decoder_t;

@@ -40,11 +40,11 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 }
 
 void gf_gui_destroy(gf_gui_t* gui) {
-	int i;
 	if(gui->area != NULL) {
-		for(i = 0; i < hmlen(gui->area); i++) {
-			gf_gui_destroy_id(gui, gui->area[i].key);
+		while(hmlen(gui->area) > 0) {
+			gf_gui_destroy_id(gui, gui->area[0].key);
 		}
+		hmfree(gui->area);
 	}
 	gf_log_function(gui->engine, "Destroyed GUI", "");
 	free(gui);
@@ -53,16 +53,16 @@ void gf_gui_destroy(gf_gui_t* gui) {
 void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	int		    ind = hmgeti(gui->area, id);
 	gf_gui_component_t* c;
-	if(ind != -1) {
-		c = &gui->area[ind];
-		switch(c->type) {
-		case GF_GUI_BUTTON: {
-			if(c->u.button.text != NULL) free(c->u.button.text);
-			c->u.button.text = NULL;
-		}
-		}
-		hmdel(gui->area, id);
+	if(ind == -1) return;
+
+	c = &gui->area[ind];
+	switch(c->type) {
+	case GF_GUI_BUTTON: {
+		if(c->u.button.text != NULL) free(c->u.button.text);
+		c->u.button.text = NULL;
 	}
+	}
+	hmdel(gui->area, id);
 }
 
 /* note... left top should be the lightest in the border */
@@ -90,11 +90,15 @@ void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, doubl
 }
 
 void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, double y, double w, double h) {
-	if(gui->area == NULL) {
-		c->key = 0;
-	} else {
-		c->key = hmlen(gui->area);
-	}
+	int ind;
+
+	c->key = 0;
+	do {
+		ind = hmgeti(gui->area, c->key);
+		if(ind != -1) {
+			c->key++;
+		}
+	} while(ind != -1);
 	c->x	    = x;
 	c->y	    = y;
 	c->width    = w;
@@ -223,14 +227,14 @@ void gf_gui_render(gf_gui_t* gui) {
 
 void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callback_t callback) {
 	int ind = hmgeti(gui->area, id);
-	if(ind != -1) {
-		gui->area[ind].callback = callback;
-	}
+	if(ind == -1) return;
+
+	gui->area[ind].callback = callback;
 }
 
 void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent) {
 	int ind = hmgeti(gui->area, id);
-	if(ind != -1) {
-		gui->area[ind].parent = parent;
-	}
+	if(ind == -1) return;
+
+	gui->area[ind].parent = parent;
 }
