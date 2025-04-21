@@ -23,7 +23,7 @@
  * @~english
  * @brief Create resource
  * @param engine Engine instance
- * @param path Path
+ * @param path Path, use `NULL` to create empty resource
  * @return Resource
  */
 GF_EXPORT gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path);
@@ -45,5 +45,24 @@ GF_EXPORT void gf_resource_destroy(gf_resource_t* resource);
  * @return `0` if successful, otherwise `-1`
  */
 GF_EXPORT int gf_resource_get(gf_resource_t* resource, const char* name, void** data, size_t* size);
+
+/**
+ * @~english
+ * @brief Add data to resource
+ * @param resource Resource
+ * @param name Entry name
+ * @param data Data
+ * @param size Data size
+ * @param dir `0` if file, otherwise if directory
+ */
+GF_EXPORT void gf_resource_add(gf_resource_t* resource, const char* name, void* data, size_t size, int dir);
+
+/**
+ * @~english
+ * @brief Write resource to file
+ * @param resource Resource
+ * @param path Path
+ */
+GF_EXPORT void gf_resource_write(gf_resource_t* resource, const char* path);
 
 #endif

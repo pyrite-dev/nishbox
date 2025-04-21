@@ -57,11 +57,15 @@ GF_DECLARE_TYPE(resource_entry, {
  *
  * @var gf_resource_t::data
  * @brief Data
+ *
+ * @var gf_resource_t::size
+ * @brief Data size
  */
 GF_DECLARE_TYPE(resource, {
 	gf_engine_t*	     engine;
 	gf_resource_entry_t* entries;
 	unsigned char*	     data;
+	unsigned int	     size;
 });
 #else
 typedef void gf_resource_entry_t;

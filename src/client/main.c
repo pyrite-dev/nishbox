@@ -1,8 +1,5 @@
-#define GF_EXPOSE_DRAW
-
 /* Engine */
 #include <gf_core.h>
-#include <gf_gui.h>
 #include <gf_version.h>
 
 /* External library */

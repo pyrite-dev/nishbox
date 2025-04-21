@@ -17,6 +17,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+
+#define CHUNK 32767
 
 #pragma pack(1)
 
@@ -51,6 +54,21 @@ unsigned int tar_getsize(const char* input) {
 	return r;
 }
 
+void* gf_resource_allocate(gf_resource_t* resource, size_t size) {
+	unsigned int base = resource->size;
+	if(resource->data == NULL) {
+		resource->data = malloc(size);
+	} else {
+		unsigned char* old = resource->data;
+		resource->data	   = malloc(base + size);
+		memcpy(resource->data, old, base);
+		free(old);
+	}
+	resource->size += size;
+	memset(resource->data + base, 0, size);
+	return resource->data + base;
+}
+
 gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
 	struct tar_header* th;
 	int		   i;
@@ -66,6 +84,7 @@ gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
 	resource->engine  = engine;
 	resource->entries = NULL;
 	resource->data	  = NULL;
+	resource->size	  = 0;
 	sh_new_strdup(resource->entries);
 
 	if(path == NULL) {
@@ -99,8 +118,8 @@ gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
 	gf_log_function(engine, "Created resource", "");
 
 	do {
-		unsigned char in[32767];
-		unsigned char out[32767];
+		unsigned char in[CHUNK];
+		unsigned char out[CHUNK];
 		stream.avail_in = fread(in, 1, sizeof(in), f);
 		if(stream.avail_in == 0) break;
 		stream.next_in = in;
@@ -117,16 +136,7 @@ gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
 				return NULL;
 			}
 			have = sizeof(out) - stream.avail_out;
-			if(resource->data == NULL) {
-				resource->data = malloc(have);
-				memcpy(resource->data, out, have);
-			} else {
-				unsigned char* old = resource->data;
-				resource->data	   = malloc(cursize + have);
-				memcpy(resource->data, old, cursize);
-				memcpy(resource->data + cursize, out, have);
-				free(old);
-			}
+			memcpy(gf_resource_allocate(resource, have), out, have);
 			cursize += have;
 		} while(stream.avail_out == 0);
 	} while(ret != Z_STREAM_END);
@@ -175,6 +185,112 @@ int gf_resource_get(gf_resource_t* resource, const char* name, void** data, size
 		return 0;
 	}
 	return -1;
+}
+
+void gf_resource_add(gf_resource_t* resource, const char* name, void* data, size_t size, int dir) {
+	gf_resource_entry_t e;
+	struct tar_header*  th;
+	unsigned char*	    d;
+	size_t		    t;
+	int		    i;
+
+	d  = gf_resource_allocate(resource, 512);
+	th = (struct tar_header*)&d[0];
+
+	strcpy(th->filename, name);
+	strcpy(th->ustar, "ustar");
+	memcpy(th->ustarv, "00", 2);
+	strcpy(th->mode, dir ? "0000755" : "0000644");
+	th->typeflag[0] = dir ? '5' : '0';
+
+	t = size;
+	for(i = 10; i >= 0; i--) {
+		th->size[i] = '0' + (t % 8);
+		t /= 8;
+	}
+
+	t = time(NULL);
+	for(i = 10; i >= 0; i--) {
+		th->mtime[i] = '0' + (t % 8);
+		t /= 8;
+	}
+
+	t = ' ' * sizeof(th->chksum);
+	for(i = 0; i < sizeof(struct tar_header); i++) {
+		t += d[i];
+	}
+	for(i = 6; i >= 0; i--) {
+		th->chksum[i] = '0' + (t % 8);
+		t /= 8;
+	}
+
+	e.key	  = (char*)name;
+	e.address = resource->size;
+	e.size	  = size;
+	shputs(resource->entries, e);
+
+	if(size != 0) {
+		d = gf_resource_allocate(resource, ((size / 512) + 1) * 512);
+		memcpy(d, data, size);
+	}
+}
+
+void gf_resource_write(gf_resource_t* resource, const char* path) {
+	unsigned char out[CHUNK];
+	z_stream      stream;
+	int	      i;
+	FILE*	      f;
+	stream.zalloc	= Z_NULL;
+	stream.zfree	= Z_NULL;
+	stream.opaque	= Z_NULL;
+	stream.avail_in = 0;
+	stream.next_in	= Z_NULL;
+
+	if(deflateInit(&stream, Z_DEFAULT_COMPRESSION) != Z_OK) {
+		return;
+	}
+
+	f = fopen(path, "wb");
+	if(f != NULL) {
+		unsigned char* in;
+		for(i = 0; i < shlen(resource->entries); i++) {
+			int	     flush = Z_NO_FLUSH;
+			unsigned int sz	   = resource->entries[i].size == 0 ? 0 : (((resource->entries[i].size / 512) + 1) * 512);
+			in		   = malloc(512 + sz);
+			memcpy(in, resource->data + resource->entries[i].address - 512, 512 + sz);
+			stream.avail_in = 512 + sz;
+			stream.next_in	= in;
+
+			do {
+				unsigned int have;
+				stream.avail_out = CHUNK;
+				stream.next_out	 = out;
+				deflate(&stream, flush);
+				have = CHUNK - stream.avail_out;
+				fwrite(out, have, 1, f);
+			} while(stream.avail_out == 0);
+
+			free(in);
+		}
+
+		in = malloc(512);
+		memset(in, 0, 512);
+		stream.avail_in = 512;
+		stream.next_in	= in;
+
+		do {
+			unsigned int have;
+			stream.avail_out = CHUNK;
+			stream.next_out	 = out;
+			deflate(&stream, Z_FINISH);
+			have = CHUNK - stream.avail_out;
+			fwrite(out, have, 1, f);
+		} while(stream.avail_out == 0);
+
+		free(in);
+		fclose(f);
+	}
+	deflateEnd(&stream);
 }
 
 void gf_resource_destroy(gf_resource_t* resource) {

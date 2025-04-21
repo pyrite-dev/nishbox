@@ -57,17 +57,32 @@ int add_all(gf_resource_t* resource, char* path) {
 			strcat(np, path);
 			strcat(np, d->d_name);
 
-			printf("%s\n", np);
-
 			gf_stat(p, &s);
 
 			if(S_ISDIR(s.st_mode)) {
 				strcat(np, "/");
+				gf_resource_add(resource, np, NULL, 0, 1);
 				if((st = add_all(resource, np)) != 0) {
 					free(np);
 					break;
 				}
 			} else {
+				FILE* f = fopen(p, "rb");
+				if(f != NULL) {
+					unsigned int   sz;
+					unsigned char* data;
+					fseek(f, 0, SEEK_END);
+					sz = ftell(f);
+					fseek(f, 0, SEEK_SET);
+
+					data = malloc(sz);
+					fread(data, sz, 1, f);
+					fclose(f);
+
+					gf_resource_add(resource, np, data, sz, 0);
+
+					free(data);
+				}
 			}
 			free(np);
 
@@ -111,6 +126,7 @@ int main(int argc, char** argv) {
 		if(add_all(resource, "") != 0) {
 			st = 1;
 		}
+		gf_resource_write(resource, out);
 		gf_resource_destroy(resource);
 	}
 	return st;
