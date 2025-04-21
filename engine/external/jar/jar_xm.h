@@ -259,6 +259,7 @@ gf_uint64_t jar_xm_get_latest_trigger_of_channel(jar_xm_context_t*, gf_uint16_t)
 gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t*);
 
 void jar_xm_reset(jar_xm_context_t* ctx);
+int  jar_xm_get_last(jar_xm_context_t* ctx);
 
 #ifdef __cplusplus
 }
@@ -490,6 +491,8 @@ struct jar_xm_context_s {
 	jar_xm_module_t module;
 	gf_uint32_t	rate;
 
+	int last;
+
 	gf_uint16_t default_tempo;
 	gf_uint16_t default_bpm;
 	float	    default_global_volume;
@@ -676,6 +679,8 @@ void jar_xm_free_context(jar_xm_context_t* context) { free(context->allocated_me
 void jar_xm_set_max_loop_count(jar_xm_context_t* context, gf_uint8_t loopcnt) { context->max_loop_count = loopcnt; }
 
 gf_uint8_t jar_xm_get_loop_count(jar_xm_context_t* context) { return context->loop_count; }
+
+int jar_xm_get_last(jar_xm_context_t* ctx) { return ctx->last; }
 
 gf_bool_t jar_xm_mute_channel(jar_xm_context_t* ctx, gf_uint16_t channel, gf_bool_t mute) {
 	gf_bool_t old			 = ctx->channels[channel - 1].muted;
@@ -1167,7 +1172,7 @@ static void jar_xm_row(jar_xm_context_t*);
 static void jar_xm_tick(jar_xm_context_t*);
 
 static float jar_xm_next_of_sample(jar_xm_channel_context_t*);
-static void  jar_xm_sample(jar_xm_context_t*, float*, float*);
+static void  jar_xm_sample(jar_xm_context_t*, size_t, float*, float*);
 
 /* ----- Other oddities ----- */
 
@@ -2407,7 +2412,7 @@ static float jar_xm_next_of_sample(jar_xm_channel_context_t* ch) {
 	return endval;
 }
 
-static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
+static void jar_xm_sample(jar_xm_context_t* ctx, size_t snum, float* left, float* right) {
 	gf_uint8_t i;
 	float	   fgvol;
 	if(ctx->remaining_samples_in_tick <= 0) {
@@ -2419,6 +2424,9 @@ static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
 	*right = 0.f;
 
 	if(ctx->max_loop_count > 0 && ctx->loop_count >= ctx->max_loop_count) {
+		if(ctx->last == -1) {
+			ctx->last = snum;
+		}
 		return;
 	}
 
@@ -2458,9 +2466,10 @@ static void jar_xm_sample(jar_xm_context_t* ctx, float* left, float* right) {
 void jar_xm_generate_samples(jar_xm_context_t* ctx, float* output, size_t numsamples) {
 	if(ctx && output) {
 		size_t i;
+		ctx->last = -1;
 		ctx->generated_samples += numsamples;
 		for(i = 0; i < numsamples; i++) {
-			jar_xm_sample(ctx, output + (2 * i), output + (2 * i + 1));
+			jar_xm_sample(ctx, i, output + (2 * i), output + (2 * i + 1));
 		}
 	}
 }
