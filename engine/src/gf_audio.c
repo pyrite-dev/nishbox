@@ -142,15 +142,18 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 	} else if(mod_cond) {
 		decoder.mod = malloc(sizeof(*decoder.mod));
 		jar_mod_init(decoder.mod);
-		jar_mod_setcfg(decoder.mod, audio->device_config.sampleRate, 16, 1, 0, 0);
-		if(jar_mod_load(decoder.mod, (void*)data, size)) {
+		decoder.mod->modfile	 = malloc(size);
+		decoder.mod->modfilesize = size;
+		memcpy(decoder.mod->modfile, data, size);
+		jar_mod_setcfg(decoder.mod, audio->device_config.sampleRate, 16, 1, 1, 0);
+		if(jar_mod_load(decoder.mod, (void*)decoder.mod->modfile, size)) {
 			decoder.samples = jar_mod_max_samples(decoder.mod);
 			decoder.used	= -1;
 			hmputs(audio->decoder, decoder);
-			jar_mod_reset(decoder.mod);
 			ma_mutex_unlock(audio->mutex);
 			return decoder.key;
 		}
+		free(decoder.mod->modfile);
 		free(decoder.mod);
 		decoder.mod = NULL;
 	}
@@ -227,6 +230,10 @@ gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 	}
 
 	gf_log_function(engine, "Audio interface started", "");
+
+#if 0
+	gf_audio_resume(audio, gf_audio_load_file(audio, "test.xm"));
+#endif
 
 	return audio;
 }
