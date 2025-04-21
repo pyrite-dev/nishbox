@@ -16,6 +16,13 @@
 #include <gf_type/core.h>
 
 /* Standard */
+#include <stdio.h>
+
+/**
+ * @~english
+ * @brief Default log output
+ */
+GF_EXPORT FILE* gf_log_default;
 
 /**
  * @~english

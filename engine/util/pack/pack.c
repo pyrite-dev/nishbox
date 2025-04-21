@@ -1,6 +1,7 @@
 /* Engine */
 #include <gf_version.h>
 #include <gf_resource.h>
+#include <gf_log.h>
 
 /* External library */
 
@@ -8,33 +9,88 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #ifdef _WIN32
 #include <windows.h>
-#define gf_stat _stat
 #else
+#include <sys/stat.h>
 #include <dirent.h>
-#define gf_stat stat
 #endif
 
 char* out  = NULL;
 char* base = ".";
 
+int count = 0;
+
 int add_all(gf_resource_t* resource, char* path) {
 #ifdef _WIN32
+	WIN32_FIND_DATA ffd;
+	HANDLE		hfind;
 #else
 	DIR*	       dir;
 	struct dirent* d;
 #endif
 	int   st = 0;
-	char* op = malloc(strlen(base) + 1 + strlen(path) + 1);
+	char* op = malloc(strlen(base) + 1 + strlen(path) + 32 + 1);
 	op[0]	 = 0;
 	strcat(op, base);
 	strcat(op, "/");
 	strcat(op, path);
 
 #ifdef _WIN32
-	st = -1;
+	strcat(op, "/*");
+	hfind = FindFirstFile(op, &ffd);
+	if(hfind == INVALID_HANDLE_VALUE) {
+		free(op);
+		fprintf(stderr, "Could not open directory\n");
+		return -1;
+	}
+	do {
+		if(strcmp(ffd.cFileName, ".") != 0 && strcmp(ffd.cFileName, "..") != 0) {
+			char* p	 = malloc(strlen(base) + 1 + strlen(path) + strlen(ffd.cFileName) + 1);
+			char* np = malloc(strlen(path) + strlen(ffd.cFileName) + 1 + 1);
+			p[0]	 = 0;
+			strcat(p, base);
+			strcat(p, "/");
+			strcat(p, path);
+			strcat(p, ffd.cFileName);
+
+			np[0] = 0;
+			strcat(np, path);
+			strcat(np, ffd.cFileName);
+
+			count++;
+
+			if(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				strcat(np, "/");
+				gf_resource_add(resource, np, NULL, 0, 1);
+				if((st = add_all(resource, np)) != 0) {
+					free(np);
+					break;
+				}
+			} else {
+				FILE* f = fopen(p, "rb");
+				if(f != NULL) {
+					unsigned int   sz;
+					unsigned char* data;
+					fseek(f, 0, SEEK_END);
+					sz = ftell(f);
+					fseek(f, 0, SEEK_SET);
+
+					data = malloc(sz);
+					fread(data, sz, 1, f);
+					fclose(f);
+
+					gf_resource_add(resource, np, data, sz, 0);
+
+					free(data);
+				}
+			}
+			free(np);
+
+			free(p);
+		}
+	} while(FindNextFile(hfind, &ffd) != 0);
+	FindClose(hfind);
 #else
 	dir = opendir(op);
 	if(dir == NULL) {
@@ -44,9 +100,9 @@ int add_all(gf_resource_t* resource, char* path) {
 	}
 	while((d = readdir(dir)) != NULL) {
 		if(strcmp(d->d_name, ".") != 0 && strcmp(d->d_name, "..") != 0) {
-			char*	       p  = malloc(strlen(base) + 1 + strlen(path) + strlen(d->d_name) + 1);
-			char*	       np = malloc(strlen(path) + strlen(d->d_name) + 1 + 1);
-			struct gf_stat s;
+			char*	    p  = malloc(strlen(base) + 1 + strlen(path) + strlen(d->d_name) + 1);
+			char*	    np = malloc(strlen(path) + strlen(d->d_name) + 1 + 1);
+			struct stat s;
 			p[0] = 0;
 			strcat(p, base);
 			strcat(p, "/");
@@ -57,7 +113,9 @@ int add_all(gf_resource_t* resource, char* path) {
 			strcat(np, path);
 			strcat(np, d->d_name);
 
-			gf_stat(p, &s);
+			count++;
+
+			stat(p, &s);
 
 			if(S_ISDIR(s.st_mode)) {
 				strcat(np, "/");
@@ -101,6 +159,8 @@ int main(int argc, char** argv) {
 	int	       i;
 	int	       st = 0;
 
+	gf_log_default = NULL;
+
 	gf_version_get(&version);
 	printf("GoldFish Engine Resource Packer %s\n", version.full);
 	for(i = 1; i < argc; i++) {
@@ -126,8 +186,10 @@ int main(int argc, char** argv) {
 		if(add_all(resource, "") != 0) {
 			st = 1;
 		}
-		gf_resource_write(resource, out);
+		printf("Found %d files\n", count);
+		gf_resource_write(resource, out, 1);
 		gf_resource_destroy(resource);
 	}
+
 	return st;
 }

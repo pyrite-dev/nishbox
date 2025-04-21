@@ -26,6 +26,8 @@ void gf_engine_begin(void) {
 #ifdef _WIN32
 	WSADATA wsa;
 #endif
+	gf_log_default = stderr;
+
 	gf_version_get(&ver);
 	gf_log_function(NULL, "GoldFish Engine %s", ver.full);
 	gf_log_function(NULL, "Build date: %s", ver.date);

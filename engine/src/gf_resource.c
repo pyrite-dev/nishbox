@@ -144,7 +144,7 @@ gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
 
 	fclose(f);
 
-	gf_log_function(engine, "Compression made the file size %.2f%%", (double)cmpsize / cursize * 100);
+	gf_log_function(engine, "Compression rate: %.2f%%", (double)cursize / cmpsize * 100);
 
 	for(i = 0;; i++) {
 		unsigned int	    sz;
@@ -235,7 +235,7 @@ void gf_resource_add(gf_resource_t* resource, const char* name, void* data, size
 	}
 }
 
-void gf_resource_write(gf_resource_t* resource, const char* path) {
+void gf_resource_write(gf_resource_t* resource, const char* path, int progress) {
 	unsigned char out[CHUNK];
 	z_stream      stream;
 	int	      i;
@@ -252,23 +252,40 @@ void gf_resource_write(gf_resource_t* resource, const char* path) {
 
 	f = fopen(path, "wb");
 	if(f != NULL) {
+		unsigned int   totalog	= 0;
+		unsigned int   totalcmp = 0;
 		unsigned char* in;
 		for(i = 0; i < shlen(resource->entries); i++) {
-			int	     flush = Z_NO_FLUSH;
-			unsigned int sz	   = resource->entries[i].size == 0 ? 0 : (((resource->entries[i].size / 512) + 1) * 512);
-			in		   = malloc(512 + sz);
+			unsigned int sz = resource->entries[i].size == 0 ? 0 : (((resource->entries[i].size / 512) + 1) * 512);
+			in		= malloc(512 + sz);
 			memcpy(in, resource->data + resource->entries[i].address - 512, 512 + sz);
 			stream.avail_in = 512 + sz;
 			stream.next_in	= in;
+
+			totalog += 512 + sz;
+
+			if(progress) {
+				printf("%s", resource->entries[i].key);
+				fflush(stdout);
+			}
 
 			do {
 				unsigned int have;
 				stream.avail_out = CHUNK;
 				stream.next_out	 = out;
-				deflate(&stream, flush);
+				deflate(&stream, Z_NO_FLUSH);
 				have = CHUNK - stream.avail_out;
 				fwrite(out, have, 1, f);
+				if(progress) {
+					printf(".");
+					fflush(stdout);
+				}
+				totalcmp += have;
 			} while(stream.avail_out == 0);
+
+			if(progress) {
+				printf("\n");
+			}
 
 			free(in);
 		}
@@ -277,6 +294,7 @@ void gf_resource_write(gf_resource_t* resource, const char* path) {
 		memset(in, 0, 512);
 		stream.avail_in = 512;
 		stream.next_in	= in;
+		totalog += 512;
 
 		do {
 			unsigned int have;
@@ -285,10 +303,16 @@ void gf_resource_write(gf_resource_t* resource, const char* path) {
 			deflate(&stream, Z_FINISH);
 			have = CHUNK - stream.avail_out;
 			fwrite(out, have, 1, f);
+			totalcmp += have;
 		} while(stream.avail_out == 0);
 
 		free(in);
 		fclose(f);
+
+		if(progress) {
+			printf("Compression rate: %.2f%%\n", (double)totalog / totalcmp * 100);
+		}
+		gf_log_function(resource->engine, "Compression rate: %.2f%%\n", (double)totalog / totalcmp * 100);
 	}
 	deflateEnd(&stream);
 }

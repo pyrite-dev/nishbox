@@ -15,9 +15,11 @@
 #include <stdarg.h>
 #include <stddef.h>
 
+FILE* gf_log_default = NULL;
+
 void gf_log(gf_engine_t* engine, const char* fmt, ...) {
 	va_list va;
-	FILE*	out = stderr;
+	FILE*	out = gf_log_default;
 	if(engine != NULL) {
 		out = engine->log;
 	}

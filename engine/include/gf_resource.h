@@ -62,7 +62,8 @@ GF_EXPORT void gf_resource_add(gf_resource_t* resource, const char* name, void* 
  * @brief Write resource to file
  * @param resource Resource
  * @param path Path
+ * @param progress `0` to not show progress, otherwise show progress
  */
-GF_EXPORT void gf_resource_write(gf_resource_t* resource, const char* path);
+GF_EXPORT void gf_resource_write(gf_resource_t* resource, const char* path, int progress);
 
 #endif
