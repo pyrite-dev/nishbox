@@ -34,12 +34,6 @@ gf_font_glyph_t* gf_font_get(gf_font_t* font, int code) {
 #define gf_stat stat
 #endif
 
-GF_DECLARE_TYPE(font_store, {
-	int	       glyph_index;
-	int	       line_index;
-	unsigned char* buffer;
-});
-
 /**
  * This is a private method to parse BDF line
  */
@@ -138,27 +132,19 @@ void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* stor
 	}
 }
 
-gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
+gf_font_t* gf_font_create_raw(gf_draw_t* draw, const char* path, const void* data, size_t size) {
 	gf_font_t*	font = malloc(sizeof(*font));
-	struct gf_stat	s;
 	char*		buf;
-	FILE*		f;
 	int		i    = 0;
 	int		incr = 0;
 	gf_font_store_t store;
 	store.line_index  = -1;
 	store.glyph_index = 0;
 	memset(font, 0, sizeof(*font));
-	if(gf_stat(path, &s) != 0) {
-		free(font);
-		return NULL;
-	}
-	gf_log_function(NULL, "%s: %lu bytes", path, (unsigned long)s.st_size);
-	buf	       = malloc(s.st_size + 1);
-	buf[s.st_size] = 0;
-	f	       = fopen(path, "r");
-	fread(buf, s.st_size, 1, f);
-	fclose(f);
+
+	buf	  = malloc(size + 1);
+	buf[size] = 0;
+	memcpy(buf, data, size);
 
 	for(i = 0;; i++) {
 		if(buf[i] == 0 || buf[i] == '\n') {
@@ -175,4 +161,35 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
 
 	free(buf);
 	return font;
+}
+
+gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
+	FILE*	       f;
+	struct gf_stat s;
+	char*	       buf;
+	gf_font_t*     font;
+	if(gf_stat(path, &s) != 0) {
+		return NULL;
+	}
+	gf_log_function(NULL, "%s: %lu bytes", path, (unsigned long)s.st_size);
+	buf	       = malloc(s.st_size + 1);
+	buf[s.st_size] = 0;
+	f	       = fopen(path, "r");
+	fread(buf, s.st_size, 1, f);
+	fclose(f);
+
+	font = gf_font_create_raw(draw, path, buf, s.st_size);
+
+	free(buf);
+
+	return font;
+}
+
+void gf_font_destroy(gf_font_t* font) {
+	int i;
+	for(i = 0; i < font->count; i++) {
+		gf_texture_destroy(font->glyph[i]->texture);
+	}
+	free(font->glyph);
+	free(font);
 }

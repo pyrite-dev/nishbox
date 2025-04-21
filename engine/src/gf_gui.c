@@ -40,6 +40,26 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 	return gui;
 }
 
+void gf_gui_destroy(gf_gui_t* gui) {
+	gf_gui_id_t i;
+	for(i = 0; i < GF_GUI_MAX_COMPONENTS; i++) {
+		gf_gui_destroy_id(gui, i);
+	}
+	gf_log_function(gui->engine, "Destroyed GUI", "");
+	free(gui);
+}
+
+void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
+	gf_gui_component_t* c = &gui->area[id];
+	switch(c->type) {
+	case GF_GUI_BUTTON: {
+		if(c->u.button.text != NULL) free(c->u.button.text);
+		c->u.button.text = NULL;
+	}
+	}
+	c->type = GF_GUI_UNUSED;
+}
+
 /* note... left top should be the lightest in the border */
 
 void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h) {

@@ -128,6 +128,9 @@ int gf_draw_step(gf_draw_t* draw) {
 }
 
 void gf_draw_destroy(gf_draw_t* draw) {
+	if(draw->font != NULL) {
+		gf_font_destroy(draw->font);
+	}
 	if(draw->driver != NULL) gf_draw_driver_destroy(draw->driver);
 	if(draw->platform != NULL) gf_draw_platform_destroy(draw->platform);
 	gf_log_function(draw->engine, "Destroyed drawing interface", "");

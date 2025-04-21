@@ -43,9 +43,23 @@
  * @param engine Engine instance
  * @param draw Drawing interface
  * @return GUI
- * @note You should not have to call this - simply use gf_draw_t::gui
  */
 GF_EXPORT gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw);
+
+/**
+ * @~english
+ * @brief Destroy GUI
+ * @param gui GUI
+ */
+GF_EXPORT void gf_gui_destroy(gf_gui_t* gui);
+
+/**
+ * @~english
+ * @brief Destroy GUI component by ID
+ * @param gui GUI
+ * @param id Component ID
+ */
+GF_EXPORT void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id);
 
 /**
  * @~english

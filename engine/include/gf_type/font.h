@@ -23,6 +23,26 @@ typedef struct gf_font_t       gf_font_t;
 /* Standard */
 
 /**
+ * @struct gf_font_store_t
+ * @~english
+ * @brief Internal struct used for parsing
+ *
+ * @var gf_font_store_t::glyph_index
+ * @brief Current glyph index
+ *
+ * @var gf_font_store_t::glyph_index
+ * @brief Current line index of glyph
+ *
+ * @var gf_font_store_t::buffer
+ * @brief Glyph buffer
+ */
+GF_DECLARE_TYPE(font_store, {
+	int	       glyph_index;
+	int	       line_index;
+	unsigned char* buffer;
+});
+
+/**
  * @struct gf_font_bbox_t
  * @~english
  * @brief Bounding box
