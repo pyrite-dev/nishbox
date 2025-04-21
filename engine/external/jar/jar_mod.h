@@ -1260,7 +1260,6 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 			modctx->last_l_sample = ll;
 			modctx->last_r_sample = lr;
 
-		skip:;
 			modctx->samplenb = modctx->samplenb + nbsample;
 		} else {
 			for(i = 0; i < nbsample; i++) {

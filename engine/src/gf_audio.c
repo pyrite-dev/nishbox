@@ -27,7 +27,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 	float*	      tmp      = malloc(sizeof(*tmp) * frame * 2);
 	int	      unlocked = 0;
 
-	for(i = 0; i < frame; i++) {
+	for(i = 0; i < (gf_audio_id_t)frame; i++) {
 		tmp[2 * i + 0] = 0;
 		tmp[2 * i + 1] = 0;
 	}
@@ -54,7 +54,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int    gotframe;
 			float* r = malloc(sizeof(*r) * frame * 2);
 			jar_xm_generate_samples(audio->decoder[i].xm, r, frame);
-			gotframe = audio->decoder[i].samples > frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].samples > (gf_audio_id_t)frame ? frame : audio->decoder[i].samples;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0];
 				tmp[2 * j + 1] += (double)r[2 * j + 1];
@@ -71,7 +71,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int	  gotframe;
 			ma_int16* r = malloc(sizeof(*r) * frame * 2);
 			jar_mod_fillbuffer(audio->decoder[i].mod, r, frame, NULL);
-			gotframe = audio->decoder[i].samples > frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].samples > (gf_audio_id_t)frame ? frame : audio->decoder[i].samples;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0] / 32768.0;
 				tmp[2 * j + 1] += (double)r[2 * j + 1] / 32768.0;
@@ -87,7 +87,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 	}
 	if(!unlocked) ma_mutex_unlock(audio->mutex);
 
-	for(i = 0; i < frame; i++) {
+	for(i = 0; i < (gf_audio_id_t)frame; i++) {
 		out[2 * i + 0] = tmp[2 * i + 0] * 32768;
 		out[2 * i + 1] = tmp[2 * i + 1] * 32768;
 	}
@@ -106,7 +106,7 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 				int j;
 				int mod_sig_cond = 0;
 				for(j = 0; j < sizeof(gf_audio_mod_sig) / sizeof(gf_audio_mod_sig[0]); j++) {
-					mod_sig_cond = mod_sig_cond || (memcmp(data + 1080, gf_audio_mod_sig[j], 4) == 0);
+					mod_sig_cond = mod_sig_cond || (memcmp((char*)data + 1080, gf_audio_mod_sig[j], 4) == 0);
 				}
 				mod_cond = mod_cond && mod_sig_cond;
 			}
