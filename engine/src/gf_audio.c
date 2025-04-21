@@ -22,7 +22,7 @@
 const char* gf_audio_mod_sig[] = {"M!K!", "M.K.", "FLT4", "FLT8", "4CHN", "6CHN", "8CHN", "10CH", "12CH", "14CH", "16CH", "18CH", "20CH", "22CH", "24CH", "26CH", "28CH", "30CH", "32CH"};
 
 void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint32 frame) {
-	int	    i;
+	ma_uint32	    i;
 	gf_audio_t* audio    = dev->pUserData;
 	ma_int16*   out	     = (ma_int16*)output;
 	float*	    tmp	     = malloc(sizeof(*tmp) * frame * 2);
@@ -188,7 +188,6 @@ gf_audio_id_t gf_audio_load_file(gf_audio_t* audio, const char* path) {
 
 gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 	gf_audio_t* audio = malloc(sizeof(*audio));
-	int	    i;
 
 	memset(audio, 0, sizeof(*audio));
 	audio->engine = engine;
