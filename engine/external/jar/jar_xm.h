@@ -258,6 +258,8 @@ gf_uint64_t jar_xm_get_latest_trigger_of_channel(jar_xm_context_t*, gf_uint16_t)
  */
 gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t*);
 
+void jar_xm_reset(jar_xm_context_t* ctx);
+
 #ifdef __cplusplus
 }
 #endif
@@ -488,6 +490,10 @@ struct jar_xm_context_s {
 	jar_xm_module_t module;
 	gf_uint32_t	rate;
 
+	gf_uint16_t default_tempo;
+	gf_uint16_t default_bpm;
+	float	    default_global_volume;
+
 	gf_uint16_t tempo;
 	gf_uint16_t bpm;
 	float	    global_volume;
@@ -627,8 +633,9 @@ int jar_xm_create_context_safe(jar_xm_context_t** ctxp, const char* moddata, siz
 	ctx->channels = (jar_xm_channel_context_t*)mempool;
 	mempool += ctx->module.num_channels * sizeof(jar_xm_channel_context_t);
 
-	ctx->global_volume = 1.f;
-	ctx->amplification = .25f; /* XXX: some bad modules may still clip. Find out something better. */
+	ctx->default_global_volume = 1.f;
+	ctx->global_volume	   = 1.f;
+	ctx->amplification	   = .25f; /* XXX: some bad modules may still clip. Find out something better. */
 
 #if JAR_XM_RAMPING
 	ctx->volume_ramp  = (1.f / 128.f);
@@ -897,8 +904,10 @@ char* jar_xm_load_module(jar_xm_context_t* ctx, const char* moddata, size_t modd
 	flags		    = READ_U32(offset + 14);
 	mod->frequency_type = (flags & (1 << 0)) ? jar_xm_LINEAR_FREQUENCIES : jar_xm_AMIGA_FREQUENCIES;
 
-	ctx->tempo = READ_U16(offset + 16);
-	ctx->bpm   = READ_U16(offset + 18);
+	ctx->default_tempo = READ_U16(offset + 16);
+	ctx->default_bpm   = READ_U16(offset + 18);
+	ctx->tempo	   = ctx->default_tempo;
+	ctx->bpm	   = ctx->default_bpm;
 
 	READ_MEMCPY(mod->pattern_table, offset + 20, PATTERN_ORDER_TABLE_LENGTH);
 	offset += header_size;
@@ -1396,6 +1405,9 @@ static void jar_xm_post_pattern_change(jar_xm_context_t* ctx) {
 	/* Loop if necessary */
 	if(ctx->current_table_index >= ctx->module.length) {
 		ctx->current_table_index = ctx->module.restart_position;
+		ctx->tempo		 = ctx->default_tempo;
+		ctx->bpm		 = ctx->default_bpm;
+		ctx->global_volume	 = ctx->default_global_volume;
 	}
 }
 
@@ -2454,13 +2466,8 @@ void jar_xm_generate_samples(jar_xm_context_t* ctx, float* output, size_t numsam
 }
 
 gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
-	gf_uint64_t total		      = 0;
-	gf_uint8_t  currentLoopCount	      = jar_xm_get_loop_count(ctx);
-	gf_uint16_t current_tick	      = ctx->current_tick;
-	gf_uint8_t  current_row		      = ctx->current_row;
-	gf_uint8_t  current_table_index	      = ctx->current_table_index;
-	gf_uint16_t extra_ticks		      = ctx->extra_ticks;
-	float	    remaining_samples_in_tick = ctx->remaining_samples_in_tick;
+	gf_uint64_t total	     = 0;
+	gf_uint8_t  currentLoopCount = jar_xm_get_loop_count(ctx);
 
 	jar_xm_set_max_loop_count(ctx, 0);
 
@@ -2470,13 +2477,23 @@ gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
 		jar_xm_tick(ctx);
 	}
 
-	ctx->loop_count		       = currentLoopCount;
-	ctx->current_tick	       = current_tick;
-	ctx->current_row	       = current_row;
-	ctx->current_table_index       = current_table_index;
-	ctx->extra_ticks	       = extra_ticks;
-	ctx->remaining_samples_in_tick = remaining_samples_in_tick;
+	ctx->loop_count = currentLoopCount;
+
 	return total;
+}
+
+void jar_xm_reset(jar_xm_context_t* ctx) {
+	gf_uint16_t i;
+	for(i = 0; i < jar_xm_get_number_of_channels(ctx); i++) {
+		jar_xm_cut_note(&ctx->channels[i]);
+	}
+	ctx->generated_samples	 = 0;
+	ctx->current_row	 = 0;
+	ctx->current_table_index = 0;
+	ctx->current_tick	 = 0;
+	ctx->tempo		 = ctx->default_tempo;
+	ctx->bpm		 = ctx->default_bpm;
+	ctx->global_volume	 = ctx->default_global_volume;
 }
 
 /*--------------------------------------------*/

@@ -22,7 +22,7 @@
 const char* gf_audio_mod_sig[] = {"M!K!", "M.K.", "FLT4", "FLT8", "4CHN", "6CHN", "8CHN", "10CH", "12CH", "14CH", "16CH", "18CH", "20CH", "22CH", "24CH", "26CH", "28CH", "30CH", "32CH"};
 
 void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint32 frame) {
-	ma_uint32	    i;
+	ma_uint32   i;
 	gf_audio_t* audio    = dev->pUserData;
 	ma_int16*   out	     = (ma_int16*)output;
 	float*	    tmp	     = malloc(sizeof(*tmp) * frame * 2);
@@ -134,6 +134,7 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 			decoder.samples = jar_xm_get_remaining_samples(decoder.xm);
 			decoder.used	= -1;
 			hmputs(audio->decoder, decoder);
+			jar_xm_reset(decoder.xm);
 			ma_mutex_unlock(audio->mutex);
 			return decoder.key;
 		}
@@ -146,6 +147,7 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 			decoder.samples = jar_mod_max_samples(decoder.mod);
 			decoder.used	= -1;
 			hmputs(audio->decoder, decoder);
+			jar_mod_reset(decoder.mod);
 			ma_mutex_unlock(audio->mutex);
 			return decoder.key;
 		}

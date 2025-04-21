@@ -258,6 +258,7 @@ gf_bool_t jar_mod_load(jar_mod_context_t* modctx, void* mod_data, int mod_data_s
 mulong	  jar_mod_current_samples(jar_mod_context_t* modctx);
 mulong	  jar_mod_max_samples(jar_mod_context_t* modctx);
 void	  jar_mod_seek_start(jar_mod_context_t* ctx);
+gf_bool_t jar_mod_reset(jar_mod_context_t* modctx);
 
 #ifdef __cplusplus
 }
@@ -1280,7 +1281,7 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 }
 
 /*resets internals for mod context*/
-static gf_bool_t jar_mod_reset(jar_mod_context_t* modctx) {
+gf_bool_t jar_mod_reset(jar_mod_context_t* modctx) {
 	if(modctx) {
 		memclear(&modctx->song, 0, sizeof(modctx->song));
 		memclear(&modctx->sampledata, 0, sizeof(modctx->sampledata));
@@ -1355,18 +1356,22 @@ mulong jar_mod_current_samples(jar_mod_context_t* modctx) {
 /* Works, however it is very slow, this data should be cached to ensure it is run only once per file */
 mulong jar_mod_max_samples(jar_mod_context_t* ctx) {
 	mulong len;
-	mulong lastcount  = ctx->loopcount;
+	mulong lastcount = ctx->loopcount;
+#if 0
 	mulong samplenb	  = ctx->samplenb;
 	muint  tablepos	  = ctx->tablepos;
 	muint  patternpos = ctx->patternpos;
+#endif
 
 	while(ctx->loopcount <= lastcount) jar_mod_fillbuffer(ctx, NULL, 1, 0);
 
 	len = ctx->samplenb;
 	jar_mod_seek_start(ctx);
+#if 0
 	ctx->samplenb	= samplenb;
 	ctx->tablepos	= tablepos;
 	ctx->patternpos = patternpos;
+#endif
 
 	return len;
 }
