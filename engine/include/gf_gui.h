@@ -35,7 +35,7 @@
  * @~english
  * @brief Default GUI font size
  */
-#define GF_GUI_FONT_SIZE 32
+#define GF_GUI_FONT_SIZE 30
 
 /**
  * @~english
