@@ -2454,11 +2454,14 @@ void jar_xm_generate_samples(jar_xm_context_t* ctx, float* output, size_t numsam
 }
 
 gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
-	gf_uint64_t total		= 0;
-	gf_uint8_t  currentLoopCount	= jar_xm_get_loop_count(ctx);
-	gf_uint8_t  current_tick	= ctx->current_tick;
-	gf_uint8_t  current_row		= ctx->current_row;
-	gf_uint8_t  current_table_index = ctx->current_table_index;
+	gf_uint64_t total		      = 0;
+	gf_uint8_t  currentLoopCount	      = jar_xm_get_loop_count(ctx);
+	gf_uint16_t current_tick	      = ctx->current_tick;
+	gf_uint8_t  current_row		      = ctx->current_row;
+	gf_uint8_t  current_table_index	      = ctx->current_table_index;
+	gf_uint16_t extra_ticks		      = ctx->extra_ticks;
+	float	    remaining_samples_in_tick = ctx->remaining_samples_in_tick;
+
 	jar_xm_set_max_loop_count(ctx, 0);
 
 	while(jar_xm_get_loop_count(ctx) == currentLoopCount) {
@@ -2467,10 +2470,12 @@ gf_uint64_t jar_xm_get_remaining_samples(jar_xm_context_t* ctx) {
 		jar_xm_tick(ctx);
 	}
 
-	ctx->loop_count		 = currentLoopCount;
-	ctx->current_tick	 = current_tick;
-	ctx->current_row	 = current_row;
-	ctx->current_table_index = current_table_index;
+	ctx->loop_count		       = currentLoopCount;
+	ctx->current_tick	       = current_tick;
+	ctx->current_row	       = current_row;
+	ctx->current_table_index       = current_table_index;
+	ctx->extra_ticks	       = extra_ticks;
+	ctx->remaining_samples_in_tick = remaining_samples_in_tick;
 	return total;
 }
 
