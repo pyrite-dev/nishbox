@@ -1,14 +1,18 @@
 project("Pack")
 	kind("ConsoleApp")
-	filter({})
 	language("C")
 	targetdir("../bin/%{cfg.buildcfg}/%{cfg.platform}")
 	objdir("../obj")
 	targetname("pack")
+	includedirs({
+		"../include"
+	})
 	files({
 		"pack/*.c"
 	})
-	-- Call this if you are gonna use my engine...
+	links({
+		"GoldFish"
+	})
 	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
 		files({
@@ -56,7 +60,6 @@ project("EngineInfo")
 	links({
 		"GoldFish"
 	})
-	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
 	filter("system:windows")
 		files({

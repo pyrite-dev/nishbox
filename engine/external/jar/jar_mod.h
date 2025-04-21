@@ -1355,15 +1355,18 @@ mulong jar_mod_current_samples(jar_mod_context_t* modctx) {
 /* Works, however it is very slow, this data should be cached to ensure it is run only once per file */
 mulong jar_mod_max_samples(jar_mod_context_t* ctx) {
 	mulong len;
-	mulong lastcount = ctx->loopcount;
+	mulong lastcount  = ctx->loopcount;
+	mulong samplenb	  = ctx->samplenb;
+	muint  tablepos	  = ctx->tablepos;
+	muint  patternpos = ctx->patternpos;
 
 	while(ctx->loopcount <= lastcount) jar_mod_fillbuffer(ctx, NULL, 1, 0);
 
 	len = ctx->samplenb;
 	jar_mod_seek_start(ctx);
-	ctx->samplenb	= 0;
-	ctx->tablepos	= 0;
-	ctx->patternpos = 0;
+	ctx->samplenb	= samplenb;
+	ctx->tablepos	= tablepos;
+	ctx->patternpos = patternpos;
 
 	return len;
 }

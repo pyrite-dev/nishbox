@@ -129,6 +129,14 @@
 #define GF_EXPOSE_AUDIO
 #endif
 
+#ifndef GF_EXPOSE_RESOURCE
+/**
+ * @~english
+ * @brief Expose resource properties
+ */
+#define GF_EXPOSE_RESOURCE
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english
