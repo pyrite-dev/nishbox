@@ -30,8 +30,6 @@ void gf_draw_begin(void) { gf_draw_platform_begin(); }
 
 void gf_draw_end(void) { gf_draw_platform_end(); }
 
-gf_texture_t* test_texture;
-
 gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	gf_draw_t* draw = malloc(sizeof(*draw));
 	memset(draw, 0, sizeof(*draw));
@@ -64,12 +62,6 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[2] = 0;
 
 		draw->gui = gf_gui_create(engine, draw);
-		if(1) {
-			int	       w, h, c;
-			unsigned char* d = stbi_load("texture/test.bmp", &w, &h, &c, 4);
-			test_texture	 = gf_texture_create(draw, w, h, d);
-			free(d);
-		}
 	} else {
 		gf_draw_destroy(draw);
 		draw = NULL;
@@ -111,21 +103,6 @@ void gf_draw_frame(gf_draw_t* draw) {
 		}
 	}
 	if(draw->draw_3d) {
-		gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,
-						/* clang-format off */
-			0.0, 0.0,
-			-1.0, 0.0, -1.0,
-
-			0.0, 4.0,
-			-1.0, 0.0, 1.0,
-
-			4.0, 4.0,
-			1.0, 0.0, 1.0,
-
-			4.0, 0.0,
-			1.0, 0.0, -1.0
-						/* clang-format on */
-		);
 	}
 	gf_gui_render(draw->gui);
 }

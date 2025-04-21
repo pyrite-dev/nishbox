@@ -7,7 +7,7 @@
 #define FILE_DESCRIPTION "NishBox Dedicated Server\0"
 #endif
 
-GAME ICON "./internal/icon.ico"
+GAME ICON "./icon.ico"
 
 VS_VERSION_INFO VERSIONINFO
         FILEVERSION 0,0,0,0
