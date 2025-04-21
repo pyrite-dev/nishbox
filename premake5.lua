@@ -1,3 +1,5 @@
+flags("MultiProcessorCompile")
+
 workspace("NishBox")
 	configurations({
 		"Debug",
