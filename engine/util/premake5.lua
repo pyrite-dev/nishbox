@@ -5,7 +5,8 @@ project("EngineInfo")
 		kind("ConsoleApp")
 	filter({})
 	language("C")
-	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
+	targetdir("../bin/%{cfg.buildcfg}/%{cfg.platform}")
+	objdir("../obj")
 	targetname("engineinfo")
 	includedirs({
 		"../include"

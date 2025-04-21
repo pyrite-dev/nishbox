@@ -1,7 +1,7 @@
 #include <windows.h>
 
-GAME ICON "../goldfish.ico"
-GOLDFISH_BMP BITMAP "../goldfish.bmp"
+GAME ICON "../images/goldfish.ico"
+GOLDFISH_BMP BITMAP "../images/goldfish.bmp"
 
 VS_VERSION_INFO VERSIONINFO
         FILEVERSION 0,0,0,0

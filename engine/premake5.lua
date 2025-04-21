@@ -282,6 +282,7 @@ project("GoldFish")
 		optimize("On")
 	gf_msvc_filters()
 	targetdir("lib/%{cfg.buildcfg}/%{cfg.platform}")
+	objdir("obj")
 	targetname("goldfish")
 	includedirs({
 		"include",
@@ -293,21 +294,21 @@ project("GoldFish")
 	})
 	files({
 		"include/**.h",
-		"*.c",
+		"src/*.c",
 		"external/zlib/*.h",
 		"external/zlib/*.c",
 		"external/lua/l*.h",
 		"external/lua/l*.c",
 	})
 	files({
-		"audio/*.c"
+		"src/audio/*.c"
 	})
 	filter({
 		"system:windows",
 		"options:engine=dynamic"
 	})
 		files({
-			"engine.rc"
+			"src/engine.rc"
 		})
 	filter({})
 	removefiles({
@@ -320,11 +321,11 @@ project("GoldFish")
 
 	filter("system:windows")
 		files({
-			"thread/win32/gf_thread.c"
+			"src/thread/win32/gf_thread.c"
 		})
 	filter("system:not windows")
 		files({
-			"thread/posix/gf_thread.c"
+			"src/thread/posix/gf_thread.c"
 		})
 	filter({})
 
@@ -399,8 +400,8 @@ project("GoldFish")
 				"options:" .. k .. "=" .. k2
 			})
 				files({
-					"graphic/" .. k .. "/*.c",
-					"graphic/" .. k .. "/" .. k2 .. "/*.c"
+					"src/graphic/" .. k .. "/*.c",
+					"src/graphic/" .. k .. "/" .. k2 .. "/*.c"
 				})
 		end
 	end

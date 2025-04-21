@@ -9,7 +9,7 @@ BEGIN
                 BEGIN
                         VALUE "CompanyName", "GoldFish contributors\0"
                         VALUE "FileDescription", "GoldFish Engine\0"
-                        VALUE "LegalCopyright", "Public domain, original by GoldFish contributors\0"
+                        VALUE "LegalCopyright", "3-clause BSD, original by GoldFish contributors\0"
                         VALUE "FileVersion", "0.0.0.0\0"
                         VALUE "ProductName", "GoldFish Engine\0"
                 END
