@@ -634,7 +634,7 @@ int jar_xm_create_context_safe(jar_xm_context_t** ctxp, const char* moddata, siz
 	mempool += ctx->module.num_channels * sizeof(jar_xm_channel_context_t);
 
 	ctx->default_global_volume = 1.f;
-	ctx->global_volume	   = 1.f;
+	ctx->global_volume	   = ctx->default_global_volume;
 	ctx->amplification	   = .25f; /* XXX: some bad modules may still clip. Find out something better. */
 
 #if JAR_XM_RAMPING
@@ -2487,13 +2487,15 @@ void jar_xm_reset(jar_xm_context_t* ctx) {
 	for(i = 0; i < jar_xm_get_number_of_channels(ctx); i++) {
 		jar_xm_cut_note(&ctx->channels[i]);
 	}
-	ctx->generated_samples	 = 0;
-	ctx->current_row	 = 0;
-	ctx->current_table_index = 0;
-	ctx->current_tick	 = 0;
-	ctx->tempo		 = ctx->default_tempo;
-	ctx->bpm		 = ctx->default_bpm;
-	ctx->global_volume	 = ctx->default_global_volume;
+	ctx->generated_samples	       = 0;
+	ctx->current_row	       = 0;
+	ctx->current_table_index       = 0;
+	ctx->current_tick	       = 0;
+	ctx->extra_ticks	       = 0;
+	ctx->remaining_samples_in_tick = 0;
+	ctx->tempo		       = ctx->default_tempo;
+	ctx->bpm		       = ctx->default_bpm;
+	ctx->global_volume	       = ctx->default_global_volume;
 }
 
 /*--------------------------------------------*/

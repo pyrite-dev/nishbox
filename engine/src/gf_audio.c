@@ -55,7 +55,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int    gotframe;
 			float* r = malloc(sizeof(*r) * frame * 2);
 			jar_xm_generate_samples(audio->decoder[i].xm, r, frame);
-			gotframe = audio->decoder[i].samples > (gf_audio_id_t)frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].samples > (int)frame ? frame : audio->decoder[i].samples;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0];
 				tmp[2 * j + 1] += (double)r[2 * j + 1];
@@ -72,7 +72,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int	  gotframe;
 			ma_int16* r = malloc(sizeof(*r) * frame * 2);
 			jar_mod_fillbuffer(audio->decoder[i].mod, r, frame, NULL);
-			gotframe = audio->decoder[i].samples > (gf_audio_id_t)frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].samples > (int)frame ? frame : audio->decoder[i].samples;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0] / 32768.0;
 				tmp[2 * j + 1] += (double)r[2 * j + 1] / 32768.0;
