@@ -231,10 +231,6 @@ gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 
 	gf_log_function(engine, "Audio interface started", "");
 
-#if 1
-	gf_audio_resume(audio, gf_audio_load_file(audio, "test.xm"));
-#endif
-
 	return audio;
 }
 

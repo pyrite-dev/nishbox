@@ -132,7 +132,7 @@ void gf_font_parse_line(gf_draw_t* draw, const char* path, gf_font_store_t* stor
 	}
 }
 
-gf_font_t* gf_font_create_raw(gf_draw_t* draw, const char* path, const void* data, size_t size) {
+gf_font_t* gf_font_create(gf_draw_t* draw, const char* path, const void* data, size_t size) {
 	gf_font_t*	font = malloc(sizeof(*font));
 	char*		buf;
 	int		i    = 0;
@@ -163,7 +163,7 @@ gf_font_t* gf_font_create_raw(gf_draw_t* draw, const char* path, const void* dat
 	return font;
 }
 
-gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
+gf_font_t* gf_font_create_file(gf_draw_t* draw, const char* path) {
 	FILE*	       f;
 	struct gf_stat s;
 	char*	       buf;
@@ -178,7 +178,7 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path) {
 	fread(buf, s.st_size, 1, f);
 	fclose(f);
 
-	font = gf_font_create_raw(draw, path, buf, s.st_size);
+	font = gf_font_create(draw, path, buf, s.st_size);
 
 	free(buf);
 

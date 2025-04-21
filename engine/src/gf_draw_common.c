@@ -17,6 +17,7 @@
 #include <gf_graphic.h>
 #include <gf_font.h>
 #include <gf_gui.h>
+#include <gf_resource.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -59,8 +60,6 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->lookat[0] = 0;
 		draw->lookat[1] = 0;
 		draw->lookat[2] = 0;
-
-		draw->font = gf_font_create(draw, "font/helvR24.bdf");
 
 		draw->gui = gf_gui_create(engine, draw);
 		if(1) {
