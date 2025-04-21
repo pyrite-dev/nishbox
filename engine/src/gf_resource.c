@@ -25,7 +25,7 @@
 
 /**
  * @brief tar header
- * @warning Used internally, never exported
+ * @warning Used internally, never exposed
  */
 struct tar_header {
 	char filename[100];
