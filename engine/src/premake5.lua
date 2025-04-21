@@ -44,7 +44,8 @@ project("GoldFish")
 		"../external/lua/l*.c",
 	})
 	files({
-		"audio/*.c"
+		"audio/*.c",
+		"../external/jar/jar_*.h"
 	})
 	filter({
 		"system:windows",
