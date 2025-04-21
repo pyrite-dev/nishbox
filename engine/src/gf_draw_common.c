@@ -78,8 +78,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 
 void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 
-gf_gui_id_t button1 = -1;
-gf_gui_id_t button2 = -1;
+int made = 0;
 
 void gf_button_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
 	if(type == GF_GUI_PRESS_EVENT) {
@@ -91,13 +90,23 @@ void gf_button_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, in
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_color_t color;
 	color.r = color.g = color.b = color.a = 255;
-	if(button1 == -1) {
-		button1 = gf_gui_create_button(draw->gui, 0, 0, 200, 50, "\"Test\" text");
-		gf_gui_set_callback(draw->gui, button1, gf_button_callback);
-	}
-	if(button2 == -1) {
-		button2 = gf_gui_create_button(draw->gui, 100, 25, 200, 50, "\"Test\" text");
-		gf_gui_set_callback(draw->gui, button2, gf_button_callback);
+	if(made == 0) {
+		int i;
+		made = 1;
+		for(i = 0; i < 5; i++) {
+			double	    p = 50;
+			double	    s = 300 - i * p;
+			gf_gui_id_t id;
+
+			if(i > 0) {
+				p = (s + p) / 2 - (s / 2);
+			}
+
+			id = gf_gui_create_button(draw->gui, p, p, s, s, "");
+			if(i > 0) {
+				gf_gui_set_parent(draw->gui, id, id - 1);
+			}
+		}
 	}
 	if(draw->draw_3d) {
 		gf_graphic_draw_texture_polygon(draw, test_texture, color, GF_GRAPHIC_3D, 4,

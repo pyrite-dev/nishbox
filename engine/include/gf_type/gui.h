@@ -43,17 +43,10 @@ typedef void (*gf_gui_callback_t)(gf_engine_t* engine, gf_draw_t* draw, gf_gui_i
 
 /**
  * @~english
- * @brief Max components GUI can handle
- */
-#define GF_GUI_MAX_COMPONENTS 64
-
-/**
- * @~english
  * @brief GUI component types
  */
 enum GF_GUI_COMPONENT_TYPES {
-	GF_GUI_UNUSED = -1,
-	GF_GUI_BUTTON
+	GF_GUI_BUTTON = 0
 };
 
 /**
@@ -83,6 +76,9 @@ typedef union gf_gui_union_t {
  * @~english
  * @brief Component
  *
+ * @var gf_gui_component_t::key
+ * @brief Component ID
+ *
  * @var gf_gui_component_t::type
  * @brief Component type
  * @see GF_GUI_COMPONENT_TYPES
@@ -107,14 +103,19 @@ typedef union gf_gui_union_t {
  *
  * @var gf_gui_component_t::u
  * @brief Component union
+ *
+ * @var gf_gui_component_t::parent
+ * @brief Parent GUI component
  */
 GF_DECLARE_TYPE(gui_component, {
+	gf_gui_id_t	  key;
 	int		  type;
 	double		  x;
 	double		  y;
 	double		  width;
 	double		  height;
 	int		  pressed;
+	gf_gui_id_t	  parent;
 	gf_gui_callback_t callback;
 	gf_gui_union_t	  u;
 });
@@ -137,10 +138,10 @@ GF_DECLARE_TYPE(gui_component, {
  * @brief Created components
  */
 GF_DECLARE_TYPE(gui, {
-	gf_engine_t*	   engine;
-	gf_draw_t*	   draw;
-	gf_gui_id_t	   pressed;
-	gf_gui_component_t area[GF_GUI_MAX_COMPONENTS];
+	gf_engine_t*	    engine;
+	gf_draw_t*	    draw;
+	gf_gui_id_t	    pressed;
+	gf_gui_component_t* area;
 });
 #else
 typedef void* gf_gui_callback_t;

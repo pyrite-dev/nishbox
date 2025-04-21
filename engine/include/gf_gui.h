@@ -111,4 +111,13 @@ GF_EXPORT void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, doubl
  */
 GF_EXPORT void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callback_t callback);
 
+/**
+ * @~english
+ * @brief Set parent component
+ * @param gui GUI
+ * @param id Component ID
+ * @param parent Parent component ID
+ */
+GF_EXPORT void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent);
+
 #endif
