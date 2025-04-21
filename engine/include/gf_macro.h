@@ -137,6 +137,15 @@
 #define GF_EXPOSE_RESOURCE
 #endif
 
+#ifndef GF_EXPOSE_FILE
+/**
+ * @~english
+ * @brief Expose file I/O properties
+ * @note Exposed by default
+ */
+#define GF_EXPOSE_FILE
+#endif
+
 #ifndef GF_EXPOSE_GRAPHIC
 /**
  * @~english
@@ -209,6 +218,10 @@
 
 #ifndef GF_EXPOSE_VERSION
 #define GF_EXPOSE_VERSION
+#endif
+
+#ifndef GF_EXPOSE_FILE
+#define GF_EXPOSE_FILE
 #endif
 
 #endif

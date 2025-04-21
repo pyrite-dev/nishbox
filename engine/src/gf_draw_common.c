@@ -1,4 +1,6 @@
 #define GF_EXPOSE_DRAW
+#define GF_EXPOSE_CORE
+#define GF_EXPOSE_CLIENT
 
 #include <gf_pre.h>
 
@@ -17,7 +19,7 @@
 #include <gf_graphic.h>
 #include <gf_font.h>
 #include <gf_gui.h>
-#include <gf_resource.h>
+#include <gf_audio.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -91,6 +93,7 @@ void gf_draw_frame(gf_draw_t* draw) {
 	color.r = color.g = color.b = color.a = 255;
 	if(made == 0) {
 		int i;
+		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 		made = 1;
 		for(i = 0; i < 5; i++) {
 			double	    p = 50;
@@ -101,7 +104,7 @@ void gf_draw_frame(gf_draw_t* draw) {
 				p = (s + p) / 2 - (s / 2);
 			}
 
-			id = gf_gui_create_button(draw->gui, p, p, s, s, "");
+			id = gf_gui_create_button(draw->gui, p, p, s, s, "test");
 			if(i > 0) {
 				gf_gui_set_parent(draw->gui, id, id - 1);
 			}

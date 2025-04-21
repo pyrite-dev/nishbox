@@ -1,4 +1,6 @@
 #define GF_EXPOSE_CORE
+#define GF_EXPOSE_DRAW
+#define GF_EXPOSE_CLIENT
 
 #include <gf_pre.h>
 
@@ -15,6 +17,8 @@
 #include <gf_server.h>
 #include <gf_log.h>
 #include <gf_version.h>
+#include <gf_resource.h>
+#include <gf_font.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -66,6 +70,11 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 		gf_log_function(engine, "Switching to graphical console", "");
 	}
 	engine->server = gf_server_create(engine);
+
+	engine->base = gf_resource_create(engine, "base.pak");
+	if(!nogui) {
+		engine->client->draw->font = gf_font_create_file(engine->client->draw, "base:/font/default.bdf");
+	}
 	return engine;
 }
 
@@ -94,6 +103,7 @@ void gf_engine_loop(gf_engine_t* engine) {
 void gf_engine_destroy(gf_engine_t* engine) {
 	if(engine->server != NULL) gf_server_destroy(engine->server);
 	if(engine->client != NULL) gf_client_destroy(engine->client);
+	if(engine->base != NULL) gf_resource_destroy(engine->base);
 	free(engine);
 	gf_log_function(NULL, "Destroyed engine", "");
 }

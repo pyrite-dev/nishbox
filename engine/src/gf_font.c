@@ -1,4 +1,5 @@
 #define GF_EXPOSE_FONT
+#define GF_EXPOSE_DRAW
 
 #include <gf_pre.h>
 
@@ -10,12 +11,12 @@
 /* Engine */
 #include <gf_log.h>
 #include <gf_texture.h>
+#include <gf_file.h>
 
 /* Standard */
 #include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 gf_font_glyph_t* gf_font_get(gf_font_t* font, int code) {
 	int i;
@@ -164,21 +165,19 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path, const void* data, s
 }
 
 gf_font_t* gf_font_create_file(gf_draw_t* draw, const char* path) {
-	FILE*	       f;
-	struct gf_stat s;
-	char*	       buf;
-	gf_font_t*     font;
-	if(gf_stat(path, &s) != 0) {
-		return NULL;
-	}
-	gf_log_function(NULL, "%s: %lu bytes", path, (unsigned long)s.st_size);
-	buf	       = malloc(s.st_size + 1);
-	buf[s.st_size] = 0;
-	f	       = fopen(path, "r");
-	fread(buf, s.st_size, 1, f);
-	fclose(f);
+	char*	   buf;
+	gf_font_t* font;
+	gf_file_t* f = gf_file_open(draw->engine, path, "r");
+	if(f == NULL) return NULL;
 
-	font = gf_font_create(draw, path, buf, s.st_size);
+	gf_log_function(NULL, "%s: %lu bytes", path, (unsigned long)f->size);
+	buf	     = malloc(f->size + 1);
+	buf[f->size] = 0;
+
+	gf_file_read(f, buf, f->size);
+	gf_file_close(f);
+
+	font = gf_font_create(draw, path, buf, f->size);
 
 	free(buf);
 

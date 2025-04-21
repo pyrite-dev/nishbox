@@ -20,7 +20,6 @@ typedef struct gf_client_t gf_client_t;
 #include <gf_type/draw.h>
 #include <gf_type/input.h>
 #include <gf_type/audio.h>
-#include <gf_type/resource.h>
 
 /* Standard */
 
@@ -40,16 +39,12 @@ typedef struct gf_client_t gf_client_t;
  *
  * @var gf_client_t::audio
  * @brief Audio interface
- *
- * @var gf_client_t::base
- * @brief Base resource
  */
 GF_DECLARE_TYPE(client, {
-	gf_engine_t*   engine;
-	gf_draw_t*     draw;
-	gf_input_t*    input;
-	gf_audio_t*    audio;
-	gf_resource_t* base;
+	gf_engine_t* engine;
+	gf_draw_t*   draw;
+	gf_input_t*  input;
+	gf_audio_t*  audio;
 });
 #else
 typedef void gf_client_t;

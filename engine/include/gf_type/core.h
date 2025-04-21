@@ -18,6 +18,7 @@ typedef struct gf_engine_t gf_engine_t;
 /* Engine */
 #include <gf_type/server.h>
 #include <gf_type/client.h>
+#include <gf_type/resource.h>
 
 /* Standard */
 #include <stdio.h>
@@ -38,11 +39,15 @@ typedef struct gf_engine_t gf_engine_t;
  * @note Default is `stderr`
  * @warning This is `NULL` when logger is using graphical console
  * @warning Destroying engien instance **does not** `fclose` this
+ *
+ * @var gf_engine_t::base
+ * @brief Base resource
  */
 GF_DECLARE_TYPE(engine, {
-	gf_server_t* server;
-	gf_client_t* client;
-	FILE*	     log;
+	gf_server_t*   server;
+	gf_client_t*   client;
+	FILE*	       log;
+	gf_resource_t* base;
 });
 #else
 typedef void gf_engine_t;

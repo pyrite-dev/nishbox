@@ -13,6 +13,7 @@
 
 /* Engine */
 #include <gf_log.h>
+#include <gf_file.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -171,22 +172,18 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 }
 
 gf_audio_id_t gf_audio_load_file(gf_audio_t* audio, const char* path) {
-	FILE*	       f = fopen(path, "rb");
-	size_t	       sz;
-	unsigned char* data;
+	gf_file_t*     f = gf_file_open(audio->engine, path, "r");
 	gf_audio_id_t  st;
+	unsigned char* data;
 	if(f == NULL) return -1;
-	fseek(f, 0, SEEK_END);
-	sz = ftell(f);
-	fseek(f, 0, SEEK_SET);
 
-	data = malloc(sz);
-	fread(data, sz, 1, f);
-	st = gf_audio_load(audio, data, sz);
+	data = malloc(f->size);
+	gf_file_read(f, data, f->size);
+	st = gf_audio_load(audio, data, f->size);
 
 	free(data);
 
-	fclose(f);
+	gf_file_close(f);
 
 	return st;
 }

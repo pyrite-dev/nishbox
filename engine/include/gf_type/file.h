@@ -18,15 +18,34 @@ typedef struct gf_file_t gf_file_t;
 /* Engine */
 
 /* Standard */
+#include <stddef.h>
+#include <stdio.h>
 
 /**
  * @struct gf_file_t
  * @~english
  * @brief File
+ *
+ * @var gf_file_t::fp
+ * @brief File pointer
+ *
+ * @var gf_file_t::buffer
+ * @brief Buffer
+ *
+ * @var gf_file_t::pos
+ * @brief File position
+ *
+ * @var gf_file_t::size
+ * @brief File size
  */
-GF_DECLARE_TYPE(file, {});
+GF_DECLARE_TYPE(file, {
+	FILE*  fp;
+	void*  buffer;
+	size_t pos;
+	size_t size;
+});
 #else
-typedef void gf_file_t;
+#error "should not happen!"
 #endif
 
 #endif
