@@ -55,14 +55,14 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int    gotframe;
 			float* r = malloc(sizeof(*r) * frame * 2);
 			jar_xm_generate_samples(audio->decoder[i].xm, r, frame);
-			gotframe = audio->decoder[i].samples > (int)frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].internal > (int)frame ? frame : audio->decoder[i].internal;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0];
 				tmp[2 * j + 1] += (double)r[2 * j + 1];
 			}
 			free(r);
-			audio->decoder[i].samples -= frame;
-			if(audio->decoder[i].samples <= 0) {
+			audio->decoder[i].internal -= frame;
+			if(audio->decoder[i].internal <= 0) {
 				ma_mutex_unlock(audio->mutex);
 				unlocked = 1;
 				gf_audio_decoder_destroy(&audio->decoder[i]);
@@ -72,14 +72,13 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			int	  gotframe;
 			ma_int16* r = malloc(sizeof(*r) * frame * 2);
 			jar_mod_fillbuffer(audio->decoder[i].mod, r, frame, NULL);
-			gotframe = audio->decoder[i].samples > (int)frame ? frame : audio->decoder[i].samples;
+			gotframe = audio->decoder[i].mod->last != -1 ? audio->decoder[i].mod->last : (int)frame;
 			for(j = 0; j < gotframe; j++) {
 				tmp[2 * j + 0] += (double)r[2 * j + 0] / 32768.0;
 				tmp[2 * j + 1] += (double)r[2 * j + 1] / 32768.0;
 			}
 			free(r);
-			audio->decoder[i].samples -= frame;
-			if(audio->decoder[i].samples <= 0) {
+			if(audio->decoder[i].mod->loopcount > audio->decoder[i].internal) {
 				ma_mutex_unlock(audio->mutex);
 				unlocked = 1;
 				gf_audio_decoder_destroy(&audio->decoder[i]);
@@ -131,8 +130,9 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 
 	if(xm_cond) {
 		if(jar_xm_create_context_safe(&decoder.xm, data, size, audio->device_config.sampleRate) == 0) {
-			decoder.samples = jar_xm_get_remaining_samples(decoder.xm);
-			decoder.used	= -1;
+			/* In XM loader .internal is used as remaining samples */
+			decoder.internal = jar_xm_get_remaining_samples(decoder.xm);
+			decoder.used	 = -1;
 			hmputs(audio->decoder, decoder);
 			jar_xm_reset(decoder.xm);
 			ma_mutex_unlock(audio->mutex);
@@ -147,8 +147,9 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 		memcpy(decoder.mod->modfile, data, size);
 		jar_mod_setcfg(decoder.mod, audio->device_config.sampleRate, 16, 1, 1, 0);
 		if(jar_mod_load(decoder.mod, (void*)decoder.mod->modfile, size)) {
-			decoder.samples = jar_mod_max_samples(decoder.mod);
-			decoder.used	= -1;
+			/* In MOD loader .internal is used to store old loopcount */
+			decoder.internal = decoder.mod->loopcount;
+			decoder.used	 = -1;
 			hmputs(audio->decoder, decoder);
 			ma_mutex_unlock(audio->mutex);
 			return decoder.key;
@@ -231,8 +232,8 @@ gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 
 	gf_log_function(engine, "Audio interface started", "");
 
-#if 0
-	gf_audio_resume(audio, gf_audio_load_file(audio, "test.xm"));
+#if 1
+	gf_audio_resume(audio, gf_audio_load_file(audio, "test.mod"));
 #endif
 
 	return audio;

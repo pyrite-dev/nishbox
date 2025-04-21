@@ -181,6 +181,8 @@ typedef struct {
 	char*  sampledata[31];
 	note*  patterndata[128];
 
+	mint last;
+
 	mulong	playrate;
 	muint	tablepos;
 	muint	patternpos;
@@ -1108,6 +1110,8 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 			ll = modctx->last_l_sample;
 			lr = modctx->last_r_sample;
 
+			modctx->last = -1;
+
 			for(i = 0; i < nbsample; i++) {
 				/*---------------------------------------*/
 				if(modctx->patternticks++ > modctx->patternticksaim) {
@@ -1132,6 +1136,7 @@ void jar_mod_fillbuffer(jar_mod_context_t* modctx, gf_int16_t* outbuffer, unsign
 							modctx->patternpos = 0;
 							if(modctx->tablepos >= modctx->song.length) {
 								modctx->tablepos = 0;
+								modctx->last	 = i;
 								modctx->loopcount++; /* count next loop */
 							}
 						}
@@ -1360,6 +1365,7 @@ mulong jar_mod_max_samples(jar_mod_context_t* ctx) {
 	while(ctx->loopcount <= lastcount) jar_mod_fillbuffer(ctx, NULL, 1, 0);
 
 	len = ctx->samplenb;
+
 	jar_mod_seek_start(ctx);
 
 	return len;
