@@ -255,16 +255,22 @@ void gf_gui_render(gf_gui_t* gui) {
 		}
 		}
 	}
+
+	/* drag */
 	if(gui->pressed != -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
 		int ind;
 		ind = hmgeti(gui->area, gui->pressed);
 		if(ind != -1) {
 			gf_gui_component_t* c = &gui->area[ind];
-
-			c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
-			c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
+			if(c->type == GF_GUI_WINDOW) {
+				c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
+				c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
+				gf_gui_move_topmost(gui, c->key);
+			}
 		}
 	}
+
+	/* click */
 	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
 		int ind;
 		ind = hmgeti(gui->area, gui->pressed);
@@ -272,11 +278,12 @@ void gf_gui_render(gf_gui_t* gui) {
 			gf_gui_component_t* c = &gui->area[ind];
 			switch(c->type) {
 			case GF_GUI_BUTTON: {
+				int prop;
 				if(c->callback != NULL) {
 					c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
 				}
 				c->pressed = 1;
-				if(gf_gui_get_prop(gui, c->key, "close-parent")) {
+				if((prop = gf_gui_get_prop(gui, c->key, "close-parent")) != GF_GUI_NO_SUCH_PROP && prop) {
 					gf_gui_destroy_id(gui, c->parent);
 				}
 				break;
@@ -320,4 +327,57 @@ int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
 	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
 
 	return shget(gui->area[ind].prop, key);
+}
+
+void gf_gui_add_recursive(gf_gui_t* gui, gf_gui_component_t** pnew, gf_gui_id_t parent) {
+	int i;
+
+	for(i = 0; i < hmlen(gui->area); i++) {
+		gf_gui_component_t c = gui->area[i];
+		if(c.parent == parent) {
+			hmputs(*pnew, c);
+			gf_gui_add_recursive(gui, pnew, c.key);
+		}
+	}
+}
+
+void gf_gui_sort_component(gf_gui_t* gui) {
+	int i;
+	gf_gui_component_t* new = NULL;
+
+	for(i = 0; i < hmlen(gui->area); i++) {
+		gf_gui_component_t c = gui->area[i];
+		if(c.parent == -1) {
+			hmputs(new, c);
+			gf_gui_add_recursive(gui, &new, c.key);
+		}
+	}
+	hmfree(gui->area);
+	gui->area = new;
+}
+
+void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
+	int i;
+	int ind;
+	gf_gui_component_t* new = NULL;
+
+	for(i = 0; i < hmlen(gui->area); i++) {
+		gf_gui_component_t c = gui->area[i];
+		if(c.parent == -1 && c.key != id) {
+			hmputs(new, c);
+			gf_gui_add_recursive(gui, &new, c.key);
+		}
+	}
+
+	ind = hmgeti(gui->area, id);
+	if(ind != -1) {
+		gf_gui_component_t c = gui->area[ind];
+		if(c.parent == -1) {
+			hmputs(new, c);
+			gf_gui_add_recursive(gui, &new, c.key);
+		}
+	}
+
+	hmfree(gui->area);
+	gui->area = new;
 }

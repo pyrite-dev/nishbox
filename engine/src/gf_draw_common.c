@@ -79,10 +79,14 @@ void gf_draw_frame(gf_draw_t* draw) {
 	color.r = color.g = color.b = color.a = 255;
 	if(made == 0) {
 		gf_gui_id_t window;
+		gf_gui_id_t window2;
 		made = 1;
 		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 
-		window = gf_gui_create_window(draw->gui, 50, 50, draw->width - 100, draw->height - 100, "Test Window");
+		window	= gf_gui_create_window(draw->gui, 50, 50, 200, 200, "Test Window");
+		window2 = gf_gui_create_window(draw->gui, 150, 150, 200, 200, "Test Window 2");
+
+		gf_gui_sort_component(draw->gui);
 	}
 	if(draw->draw_3d) {
 	}

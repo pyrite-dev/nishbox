@@ -165,4 +165,19 @@ GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key
  */
 GF_EXPORT int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
 
+/**
+ * @~english
+ * @brief Sort components
+ * @param gui GUI
+ */
+GF_EXPORT void gf_gui_sort_component(gf_gui_t* gui);
+
+/**
+ * @~english
+ * @brief Move component topmost
+ * @param gui GUI
+ * @param id Component ID
+ */
+GF_EXPORT void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id);
+
 #endif
