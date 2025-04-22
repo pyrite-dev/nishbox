@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Initialize engine
@@ -53,5 +57,9 @@ GF_EXPORT void gf_engine_loop(gf_engine_t* engine);
  * @param engine Engine instance
  */
 GF_EXPORT void gf_engine_destroy(gf_engine_t* engine);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

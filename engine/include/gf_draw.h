@@ -20,6 +20,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create drawing interface
@@ -77,5 +81,9 @@ GF_EXPORT void gf_draw_end(void);
  * @param draw Drawing interface
  */
 GF_EXPORT void gf_draw_reshape(gf_draw_t* draw);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Initialize physics interface
@@ -44,5 +48,9 @@ GF_EXPORT gf_physics_t* gf_physics_create(gf_engine_t* engine);
  * @param physics Physics interface
  */
 GF_EXPORT void gf_physics_destroy(gf_physics_t* physics);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

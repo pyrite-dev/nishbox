@@ -19,6 +19,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Draw border normally
@@ -179,5 +183,9 @@ GF_EXPORT void gf_gui_sort_component(gf_gui_t* gui);
  * @param id Component ID
  */
 GF_EXPORT void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

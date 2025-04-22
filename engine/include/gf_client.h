@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Initialize client interface
@@ -53,5 +57,9 @@ GF_EXPORT void gf_client_destroy(gf_client_t* client);
  * @return `0` if successful, otherwise if failed
  */
 GF_EXPORT int gf_client_step(gf_client_t* client);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

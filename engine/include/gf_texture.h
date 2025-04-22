@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create texture
@@ -35,5 +39,9 @@ GF_EXPORT gf_texture_t* gf_texture_create(gf_draw_t* draw, int width, int height
  * @param texture Texture
  */
 GF_EXPORT void gf_texture_destroy(gf_texture_t* texture);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

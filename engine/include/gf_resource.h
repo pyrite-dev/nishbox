@@ -19,6 +19,10 @@
 /* Standard */
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create resource
@@ -65,5 +69,9 @@ GF_EXPORT void gf_resource_add(gf_resource_t* resource, const char* name, void* 
  * @param progress `0` to not show progress, otherwise show progress
  */
 GF_EXPORT void gf_resource_write(gf_resource_t* resource, const char* path, int progress);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

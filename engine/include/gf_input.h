@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create input interface
@@ -32,5 +36,9 @@ GF_EXPORT gf_input_t* gf_input_create(gf_engine_t* engine);
  * @param input Input interface
  */
 GF_EXPORT void gf_input_destroy(gf_input_t* input);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

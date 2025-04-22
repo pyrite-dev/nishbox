@@ -18,6 +18,10 @@
 /* Standard */
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Default log output
@@ -39,5 +43,9 @@ GF_EXPORT FILE* gf_log_default;
  * @param fmt Format string
  */
 GF_EXPORT void gf_log(gf_engine_t* engine, const char* fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

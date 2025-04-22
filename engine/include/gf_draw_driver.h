@@ -23,6 +23,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Initialize drawing driver
@@ -111,5 +115,9 @@ GF_EXPORT void gf_draw_driver_before(gf_draw_t* draw);
  * @param draw Drawing interface
  */
 GF_EXPORT void gf_draw_driver_after(gf_draw_t* draw);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -19,6 +19,10 @@
 /* Standard */
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Open file
@@ -55,5 +59,9 @@ GF_EXPORT size_t gf_file_write(gf_file_t* fp, void* buffer, size_t size);
  * @param fp File
  */
 GF_EXPORT void gf_file_close(gf_file_t* fp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

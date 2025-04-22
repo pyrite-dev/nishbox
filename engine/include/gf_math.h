@@ -17,6 +17,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Pi
@@ -92,5 +96,9 @@ GF_EXPORT void gf_math_multiply(gf_math_vector_t r, gf_math_vector_t v0, gf_math
  * @param v1 Input
  */
 GF_EXPORT void gf_math_subtract(gf_math_vector_t r, gf_math_vector_t v0, gf_math_vector_t v1);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

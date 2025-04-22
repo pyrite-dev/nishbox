@@ -19,6 +19,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Dimension parameter for 2D
@@ -121,5 +125,9 @@ GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, double x, double y, double 
  * @brief Draw rectangle with texture
  */
 GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, double x, double y, double w, double h, gf_texture_t* texture, gf_graphic_color_t color);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

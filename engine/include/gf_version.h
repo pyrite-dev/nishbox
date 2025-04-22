@@ -17,10 +17,18 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Get version of engine
  */
 GF_EXPORT void gf_version_get(gf_version_t* version);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

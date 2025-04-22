@@ -17,6 +17,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create thread
@@ -39,5 +43,9 @@ GF_EXPORT void gf_thread_join(gf_thread_t* thread);
  * @param thread Thread
  */
 GF_EXPORT void gf_thread_destroy(gf_thread_t* thread);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

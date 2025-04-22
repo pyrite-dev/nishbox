@@ -20,6 +20,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create platform-dependent part of drawing driver
@@ -64,5 +68,9 @@ GF_EXPORT void gf_draw_platform_begin(void);
  * @brief Cleanup platform-dependent part of drawing driver
  */
 GF_EXPORT void gf_draw_platform_end(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -18,6 +18,10 @@
 
 /* Standard */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Initialize server interface
@@ -44,5 +48,9 @@ GF_EXPORT gf_server_t* gf_server_create(gf_engine_t* engine);
  * @param server Server interface
  */
 GF_EXPORT void gf_server_destroy(gf_server_t* server);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -19,6 +19,10 @@
 /* Standard */
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Create audio interface
@@ -83,5 +87,9 @@ GF_EXPORT void gf_audio_resume(gf_audio_t* audio, gf_audio_id_t id);
  * @param id Audio ID
  */
 GF_EXPORT void gf_audio_stop(gf_audio_t* audio, gf_audio_id_t id);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

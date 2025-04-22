@@ -19,6 +19,10 @@
 /* Standard */
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @~english
  * @brief Get glyph
@@ -54,5 +58,9 @@ GF_EXPORT gf_font_t* gf_font_create_file(gf_draw_t* draw, const char* path);
  * @param font Font
  */
 GF_EXPORT void gf_font_destroy(gf_font_t* font);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
