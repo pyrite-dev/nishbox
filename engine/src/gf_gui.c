@@ -19,7 +19,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-const double gf_gui_border_width = 2;
+const double gf_gui_border_width      = 2;
+const int    gf_gui_border_color_diff = 48;
 
 gf_graphic_color_t gf_gui_base_color;
 gf_graphic_color_t gf_gui_font_color;
@@ -33,7 +34,7 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 	gui->pressed = -1;
 
-	GF_SET_COLOR(gf_gui_base_color, 64, 80, 64, 255);
+	GF_SET_COLOR(gf_gui_base_color, 80, 88, 64, 255);
 	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);
 
 	return gui;
@@ -84,10 +85,9 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 /* note... left top should be the lightest in the border */
 
 void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, double h) {
-	const int	   color_diff = 32; /* color diff */
 	gf_graphic_color_t col;
 
-	int cd = mul * color_diff;
+	int cd = mul * gf_gui_border_color_diff;
 
 	col = gf_gui_base_color;
 	col.r += cd;
@@ -213,6 +213,8 @@ void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y
 	gf_gui_calc_xywh_noset(gui, c, x, y, w, h);
 }
 
+double nn = 0;
+
 void gf_gui_render(gf_gui_t* gui) {
 	int	    i;
 	gf_input_t* input = gui->draw->input;
@@ -220,14 +222,19 @@ void gf_gui_render(gf_gui_t* gui) {
 	double	    cy;
 	double	    cw;
 	double	    ch;
+	int	    prop;
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
 		gf_gui_component_t* c = &gui->area[i];
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 		if(input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
 			gui->pressed = c->key;
-			if(c->type == GF_GUI_WINDOW) {
-				gf_gui_set_prop(gui, c->key, "diff-x", input->mouse_x - cx);
-				gf_gui_set_prop(gui, c->key, "diff-y", input->mouse_y - cy);
+			gf_gui_set_prop(gui, c->key, "clicked-x", input->mouse_x);
+			gf_gui_set_prop(gui, c->key, "clicked-y", input->mouse_y);
+			gf_gui_set_prop(gui, c->key, "diff-x", input->mouse_x - cx);
+			gf_gui_set_prop(gui, c->key, "diff-y", input->mouse_y - cy);
+			if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
+				gf_gui_set_prop(gui, c->key, "old-width", cw);
+				gf_gui_set_prop(gui, c->key, "old-height", ch);
 			}
 		} else if(gui->pressed == -1) {
 			c->pressed = 0;
@@ -245,14 +252,44 @@ void gf_gui_render(gf_gui_t* gui) {
 				y += gf_gui_border_width / 2;
 			}
 			gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
+
+			gf_graphic_clip(gui->draw, cx, cy, cw, ch);
 			gf_graphic_text(gui->draw, x, y, GF_GUI_SMALL_FONT_SIZE, c->u.button.text, gf_gui_font_color);
+			gf_graphic_clip(gui->draw, 0, 0, 0, 0);
 			break;
 		}
 		case GF_GUI_WINDOW: {
 			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
+
+			gf_graphic_clip(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
 			gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->u.window.title, gf_gui_font_color);
+			gf_graphic_clip(gui->draw, 0, 0, 0, 0);
+
 			break;
 		}
+		}
+		if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
+			int j;
+			for(j = 0; j < 3; j++) {
+				double		   sp  = gf_gui_border_width / 2 + 5;
+				double		   bw  = gf_gui_border_width * 1.5;
+				double		   rx  = cx + cw - sp - (j + 1) * (bw + 1);
+				double		   ry  = cy + ch - sp - (j + 1) * (bw + 1);
+				gf_graphic_color_t col = gf_gui_base_color;
+
+				col.r -= gf_gui_border_color_diff;
+				col.g -= gf_gui_border_color_diff;
+				col.b -= gf_gui_border_color_diff;
+
+				gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 4, cx + cw - sp, ry - bw, rx - bw, cy + ch - sp, rx - bw / 2.0, cy + ch - sp, cx + cw - sp, ry - bw / 2.0);
+
+				col = gf_gui_base_color;
+				col.r += gf_gui_border_color_diff;
+				col.g += gf_gui_border_color_diff;
+				col.b += gf_gui_border_color_diff;
+
+				gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 4, cx + cw - sp, ry - bw / 2.0, rx - bw / 2.0, cy + ch - sp, rx, cy + ch - sp, cx + cw - sp, ry);
+			}
 		}
 	}
 
@@ -261,8 +298,25 @@ void gf_gui_render(gf_gui_t* gui) {
 		int ind;
 		ind = hmgeti(gui->area, gui->pressed);
 		if(ind != -1) {
-			gf_gui_component_t* c = &gui->area[ind];
-			if(c->type == GF_GUI_WINDOW) {
+			gf_gui_component_t* c	   = &gui->area[ind];
+			int		    cancel = 0;
+			if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
+				double sp = gf_gui_border_width / 2 + 5;
+				double sz = sp * 3;
+				c->width  = gf_gui_get_prop(gui, c->key, "old-width");
+				c->height = gf_gui_get_prop(gui, c->key, "old-height");
+				gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+				cancel = 1;
+				cancel = cancel && ((cx + cw - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-x"));
+				cancel = cancel && ((cx + cw - sp) >= gf_gui_get_prop(gui, c->key, "clicked-x"));
+				cancel = cancel && ((cy + ch - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-y"));
+				cancel = cancel && ((cy + ch - sp) >= gf_gui_get_prop(gui, c->key, "clicked-y"));
+				if(cancel) {
+					c->width  = input->mouse_x - gf_gui_get_prop(gui, c->key, "clicked-x") + gf_gui_get_prop(gui, c->key, "old-width");
+					c->height = input->mouse_y - gf_gui_get_prop(gui, c->key, "clicked-y") + gf_gui_get_prop(gui, c->key, "old-height");
+				}
+			}
+			if(!cancel && c->type == GF_GUI_WINDOW) {
 				c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
 				c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
 			}
@@ -278,7 +332,6 @@ void gf_gui_render(gf_gui_t* gui) {
 			gf_gui_component_t* c = &gui->area[ind];
 			switch(c->type) {
 			case GF_GUI_BUTTON: {
-				int prop;
 				if(c->callback != NULL) {
 					c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
 				}

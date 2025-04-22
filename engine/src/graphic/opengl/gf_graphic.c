@@ -122,7 +122,7 @@ void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double z
 	glLoadMatrixd(matrix);
 }
 
-GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw) {
+void gf_graphic_set_camera(gf_draw_t* draw) {
 	GLdouble	 matrix[16];
 	gf_math_vector_t f;
 	gf_math_vector_t up;
@@ -160,4 +160,12 @@ GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw) {
 	glLoadIdentity();
 	glLoadMatrixd(matrix);
 	glTranslated(-draw->camera[0], -draw->camera[1], -draw->camera[2]);
+}
+
+void gf_graphic_clip(gf_draw_t* draw, double x, double y, double w, double h) {
+	if(x == 0 && y == 0 && w == 0 && h == 0) {
+		glScissor(0, 0, draw->width, draw->height);
+	} else {
+		glScissor(x, draw->height - y - h, w, h);
+	}
 }

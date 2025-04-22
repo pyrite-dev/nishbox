@@ -25,6 +25,10 @@ gf_file_t* gf_file_open(gf_engine_t* engine, const char* path, const char* mode)
 	fp->buffer = NULL;
 	fp->fp	   = NULL;
 	if(strlen(path) > 6 && memcmp(path, "base:/", 6) == 0) {
+		if(engine->base == NULL) {
+			free(fp);
+			return NULL;
+		}
 		if(strcmp(mode, "r") == 0) {
 			if(gf_resource_get(engine->base, path + 6, &fp->buffer, &fp->size) != 0) {
 				free(fp);

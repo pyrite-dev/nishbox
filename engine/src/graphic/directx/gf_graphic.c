@@ -31,4 +31,6 @@ void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim,
 
 void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double zfar) { /* TODO: Implement this */ }
 
-GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw) { /* TODO: Implement this */ }
+void gf_graphic_set_camera(gf_draw_t* draw) { /* TODO: Implement this */ }
+
+void gf_graphic_clip(gf_draw_t* draw, double x, double y, double w, double h) { /* TODO: Implement this */ }
