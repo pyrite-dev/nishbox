@@ -314,6 +314,12 @@ void gf_gui_render(gf_gui_t* gui) {
 				if(cancel) {
 					c->width  = input->mouse_x - gf_gui_get_prop(gui, c->key, "clicked-x") + gf_gui_get_prop(gui, c->key, "old-width");
 					c->height = input->mouse_y - gf_gui_get_prop(gui, c->key, "clicked-y") + gf_gui_get_prop(gui, c->key, "old-height");
+					if(c->width < GF_GUI_SMALL_FONT_SIZE + 10) {
+						c->width = GF_GUI_SMALL_FONT_SIZE + 10;
+					}
+					if(c->height < GF_GUI_SMALL_FONT_SIZE + 10) {
+						c->height = GF_GUI_SMALL_FONT_SIZE + 10;
+					}
 				}
 			}
 			if(!cancel && c->type == GF_GUI_WINDOW) {
