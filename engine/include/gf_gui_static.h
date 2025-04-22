@@ -3,7 +3,7 @@
  * @~english
  * @brief GUI static stuff
  * @note User should not include this, this header is used internally
- * @warning This file is auto-generated using ./tool/gengui.sh at `Wed Apr 23 01:03:50 JST 2025`
+ * @warning This file is auto-generated using ./tool/gengui.sh at `Wed Apr 23 01:07:50 JST 2025`
  */
 
 #ifndef __GF_GUI_STATIC_H__
@@ -25,39 +25,39 @@ extern "C" {
 
 /**
  * @~english
- * @brief Run `render` procedures for all components
+ * @brief Run `render` procedure for all components
  * @param gui GUI
  * @param c Component
  */
-static void gf_gui_all_render(gf_gui_t* gui, gf_gui_component_t* c){
-	extern void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c);
-	extern void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c);
+static void gf_gui_all_render(gf_gui_t* gui, gf_gui_component_t* c) {
+	extern void gf_gui_button_render(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_window_render(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_render(gui, c);
 	gf_gui_window_render(gui, c);
 }
 
 /**
  * @~english
- * @brief Run `drag` procedures for all components
+ * @brief Run `drag` procedure for all components
  * @param gui GUI
  * @param c Component
  */
-static void gf_gui_all_drag(gf_gui_t* gui, gf_gui_component_t* c){
-	extern void gf_gui_button_drag(gf_gui_t* gui, gf_gui_component_t* c);
-	extern void gf_gui_window_drag(gf_gui_t* gui, gf_gui_component_t* c);
+static void gf_gui_all_drag(gf_gui_t* gui, gf_gui_component_t* c) {
+	extern void gf_gui_button_drag(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_window_drag(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_drag(gui, c);
 	gf_gui_window_drag(gui, c);
 }
 
 /**
  * @~english
- * @brief Run `click` procedures for all components
+ * @brief Run `click` procedure for all components
  * @param gui GUI
  * @param c Component
  */
-static void gf_gui_all_click(gf_gui_t* gui, gf_gui_component_t* c){
-	extern void gf_gui_button_click(gf_gui_t* gui, gf_gui_component_t* c);
-	extern void gf_gui_window_click(gf_gui_t* gui, gf_gui_component_t* c);
+static void gf_gui_all_click(gf_gui_t* gui, gf_gui_component_t* c) {
+	extern void gf_gui_button_click(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_window_click(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_click(gui, c);
 	gf_gui_window_click(gui, c);
 }

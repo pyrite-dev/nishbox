@@ -13,7 +13,7 @@ generate () {
 cat >> include/gf_gui_static.h << EOF
 /**
  * @~english
- * @brief Run \`$1\` procedures for all components
+ * @brief Run \`$1\` procedure for all components
  * @param gui GUI
  * @param c Component
  */
