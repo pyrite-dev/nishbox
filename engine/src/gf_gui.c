@@ -223,15 +223,14 @@ void gf_gui_render(gf_gui_t* gui) {
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
 		gf_gui_component_t* c = &gui->area[i];
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
-		switch(c->type) {
-		case GF_GUI_BUTTON: {
-			if(input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
-				gui->pressed = c->key;
-			} else if(gui->pressed == -1) {
-				c->pressed = 0;
+		if(input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
+			gui->pressed = c->key;
+			if(c->type == GF_GUI_WINDOW) {
+				gf_gui_set_prop(gui, c->key, "diff-x", input->mouse_x - cx);
+				gf_gui_set_prop(gui, c->key, "diff-y", input->mouse_y - cy);
 			}
-			break;
-		}
+		} else if(gui->pressed == -1) {
+			c->pressed = 0;
 		}
 	}
 	for(i = 0; i < hmlen(gui->area); i++) {
@@ -256,16 +255,32 @@ void gf_gui_render(gf_gui_t* gui) {
 		}
 		}
 	}
+	if(gui->pressed != -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
+		int ind;
+		ind = hmgeti(gui->area, gui->pressed);
+		if(ind != -1) {
+			gf_gui_component_t* c = &gui->area[ind];
+
+			c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
+			c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
+		}
+	}
 	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
 		int ind;
 		ind = hmgeti(gui->area, gui->pressed);
 		if(ind != -1) {
-			if(gui->area[ind].callback != NULL) {
-				gui->area[ind].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
+			gf_gui_component_t* c = &gui->area[ind];
+			switch(c->type) {
+			case GF_GUI_BUTTON: {
+				if(c->callback != NULL) {
+					c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
+				}
+				c->pressed = 1;
+				if(gf_gui_get_prop(gui, c->key, "close-parent")) {
+					gf_gui_destroy_id(gui, c->parent);
+				}
+				break;
 			}
-			gui->area[ind].pressed = 1;
-			if(gf_gui_get_prop(gui, gui->area[ind].key, "close-parent")) {
-				gf_gui_destroy_id(gui, gui->area[ind].parent);
 			}
 		}
 		gui->pressed = -1;
