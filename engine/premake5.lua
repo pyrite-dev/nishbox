@@ -32,6 +32,7 @@ for k,v in pairs(gf_backends) do
 		value = "API",
 		description = "Choose a backend for " .. v["name"],
 		allowed = allowed,
+		category = "Engine",
 		default = v["default"]
 	})
 	table.insert(gf_l, {k, v["name"]})
@@ -42,6 +43,7 @@ newoption({
 	value = "API",
 	description = "Choose a backend for rendering",
 	allowed = gf_l,
+	category = "Engine",
 	default = "opengl"
 })
 
@@ -53,6 +55,7 @@ newoption({
 		{"static", "Static library"},
 		{"dynamic", "Dynamic library"}
 	},
+	category = "Engine",
 	default = "static"
 })
 	
