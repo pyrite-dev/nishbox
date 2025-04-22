@@ -46,8 +46,19 @@ void gf_graphic_clear(gf_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_
 void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...) {
 	double	tw = (double)texture->width / texture->internal_width;
 	double	th = (double)texture->height / texture->internal_height;
+	double	sx = 1;
+	double	sy = 1;
 	int	i;
 	va_list va;
+
+	if(texture->keep_aspect) {
+		if(tw > th) {
+			sx = th / tw;
+		} else {
+			sy = tw / th;
+		}
+	}
+
 	va_start(va, npair);
 
 	if(dim == 2) gf_graphic_begin_2d(draw);
@@ -57,8 +68,8 @@ void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_
 	glBegin(GL_TRIANGLE_FAN);
 
 	for(i = 0; i < npair; i++) {
-		double tx = va_arg(va, double) * tw;
-		double ty = va_arg(va, double) * th;
+		double tx = va_arg(va, double) * sx;
+		double ty = va_arg(va, double) * sy;
 		double x  = va_arg(va, double);
 		double y  = va_arg(va, double);
 		glTexCoord2f(tx, ty);

@@ -31,17 +31,22 @@ gf_draw_driver_texture_t* gf_draw_driver_register_texture(gf_draw_t* draw, int w
 	gf_draw_driver_texture_t* r = malloc(sizeof(*r));
 	int			  w = gf_math_nearest_2pow(width);
 	int			  h = gf_math_nearest_2pow(height);
-	int			  x, y;
+	double			  x, y, sx, sy;
 	unsigned char*		  d = malloc(w * h * 4);
 
 	*iwidth	 = w;
 	*iheight = h;
 
+	sx = (double)width / w;
+	sy = (double)height / h;
+
 	memset(d, 0, w * h * 4);
-	for(y = 0; y < height; y++) {
-		for(x = 0; x < width; x++) {
+	for(y = 0; y < h; y++) {
+		for(x = 0; x < w; x++) {
+			int ox	  = x * sx;
+			int oy	  = y * sy;
 			int pos	  = (y * w + x) * 4;
-			int ogpos = (y * width + x) * 4;
+			int ogpos = (oy * width + ox) * 4;
 			memcpy(d + pos + 0, data + ogpos + 0, 4);
 		}
 	}

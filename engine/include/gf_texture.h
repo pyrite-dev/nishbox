@@ -40,6 +40,14 @@ GF_EXPORT gf_texture_t* gf_texture_create(gf_draw_t* draw, int width, int height
  */
 GF_EXPORT void gf_texture_destroy(gf_texture_t* texture);
 
+/**
+ * @~english
+ * @brief Keep aspect or not
+ * @param texture Texture
+ * @param keep `0` to not keep, otherwise keep
+ */
+GF_EXPORT void gf_texture_keep_aspect(gf_texture_t* texture, int keep);
+
 #ifdef __cplusplus
 }
 #endif

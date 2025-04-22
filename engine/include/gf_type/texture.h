@@ -39,6 +39,9 @@ typedef struct gf_texture_t gf_texture_t;
  *
  * @var gf_texture_t::internal_height
  * @brief Internal height of texture
+ *
+ * @var gf_texture_t::keep_aspect
+ * @brief Keep aspect or not
  */
 GF_DECLARE_TYPE(texture, {
 	gf_draw_driver_texture_t* draw_driver_texture;
@@ -46,6 +49,7 @@ GF_DECLARE_TYPE(texture, {
 	int			  height;
 	int			  internal_width;
 	int			  internal_height;
+	int			  keep_aspect;
 });
 #else
 typedef void gf_texture_t;

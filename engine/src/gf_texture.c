@@ -27,6 +27,7 @@ gf_texture_t* gf_texture_create(gf_draw_t* draw, int width, int height, unsigned
 	texture->width		     = width;
 	texture->height		     = height;
 	texture->draw_driver_texture = ddtexture;
+	texture->keep_aspect	     = 0;
 	return texture;
 }
 
@@ -34,3 +35,5 @@ void gf_texture_destroy(gf_texture_t* texture) {
 	gf_draw_driver_destroy_texture(texture->draw_driver_texture);
 	free(texture);
 }
+
+void gf_texture_keep_aspect(gf_texture_t* texture, int keep) { texture->keep_aspect = keep; }

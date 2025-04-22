@@ -53,6 +53,7 @@ void gf_gui_destroy(gf_gui_t* gui) {
 
 void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	int		    i;
+	int		    prop;
 	int		    ind = hmgeti(gui->area, id);
 	gf_gui_component_t* c;
 	if(ind == -1) return;
@@ -74,6 +75,16 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 		if(gui->area[i].parent == id) {
 			gf_gui_destroy_id(gui, gui->area[i].key);
 			i = -1;
+		}
+	}
+
+	if((prop = gf_gui_get_prop(gui, c->key, "active")) != GF_GUI_NO_SUCH_PROP && prop) {
+		for(i = hmlen(gui->area) - 1; i >= 0; i--) {
+			gf_gui_component_t* c = &gui->area[i];
+			if(c->parent == -1 && c->key != id) {
+				gf_gui_set_prop(gui, c->key, "active", 1);
+				break;
+			}
 		}
 	}
 
@@ -261,10 +272,18 @@ void gf_gui_render(gf_gui_t* gui) {
 			break;
 		}
 		case GF_GUI_WINDOW: {
+			gf_graphic_color_t col = gf_gui_font_color;
+
+			if((prop = gf_gui_get_prop(gui, c->key, "active")) == GF_GUI_NO_SUCH_PROP || !prop) {
+				col.r -= gf_gui_border_color_diff * 3 / 2;
+				col.g -= gf_gui_border_color_diff * 3 / 2;
+				col.b -= gf_gui_border_color_diff * 3 / 2;
+			}
+
 			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
 
 			gf_graphic_clip(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
-			gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->u.window.title, gf_gui_font_color);
+			gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->u.window.title, col);
 			gf_graphic_clip(gui->draw, 0, 0, 0, 0);
 
 			break;
@@ -409,12 +428,20 @@ void gf_gui_sort_component(gf_gui_t* gui) {
 	for(i = 0; i < hmlen(gui->area); i++) {
 		gf_gui_component_t c = gui->area[i];
 		if(c.parent == -1) {
+			gf_gui_set_prop(gui, c.key, "active", 0);
 			hmputs(new, c);
 			gf_gui_add_recursive(gui, &new, c.key);
 		}
 	}
 	hmfree(gui->area);
 	gui->area = new;
+	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
+		gf_gui_component_t* c = &gui->area[i];
+		if(c->parent == -1) {
+			gf_gui_set_prop(gui, c->key, "active", 1);
+			break;
+		}
+	}
 }
 
 void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
@@ -425,6 +452,7 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 	for(i = 0; i < hmlen(gui->area); i++) {
 		gf_gui_component_t c = gui->area[i];
 		if(c.parent == -1 && c.key != id) {
+			gf_gui_set_prop(gui, c.key, "active", 0);
 			hmputs(new, c);
 			gf_gui_add_recursive(gui, &new, c.key);
 		}
@@ -434,6 +462,7 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 	if(ind != -1) {
 		gf_gui_component_t c = gui->area[ind];
 		if(c.parent == -1) {
+			gf_gui_set_prop(gui, c.key, "active", 1);
 			hmputs(new, c);
 			gf_gui_add_recursive(gui, &new, c.key);
 		}
