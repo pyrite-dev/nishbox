@@ -87,6 +87,16 @@ typedef union gf_gui_union_t {
 } gf_gui_union_t;
 
 /**
+ * @struct gf_gui_prop_t
+ * @~english
+ * @brief Property
+ */
+GF_DECLARE_TYPE(gui_prop, {
+	char* key;
+	int   value;
+});
+
+/**
  * @struct gf_gui_component_t
  * @~english
  * @brief Component
@@ -121,6 +131,9 @@ typedef union gf_gui_union_t {
  *
  * @var gf_gui_component_t::parent
  * @brief Parent GUI component
+ *
+ * @var gf_gui_component_t::prop
+ * @brief Property
  */
 GF_DECLARE_TYPE(gui_component, {
 	gf_gui_id_t	  key;
@@ -131,6 +144,7 @@ GF_DECLARE_TYPE(gui_component, {
 	double		  height;
 	int		  pressed;
 	gf_gui_id_t	  parent;
+	gf_gui_prop_t*	  prop;
 	gf_gui_callback_t callback;
 	gf_gui_union_t	  u;
 });
@@ -165,6 +179,7 @@ typedef void gf_gui_button_t;
 typedef void gf_gui_window_t;
 
 typedef void gf_gui_t;
+typedef void gf_gui_prop_t;
 typedef void gf_gui_component_t;
 typedef void gf_gui_union_t;
 #endif

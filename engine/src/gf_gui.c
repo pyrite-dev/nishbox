@@ -70,8 +70,14 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	for(i = 0; i < hmlen(gui->area); i++) {
 		if(gui->area[i].parent == id) {
 			gf_gui_destroy_id(gui, gui->area[i].key);
+			i--;
 		}
 	}
+
+	if(c->prop != NULL) {
+		shfree(c->prop);
+	}
+
 	hmdel(gui->area, id);
 }
 
@@ -115,7 +121,10 @@ void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, dou
 	c->height   = h;
 	c->parent   = -1;
 	c->pressed  = 0;
+	c->prop	    = NULL;
 	c->callback = NULL;
+	sh_new_strdup(c->prop);
+	shdefault(c->prop, GF_GUI_NO_SUCH_PROP);
 }
 
 gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text) {
@@ -147,6 +156,7 @@ gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, do
 	close_button = gf_gui_create_button(gui, -5 - GF_GUI_SMALL_FONT_SIZE, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE, "X");
 
 	gf_gui_set_parent(gui, close_button, c.key);
+	gf_gui_set_prop(gui, close_button, "close-parent", 1);
 
 	return c.key;
 }
@@ -248,12 +258,15 @@ void gf_gui_render(gf_gui_t* gui) {
 	}
 	if((gui->pressed != -1) && !(input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
 		int ind;
-		if(gui->area[gui->pressed].callback != NULL) {
-			gui->area[gui->pressed].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
-		}
 		ind = hmgeti(gui->area, gui->pressed);
 		if(ind != -1) {
+			if(gui->area[ind].callback != NULL) {
+				gui->area[ind].callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
+			}
 			gui->area[ind].pressed = 1;
+			if(gf_gui_get_prop(gui, gui->area[ind].key, "close-parent")) {
+				gf_gui_destroy_id(gui, gui->area[ind].parent);
+			}
 		}
 		gui->pressed = -1;
 	}
@@ -271,4 +284,18 @@ void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent) {
 	if(ind == -1) return;
 
 	gui->area[ind].parent = parent;
+}
+
+void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value) {
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return;
+
+	shput(gui->area[ind].prop, key, value);
+}
+
+int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
+
+	return shget(gui->area[ind].prop, key);
 }

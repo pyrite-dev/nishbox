@@ -33,6 +33,12 @@
 
 /**
  * @~english
+ * @brief Value to be returned for "no such property"
+ */
+#define GF_GUI_NO_SUCH_PROP 0xffffff
+
+/**
+ * @~english
  * @brief Default GUI font size
  */
 #define GF_GUI_FONT_SIZE 30
@@ -129,5 +135,25 @@ GF_EXPORT void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callbac
  * @param parent Parent component ID
  */
 GF_EXPORT void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent);
+
+/**
+ * @~english
+ * @brief Set property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @param value Value
+ */
+GF_EXPORT void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value);
+
+/**
+ * @~english
+ * @brief Get property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @return Value
+ */
+GF_EXPORT int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
 
 #endif
