@@ -11,6 +11,7 @@
 #include <gf_gui.h>
 
 /* Engine */
+#include <gf_gui_static.h>
 #include <gf_graphic.h>
 #include <gf_draw.h>
 #include <gf_log.h>
@@ -59,18 +60,6 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	if(ind == -1) return;
 
 	c = &gui->area[ind];
-	switch(c->type) {
-	case GF_GUI_BUTTON: {
-		if(c->u.button.text != NULL) free(c->u.button.text);
-		c->u.button.text = NULL;
-		break;
-	}
-	case GF_GUI_WINDOW: {
-		if(c->u.window.title != NULL) free(c->u.window.title);
-		c->u.window.title = NULL;
-		break;
-	}
-	}
 	for(i = 0; i < hmlen(gui->area); i++) {
 		if(gui->area[i].parent == id) {
 			gf_gui_destroy_id(gui, gui->area[i].key);
@@ -86,6 +75,10 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 				break;
 			}
 		}
+	}
+
+	if(c->text != NULL) {
+		free(c->text);
 	}
 
 	if(c->prop != NULL) {
@@ -136,45 +129,12 @@ void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, dou
 	c->pressed  = 0;
 	c->prop	    = NULL;
 	c->callback = NULL;
+	c->text	    = NULL;
 	sh_new_strdup(c->prop);
 	shdefault(c->prop, GF_GUI_NO_SUCH_PROP);
 
 	shput(c->prop, "min-width", 0);
 	shput(c->prop, "min-height", 0);
-}
-
-gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text) {
-	gf_gui_component_t c;
-
-	gf_gui_create_component(gui, &c, x, y, w, h);
-
-	c.type		= GF_GUI_BUTTON;
-	c.u.button.text = malloc(strlen(text) + 1);
-	strcpy(c.u.button.text, text);
-
-	hmputs(gui->area, c);
-
-	return c.key;
-}
-
-gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, double h, const char* title) {
-	gf_gui_component_t c;
-	gf_gui_id_t	   close_button;
-
-	gf_gui_create_component(gui, &c, x, y, w, h);
-
-	c.type		 = GF_GUI_WINDOW;
-	c.u.window.title = malloc(strlen(title) + 1);
-	strcpy(c.u.window.title, title);
-
-	hmputs(gui->area, c);
-
-	close_button = gf_gui_create_button(gui, -5 - GF_GUI_SMALL_FONT_SIZE, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE, "X");
-
-	gf_gui_set_parent(gui, close_button, c.key);
-	gf_gui_set_prop(gui, close_button, "close-parent", 1);
-
-	return c.key;
 }
 
 void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
@@ -229,8 +189,6 @@ void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y
 	gf_gui_calc_xywh_noset(gui, c, x, y, w, h);
 }
 
-double nn = 0;
-
 void gf_gui_render(gf_gui_t* gui) {
 	int	    i;
 	gf_input_t* input = gui->draw->input;
@@ -259,39 +217,9 @@ void gf_gui_render(gf_gui_t* gui) {
 	for(i = 0; i < hmlen(gui->area); i++) {
 		gf_gui_component_t* c = &gui->area[i];
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
-		switch(c->type) {
-		case GF_GUI_BUTTON: {
-			double x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_SMALL_FONT_SIZE, c->u.button.text) / 2;
-			double y = cy + ch / 2 - GF_GUI_SMALL_FONT_SIZE / 2;
-			if(gui->pressed == c->key) {
-				x += gf_gui_border_width / 2;
-				y += gf_gui_border_width / 2;
-			}
-			gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
 
-			gf_graphic_clip(gui->draw, cx, cy, cw, ch);
-			gf_graphic_text(gui->draw, x, y, GF_GUI_SMALL_FONT_SIZE, c->u.button.text, gf_gui_font_color);
-			gf_graphic_clip(gui->draw, 0, 0, 0, 0);
-			break;
-		}
-		case GF_GUI_WINDOW: {
-			gf_graphic_color_t col = gf_gui_font_color;
+		gf_gui_all_render(gui, c);
 
-			if((prop = gf_gui_get_prop(gui, c->key, "active")) == GF_GUI_NO_SUCH_PROP || !prop) {
-				col.r -= gf_gui_border_color_diff * 3 / 2;
-				col.g -= gf_gui_border_color_diff * 3 / 2;
-				col.b -= gf_gui_border_color_diff * 3 / 2;
-			}
-
-			gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
-
-			gf_graphic_clip(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
-			gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->u.window.title, col);
-			gf_graphic_clip(gui->draw, 0, 0, 0, 0);
-
-			break;
-		}
-		}
 		if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
 			int j;
 			for(j = 0; j < 3; j++) {
@@ -346,9 +274,8 @@ void gf_gui_render(gf_gui_t* gui) {
 					}
 				}
 			}
-			if(!cancel && c->type == GF_GUI_WINDOW) {
-				c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
-				c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
+			if(!cancel) {
+				gf_gui_all_drag(gui, c);
 			}
 			gf_gui_move_topmost(gui, c->key);
 		}
@@ -360,18 +287,8 @@ void gf_gui_render(gf_gui_t* gui) {
 		ind = hmgeti(gui->area, gui->pressed);
 		if(ind != -1) {
 			gf_gui_component_t* c = &gui->area[ind];
-			switch(c->type) {
-			case GF_GUI_BUTTON: {
-				if(c->callback != NULL) {
-					c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
-				}
-				c->pressed = 1;
-				if((prop = gf_gui_get_prop(gui, c->key, "close-parent")) != GF_GUI_NO_SUCH_PROP && prop) {
-					gf_gui_destroy_id(gui, c->parent);
-				}
-				break;
-			}
-			}
+
+			gf_gui_all_click(gui, c);
 		}
 		gui->pressed = -1;
 	}
@@ -389,6 +306,15 @@ void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent) {
 	if(ind == -1) return;
 
 	gui->area[ind].parent = parent;
+}
+
+void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text) {
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return;
+
+	if(gui->area[ind].text != NULL) free(gui->area[ind].text);
+	gui->area[ind].text = malloc(strlen(text) + 1);
+	strcpy(gui->area[ind].text, text);
 }
 
 void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value) {

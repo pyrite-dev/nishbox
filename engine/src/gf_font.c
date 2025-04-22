@@ -154,7 +154,7 @@ gf_font_t* gf_font_create(gf_draw_t* draw, const char* path, const void* data, s
 			buf[i]	   = 0;
 			incr	   = i + 1;
 
-			if(strlen(line) >= 1 && line[strlen(line) - 1] == '\r'){
+			if(strlen(line) >= 1 && line[strlen(line) - 1] == '\r') {
 				line[strlen(line) - 1] = 0;
 			}
 

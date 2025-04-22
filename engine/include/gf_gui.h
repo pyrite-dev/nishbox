@@ -16,6 +16,7 @@
 /* Engine */
 #include <gf_type/draw.h>
 #include <gf_type/core.h>
+#include <gf_gui_component.h>
 
 /* Standard */
 
@@ -79,32 +80,6 @@ GF_EXPORT void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id);
 
 /**
  * @~english
- * @brief Create button component
- * @param gui GUI
- * @param x X coord of button
- * @param y Y coord of button
- * @param w Width of button
- * @param h Height of button
- * @param text Button text
- * @return Component ID
- */
-GF_EXPORT gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text);
-
-/**
- * @~english
- * @brief Create window component
- * @param gui GUI
- * @param x X coord of window
- * @param y Y coord of window
- * @param w Width of window
- * @param h Height of window
- * @param title Window title
- * @return Component ID
- */
-GF_EXPORT gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, double h, const char* title);
-
-/**
- * @~english
  * @brief Render GUI
  * @param gui GUI
  */
@@ -139,6 +114,15 @@ GF_EXPORT void gf_gui_set_callback(gf_gui_t* gui, gf_gui_id_t id, gf_gui_callbac
  * @param parent Parent component ID
  */
 GF_EXPORT void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent);
+
+/**
+ * @~english
+ * @brief Set text
+ * @param gui GUI
+ * @param id Component ID
+ * @param text Text
+ */
+GF_EXPORT void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text);
 
 /**
  * @~english
@@ -183,6 +167,30 @@ GF_EXPORT void gf_gui_sort_component(gf_gui_t* gui);
  * @param id Component ID
  */
 GF_EXPORT void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id);
+
+/**
+ * @~english
+ * @brief Initialize component
+ * @param gui GUI
+ * @param c Component
+ * @param x X
+ * @param y Y
+ * @param w Width
+ * @param h Height
+ */
+GF_EXPORT void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, double y, double w, double h);
+
+/**
+ * @~english
+ * @brief Calculate component X/Y/width/height
+ * @param gui GUI
+ * @param c Component
+ * @param x X
+ * @param y Y
+ * @param w Width
+ * @param h Height
+ */
+GF_EXPORT void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h);
 
 #ifdef __cplusplus
 }

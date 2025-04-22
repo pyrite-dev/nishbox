@@ -25,11 +25,8 @@ enum GF_GUI_EVENTS {
 };
 
 #ifdef GF_EXPOSE_GUI
-typedef struct gf_gui_button_t gf_gui_button_t;
-
 typedef struct gf_gui_t		  gf_gui_t;
 typedef struct gf_gui_component_t gf_gui_component_t;
-typedef union gf_gui_union_t	  gf_gui_union_t;
 
 /* External library */
 
@@ -49,42 +46,6 @@ enum GF_GUI_COMPONENT_TYPES {
 	GF_GUI_BUTTON = 0,
 	GF_GUI_WINDOW
 };
-
-/**
- * @struct gf_gui_button_t
- * @~english
- * @brief Button component
- *
- * @var gf_gui_button_t::text
- * @brief Button text
- */
-GF_DECLARE_TYPE(gui_button, { char* text; });
-
-/**
- * @struct gf_gui_window_t
- * @~english
- * @brief Window component
- *
- * @var gf_gui_window_t::title
- * @brief Window title
- */
-GF_DECLARE_TYPE(gui_window, { char* title; });
-
-/**
- * @union gf_gui_union_t
- * @~english
- * @brief Component union
- *
- * @var gf_gui_union_t::button
- * @brief Button component
- *
- * @var gf_gui_union_t::window
- * @brief Window component
- */
-typedef union gf_gui_union_t {
-	gf_gui_button_t button;
-	gf_gui_window_t window;
-} gf_gui_union_t;
 
 /**
  * @struct gf_gui_prop_t
@@ -126,14 +87,14 @@ GF_DECLARE_TYPE(gui_prop, {
  * @var gf_gui_component_t::callback
  * @brief Event callback
  *
- * @var gf_gui_component_t::u
- * @brief Component union
- *
  * @var gf_gui_component_t::parent
  * @brief Parent GUI component
  *
  * @var gf_gui_component_t::prop
  * @brief Property
+ *
+ * @var gf_gui_component_t::text
+ * @brief Text
  */
 GF_DECLARE_TYPE(gui_component, {
 	gf_gui_id_t	  key;
@@ -146,7 +107,7 @@ GF_DECLARE_TYPE(gui_component, {
 	gf_gui_id_t	  parent;
 	gf_gui_prop_t*	  prop;
 	gf_gui_callback_t callback;
-	gf_gui_union_t	  u;
+	char*		  text;
 });
 
 /**
@@ -175,13 +136,9 @@ GF_DECLARE_TYPE(gui, {
 #else
 typedef void* gf_gui_callback_t;
 
-typedef void gf_gui_button_t;
-typedef void gf_gui_window_t;
-
 typedef void gf_gui_t;
 typedef void gf_gui_prop_t;
 typedef void gf_gui_component_t;
-typedef void gf_gui_union_t;
 #endif
 
 #endif

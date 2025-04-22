@@ -47,6 +47,9 @@ project("GoldFish")
 		"audio/*.c",
 		"../external/jar/jar_*.h"
 	})
+	files({
+		"gui/*.c"
+	})
 	filter({
 		"system:windows",
 		"options:engine=dynamic"
