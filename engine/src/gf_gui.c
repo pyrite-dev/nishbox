@@ -384,6 +384,17 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 	ind = hmgeti(gui->area, id);
 	if(ind != -1) {
 		gf_gui_component_t c = gui->area[ind];
-		gf_gui_move_topmost(gui, c.parent);
+		gf_gui_id_t	   p;
+		if(c.parent == -1) return;
+		while(1) {
+			p = c.parent;
+
+			ind = hmgeti(gui->area, p);
+			if(ind != -1) {
+				c = gui->area[ind];
+			}
+			if(c.parent == -1) break;
+		}
+		gf_gui_move_topmost(gui, p);
 	}
 }
