@@ -24,8 +24,6 @@ void gf_client_begin(void) { gf_draw_begin(); }
 void gf_client_end(void) { gf_draw_end(); }
 
 gf_client_t* gf_client_create(gf_engine_t* engine, const char* title) {
-	size_t	     sz;
-	void*	     fontdata;
 	gf_client_t* client = malloc(sizeof(*client));
 	memset(client, 0, sizeof(*client));
 	client->engine = engine;
