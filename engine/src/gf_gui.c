@@ -138,6 +138,9 @@ void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, dou
 	c->callback = NULL;
 	sh_new_strdup(c->prop);
 	shdefault(c->prop, GF_GUI_NO_SUCH_PROP);
+
+	shput(c->prop, "min-width", 0);
+	shput(c->prop, "min-height", 0);
 }
 
 gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, double h, const char* text) {
@@ -335,11 +338,11 @@ void gf_gui_render(gf_gui_t* gui) {
 				if(cancel) {
 					c->width  = input->mouse_x - gf_gui_get_prop(gui, c->key, "clicked-x") + gf_gui_get_prop(gui, c->key, "old-width");
 					c->height = input->mouse_y - gf_gui_get_prop(gui, c->key, "clicked-y") + gf_gui_get_prop(gui, c->key, "old-height");
-					if(c->width < GF_GUI_SMALL_FONT_SIZE + 10) {
-						c->width = GF_GUI_SMALL_FONT_SIZE + 10 + sz;
+					if((prop = gf_gui_get_prop(gui, c->key, "min-width")) != GF_GUI_NO_SUCH_PROP && c->width < GF_GUI_SMALL_FONT_SIZE + 10 + sz + prop) {
+						c->width = GF_GUI_SMALL_FONT_SIZE + 10 + sz + prop;
 					}
-					if(c->height < GF_GUI_SMALL_FONT_SIZE + 10) {
-						c->height = GF_GUI_SMALL_FONT_SIZE + 10 + sz;
+					if((prop = gf_gui_get_prop(gui, c->key, "min-height")) != GF_GUI_NO_SUCH_PROP && c->height < GF_GUI_SMALL_FONT_SIZE + 10 + sz + prop) {
+						c->height = GF_GUI_SMALL_FONT_SIZE + 10 + sz + prop;
 					}
 				}
 			}
@@ -413,10 +416,10 @@ void gf_gui_add_recursive(gf_gui_t* gui, gf_gui_component_t** pnew, gf_gui_id_t 
 	int i;
 
 	for(i = 0; i < hmlen(gui->area); i++) {
-		gf_gui_component_t c = gui->area[i];
-		if(c.parent == parent) {
-			hmputs(*pnew, c);
-			gf_gui_add_recursive(gui, pnew, c.key);
+		gf_gui_component_t* c = &gui->area[i];
+		if(c->parent == parent) {
+			hmputs(*pnew, *c);
+			gf_gui_add_recursive(gui, pnew, c->key);
 		}
 	}
 }
@@ -426,15 +429,17 @@ void gf_gui_sort_component(gf_gui_t* gui) {
 	gf_gui_component_t* new = NULL;
 
 	for(i = 0; i < hmlen(gui->area); i++) {
-		gf_gui_component_t c = gui->area[i];
-		if(c.parent == -1) {
-			gf_gui_set_prop(gui, c.key, "active", 0);
-			hmputs(new, c);
-			gf_gui_add_recursive(gui, &new, c.key);
+		gf_gui_component_t* c = &gui->area[i];
+		if(c->parent == -1) {
+			gf_gui_set_prop(gui, c->key, "active", 0);
+			hmputs(new, *c);
+			gf_gui_add_recursive(gui, &new, c->key);
 		}
 	}
+
 	hmfree(gui->area);
 	gui->area = new;
+
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
 		gf_gui_component_t* c = &gui->area[i];
 		if(c->parent == -1) {
@@ -450,21 +455,21 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 	gf_gui_component_t* new = NULL;
 
 	for(i = 0; i < hmlen(gui->area); i++) {
-		gf_gui_component_t c = gui->area[i];
-		if(c.parent == -1 && c.key != id) {
-			gf_gui_set_prop(gui, c.key, "active", 0);
-			hmputs(new, c);
-			gf_gui_add_recursive(gui, &new, c.key);
+		gf_gui_component_t* c = &gui->area[i];
+		if(c->parent == -1 && c->key != id) {
+			gf_gui_set_prop(gui, c->key, "active", 0);
+			hmputs(new, *c);
+			gf_gui_add_recursive(gui, &new, c->key);
 		}
 	}
 
 	ind = hmgeti(gui->area, id);
 	if(ind != -1) {
-		gf_gui_component_t c = gui->area[ind];
-		if(c.parent == -1) {
-			gf_gui_set_prop(gui, c.key, "active", 1);
-			hmputs(new, c);
-			gf_gui_add_recursive(gui, &new, c.key);
+		gf_gui_component_t* c = &gui->area[ind];
+		if(c->parent == -1) {
+			gf_gui_set_prop(gui, c->key, "active", 1);
+			hmputs(new, *c);
+			gf_gui_add_recursive(gui, &new, c->key);
 		}
 	}
 
@@ -473,17 +478,17 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 
 	ind = hmgeti(gui->area, id);
 	if(ind != -1) {
-		gf_gui_component_t c = gui->area[ind];
-		gf_gui_id_t	   p;
-		if(c.parent == -1) return;
+		gf_gui_component_t* c = &gui->area[ind];
+		gf_gui_id_t	    p;
+		if(c->parent == -1) return;
 		while(1) {
-			p = c.parent;
+			p = c->parent;
 
 			ind = hmgeti(gui->area, p);
 			if(ind != -1) {
-				c = gui->area[ind];
+				c = &gui->area[ind];
 			}
-			if(c.parent == -1) break;
+			if(c->parent == -1) break;
 		}
 		gf_gui_move_topmost(gui, p);
 	}

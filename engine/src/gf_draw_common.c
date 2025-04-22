@@ -36,8 +36,8 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->engine  = engine;
 	draw->x	      = 0;
 	draw->y	      = 0;
-	draw->width   = 640;
-	draw->height  = 480;
+	draw->width   = 800;
+	draw->height  = 600;
 	draw->running = 0;
 	draw->draw_3d = 0;
 	draw->font    = NULL;
@@ -84,10 +84,10 @@ void gf_draw_frame(gf_draw_t* draw) {
 		made = 1;
 		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 
-		window	= gf_gui_create_window(draw->gui, 50, 50, 200, 200, "Test Window");
-		window2 = gf_gui_create_window(draw->gui, 150, 150, 75, 200, "Test Window 2");
-
+		window = gf_gui_create_window(draw->gui, 50, 50, 640, 480, "Test Window");
 		gf_gui_set_prop(draw->gui, window, "resizable", 1);
+
+		window2 = gf_gui_create_window(draw->gui, 50, 50, 100, 100, "Test Window");
 
 		gf_gui_sort_component(draw->gui);
 	}
