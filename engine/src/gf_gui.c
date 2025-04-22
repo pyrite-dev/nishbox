@@ -62,16 +62,18 @@ void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	case GF_GUI_BUTTON: {
 		if(c->u.button.text != NULL) free(c->u.button.text);
 		c->u.button.text = NULL;
+		break;
 	}
 	case GF_GUI_WINDOW: {
 		if(c->u.window.title != NULL) free(c->u.window.title);
 		c->u.window.title = NULL;
+		break;
 	}
 	}
 	for(i = 0; i < hmlen(gui->area); i++) {
 		if(gui->area[i].parent == id) {
 			gf_gui_destroy_id(gui, gui->area[i].key);
-			i--;
+			i = -1;
 		}
 	}
 

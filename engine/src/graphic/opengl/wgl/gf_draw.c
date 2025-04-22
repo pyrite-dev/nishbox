@@ -19,6 +19,7 @@
 /* Standard */
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef const char*(APIENTRY* PFNWGLGETEXTENSIONSSTRINGARB)(HDC);
 #ifdef DO_SWAP_INTERVAL
