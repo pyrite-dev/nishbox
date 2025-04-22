@@ -148,6 +148,15 @@ GF_EXPORT void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, i
 
 /**
  * @~english
+ * @brief Delete property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ */
+GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+
+/**
+ * @~english
  * @brief Get property
  * @param gui GUI
  * @param id Component ID

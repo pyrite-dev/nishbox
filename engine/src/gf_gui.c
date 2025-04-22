@@ -162,8 +162,8 @@ gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, do
 }
 
 void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
-	double pw = gui->draw->width;
-	double ph = gui->draw->height;
+	double pw = 0;
+	double ph = 0;
 	double bx = 0;
 	double by = 0;
 
@@ -291,6 +291,13 @@ void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value) 
 	if(ind == -1) return;
 
 	shput(gui->area[ind].prop, key, value);
+}
+
+void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return;
+
+	shdel(gui->area[ind].prop, key);
 }
 
 int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
