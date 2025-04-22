@@ -86,6 +86,8 @@ void gf_draw_frame(gf_draw_t* draw) {
 		window	= gf_gui_create_window(draw->gui, 50, 50, 200, 200, "Test Window");
 		window2 = gf_gui_create_window(draw->gui, 150, 150, 200, 200, "Test Window 2");
 
+		gf_gui_set_prop(draw->gui, window, "resizable", 1);
+
 		gf_gui_sort_component(draw->gui);
 	}
 	if(draw->draw_3d) {

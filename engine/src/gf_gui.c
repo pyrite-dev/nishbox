@@ -265,8 +265,8 @@ void gf_gui_render(gf_gui_t* gui) {
 			if(c->type == GF_GUI_WINDOW) {
 				c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
 				c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
-				gf_gui_move_topmost(gui, c->key);
 			}
+			gf_gui_move_topmost(gui, c->key);
 		}
 	}
 
@@ -380,4 +380,10 @@ void gf_gui_move_topmost(gf_gui_t* gui, gf_gui_id_t id) {
 
 	hmfree(gui->area);
 	gui->area = new;
+
+	ind = hmgeti(gui->area, id);
+	if(ind != -1) {
+		gf_gui_component_t c = gui->area[ind];
+		gf_gui_move_topmost(gui, c.parent);
+	}
 }

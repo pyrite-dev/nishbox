@@ -50,8 +50,9 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 		break;
 	case WM_MOUSEMOVE:
 		if(draw->input != NULL) {
-			draw->input->mouse_x = LOWORD(lp);
-			draw->input->mouse_y = HIWORD(lp);
+			POINTS p	     = MAKEPOINTS(lp);
+			draw->input->mouse_x = p.x;
+			draw->input->mouse_y = p.y;
 		}
 		break;
 	case WM_LBUTTONDOWN:
