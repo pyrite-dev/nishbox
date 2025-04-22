@@ -175,10 +175,10 @@ gf_font_t* gf_font_create_file(gf_draw_t* draw, const char* path) {
 	buf[f->size] = 0;
 
 	gf_file_read(f, buf, f->size);
-	gf_file_close(f);
 
 	font = gf_font_create(draw, path, buf, f->size);
 
+	gf_file_close(f);
 	free(buf);
 
 	return font;
