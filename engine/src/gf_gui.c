@@ -214,6 +214,10 @@ void gf_gui_render(gf_gui_t* gui) {
 			c->pressed = 0;
 		}
 	}
+	if(gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
+		/* dummy value for "background" */
+		gui->pressed = -2;
+	}
 	for(i = 0; i < hmlen(gui->area); i++) {
 		gf_gui_component_t* c = &gui->area[i];
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
