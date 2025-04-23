@@ -83,6 +83,7 @@ void gf_draw_frame(gf_draw_t* draw) {
 	if(made == 0) {
 		gf_gui_id_t window;
 		gf_gui_id_t window2;
+		gf_gui_id_t frame;
 		made = 1;
 		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 

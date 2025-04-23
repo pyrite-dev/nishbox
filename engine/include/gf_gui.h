@@ -132,7 +132,7 @@ GF_EXPORT void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text);
  * @param key Key
  * @param value Value
  */
-GF_EXPORT void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value);
+GF_EXPORT void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_value_t value);
 
 /**
  * @~english
@@ -151,7 +151,7 @@ GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key
  * @param key Key
  * @return Value
  */
-GF_EXPORT int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+GF_EXPORT gf_gui_prop_value_t gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
 
 /**
  * @~english

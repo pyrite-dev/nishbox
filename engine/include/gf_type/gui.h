@@ -18,6 +18,12 @@ typedef int gf_gui_id_t;
 
 /**
  * @~english
+ * @brief Property value type
+ */
+typedef long gf_gui_prop_value_t;
+
+/**
+ * @~english
  * @brief GUI events
  */
 enum GF_GUI_EVENTS {

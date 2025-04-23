@@ -38,14 +38,14 @@ gf_gui_id_t gf_gui_create_button(gf_gui_t* gui, double x, double y, double w, do
 }
 
 void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t* input = gui->draw->input;
-	double	    cx;
-	double	    cy;
-	double	    cw;
-	double	    ch;
-	double	    x;
-	double	    y;
-	int	    prop;
+	gf_input_t*	    input = gui->draw->input;
+	double		    cx;
+	double		    cy;
+	double		    cw;
+	double		    ch;
+	double		    x;
+	double		    y;
+	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
@@ -66,14 +66,14 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 }
 
 void gf_gui_button_drag(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t* input = gui->draw->input;
-	int	    prop;
+	gf_input_t*	    input = gui->draw->input;
+	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 }
 
 void gf_gui_button_click(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t* input = gui->draw->input;
-	int	    prop;
+	gf_input_t*	    input = gui->draw->input;
+	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 	if(c->callback != NULL) {
 		c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);

@@ -54,7 +54,7 @@ void gf_gui_destroy(gf_gui_t* gui) {
 
 void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
 	int		    i;
-	int		    prop;
+	gf_gui_prop_value_t prop;
 	int		    ind = hmgeti(gui->area, id);
 	gf_gui_component_t* c;
 	if(ind == -1) return;
@@ -190,17 +190,18 @@ void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y
 }
 
 void gf_gui_render(gf_gui_t* gui) {
-	int	    i;
-	gf_input_t* input = gui->draw->input;
-	double	    cx;
-	double	    cy;
-	double	    cw;
-	double	    ch;
-	int	    prop;
+	int		    i;
+	gf_input_t*	    input = gui->draw->input;
+	double		    cx;
+	double		    cy;
+	double		    cw;
+	double		    ch;
+	gf_gui_prop_value_t prop;
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
-		gf_gui_component_t* c = &gui->area[i];
+		gf_gui_component_t* c		 = &gui->area[i];
+		int		    ignore_mouse = (prop = gf_gui_get_prop(gui, c->key, "ignore-mouse")) != GF_GUI_NO_SUCH_PROP && prop;
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
-		if(input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
+		if(!ignore_mouse && input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
 			gui->pressed = c->key;
 			gf_gui_set_prop(gui, c->key, "clicked-x", input->mouse_x);
 			gf_gui_set_prop(gui, c->key, "clicked-y", input->mouse_y);
@@ -230,10 +231,11 @@ void gf_gui_render(gf_gui_t* gui) {
 		if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
 			int j;
 			for(j = 0; j < 3; j++) {
-				double		   sp  = gf_gui_border_width / 2 + 5;
-				double		   bw  = gf_gui_border_width * 1.5;
-				double		   rx  = cx + cw - sp - (j + 1) * (bw + 1);
-				double		   ry  = cy + ch - sp - (j + 1) * (bw + 1);
+				double		   sp  = 5;
+				double		   bw  = gf_gui_border_width * 2;
+				double		   aln = (double)GF_GUI_SMALL_FONT_SIZE / 3 - bw;
+				double		   rx  = cx + cw - sp - j * bw - j * aln;
+				double		   ry  = cy + ch - sp - j * bw - j * aln;
 				gf_graphic_color_t col = gf_gui_base_color;
 
 				col.r -= gf_gui_border_color_diff;
@@ -260,8 +262,8 @@ void gf_gui_render(gf_gui_t* gui) {
 			gf_gui_component_t* c	   = &gui->area[ind];
 			int		    cancel = 0;
 			if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
-				double sp = gf_gui_border_width / 2 + 5;
-				double sz = sp * 3;
+				double sp = 5;
+				double sz = GF_GUI_SMALL_FONT_SIZE;
 				c->width  = gf_gui_get_prop(gui, c->key, "old-width");
 				c->height = gf_gui_get_prop(gui, c->key, "old-height");
 				gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
@@ -329,7 +331,7 @@ void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text) {
 	strcpy(gui->area[ind].text, text);
 }
 
-void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, int value) {
+void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_value_t value) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return;
 
@@ -343,7 +345,7 @@ void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
 	shdel(gui->area[ind].prop, key);
 }
 
-int gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
+gf_gui_prop_value_t gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
 
