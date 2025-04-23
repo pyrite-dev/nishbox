@@ -3,7 +3,7 @@
  * @~english
  * @brief GUI static stuff
  * @note User should not include this, this header is used internally
- * @warning This file is auto-generated using ./tool/gengui.sh at `Wed Apr 23 01:07:50 JST 2025`
+ * @warning This file is auto-generated using ./tool/gengui.sh at `Wed Apr 23 23:51:41 JST 2025`
  */
 
 #ifndef __GF_GUI_STATIC_H__
@@ -31,8 +31,10 @@ extern "C" {
  */
 static void gf_gui_all_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	extern void gf_gui_button_render(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_frame_render(gf_gui_t * gui, gf_gui_component_t * c);
 	extern void gf_gui_window_render(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_render(gui, c);
+	gf_gui_frame_render(gui, c);
 	gf_gui_window_render(gui, c);
 }
 
@@ -44,8 +46,10 @@ static void gf_gui_all_render(gf_gui_t* gui, gf_gui_component_t* c) {
  */
 static void gf_gui_all_drag(gf_gui_t* gui, gf_gui_component_t* c) {
 	extern void gf_gui_button_drag(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_frame_drag(gf_gui_t * gui, gf_gui_component_t * c);
 	extern void gf_gui_window_drag(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_drag(gui, c);
+	gf_gui_frame_drag(gui, c);
 	gf_gui_window_drag(gui, c);
 }
 
@@ -57,8 +61,10 @@ static void gf_gui_all_drag(gf_gui_t* gui, gf_gui_component_t* c) {
  */
 static void gf_gui_all_click(gf_gui_t* gui, gf_gui_component_t* c) {
 	extern void gf_gui_button_click(gf_gui_t * gui, gf_gui_component_t * c);
+	extern void gf_gui_frame_click(gf_gui_t * gui, gf_gui_component_t * c);
 	extern void gf_gui_window_click(gf_gui_t * gui, gf_gui_component_t * c);
 	gf_gui_button_click(gui, c);
+	gf_gui_frame_click(gui, c);
 	gf_gui_window_click(gui, c);
 }
 
