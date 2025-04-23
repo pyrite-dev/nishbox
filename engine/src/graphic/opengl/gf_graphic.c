@@ -4,6 +4,7 @@
 #include <gf_pre.h>
 
 /* External library */
+#include <stb_ds.h>
 #include <gf_opengl.h>
 
 /* Interface */
@@ -173,10 +174,33 @@ void gf_graphic_set_camera(gf_draw_t* draw) {
 	glTranslated(-draw->camera[0], -draw->camera[1], -draw->camera[2]);
 }
 
-void gf_graphic_clip(gf_draw_t* draw, double x, double y, double w, double h) {
-	if(x == 0 && y == 0 && w == 0 && h == 0) {
-		glScissor(0, 0, draw->width, draw->height);
-	} else {
-		glScissor(x, draw->height - y - h, w, h);
+void gf_graphic_clip_push(gf_draw_t* draw, double x, double y, double w, double h) {
+	arrput(draw->clip, x);
+	arrput(draw->clip, y);
+	arrput(draw->clip, w);
+	arrput(draw->clip, h);
+	glScissor(x, draw->height - y - h, w, h);
+}
+
+void gf_graphic_clip_pop(gf_draw_t* draw) {
+	double x;
+	double y;
+	double w;
+	double h;
+	if(arrlen(draw->clip) > 0) {
+		arrdel(draw->clip, arrlen(draw->clip) - 1);
+		arrdel(draw->clip, arrlen(draw->clip) - 1);
+		arrdel(draw->clip, arrlen(draw->clip) - 1);
+		arrdel(draw->clip, arrlen(draw->clip) - 1);
 	}
+	if(arrlen(draw->clip) == 0) {
+		glScissor(0, 0, draw->width, draw->height);
+		return;
+	}
+
+	x = draw->clip[arrlen(draw->clip) - 4];
+	y = draw->clip[arrlen(draw->clip) - 3];
+	w = draw->clip[arrlen(draw->clip) - 2];
+	h = draw->clip[arrlen(draw->clip) - 1];
+	glScissor(x, draw->height - y - h, w, h);
 }

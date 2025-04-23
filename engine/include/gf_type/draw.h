@@ -86,6 +86,9 @@ typedef struct gf_draw_t gf_draw_t;
  *
  * @var gf_draw_t::camera
  * @brief Camera location
+ *
+ * @var gf_draw_t::clip
+ * @brief Clip region stack
  */
 GF_DECLARE_TYPE(draw, {
 	gf_engine_t*	    engine;
@@ -105,6 +108,7 @@ GF_DECLARE_TYPE(draw, {
 	gf_math_vector_t    light;
 	gf_math_vector_t    lookat;
 	gf_math_vector_t    camera;
+	double*		    clip;
 });
 #else
 typedef void gf_draw_t;

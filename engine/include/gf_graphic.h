@@ -95,9 +95,21 @@ GF_EXPORT void gf_graphic_set_camera(gf_draw_t* draw);
 
 /**
  * @~english
- * @brief Set clipping region
+ * @brief Push clipping region
+ * @param draw Drawing interface
+ * @param x X
+ * @param y Y
+ * @param w Width
+ * @param h Height
  */
-GF_EXPORT void gf_graphic_clip(gf_draw_t* draw, double x, double y, double w, double h);
+GF_EXPORT void gf_graphic_clip_push(gf_draw_t* draw, double x, double y, double w, double h);
+
+/**
+ * @~english
+ * @brief Pop clipping region
+ * @param draw Drawing interface
+ */
+GF_EXPORT void gf_graphic_clip_pop(gf_draw_t* draw);
 
 /* Common */
 

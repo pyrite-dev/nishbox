@@ -5,6 +5,7 @@
 #include <gf_pre.h>
 
 /* External library */
+#include <stb_ds.h>
 #include <stb_image.h>
 
 /* Interface */
@@ -42,6 +43,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->draw_3d = 0;
 	draw->font    = NULL;
 	draw->input   = NULL;
+	draw->clip    = NULL;
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
@@ -109,6 +111,10 @@ int gf_draw_step(gf_draw_t* draw) {
 void gf_draw_destroy(gf_draw_t* draw) {
 	if(draw->font != NULL) {
 		gf_font_destroy(draw->font);
+	}
+	if(draw->clip != NULL) {
+		arrfree(draw->clip);
+		draw->clip = NULL;
 	}
 	if(draw->driver != NULL) gf_draw_driver_destroy(draw->driver);
 	if(draw->platform != NULL) gf_draw_platform_destroy(draw->platform);

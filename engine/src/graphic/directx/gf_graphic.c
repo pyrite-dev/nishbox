@@ -33,4 +33,6 @@ void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double z
 
 void gf_graphic_set_camera(gf_draw_t* draw) { /* TODO: Implement this */ }
 
-void gf_graphic_clip(gf_draw_t* draw, double x, double y, double w, double h) { /* TODO: Implement this */ }
+void gf_graphic_clip_push(gf_draw_t* draw, double x, double y, double w, double h) { /* TODO: Implement this */ }
+
+void gf_graphic_clip_pop(gf_draw_t* draw) { /* TODO: Implement this */ }

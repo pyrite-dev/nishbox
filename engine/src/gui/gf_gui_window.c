@@ -65,9 +65,9 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
 
 	if(c->text != NULL) {
-		gf_graphic_clip(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
+		gf_graphic_clip_push(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
 		gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
-		gf_graphic_clip(gui->draw, 0, 0, 0, 0);
+		gf_graphic_clip_pop(gui->draw);
 	}
 }
 

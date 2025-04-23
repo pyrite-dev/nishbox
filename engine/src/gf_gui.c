@@ -223,7 +223,9 @@ void gf_gui_render(gf_gui_t* gui) {
 		gf_gui_component_t* c = &gui->area[i];
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 
+		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
 		gf_gui_all_render(gui, c);
+		gf_graphic_clip_pop(gui->draw);
 
 		if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
 			int j;
