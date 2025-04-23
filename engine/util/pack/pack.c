@@ -58,11 +58,8 @@ int add_all(gf_resource_t* resource, char* path) {
 			strcat(np, path);
 			strcat(np, ffd.cFileName);
 
-			count++;
-
 			if(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 				strcat(np, "/");
-				gf_resource_add(resource, np, NULL, 0, 1);
 				if((st = add_all(resource, np)) != 0) {
 					free(np);
 					break;
@@ -80,9 +77,10 @@ int add_all(gf_resource_t* resource, char* path) {
 					fread(data, sz, 1, f);
 					fclose(f);
 
-					gf_resource_add(resource, np, data, sz, 0);
+					gf_resource_add(resource, np, data, sz);
 
 					free(data);
+					count++;
 				}
 			}
 			free(np);
@@ -113,13 +111,10 @@ int add_all(gf_resource_t* resource, char* path) {
 			strcat(np, path);
 			strcat(np, d->d_name);
 
-			count++;
-
 			stat(p, &s);
 
 			if(S_ISDIR(s.st_mode)) {
 				strcat(np, "/");
-				gf_resource_add(resource, np, NULL, 0, 1);
 				if((st = add_all(resource, np)) != 0) {
 					free(np);
 					break;
@@ -137,9 +132,11 @@ int add_all(gf_resource_t* resource, char* path) {
 					fread(data, sz, 1, f);
 					fclose(f);
 
-					gf_resource_add(resource, np, data, sz, 0);
+					gf_resource_add(resource, np, data, sz);
 
 					free(data);
+
+					count++;
 				}
 			}
 			free(np);

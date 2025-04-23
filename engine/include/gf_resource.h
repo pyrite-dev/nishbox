@@ -57,9 +57,8 @@ GF_EXPORT int gf_resource_get(gf_resource_t* resource, const char* name, void** 
  * @param name Entry name
  * @param data Data
  * @param size Data size
- * @param dir `0` if file, otherwise if directory
  */
-GF_EXPORT void gf_resource_add(gf_resource_t* resource, const char* name, void* data, size_t size, int dir);
+GF_EXPORT void gf_resource_add(gf_resource_t* resource, const char* name, void* data, size_t size);
 
 /**
  * @~english

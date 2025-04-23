@@ -29,19 +29,24 @@ typedef struct gf_resource_t gf_resource_t;
  * @var gf_resource_entry_t::key
  * @brief Entry name
  *
- * @var gf_resource_entry_t::address
- * @brief Location in file
- *
- * @var gf_resource_entry_t::address
- * @brief Location in file
- *
  * @var gf_resource_entry_t::size
  * @brief Size
+ *
+ * @var gf_resource_entry_t::ogsize
+ * @brief Size after decompressing
+ *
+ * @var gf_resource_entry_t::compressed
+ * @brief Compressed data
+ *
+ * @var gf_resource_entry_t::cache
+ * @brief Cache
  */
 GF_DECLARE_TYPE(resource_entry, {
-	char*	     key;
-	unsigned int address;
-	unsigned int size;
+	char*  key;
+	size_t size;
+	size_t ogsize;
+	char*  compressed;
+	char*  cache;
 });
 
 /**
@@ -54,18 +59,10 @@ GF_DECLARE_TYPE(resource_entry, {
  *
  * @var gf_resource_t::entries
  * @brief Resource entries
- *
- * @var gf_resource_t::data
- * @brief Data
- *
- * @var gf_resource_t::size
- * @brief Data size
  */
 GF_DECLARE_TYPE(resource, {
 	gf_engine_t*	     engine;
 	gf_resource_entry_t* entries;
-	unsigned char*	     data;
-	unsigned int	     size;
 });
 #else
 typedef void gf_resource_entry_t;
