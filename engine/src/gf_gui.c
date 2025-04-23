@@ -212,6 +212,7 @@ void gf_gui_render(gf_gui_t* gui) {
 			}
 		} else if(gui->pressed == -1) {
 			c->pressed = 0;
+			gf_gui_delete_prop(gui, c->key, "cancel-drag");
 		}
 	}
 	if(gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
@@ -262,11 +263,16 @@ void gf_gui_render(gf_gui_t* gui) {
 				c->width  = gf_gui_get_prop(gui, c->key, "old-width");
 				c->height = gf_gui_get_prop(gui, c->key, "old-height");
 				gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
-				cancel = 1;
-				cancel = cancel && ((cx + cw - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-x"));
-				cancel = cancel && ((cx + cw - sp) >= gf_gui_get_prop(gui, c->key, "clicked-x"));
-				cancel = cancel && ((cy + ch - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-y"));
-				cancel = cancel && ((cy + ch - sp) >= gf_gui_get_prop(gui, c->key, "clicked-y"));
+				if((prop = gf_gui_get_prop(gui, c->key, "cancel-drag")) == GF_GUI_NO_SUCH_PROP) {
+					cancel = 1;
+					cancel = cancel && ((cx + cw - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-x"));
+					cancel = cancel && ((cx + cw - sp) >= gf_gui_get_prop(gui, c->key, "clicked-x"));
+					cancel = cancel && ((cy + ch - sp - sz) <= gf_gui_get_prop(gui, c->key, "clicked-y"));
+					cancel = cancel && ((cy + ch - sp) >= gf_gui_get_prop(gui, c->key, "clicked-y"));
+					gf_gui_set_prop(gui, c->key, "cancel-drag", cancel);
+				} else {
+					cancel = gf_gui_get_prop(gui, c->key, "cancel-drag");
+				}
 				if(cancel) {
 					c->width  = input->mouse_x - gf_gui_get_prop(gui, c->key, "clicked-x") + gf_gui_get_prop(gui, c->key, "old-width");
 					c->height = input->mouse_y - gf_gui_get_prop(gui, c->key, "clicked-y") + gf_gui_get_prop(gui, c->key, "old-height");
