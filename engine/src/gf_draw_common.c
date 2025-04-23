@@ -83,6 +83,7 @@ void gf_draw_frame(gf_draw_t* draw) {
 		gf_gui_id_t window2;
 		made = 1;
 		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
+		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
 
 		window = gf_gui_create_window(draw->gui, 50, 50, 640, 480);
 		gf_gui_set_prop(draw->gui, window, "resizable", 1);

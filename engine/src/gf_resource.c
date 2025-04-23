@@ -147,6 +147,8 @@ int gf_resource_get(gf_resource_t* resource, const char* name, void** data, size
 		} while(ret != Z_STREAM_END);
 		inflateEnd(&stream);
 		gf_log_function(resource->engine, "%s: Compression rate is %.2f%%", name, (double)e->ogsize / e->size * 100);
+	} else {
+		gf_log_function(resource->engine, "%s: Using cache", name);
 	}
 
 	if(e->cache != NULL) {
