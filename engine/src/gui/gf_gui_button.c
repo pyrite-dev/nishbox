@@ -51,7 +51,9 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 
-	gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
+	if((prop = gf_prop_get_integer(&c->prop, "no-border")) == GF_PROP_NO_SUCH || !prop) {
+		gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
+	}
 
 	if(c->text != NULL) {
 		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->bold_font, GF_GUI_SMALL_FONT_SIZE, c->text) / 2;
