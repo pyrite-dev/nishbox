@@ -59,6 +59,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		   ch;
 	gf_prop_integer_t  prop;
 	gf_graphic_color_t col = gf_gui_font_color;
+	gf_gui_id_t	   fid;
 	int		   frame;
 	if(c->type != GF_GUI_WINDOW) return;
 
@@ -78,7 +79,8 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 		gf_graphic_clip_pop(gui->draw);
 	}
 
-	frame = hmgeti(gui->area, gf_gui_get_prop_id(gui, c->key, "frame"));
+	fid   = gf_gui_get_prop_id(gui, c->key, "frame");
+	frame = hmgeti(gui->area, fid);
 	if(frame != -1) {
 		gf_gui_component_t* cf = &gui->area[frame];
 		cf->width	       = c->width - 10;
