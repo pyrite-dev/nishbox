@@ -22,8 +22,6 @@
 #define CHUNK 32767
 
 gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
-	struct tar_header* th;
-	int		   i;
 	FILE*		   f;
 	gf_resource_t*	   resource = malloc(sizeof(*resource));
 
@@ -91,7 +89,6 @@ int gf_resource_get(gf_resource_t* resource, const char* name, void** data, size
 		z_stream       stream;
 		int	       ret;
 		int	       have;
-		size_t	       dsz2;
 		size_t	       dsz = e->size;
 		unsigned char* ptr = e->compressed;
 

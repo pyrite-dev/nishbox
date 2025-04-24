@@ -58,8 +58,8 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	if(c->text != NULL) {
 		double fsz = GF_GUI_SMALL_FONT_SIZE;
-		if((prop = gf_prop_get_floating(&c->prop, "font-size")) != GF_PROP_NO_SUCH) {
-			fsz = prop;
+		if((propf = gf_prop_get_floating(&c->prop, "font-size")) != GF_PROP_NO_SUCH) {
+			fsz = propf;
 		}
 		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->bold_font, fsz, c->text) / 2;
 		y = cy + ch / 2 - (double)fsz / 2;
