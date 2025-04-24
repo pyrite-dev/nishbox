@@ -210,6 +210,12 @@ void gf_gui_render(gf_gui_t* gui) {
 		} else if(gui->pressed == -1) {
 			c->pressed = 0;
 			gf_gui_delete_prop(gui, c->key, "cancel-drag");
+			if(gf_gui_get_prop_integer(gui, c->key, "min-width") == GF_GUI_NO_SUCH_PROP) {
+				gf_gui_set_prop_integer(gui, c->key, "min-width", 0);
+			}
+			if(gf_gui_get_prop_integer(gui, c->key, "min-height") == GF_GUI_NO_SUCH_PROP) {
+				gf_gui_set_prop_integer(gui, c->key, "min-height", 0);
+			}
 		}
 	}
 	if(gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK)) {
