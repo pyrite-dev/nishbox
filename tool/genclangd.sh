@@ -18,7 +18,7 @@ compile () {
 		echo '	@echo "$(CC)"' >> scan_$$.mk
 		echo "include Makefile" >> scan_$$.mk
 		CC="`gmake -f scan_$$.mk print-cc`"
-		CFLAGS="$CFLAGS `gmake -f scan_$$.mk print-cflags`"
+		CFLAGS="$CFLAGS `${MAKE:-gmake} -f scan_$$.mk print-cflags ${MAKEFLAGS}`"
 		rm -f scan_*.mk
 	else
 		for i in $ARR; do
@@ -28,7 +28,7 @@ compile () {
 			echo '	@echo "$(CC)"' >> scan_$$.mk
 			echo "include $i" >> scan_$$.mk
 			CC="`gmake -f scan_$$.mk print-cc`"
-			CFLAGS="$CFLAGS `gmake -f scan_$$.mk print-cflags`"
+			CFLAGS="$CFLAGS `${MAKE:-gmake} -f scan_$$.mk print-cflags ${MAKEFLAGS}`"
 			rm -f scan_*.mk
 		done
 	fi

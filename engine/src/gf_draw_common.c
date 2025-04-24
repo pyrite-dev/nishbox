@@ -120,7 +120,7 @@ int gf_draw_step(gf_draw_t* draw) {
 		gf_gui_set_callback(draw->gui, no, gf_draw_close_no);
 		gf_gui_set_parent(draw->gui, no, gf_gui_get_prop_id(draw->gui, window, "frame"));
 
-		gf_gui_set_text(draw->gui, gf_gui_get_prop_id(draw->gui, window, "frame"), "Are you sure you want to quit?");
+		gf_gui_set_text(draw->gui, gf_gui_get_prop_id(draw->gui, window, "frame"), "Are you sure that you want to quit?");
 
 		gf_gui_sort_component(draw->gui);
 	}
