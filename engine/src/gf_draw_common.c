@@ -1,5 +1,3 @@
-#include "gf_gui_component.h"
-#include "gf_type/gui.h"
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_CORE
 #define GF_EXPOSE_CLIENT
