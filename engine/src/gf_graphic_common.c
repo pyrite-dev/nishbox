@@ -18,15 +18,17 @@
 
 void gf_graphic_fill_rect(gf_draw_t* draw, double x, double y, double w, double h, gf_graphic_color_t color) { gf_graphic_fill_polygon(draw, color, GF_GRAPHIC_2D, 4, x, y, x, y + h, x + w, y + h, x + w, y); }
 
-void gf_graphic_text(gf_draw_t* draw, double x, double y, double size, const char* text, gf_graphic_color_t color) {
+void gf_graphic_text(gf_draw_t* draw, gf_font_t* userfont, double x, double y, double size, const char* text, gf_graphic_color_t color) {
 	int		 i;
 	double		 mx = 0;
 	gf_font_glyph_t* glyph;
 	double		 zoom = 0;
-	if(draw->font != NULL) {
-		zoom = size / draw->font->bbox.height;
+	gf_font_t*	 font = userfont;
+	if(font == NULL) font = draw->font;
+	if(font != NULL) {
+		zoom = size / font->bbox.height;
 		for(i = 0; text[i] != 0; i++) {
-			if((glyph = gf_font_get(draw->font, text[i])) != NULL) {
+			if((glyph = gf_font_get(font, text[i])) != NULL) {
 				double fax = glyph->bbox.width;
 				double fay = glyph->bbox.height;
 				double fx  = glyph->bbox.x;
@@ -38,15 +40,17 @@ void gf_graphic_text(gf_draw_t* draw, double x, double y, double size, const cha
 	}
 }
 
-double gf_graphic_text_width(gf_draw_t* draw, double size, const char* text) {
+double gf_graphic_text_width(gf_draw_t* draw, gf_font_t* userfont, double size, const char* text) {
 	int		 i;
 	double		 mx = 0;
 	gf_font_glyph_t* glyph;
 	double		 zoom = 0;
-	if(draw->font != NULL) {
-		zoom = size / draw->font->bbox.height;
+	gf_font_t*	 font = userfont;
+	if(font == NULL) font = draw->font;
+	if(font != NULL) {
+		zoom = size / font->bbox.height;
 		for(i = 0; text[i] != 0; i++) {
-			if((glyph = gf_font_get(draw->font, text[i])) != NULL) {
+			if((glyph = gf_font_get(font, text[i])) != NULL) {
 				mx += zoom * glyph->dwidth[0];
 			}
 		}

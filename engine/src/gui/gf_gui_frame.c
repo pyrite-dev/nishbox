@@ -1,4 +1,5 @@
 #define GF_EXPOSE_GUI
+#define GF_EXPOSE_DRAW
 
 #include <gf_pre.h>
 
@@ -7,11 +8,14 @@
 
 /* Interface */
 #include <gf_gui.h>
+#include <gf_graphic.h>
 
 /* Engine */
 #include <gf_prop.h>
 
 /* Standard */
+
+extern gf_graphic_color_t gf_gui_font_color;
 
 gf_gui_id_t gf_gui_create_frame(gf_gui_t* gui, double x, double y, double w, double h) {
 	gf_gui_component_t c;
@@ -26,7 +30,23 @@ gf_gui_id_t gf_gui_create_frame(gf_gui_t* gui, double x, double y, double w, dou
 }
 
 void gf_gui_frame_render(gf_gui_t* gui, gf_gui_component_t* c) {
+	double cx;
+	double cy;
+	double cw;
+	double ch;
+	double sx;
+	double sy;
 	if(c->type != GF_GUI_FRAME) return;
+	if(c->text == NULL) return;
+
+	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+
+	sx = cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->font, 24, c->text) / 2;
+	sy = ch / 2 - 24.0 / 2;
+
+	gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
+	gf_graphic_text(gui->draw, gui->draw->font, cx + sx, cy + sy, 24, c->text, gf_gui_font_color);
+	gf_graphic_clip_pop(gui->draw);
 }
 
 void gf_gui_frame_drag(gf_gui_t* gui, gf_gui_component_t* c) {

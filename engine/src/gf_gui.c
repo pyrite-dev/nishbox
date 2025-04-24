@@ -158,14 +158,14 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 	}
 
 	*x += bx;
-	if(c->x < 0) {
-		*x += pw;
+	if(c->x < 0 || c->x == -0.0) {
+		*x += pw - (c->parent != -1 ? c->width : 0);
 	}
 	*x += c->x;
 
 	*y += by;
-	if(c->y < 0) {
-		*y += ph;
+	if(c->y < 0 || c->y == -0.0) {
+		*y += ph - (c->parent != -1 ? c->height : 0);
 	}
 	*y += c->y;
 
@@ -323,6 +323,13 @@ void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t parent) {
 	if(ind == -1) return;
 
 	gui->area[ind].parent = parent;
+}
+
+gf_gui_id_t gf_gui_get_parent(gf_gui_t* gui, gf_gui_id_t id) {
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return -1;
+
+	return gui->area[ind].parent;
 }
 
 void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text) {

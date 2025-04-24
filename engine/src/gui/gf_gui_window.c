@@ -37,7 +37,7 @@ gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, do
 
 	hmputs(gui->area, c);
 
-	close_button = gf_gui_create_button(gui, -5 - GF_GUI_SMALL_FONT_SIZE, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE);
+	close_button = gf_gui_create_button(gui, -5, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE);
 	gf_gui_set_parent(gui, close_button, c.key);
 	gf_prop_set_integer(gf_gui_get_prop(gui, close_button), "close-parent", 1);
 	gf_gui_set_text(gui, close_button, "X");
@@ -74,7 +74,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	if(c->text != NULL) {
 		gf_graphic_clip_push(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
-		gf_graphic_text(gui->draw, cx + 10, cy + 10 - (double)GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
+		gf_graphic_text(gui->draw, gui->draw->bold_font, cx + 10, cy + 10 - (double)GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
 		gf_graphic_clip_pop(gui->draw);
 	}
 

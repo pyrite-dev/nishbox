@@ -14,7 +14,6 @@
 #include <gf_file.h>
 
 /* Standard */
-#include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -28,12 +27,6 @@ gf_font_glyph_t* gf_font_get(gf_font_t* font, int code) {
 	}
 	return NULL;
 }
-
-#ifdef _MSC_VER
-#define gf_stat _stat
-#else
-#define gf_stat stat
-#endif
 
 /**
  * This is a private method to parse BDF line

@@ -54,14 +54,14 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_gui_draw_box(gui, (gui->pressed == c->key) ? GF_GUI_INVERT : GF_GUI_NORMAL, cx, cy, cw, ch);
 
 	if(c->text != NULL) {
-		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_SMALL_FONT_SIZE, c->text) / 2;
+		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->bold_font, GF_GUI_SMALL_FONT_SIZE, c->text) / 2;
 		y = cy + ch / 2 - (double)GF_GUI_SMALL_FONT_SIZE / 2;
 		if(gui->pressed == c->key) {
 			x += gf_gui_border_width / 2;
 			y += gf_gui_border_width / 2;
 		}
 		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
-		gf_graphic_text(gui->draw, x, y, GF_GUI_SMALL_FONT_SIZE, c->text, gf_gui_font_color);
+		gf_graphic_text(gui->draw, gui->draw->bold_font, x, y, GF_GUI_SMALL_FONT_SIZE, c->text, gf_gui_font_color);
 		gf_graphic_clip_pop(gui->draw);
 	}
 }

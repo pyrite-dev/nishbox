@@ -8,8 +8,6 @@
 /* Engine */
 
 /* Standard */
-#include <string.h>
-#include <stdlib.h>
 #include <math.h>
 
 double gf_math_log2(double x) { return log(x) / log(2); }

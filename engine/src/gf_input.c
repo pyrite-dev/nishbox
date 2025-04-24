@@ -16,7 +16,7 @@
 
 gf_input_t* gf_input_create(gf_engine_t* engine) {
 	gf_input_t* input = malloc(sizeof(*input));
-	memset(input, 0, sizeof(input));
+	memset(input, 0, sizeof(*input));
 	input->engine = engine;
 
 	input->mouse_x	  = -1;

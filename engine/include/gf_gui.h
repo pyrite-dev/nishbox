@@ -112,6 +112,15 @@ GF_EXPORT void gf_gui_set_parent(gf_gui_t* gui, gf_gui_id_t id, gf_gui_id_t pare
 
 /**
  * @~english
+ * @brief Get parent component
+ * @param gui GUI
+ * @param id Component ID
+ * @return Parent component ID
+ */
+GF_EXPORT gf_gui_id_t gf_gui_get_parent(gf_gui_t* gui, gf_gui_id_t id);
+
+/**
+ * @~english
  * @brief Set text
  * @param gui GUI
  * @param id Component ID

@@ -16,6 +16,7 @@
 /* Engine */
 #include <gf_type/draw.h>
 #include <gf_type/texture.h>
+#include <gf_type/font.h>
 
 /* Standard */
 
@@ -118,13 +119,13 @@ GF_EXPORT void gf_graphic_clip_pop(gf_draw_t* draw);
  * @brief Calculate text width
  * @return Text width
  */
-GF_EXPORT double gf_graphic_text_width(gf_draw_t* draw, double size, const char* text);
+GF_EXPORT double gf_graphic_text_width(gf_draw_t* draw, gf_font_t* userfont, double size, const char* text);
 
 /**
  * @~english
  * @brief Draw text
  */
-GF_EXPORT void gf_graphic_text(gf_draw_t* draw, double x, double y, double size, const char* text, gf_graphic_color_t color);
+GF_EXPORT void gf_graphic_text(gf_draw_t* draw, gf_font_t* userfont, double x, double y, double size, const char* text, gf_graphic_color_t color);
 
 /**
  * @~english

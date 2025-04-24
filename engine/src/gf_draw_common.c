@@ -1,3 +1,5 @@
+#include "gf_gui_component.h"
+#include "gf_type/gui.h"
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_CORE
 #define GF_EXPOSE_CLIENT
@@ -12,6 +14,7 @@
 #include <gf_draw.h>
 
 /* Engine */
+#include <gf_prop.h>
 #include <gf_core.h>
 #include <gf_log.h>
 #include <gf_draw_platform.h>
@@ -25,7 +28,6 @@
 /* Standard */
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 void gf_draw_begin(void) { gf_draw_platform_begin(); }
 
@@ -74,38 +76,56 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 
 void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 
-int made = 0;
-
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
-	gf_graphic_color_t color;
-	color.r = color.g = color.b = color.a = 255;
-	if(made == 0) {
-		gf_gui_id_t window;
-		gf_gui_id_t window2;
-		gf_gui_id_t frame;
-		made = 1;
-		gf_audio_resume(draw->engine->client->audio, gf_audio_load_file(draw->engine->client->audio, "base:/music/mikke-shine.xm"));
-
-		window = gf_gui_create_window(draw->gui, 50, 50, 640, 480);
-		gf_gui_set_text(draw->gui, window, "Test Window 1");
-
-		window2 = gf_gui_create_window(draw->gui, 100, 100, 200, 200);
-		gf_gui_set_text(draw->gui, window2, "Test Window 2");
-
-		gf_gui_sort_component(draw->gui);
-	}
+	gf_graphic_clear(draw);
 	if(draw->draw_3d) {
 	}
 	gf_gui_render(draw->gui);
 }
 
+void gf_draw_close_yes(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) { draw->close = 2; }
+
+void gf_draw_close_no(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
+	gf_gui_id_t frame  = gf_gui_get_parent(draw->gui, id);
+	gf_gui_id_t window = gf_gui_get_parent(draw->gui, frame);
+	if(type == GF_GUI_PRESS_EVENT) {
+		gf_gui_destroy_id(draw->gui, window);
+	}
+}
+
 int gf_draw_step(gf_draw_t* draw) {
 	int ret = gf_draw_platform_step(draw);
 	if(ret != 0) return ret;
-	draw->close = 0;
+	if(draw->close == 1) {
+		gf_gui_id_t window;
+		gf_gui_id_t yes;
+		gf_gui_id_t no;
 
-	return 0;
+		double w    = 600;
+		double h    = 200;
+		double bh   = 25;
+		draw->close = 0;
+
+		window = gf_gui_create_window(draw->gui, (double)draw->width / 2 - w / 2, (double)draw->height / 2 - h / 2, w, h);
+		gf_gui_set_text(draw->gui, window, "Confirm");
+
+		yes = gf_gui_create_button(draw->gui, -5.0 - bh * 2.5, -0.0, bh * 2.5, bh);
+		gf_gui_set_text(draw->gui, yes, "Yes");
+		gf_gui_set_callback(draw->gui, yes, gf_draw_close_yes);
+		gf_gui_set_parent(draw->gui, yes, gf_gui_get_prop_id(draw->gui, window, "frame"));
+
+		no = gf_gui_create_button(draw->gui, -0.0, -0.0, bh * 2.5, bh);
+		gf_gui_set_text(draw->gui, no, "No");
+		gf_gui_set_callback(draw->gui, no, gf_draw_close_no);
+		gf_gui_set_parent(draw->gui, no, gf_gui_get_prop_id(draw->gui, window, "frame"));
+
+		gf_gui_set_text(draw->gui, gf_gui_get_prop_id(draw->gui, window, "frame"), "Are you sure you want to quit?");
+
+		gf_gui_sort_component(draw->gui);
+	}
+
+	return draw->close;
 }
 
 void gf_draw_destroy(gf_draw_t* draw) {

@@ -18,7 +18,6 @@
 /* Standard */
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 const char* gf_audio_mod_sig[] = {"M!K!", "M.K.", "FLT4", "FLT8", "4CHN", "6CHN", "8CHN", "10CH", "12CH", "14CH", "16CH", "18CH", "20CH", "22CH", "24CH", "26CH", "28CH", "30CH", "32CH"};
 

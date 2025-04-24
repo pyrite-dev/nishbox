@@ -73,7 +73,8 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 
 	engine->base = gf_resource_create(engine, "base.pak");
 	if(!nogui) {
-		engine->client->draw->font = gf_font_create_file(engine->client->draw, "base:/font/default.bdf");
+		engine->client->draw->font	= gf_font_create_file(engine->client->draw, "base:/font/default.bdf");
+		engine->client->draw->bold_font = gf_font_create_file(engine->client->draw, "base:/font/bold.bdf");
 	}
 	return engine;
 }

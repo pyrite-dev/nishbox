@@ -16,8 +16,6 @@
 #include <gf_math.h>
 
 /* Standard */
-#include <stdarg.h>
-#include <stdio.h>
 
 void gf_graphic_begin_2d(gf_draw_t* draw) { /* TODO: Implement this */ }
 

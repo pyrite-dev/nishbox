@@ -18,7 +18,6 @@
 
 /* Standard */
 #include <stdarg.h>
-#include <stdio.h>
 
 void gf_graphic_begin_2d(gf_draw_t* draw) {
 	glDisable(GL_LIGHTING);
@@ -179,6 +178,7 @@ void gf_graphic_clip_push(gf_draw_t* draw, double x, double y, double w, double 
 	arrput(draw->clip, y);
 	arrput(draw->clip, w);
 	arrput(draw->clip, h);
+	glEnable(GL_SCISSOR_TEST);
 	glScissor(x, draw->height - y - h, w, h);
 }
 
@@ -194,7 +194,7 @@ void gf_graphic_clip_pop(gf_draw_t* draw) {
 		arrdel(draw->clip, arrlen(draw->clip) - 1);
 	}
 	if(arrlen(draw->clip) == 0) {
-		glScissor(0, 0, draw->width, draw->height);
+		glDisable(GL_SCISSOR_TEST);
 		return;
 	}
 
