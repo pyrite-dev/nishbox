@@ -24,6 +24,12 @@ typedef long gf_gui_prop_integer_t;
 
 /**
  * @~english
+ * @brief Floating point number type for GUI property
+ */
+typedef double gf_gui_prop_floating_t;
+
+/**
+ * @~english
  * @brief GUI events
  */
 enum GF_GUI_EVENTS {
@@ -63,8 +69,9 @@ enum GF_GUI_COMPONENT_TYPES {
 GF_DECLARE_TYPE(gui_prop, {
 	char* key;
 	union {
-		gf_gui_prop_integer_t integer;
-		gf_gui_id_t	      id;
+		gf_gui_prop_integer_t  integer;
+		gf_gui_prop_floating_t floating;
+		gf_gui_id_t	       id;
 	} value;
 });
 

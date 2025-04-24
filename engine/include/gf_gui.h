@@ -146,6 +146,26 @@ GF_EXPORT gf_gui_prop_integer_t gf_gui_get_prop_integer(gf_gui_t* gui, gf_gui_id
 
 /**
  * @~english
+ * @brief Set floating point number to GUI property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @param value Value
+ */
+GF_EXPORT void gf_gui_set_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_floating_t value);
+
+/**
+ * @~english
+ * @brief Get floating point number from GUI property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @return Value
+ */
+GF_EXPORT gf_gui_prop_floating_t gf_gui_get_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+
+/**
+ * @~english
  * @brief Set ID to GUI property
  * @param gui GUI
  * @param id Component ID

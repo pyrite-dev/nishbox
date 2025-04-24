@@ -355,6 +355,28 @@ gf_gui_prop_integer_t gf_gui_get_prop_integer(gf_gui_t* gui, gf_gui_id_t id, con
 	return gui->area[ind].prop[pind].value.integer;
 }
 
+void gf_gui_set_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_floating_t value) {
+	int	      ind = hmgeti(gui->area, id);
+	gf_gui_prop_t prop;
+	if(ind == -1) return;
+
+	prop.key	    = (char*)key;
+	prop.value.floating = value;
+
+	shputs(gui->area[ind].prop, prop);
+}
+
+gf_gui_prop_floating_t gf_gui_get_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key) {
+	int ind = hmgeti(gui->area, id);
+	int pind;
+	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
+
+	pind = shgeti(gui->area[ind].prop, key);
+	if(pind == -1) return GF_GUI_NO_SUCH_PROP;
+
+	return gui->area[ind].prop[pind].value.floating;
+}
+
 void gf_gui_set_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_id_t value) {
 	int	      ind = hmgeti(gui->area, id);
 	gf_gui_prop_t prop;
