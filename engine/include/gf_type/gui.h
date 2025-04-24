@@ -18,9 +18,9 @@ typedef int gf_gui_id_t;
 
 /**
  * @~english
- * @brief Property value type
+ * @brief Integer type for GUI property
  */
-typedef long gf_gui_prop_value_t;
+typedef long gf_gui_prop_integer_t;
 
 /**
  * @~english
@@ -31,6 +31,7 @@ enum GF_GUI_EVENTS {
 };
 
 #ifdef GF_EXPOSE_GUI
+typedef struct gf_gui_prop_t		  gf_gui_prop_t;
 typedef struct gf_gui_t		  gf_gui_t;
 typedef struct gf_gui_component_t gf_gui_component_t;
 
@@ -57,11 +58,14 @@ enum GF_GUI_COMPONENT_TYPES {
 /**
  * @struct gf_gui_prop_t
  * @~english
- * @brief Property
+ * @brief GUI property
  */
 GF_DECLARE_TYPE(gui_prop, {
 	char* key;
-	int   value;
+	union {
+		gf_gui_prop_integer_t integer;
+		gf_gui_id_t id;
+	} value;
 });
 
 /**

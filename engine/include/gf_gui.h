@@ -126,32 +126,52 @@ GF_EXPORT void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text);
 
 /**
  * @~english
- * @brief Set property
+ * @brief Set integer to GUI property
  * @param gui GUI
  * @param id Component ID
  * @param key Key
  * @param value Value
  */
-GF_EXPORT void gf_gui_set_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_value_t value);
+GF_EXPORT void gf_gui_set_prop_integer(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_integer_t value);
 
 /**
  * @~english
- * @brief Delete property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- */
-GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
-
-/**
- * @~english
- * @brief Get property
+ * @brief Get integer from GUI property
  * @param gui GUI
  * @param id Component ID
  * @param key Key
  * @return Value
  */
-GF_EXPORT gf_gui_prop_value_t gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+GF_EXPORT gf_gui_prop_integer_t gf_gui_get_prop_integer(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+
+/**
+ * @~english
+ * @brief Set ID to GUI property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @param value Value
+ */
+GF_EXPORT void gf_gui_set_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_id_t value);
+
+/**
+ * @~english
+ * @brief Get ID from GUI property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @return Value
+ */
+GF_EXPORT gf_gui_id_t gf_gui_get_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+
+/**
+ * @~english
+ * @brief Delete GUI property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ */
+GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
 
 /**
  * @~english

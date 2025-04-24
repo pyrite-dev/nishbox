@@ -38,14 +38,14 @@ gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, do
 
 	close_button = gf_gui_create_button(gui, -5 - GF_GUI_SMALL_FONT_SIZE, 5, GF_GUI_SMALL_FONT_SIZE, GF_GUI_SMALL_FONT_SIZE);
 	gf_gui_set_parent(gui, close_button, c.key);
-	gf_gui_set_prop(gui, close_button, "close-parent", 1);
+	gf_gui_set_prop_integer(gui, close_button, "close-parent", 1);
 	gf_gui_set_text(gui, close_button, "X");
 
 	frame = gf_gui_create_frame(gui, 5, 10 + GF_GUI_SMALL_FONT_SIZE, 0, 0);
 	gf_gui_set_parent(gui, frame, c.key);
-	gf_gui_set_prop(gui, frame, "ignore-mouse", 1);
+	gf_gui_set_prop_integer(gui, frame, "ignore-mouse", 1);
 
-	gf_gui_set_prop(gui, c.key, "frame", frame);
+	gf_gui_set_prop_id(gui, c.key, "frame", frame);
 
 	return c.key;
 }
@@ -56,33 +56,33 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		    cy;
 	double		    cw;
 	double		    ch;
-	gf_gui_prop_value_t prop;
+	gf_gui_prop_integer_t prop;
 	gf_graphic_color_t  col = gf_gui_font_color;
 	int		    frame;
 	if(c->type != GF_GUI_WINDOW) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 
-	if((prop = gf_gui_get_prop(gui, c->key, "active")) == GF_GUI_NO_SUCH_PROP || !prop) {
-		col.r -= gf_gui_border_color_diff * 3 / 2;
-		col.g -= gf_gui_border_color_diff * 3 / 2;
-		col.b -= gf_gui_border_color_diff * 3 / 2;
+	if((prop = gf_gui_get_prop_integer(gui, c->key, "active")) == GF_GUI_NO_SUCH_PROP || !prop) {
+		col.r -= (double)gf_gui_border_color_diff * 3 / 2;
+		col.g -= (double)gf_gui_border_color_diff * 3 / 2;
+		col.b -= (double)gf_gui_border_color_diff * 3 / 2;
 	}
 
 	gf_gui_draw_box(gui, GF_GUI_NORMAL, cx, cy, cw, ch);
 
 	if(c->text != NULL) {
 		gf_graphic_clip_push(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
-		gf_graphic_text(gui->draw, cx + 10, cy + 10 - GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
+		gf_graphic_text(gui->draw, cx + 10, cy + 10 - (double)GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
 		gf_graphic_clip_pop(gui->draw);
 	}
 
-	frame = hmgeti(gui->area, gf_gui_get_prop(gui, c->key, "frame"));
+	frame = hmgeti(gui->area, gf_gui_get_prop_id(gui, c->key, "frame"));
 	if(frame != -1) {
 		gf_gui_component_t* cf = &gui->area[frame];
 		cf->width	       = c->width - 10;
 		cf->height	       = c->height - GF_GUI_SMALL_FONT_SIZE - 10 - 5;
-		if((prop = gf_gui_get_prop(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
+		if((prop = gf_gui_get_prop_integer(gui, c->key, "resizable")) != GF_GUI_NO_SUCH_PROP && prop) {
 			cf->height -= GF_GUI_SMALL_FONT_SIZE;
 		}
 	}
@@ -90,15 +90,12 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 void gf_gui_window_drag(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_input_t*	    input = gui->draw->input;
-	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_WINDOW) return;
 
-	c->x = input->mouse_x - gf_gui_get_prop(gui, c->key, "diff-x");
-	c->y = input->mouse_y - gf_gui_get_prop(gui, c->key, "diff-y");
+	c->x = input->mouse_x - gf_gui_get_prop_integer(gui, c->key, "diff-x");
+	c->y = input->mouse_y - gf_gui_get_prop_integer(gui, c->key, "diff-y");
 }
 
 void gf_gui_window_click(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t*	    input = gui->draw->input;
-	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_WINDOW) return;
 }

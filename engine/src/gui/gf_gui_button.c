@@ -45,7 +45,7 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		    ch;
 	double		    x;
 	double		    y;
-	gf_gui_prop_value_t prop;
+	gf_gui_prop_integer_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
@@ -54,7 +54,7 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	if(c->text != NULL) {
 		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, GF_GUI_SMALL_FONT_SIZE, c->text) / 2;
-		y = cy + ch / 2 - GF_GUI_SMALL_FONT_SIZE / 2;
+		y = cy + ch / 2 - (double)GF_GUI_SMALL_FONT_SIZE / 2;
 		if(gui->pressed == c->key) {
 			x += gf_gui_border_width / 2;
 			y += gf_gui_border_width / 2;
@@ -66,20 +66,18 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 }
 
 void gf_gui_button_drag(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t*	    input = gui->draw->input;
-	gf_gui_prop_value_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 }
 
 void gf_gui_button_click(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_input_t*	    input = gui->draw->input;
-	gf_gui_prop_value_t prop;
+	gf_gui_prop_integer_t prop;
 	if(c->type != GF_GUI_BUTTON) return;
 	if(c->callback != NULL) {
 		c->callback(gui->engine, gui->draw, gui->pressed, GF_GUI_PRESS_EVENT);
 	}
 	c->pressed = 1;
-	if((prop = gf_gui_get_prop(gui, c->key, "close-parent")) != GF_GUI_NO_SUCH_PROP && prop) {
+	if((prop = gf_gui_get_prop_integer(gui, c->key, "close-parent")) != GF_GUI_NO_SUCH_PROP && prop) {
 		gf_gui_destroy_id(gui, c->parent);
 	}
 }
