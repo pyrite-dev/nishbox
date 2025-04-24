@@ -7,6 +7,8 @@
 #ifndef __GF_MACRO_H__
 #define __GF_MACRO_H__
 
+#include <gf_pre.h>
+
 #ifdef GF_EXPOSE_ALL
 
 #ifndef GF_EXPOSE_CORE
@@ -211,6 +213,8 @@
  */
 #if defined(_WIN32) && defined(GF_DLL)
 #define GF_EXPORT extern __declspec(dllexport)
+#elif defined(_WIN32) && defined(GF_BUILT_AS_DLL)
+#define GF_EXPORT extern __declspec(dllimport)
 #else
 #define GF_EXPORT extern
 #endif

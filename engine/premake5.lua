@@ -282,4 +282,13 @@ if _ACTION and _ACTION ~= "clean" then
 	gf_generateheader("external/ode/include/ode/precision.h", "@ODE_PRECISION@", "dDOUBLE")
 	gf_generateheader("external/ode/libccd/src/ccd/precision.h", "@CCD_PRECISION@", "CCD_DOUBLE")
 	gf_generateheader("external/ode/include/ode/version.h", "@ODE_VERSION@", "Custom-ODE")
+
+	local outfile = io.open("include/gf_config.h", "w")
+	outfile:write("#ifndef __GF_CONFIG_H__\n")
+	outfile:write("#define __GF_CONFIG_H__\n")
+	if _OPTIONS["engine"] == "dynamic" then
+	outfile:write("#define GF_BUILT_AS_DLL 1\n")
+	end
+	outfile:write("#endif\n")
+	outfile:close()
 end

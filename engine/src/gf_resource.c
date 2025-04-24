@@ -22,8 +22,8 @@
 #define CHUNK 32767
 
 gf_resource_t* gf_resource_create(gf_engine_t* engine, const char* path) {
-	FILE*		   f;
-	gf_resource_t*	   resource = malloc(sizeof(*resource));
+	FILE*	       f;
+	gf_resource_t* resource = malloc(sizeof(*resource));
 
 	memset(resource, 0, sizeof(*resource));
 	resource->engine  = engine;
