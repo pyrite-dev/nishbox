@@ -19,6 +19,7 @@ is in include/
  - GoldFish .lib
 is in lib/
 EOF
+cp engine/LICENSE nishbox/LICENSE.txt
 
 cp -rf engine/include/* nishbox/include/
 cp engine/lib/*/*/*.lib nishbox/lib/
@@ -26,6 +27,9 @@ cp bin/*/*/*.exe ./nishbox/bin/
 cp engine/bin/*/*/*.exe ./nishbox/bin/
 cp engine/lib/*/*/*.dll ./nishbox/bin/
 cp base.pak ./nishbox/bin/
+
+rm -f ./nishbox/include/*.txt
+
 zip -zrv nishbox.zip nishbox << EOF
 +---------------------------------------+
 | NishBox/GoldFish distribution zipfile |
