@@ -9,6 +9,7 @@
 #include <gf_gui.h>
 
 /* Engine */
+#include <gf_prop.h>
 
 /* Standard */
 

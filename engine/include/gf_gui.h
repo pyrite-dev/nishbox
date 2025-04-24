@@ -16,6 +16,7 @@
 /* Engine */
 #include <gf_type/draw.h>
 #include <gf_type/core.h>
+#include <gf_type/prop.h>
 #include <gf_gui_component.h>
 
 /* Standard */
@@ -35,12 +36,6 @@ extern "C" {
  * @brief Draw border inverted
  */
 #define GF_GUI_INVERT -1
-
-/**
- * @~english
- * @brief Value to be returned for "no such property"
- */
-#define GF_GUI_NO_SUCH_PROP 0xffffff
 
 /**
  * @~english
@@ -126,75 +121,6 @@ GF_EXPORT void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text);
 
 /**
  * @~english
- * @brief Set integer to GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @param value Value
- */
-GF_EXPORT void gf_gui_set_prop_integer(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_integer_t value);
-
-/**
- * @~english
- * @brief Get integer from GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @return Value
- */
-GF_EXPORT gf_gui_prop_integer_t gf_gui_get_prop_integer(gf_gui_t* gui, gf_gui_id_t id, const char* key);
-
-/**
- * @~english
- * @brief Set floating point number to GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @param value Value
- */
-GF_EXPORT void gf_gui_set_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_floating_t value);
-
-/**
- * @~english
- * @brief Get floating point number from GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @return Value
- */
-GF_EXPORT gf_gui_prop_floating_t gf_gui_get_prop_floating(gf_gui_t* gui, gf_gui_id_t id, const char* key);
-
-/**
- * @~english
- * @brief Set ID to GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @param value Value
- */
-GF_EXPORT void gf_gui_set_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_id_t value);
-
-/**
- * @~english
- * @brief Get ID from GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- * @return Value
- */
-GF_EXPORT gf_gui_id_t gf_gui_get_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key);
-
-/**
- * @~english
- * @brief Delete GUI property
- * @param gui GUI
- * @param id Component ID
- * @param key Key
- */
-GF_EXPORT void gf_gui_delete_prop(gf_gui_t* gui, gf_gui_id_t id, const char* key);
-
-/**
- * @~english
  * @brief Sort components
  * @param gui GUI
  */
@@ -231,6 +157,35 @@ GF_EXPORT void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, dou
  * @param h Height
  */
 GF_EXPORT void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h);
+
+/**
+ * @~english
+ * @brief Set component ID to property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @param id2 Component ID
+ */
+GF_EXPORT void gf_gui_set_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_id_t id2);
+
+/**
+ * @~english
+ * @brief Get component ID from property
+ * @param gui GUI
+ * @param id Component ID
+ * @param key Key
+ * @return Component ID
+ */
+GF_EXPORT gf_gui_id_t gf_gui_get_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key);
+
+/**
+ * @~english
+ * @brief Get property container
+ * @param gui GUI
+ * @param id Component ID
+ * @return Property
+ */
+GF_EXPORT gf_prop_t** gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id);
 
 #ifdef __cplusplus
 }

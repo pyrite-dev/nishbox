@@ -137,6 +137,14 @@
 #define GF_EXPOSE_RESOURCE
 #endif
 
+#ifndef GF_EXPOSE_PROP
+/**
+ * @~english
+ * @brief Expose property container properties
+ */
+#define GF_EXPOSE_PROP
+#endif
+
 #ifndef GF_EXPOSE_FILE
 /**
  * @~english

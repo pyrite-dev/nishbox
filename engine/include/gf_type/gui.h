@@ -18,18 +18,6 @@ typedef int gf_gui_id_t;
 
 /**
  * @~english
- * @brief Integer type for GUI property
- */
-typedef long gf_gui_prop_integer_t;
-
-/**
- * @~english
- * @brief Floating point number type for GUI property
- */
-typedef double gf_gui_prop_floating_t;
-
-/**
- * @~english
  * @brief GUI events
  */
 enum GF_GUI_EVENTS {
@@ -37,7 +25,6 @@ enum GF_GUI_EVENTS {
 };
 
 #ifdef GF_EXPOSE_GUI
-typedef struct gf_gui_prop_t	  gf_gui_prop_t;
 typedef struct gf_gui_t		  gf_gui_t;
 typedef struct gf_gui_component_t gf_gui_component_t;
 
@@ -46,6 +33,7 @@ typedef struct gf_gui_component_t gf_gui_component_t;
 /* Engine */
 #include <gf_type/draw.h>
 #include <gf_type/core.h>
+#include <gf_type/prop.h>
 
 /* Standard */
 
@@ -60,20 +48,6 @@ enum GF_GUI_COMPONENT_TYPES {
 	GF_GUI_WINDOW,
 	GF_GUI_FRAME
 };
-
-/**
- * @struct gf_gui_prop_t
- * @~english
- * @brief GUI property
- */
-GF_DECLARE_TYPE(gui_prop, {
-	char* key;
-	union {
-		gf_gui_prop_integer_t  integer;
-		gf_gui_prop_floating_t floating;
-		gf_gui_id_t	       id;
-	} value;
-});
 
 /**
  * @struct gf_gui_component_t
@@ -123,7 +97,7 @@ GF_DECLARE_TYPE(gui_component, {
 	double		  height;
 	int		  pressed;
 	gf_gui_id_t	  parent;
-	gf_gui_prop_t*	  prop;
+	gf_prop_t*	  prop;
 	gf_gui_callback_t callback;
 	char*		  text;
 });
@@ -155,7 +129,6 @@ GF_DECLARE_TYPE(gui, {
 typedef void* gf_gui_callback_t;
 
 typedef void gf_gui_t;
-typedef void gf_gui_prop_t;
 typedef void gf_gui_component_t;
 #endif
 
