@@ -53,10 +53,10 @@ void gf_gui_destroy(gf_gui_t* gui) {
 }
 
 void gf_gui_destroy_id(gf_gui_t* gui, gf_gui_id_t id) {
-	int		    i;
+	int		      i;
 	gf_gui_prop_integer_t prop;
-	int		    ind = hmgeti(gui->area, id);
-	gf_gui_component_t* c;
+	int		      ind = hmgeti(gui->area, id);
+	gf_gui_component_t*   c;
 	if(ind == -1) return;
 
 	c = &gui->area[ind];
@@ -186,12 +186,12 @@ void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y
 }
 
 void gf_gui_render(gf_gui_t* gui) {
-	int		    i;
-	gf_input_t*	    input = gui->draw->input;
-	double		    cx;
-	double		    cy;
-	double		    cw;
-	double		    ch;
+	int		      i;
+	gf_input_t*	      input = gui->draw->input;
+	double		      cx;
+	double		      cy;
+	double		      cw;
+	double		      ch;
 	gf_gui_prop_integer_t prop;
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
 		gf_gui_component_t* c		 = &gui->area[i];
@@ -328,11 +328,11 @@ void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text) {
 }
 
 void gf_gui_set_prop_integer(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_prop_integer_t value) {
-	int ind = hmgeti(gui->area, id);
+	int	      ind = hmgeti(gui->area, id);
 	gf_gui_prop_t prop;
 	if(ind == -1) return;
 
-	prop.key = (char*)key;
+	prop.key	   = (char*)key;
 	prop.value.integer = value;
 
 	shputs(gui->area[ind].prop, prop);
@@ -344,17 +344,17 @@ gf_gui_prop_integer_t gf_gui_get_prop_integer(gf_gui_t* gui, gf_gui_id_t id, con
 	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
 
 	pind = shgeti(gui->area[ind].prop, key);
-	if(ind == -1) return GF_GUI_NO_SUCH_PROP;
+	if(pind == -1) return GF_GUI_NO_SUCH_PROP;
 
 	return gui->area[ind].prop[pind].value.integer;
 }
 
 void gf_gui_set_prop_id(gf_gui_t* gui, gf_gui_id_t id, const char* key, gf_gui_id_t value) {
-	int ind = hmgeti(gui->area, id);
+	int	      ind = hmgeti(gui->area, id);
 	gf_gui_prop_t prop;
 	if(ind == -1) return;
 
-	prop.key = (char*)key;
+	prop.key      = (char*)key;
 	prop.value.id = value;
 
 	shputs(gui->area[ind].prop, prop);

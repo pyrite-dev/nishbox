@@ -31,7 +31,7 @@ enum GF_GUI_EVENTS {
 };
 
 #ifdef GF_EXPOSE_GUI
-typedef struct gf_gui_prop_t		  gf_gui_prop_t;
+typedef struct gf_gui_prop_t	  gf_gui_prop_t;
 typedef struct gf_gui_t		  gf_gui_t;
 typedef struct gf_gui_component_t gf_gui_component_t;
 
@@ -64,7 +64,7 @@ GF_DECLARE_TYPE(gui_prop, {
 	char* key;
 	union {
 		gf_gui_prop_integer_t integer;
-		gf_gui_id_t id;
+		gf_gui_id_t	      id;
 	} value;
 });
 

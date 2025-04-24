@@ -51,14 +51,14 @@ gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, do
 }
 
 void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t*	    input = gui->draw->input;
-	double		    cx;
-	double		    cy;
-	double		    cw;
-	double		    ch;
+	gf_input_t*	      input = gui->draw->input;
+	double		      cx;
+	double		      cy;
+	double		      cw;
+	double		      ch;
 	gf_gui_prop_integer_t prop;
-	gf_graphic_color_t  col = gf_gui_font_color;
-	int		    frame;
+	gf_graphic_color_t    col = gf_gui_font_color;
+	int		      frame;
 	if(c->type != GF_GUI_WINDOW) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
@@ -89,7 +89,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 }
 
 void gf_gui_window_drag(gf_gui_t* gui, gf_gui_component_t* c) {
-	gf_input_t*	    input = gui->draw->input;
+	gf_input_t* input = gui->draw->input;
 	if(c->type != GF_GUI_WINDOW) return;
 
 	c->x = input->mouse_x - gf_gui_get_prop_integer(gui, c->key, "diff-x");
