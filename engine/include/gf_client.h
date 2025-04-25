@@ -58,6 +58,13 @@ GF_EXPORT void gf_client_destroy(gf_client_t* client);
  */
 GF_EXPORT int gf_client_step(gf_client_t* client);
 
+/**
+ * @~english
+ * @brief Start client shutdown
+ * @param client Client interface
+ */
+GF_EXPORT void gf_client_shutdown(gf_client_t* client);
+
 #ifdef __cplusplus
 }
 #endif

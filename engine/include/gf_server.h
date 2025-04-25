@@ -49,6 +49,13 @@ GF_EXPORT gf_server_t* gf_server_create(gf_engine_t* engine);
  */
 GF_EXPORT void gf_server_destroy(gf_server_t* server);
 
+/**
+ * @~english
+ * @brief Start server shutdown
+ * @param server Server interface
+ */
+GF_EXPORT void gf_server_shutdown(gf_server_t* server);
+
 #ifdef __cplusplus
 }
 #endif

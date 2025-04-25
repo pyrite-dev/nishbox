@@ -46,6 +46,7 @@ gf_client_t* gf_client_create(gf_engine_t* engine, const char* title) {
 }
 
 void gf_client_destroy(gf_client_t* client) {
+	gf_client_shutdown(client);
 	if(client->draw != NULL) gf_draw_destroy(client->draw);
 	if(client->audio != NULL) gf_audio_destroy(client->audio);
 	if(client->input != NULL) gf_input_destroy(client->input);
@@ -56,4 +57,11 @@ void gf_client_destroy(gf_client_t* client) {
 int gf_client_step(gf_client_t* client) {
 	int s = gf_draw_step(client->draw);
 	return s;
+}
+
+void gf_client_shutdown(gf_client_t* client) {
+	if(client->draw != NULL) {
+		client->draw->close = 2;
+	}
+	gf_log_function(client->engine, "Client shutdown complete", "");
 }

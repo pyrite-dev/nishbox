@@ -109,3 +109,13 @@ void gf_engine_destroy(gf_engine_t* engine) {
 	free(engine);
 	gf_log_function(NULL, "Destroyed engine", "");
 }
+
+void gf_engine_shutdown(gf_engine_t* engine) {
+	if(engine->server != NULL) {
+		gf_server_shutdown(engine->server);
+	}
+	if(engine->client != NULL) {
+		gf_client_shutdown(engine->client);
+	}
+	gf_log_function(NULL, "Engine shutdown complete", "");
+}
