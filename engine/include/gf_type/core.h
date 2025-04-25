@@ -42,12 +42,16 @@ typedef struct gf_engine_t gf_engine_t;
  *
  * @var gf_engine_t::base
  * @brief Base resource
+ *
+ * @var gf_engine_t::error
+ * @brief Set on error
  */
 GF_DECLARE_TYPE(engine, {
 	gf_server_t*   server;
 	gf_client_t*   client;
 	FILE*	       log;
 	gf_resource_t* base;
+	int	       error;
 });
 #else
 typedef void gf_engine_t;

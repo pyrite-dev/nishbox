@@ -55,7 +55,8 @@ void gf_engine_end(void) {
 gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	gf_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
-	engine->log = stderr;
+	engine->log   = stderr;
+	engine->error = 0;
 	if(nogui) {
 		gf_log_function(engine, "No GUI mode", "");
 		engine->client = NULL;
@@ -94,7 +95,7 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
  * 10. Comes back here
  */
 void gf_engine_loop(gf_engine_t* engine) {
-	while(1) {
+	while(!engine->error) {
 		if(engine->client != NULL) {
 			if(gf_client_step(engine->client) != 0) break;
 		}
