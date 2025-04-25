@@ -29,6 +29,10 @@ void gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename,
 	sprintf(msg + strlen(msg), "If you are a player, simply report this to the game developer.\n");
 #ifdef _WIN32
 	MessageBox(NULL, msg, "GoldFish Assertion Error", MB_OK | MB_ICONERROR);
+#else
+	fprintf(stderr, "----- Begin GoldFish Assertion Error -----\n");
+	fprintf(stderr, "%s", msg);
+	fprintf(stderr, "-----  End  GoldFish Assertion Error -----\n");
 #endif
 	free(msg);
 	engine->error = 1;
