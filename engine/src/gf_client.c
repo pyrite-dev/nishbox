@@ -56,12 +56,26 @@ void gf_client_destroy(gf_client_t* client) {
 
 int gf_client_step(gf_client_t* client) {
 	int s = gf_draw_step(client->draw);
+	if(client->draw->close == 2) {
+		client->draw->close = 3;
+	}
 	return s;
 }
 
 void gf_client_shutdown(gf_client_t* client) {
-	if(client->draw != NULL) {
-		client->draw->close = 2;
+	/**
+	 * If draw->close is less than 2: NOT gf_client_destroy
+	 * If draw->close is           3:     gf_client_destroy
+	 */
+	if(client->draw->close < 2) {
+		if(client->draw != NULL) {
+			/**
+			 * Only start shutdown of drawing interface
+			 */
+			client->draw->close = 2;
+		}
+	} else if(client->draw->close == 3) {
+		gf_log_function(client->engine, "Client shutdown complete", "");
+		client->draw->close = 4;
 	}
-	gf_log_function(client->engine, "Client shutdown complete", "");
 }
