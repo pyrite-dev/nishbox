@@ -100,6 +100,8 @@ gf_draw_driver_t* gf_draw_driver_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 	glClearColor(0, 0, 0, 1);
 
+	glPointSize(5);
+
 	return draw_driver;
 }
 

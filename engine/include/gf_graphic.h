@@ -19,6 +19,7 @@
 #include <gf_type/font.h>
 
 /* Standard */
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,13 +70,19 @@ GF_EXPORT void gf_graphic_end_2d(gf_draw_t* draw);
  * @~english
  * @brief Draw polygon with texture
  */
-GF_EXPORT void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...);
+GF_EXPORT void gf_graphic_draw_texture_polygon_arr(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, double* arr);
 
 /**
  * @~english
  * @brief Draw polygon
  */
-GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...);
+GF_EXPORT void gf_graphic_fill_polygon_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr);
+
+/**
+ * @~english
+ * @brief Draw points
+ */
+GF_EXPORT void gf_graphic_points_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr);
 
 /**
  * @~english
@@ -138,6 +145,24 @@ GF_EXPORT void gf_graphic_fill_rect(gf_draw_t* draw, double x, double y, double 
  * @brief Draw rectangle with texture
  */
 GF_EXPORT void gf_graphic_draw_texture_2d(gf_draw_t* draw, double x, double y, double w, double h, gf_texture_t* texture, gf_graphic_color_t color);
+
+/**
+ * @~english
+ * @brief Draw polygon with texture
+ */
+GF_EXPORT void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...);
+
+/**
+ * @~english
+ * @brief Draw polygon
+ */
+GF_EXPORT void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...);
+
+/**
+ * @~english
+ * @brief Draw points
+ */
+GF_EXPORT void gf_graphic_points(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...);
 
 #ifdef __cplusplus
 }

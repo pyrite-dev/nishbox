@@ -43,13 +43,13 @@ void gf_graphic_end_2d(gf_draw_t* draw) {
 
 void gf_graphic_clear(gf_draw_t* draw) { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); }
 
-void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...) {
-	double	tw = (double)texture->width / texture->internal_width;
-	double	th = (double)texture->height / texture->internal_height;
-	double	sx = 1;
-	double	sy = 1;
-	int	i;
-	va_list va;
+void gf_graphic_draw_texture_polygon_arr(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, double* arr) {
+	double tw = (double)texture->width / texture->internal_width;
+	double th = (double)texture->height / texture->internal_height;
+	double sx = 1;
+	double sy = 1;
+	int    i;
+	int    ind = 0;
 
 	if(texture->keep_aspect) {
 		if(tw > th) {
@@ -59,8 +59,6 @@ void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_
 		}
 	}
 
-	va_start(va, npair);
-
 	if(dim == 2) gf_graphic_begin_2d(draw);
 	gf_draw_driver_begin_texture_2d(draw, texture);
 
@@ -68,15 +66,15 @@ void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_
 	glBegin(GL_TRIANGLE_FAN);
 
 	for(i = 0; i < npair; i++) {
-		double tx = va_arg(va, double) * sx;
-		double ty = va_arg(va, double) * sy;
-		double x  = va_arg(va, double);
-		double y  = va_arg(va, double);
+		double tx = arr[ind++] * sx;
+		double ty = arr[ind++] * sy;
+		double x  = arr[ind++];
+		double y  = arr[ind++];
 		glTexCoord2f(tx, ty);
 		if(dim == GF_GRAPHIC_2D) {
 			glVertex2f(x, y);
 		} else if(dim == GF_GRAPHIC_3D) {
-			double z = va_arg(va, double);
+			double z = arr[ind++];
 			glVertex3f(x, y, z);
 		}
 	}
@@ -85,14 +83,11 @@ void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_
 
 	gf_draw_driver_end_texture_2d(draw);
 	if(dim == 2) gf_graphic_end_2d(draw);
-
-	va_end(va);
 }
 
-void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...) {
-	int	i;
-	va_list va;
-	va_start(va, npair);
+void gf_graphic_fill_polygon_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr) {
+	int i;
+	int ind = 0;
 
 	if(dim == 2) gf_graphic_begin_2d(draw);
 
@@ -100,20 +95,42 @@ void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim,
 	glBegin(GL_TRIANGLE_FAN);
 
 	for(i = 0; i < npair; i++) {
-		double x = va_arg(va, double);
-		double y = va_arg(va, double);
+		double x = arr[ind++];
+		double y = arr[ind++];
 		if(dim == GF_GRAPHIC_2D) {
 			glVertex2f(x, y);
 		} else if(dim == GF_GRAPHIC_3D) {
-			double z = va_arg(va, double);
+			double z = arr[ind++];
 			glVertex3f(x, y, z);
 		}
 	}
 
 	glEnd();
 	if(dim == 2) gf_graphic_end_2d(draw);
+}
 
-	va_end(va);
+void gf_graphic_points_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr) {
+	int i;
+	int ind = 0;
+
+	if(dim == 2) gf_graphic_begin_2d(draw);
+
+	gf_draw_driver_set_color(draw, color);
+	glBegin(GL_POINTS);
+
+	for(i = 0; i < npair; i++) {
+		double x = arr[ind++];
+		double y = arr[ind++];
+		if(dim == GF_GRAPHIC_2D) {
+			glVertex2f(x, y);
+		} else if(dim == GF_GRAPHIC_3D) {
+			double z = arr[ind++];
+			glVertex3f(x, y, z);
+		}
+	}
+
+	glEnd();
+	if(dim == 2) gf_graphic_end_2d(draw);
 }
 
 void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double zfar) {

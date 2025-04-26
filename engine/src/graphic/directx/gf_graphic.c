@@ -16,6 +16,7 @@
 #include <gf_math.h>
 
 /* Standard */
+#include <stdarg.h>
 
 void gf_graphic_begin_2d(gf_draw_t* draw) { /* TODO: Implement this */ }
 
@@ -23,9 +24,11 @@ void gf_graphic_end_2d(gf_draw_t* draw) { /* TODO: Implement this */ }
 
 void gf_graphic_clear(gf_draw_t* draw) { /* TODO: Implement this */ }
 
-void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...) { /* TODO: Implement this */ }
+void gf_graphic_draw_texture_polygon_arr(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, double* arr) { /* TODO: Implement this */ }
 
-void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...) { /* TODO: Implement this */ }
+void gf_graphic_fill_polygon_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr) { /* TODO: Implement this */ }
+
+void gf_graphic_points_arr(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, double* arr) { /* TODO: Implement this */ }
 
 void gf_graphic_perspective(gf_draw_t* draw, double fovy, double znear, double zfar) { /* TODO: Implement this */ }
 

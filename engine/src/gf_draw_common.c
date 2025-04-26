@@ -59,8 +59,8 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 		draw->light[3] = 1.0;
 
 		draw->camera[0] = 0;
-		draw->camera[1] = 2;
-		draw->camera[2] = 2;
+		draw->camera[1] = 0;
+		draw->camera[2] = 1;
 
 		draw->lookat[0] = 0;
 		draw->lookat[1] = 0;

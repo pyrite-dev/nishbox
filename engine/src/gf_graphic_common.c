@@ -15,6 +15,8 @@
 
 /* Standard */
 #include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
 
 void gf_graphic_fill_rect(gf_draw_t* draw, double x, double y, double w, double h, gf_graphic_color_t color) { gf_graphic_fill_polygon(draw, color, GF_GRAPHIC_2D, 4, x, y, x, y + h, x + w, y + h, x + w, y); }
 
@@ -59,4 +61,61 @@ double gf_graphic_text_width(gf_draw_t* draw, gf_font_t* userfont, double size, 
 
 void gf_graphic_draw_texture_2d(gf_draw_t* draw, double x, double y, double w, double h, gf_texture_t* texture, gf_graphic_color_t color) {
 	if(texture != NULL) gf_graphic_draw_texture_polygon(draw, texture, color, GF_GRAPHIC_2D, 4, 0.0, 0.0, x, y, 0.0, 1.0, x, y + h, 1.0, 1.0, x + w, y + h, 1.0, 0.0, x + w, y);
+}
+
+void gf_graphic_draw_texture_polygon(gf_draw_t* draw, gf_texture_t* texture, gf_graphic_color_t color, int dim, int npair, ...) {
+	int	i;
+	int	ind  = 0;
+	int	plen = (dim == GF_GRAPHIC_2D ? 2 : 3) + 2;
+	va_list va;
+	double* arr = malloc(sizeof(*arr) * plen * npair);
+	va_start(va, npair);
+	for(i = 0; i < npair; i++) {
+		int j;
+		for(j = 0; j < plen; j++) {
+			arr[ind * plen + j] = va_arg(va, double);
+		}
+		ind++;
+	}
+	va_end(va);
+	gf_graphic_draw_texture_polygon_arr(draw, texture, color, dim, npair, arr);
+	free(arr);
+}
+
+void gf_graphic_fill_polygon(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...) {
+	int	i;
+	int	ind  = 0;
+	int	plen = (dim == GF_GRAPHIC_2D ? 2 : 3);
+	va_list va;
+	double* arr = malloc(sizeof(*arr) * plen * npair);
+	va_start(va, npair);
+	for(i = 0; i < npair; i++) {
+		int j;
+		for(j = 0; j < plen; j++) {
+			arr[ind * plen + j] = va_arg(va, double);
+		}
+		ind++;
+	}
+	va_end(va);
+	gf_graphic_fill_polygon_arr(draw, color, dim, npair, arr);
+	free(arr);
+}
+
+void gf_graphic_points(gf_draw_t* draw, gf_graphic_color_t color, int dim, int npair, ...) {
+	int	i;
+	int	ind  = 0;
+	int	plen = (dim == GF_GRAPHIC_2D ? 2 : 3);
+	va_list va;
+	double* arr = malloc(sizeof(*arr) * plen * npair);
+	va_start(va, npair);
+	for(i = 0; i < npair; i++) {
+		int j;
+		for(j = 0; j < plen; j++) {
+			arr[ind * plen + j] = va_arg(va, double);
+		}
+		ind++;
+	}
+	va_end(va);
+	gf_graphic_points_arr(draw, color, dim, npair, arr);
+	free(arr);
 }

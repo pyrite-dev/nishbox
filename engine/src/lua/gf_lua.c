@@ -36,6 +36,7 @@ int gf_lua_call_loop(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	lua->loop = call;
 
@@ -48,6 +49,7 @@ int gf_lua_call_close(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	lua->close = call;
 
@@ -59,6 +61,7 @@ int gf_lua_call_geometry(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	lua_newtable(s);
 
@@ -86,6 +89,7 @@ int gf_lua_call_shutdown(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	lua->engine->client->draw->close = 2;
 
@@ -97,6 +101,7 @@ int gf_lua_call_fps(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	lua_pushnumber(s, gf_draw_get_fps(lua->engine->client->draw));
 

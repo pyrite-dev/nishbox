@@ -33,6 +33,7 @@ int gf_lua_meta_call_audio_resume(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	gf_audio_resume(lua->engine->client->audio, *id);
 

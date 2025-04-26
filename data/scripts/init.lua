@@ -3,11 +3,56 @@
 local fps = "??"
 local fpscount = 0
 
+local rad = 0
 local gf = goldfish
 local font = gf.font.load("base:/font/default.bdf")
 local bold_font = gf.font.load("base:/font/bold.bdf")
 
+local _ = 0
+local O = 1
+
+local points = {
+	O, _, _, _, O, _, O, _, _, _, _, _, _, _, O, _, _, _, O, O, O, O, _, _, _, _, _, _, _, _, _, _, _, _,
+	O, _, _, _, O, _, _, _, _, _, _, _, _, _, O, _, _, _, O, _, _, _, O, _, _, _, _, _, _, _, _, _, _, _,
+	O, O, _, _, O, _, O, _, _, O, O, O, _, _, O, O, _, _, O, _, _, _, O, _, _, O, O, _, _, O, _, _, _, O,
+	O, _, O, _, O, _, O, _, O, _, _, _, _, _, O, _, O, _, O, O, O, O, _, _, O, _, _, O, _, _, O, _, O, _,
+	O, _, _, O, O, _, O, _, _, O, O, O, _, _, O, _, O, _, O, _, _, _, O, _, O, _, _, O, _, _, _, O, _, _,
+	O, _, _, _, O, _, O, _, _, _, _, _, O, _, O, _, O, _, O, _, _, _, O, _, O, _, _, O, _, _, O, _, O, _,
+	O, _, _, _, O, _, O, _, _, O, O, O, _, _, O, _, O, _, O, O, O, O, _, _, _, O, O, _, _, O, _, _, _, O,
+}
+
 gf.font.default(bold_font)
+
+function draw_points()
+	local p = {}
+	local s = 0.015
+	local c = #points / 7
+	
+	for k, v in ipairs(points) do
+		if v == 1 then
+			local lrad = 0
+			local x = (k - 1) % c
+			local y = math.floor((k - 1) / c)
+			local z = 0
+			local r = 0
+
+			x = x - math.floor(c / 2)
+			y = -1 * (y - math.floor(7 / 2))
+
+			r = math.sqrt(x^2 + y^2)
+
+			lrad = math.atan(y, x) + rad
+
+			x = s * math.cos(lrad) * r
+			y = s * math.sin(lrad + rad) * r
+			z = 0
+
+			table.insert(p, {x, y, z})
+		end
+	end
+
+	gf.graphic.points({255, 255, 255, 255}, gf.graphic.DIM_3D, p)
+end
 
 gf.loop(function ()
 	local geo = gf.geometry()
@@ -22,12 +67,11 @@ gf.loop(function ()
 	end
 	wid = gf.graphic.text_width(font, 24, fps)
 	gf.graphic.text(font, geo.width - wid, 0, 24, fps)
-end)
 
-gf.gui.create("button", 0, 0, 200, 200):callback(function (id, type)
-	if type == gf.gui.PRESS_EVENT then
-		local audio = gf.audio.create("base:/music/deep_blue.xm")
-		audio:resume()
+	draw_points()
+
+	if not(nfps == -1) then
+		rad = rad + math.rad(60) / nfps
 	end
 end)
 

@@ -41,6 +41,7 @@ int gf_lua_call_audio_create(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
 
 	id  = gf_lua_create_audio(lua);
 	*id = gf_audio_load_file(lua->engine->client->audio, str);
