@@ -25,9 +25,6 @@
 const double gf_gui_border_width      = 2;
 const int    gf_gui_border_color_diff = 48;
 
-gf_graphic_color_t gf_gui_base_color;
-gf_graphic_color_t gf_gui_font_color;
-
 gf_gui_call_t gf_gui_calls[GF_GUI_COMPONENTS];
 
 gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
@@ -39,8 +36,8 @@ gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 
 	gui->pressed = -1;
 
-	GF_SET_COLOR(gf_gui_base_color, 80, 88, 64, 255);
-	GF_SET_COLOR(gf_gui_font_color, 256 - 32, 256 - 32, 256 - 32, 255);
+	GF_SET_COLOR(gui->base, 80, 88, 64, 255);
+	GF_SET_COLOR(gui->font, 256 - 32, 256 - 32, 256 - 32, 255);
 
 	return gui;
 }
@@ -99,19 +96,19 @@ void gf_gui_draw_box(gf_gui_t* gui, int mul, double x, double y, double w, doubl
 
 	int cd = mul * gf_gui_border_color_diff;
 
-	col = gf_gui_base_color;
+	col = gui->base;
 	col.r += cd;
 	col.g += cd;
 	col.b += cd;
 	gf_graphic_fill_rect(gui->draw, x, y, w, h, col);
 
-	col = gf_gui_base_color;
+	col = gui->base;
 	col.r -= cd;
 	col.g -= cd;
 	col.b -= cd;
 	gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 5, x + w, y + h, x + w, y, x + w - gf_gui_border_width, y + gf_gui_border_width, x + gf_gui_border_width, y + h - gf_gui_border_width, x, y + h);
 
-	col = gf_gui_base_color;
+	col = gui->base;
 	gf_graphic_fill_rect(gui->draw, x + gf_gui_border_width, y + gf_gui_border_width, w - gf_gui_border_width * 2, h - gf_gui_border_width * 2, col);
 }
 
@@ -207,7 +204,11 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 	if(hp && ph < (*h)) {
 		ch = ph;
 	}
-	gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
+	if(c->type == GF_GUI_FRAME) {
+		gf_graphic_clip_push(gui->draw, 0, 0, gui->draw->width, gui->draw->height);
+	} else {
+		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
+	}
 }
 
 void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
@@ -279,7 +280,7 @@ void gf_gui_render(gf_gui_t* gui) {
 				double		   aln = (double)GF_GUI_SMALL_FONT_SIZE / 3 - bw;
 				double		   rx  = cx + cw - sp - j * bw - j * aln;
 				double		   ry  = cy + ch - sp - j * bw - j * aln;
-				gf_graphic_color_t col = gf_gui_base_color;
+				gf_graphic_color_t col = gui->base;
 
 				col.r -= gf_gui_border_color_diff;
 				col.g -= gf_gui_border_color_diff;
@@ -287,7 +288,7 @@ void gf_gui_render(gf_gui_t* gui) {
 
 				gf_graphic_fill_polygon(gui->draw, col, GF_GRAPHIC_2D, 4, cx + cw - sp, ry - bw, rx - bw, cy + ch - sp, rx - bw / 2.0, cy + ch - sp, cx + cw - sp, ry - bw / 2.0);
 
-				col = gf_gui_base_color;
+				col = gui->base;
 				col.r += gf_gui_border_color_diff;
 				col.g += gf_gui_border_color_diff;
 				col.b += gf_gui_border_color_diff;

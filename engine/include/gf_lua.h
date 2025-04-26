@@ -17,6 +17,7 @@
 #include <gf_type/core.h>
 #include <gf_type/gui.h>
 #include <gf_type/font.h>
+#include <gf_type/audio.h>
 
 /* Standard */
 
@@ -47,6 +48,13 @@ GF_EXPORT void gf_lua_create_goldfish_font(gf_lua_t* lua);
 
 /**
  * @~english
+ * @brief Create GoldFish Audio Lua interface
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_create_goldfish_audio(gf_lua_t* lua);
+
+/**
+ * @~english
  * @brief Initialize GUI metatables
  * @param Lua interface
  */
@@ -61,6 +69,13 @@ GF_EXPORT void gf_lua_meta_init_font(gf_lua_t* lua);
 
 /**
  * @~english
+ * @brief Initialize Audio metatables
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_meta_init_audio(gf_lua_t* lua);
+
+/**
+ * @~english
  * @brief Create GUI userdata
  * @param Lua interface
  */
@@ -72,6 +87,13 @@ GF_EXPORT gf_gui_id_t* gf_lua_create_gui(gf_lua_t* lua);
  * @param Lua interface
  */
 GF_EXPORT gf_font_t** gf_lua_create_font(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Create Audio userdata
+ * @param Lua interface
+ */
+GF_EXPORT gf_audio_id_t* gf_lua_create_audio(gf_lua_t* lua);
 
 /**
  * @~english

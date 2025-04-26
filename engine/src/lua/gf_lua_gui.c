@@ -95,6 +95,39 @@ int gf_lua_call_gui_sort(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_call_gui_color(lua_State* s) {
+	const char*	   type = luaL_checkstring(s, 1);
+	gf_graphic_color_t color;
+	gf_lua_t*	   lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua_rawgeti(s, 2, 1);
+	color.r = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 2, 2);
+	color.g = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 2, 3);
+	color.b = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 2, 4);
+	color.a = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	if(strcmp(type, "base") == 0) {
+		lua->engine->client->draw->gui->base = color;
+	} else if(strcmp(type, "font") == 0) {
+		lua->engine->client->draw->gui->font = color;
+	}
+
+	return 0;
+}
+
 void gf_lua_create_goldfish_gui(gf_lua_t* lua) {
 	int i;
 
@@ -107,6 +140,10 @@ void gf_lua_create_goldfish_gui(gf_lua_t* lua) {
 
 	lua_pushstring(lua->lua, "sort");
 	lua_pushcfunction(lua->lua, gf_lua_call_gui_sort);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "color");
+	lua_pushcfunction(lua->lua, gf_lua_call_gui_color);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "PRESS_EVENT");

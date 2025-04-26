@@ -1,5 +1,5 @@
 #!/bin/sh
-FILES="font scripts"
+FILES=""
 cd data
 if [ "x${WINE}" = "x" ]; then
 	exec ../engine/bin/*/*/pack ../base.pak $FILES

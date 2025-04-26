@@ -15,8 +15,6 @@
 
 /* Standard */
 
-extern gf_graphic_color_t gf_gui_font_color;
-
 gf_gui_id_t gf_gui_create_frame(gf_gui_t* gui, double x, double y, double w, double h) {
 	gf_gui_component_t c;
 
@@ -51,7 +49,7 @@ void gf_gui_frame_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	sy = ch / 2 - 24.0 / 2;
 
 	gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
-	gf_graphic_text(gui->draw, font, cx + sx, cy + sy, 24, c->text, gf_gui_font_color);
+	gf_graphic_text(gui->draw, font, cx + sx, cy + sy, 24, c->text, gui->font);
 	gf_graphic_clip_pop(gui->draw);
 }
 

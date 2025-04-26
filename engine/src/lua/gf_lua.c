@@ -97,6 +97,7 @@ void gf_lua_create_goldfish(gf_lua_t* lua) {
 	gf_lua_create_goldfish_gui(lua);
 	gf_lua_create_goldfish_graphic(lua);
 	gf_lua_create_goldfish_font(lua);
+	gf_lua_create_goldfish_audio(lua);
 
 	lua_pushstring(lua->lua, "loop");
 	lua_pushcfunction(lua->lua, gf_lua_call_loop);
@@ -146,6 +147,7 @@ int gf_lua_run(gf_lua_t* lua, const char* path) {
 	str[f->size] = 0;
 
 	if(luaL_loadstring(lua->lua, str)) {
+		gf_log_function(lua->engine, "Lua error: %s", lua_tostring(lua->lua, -1));
 		free(str);
 		gf_file_close(f);
 		return -1;

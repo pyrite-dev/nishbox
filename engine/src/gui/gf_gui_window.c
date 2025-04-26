@@ -23,9 +23,6 @@
 extern const double gf_gui_border_width;
 extern const int    gf_gui_border_color_diff;
 
-extern gf_graphic_color_t gf_gui_base_color;
-extern gf_graphic_color_t gf_gui_font_color;
-
 gf_gui_id_t gf_gui_create_window(gf_gui_t* gui, double x, double y, double w, double h) {
 	gf_gui_component_t c;
 	gf_gui_id_t	   close_button;
@@ -59,7 +56,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		   cw;
 	double		   ch;
 	gf_prop_integer_t  prop;
-	gf_graphic_color_t col = gf_gui_font_color;
+	gf_graphic_color_t col = gui->font;
 	gf_gui_id_t	   fid;
 	int		   frame;
 	gf_font_t*	   font;

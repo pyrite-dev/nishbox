@@ -34,6 +34,7 @@ typedef struct gf_gui_component_t gf_gui_component_t;
 #include <gf_type/draw.h>
 #include <gf_type/core.h>
 #include <gf_type/prop.h>
+#include <gf_type/graphic.h>
 
 /* Standard */
 
@@ -118,12 +119,20 @@ GF_DECLARE_TYPE(gui_component, {
  *
  * @var gf_gui_t::area
  * @brief Created components
+ *
+ * @var gf_gui_t::base
+ * @brief Base color
+ *
+ * @var gf_gui_t::font
+ * @brief Font color
  */
 GF_DECLARE_TYPE(gui, {
 	gf_engine_t*	    engine;
 	gf_draw_t*	    draw;
 	gf_gui_id_t	    pressed;
 	gf_gui_component_t* area;
+	gf_graphic_color_t  base;
+	gf_graphic_color_t  font;
 });
 #else
 typedef void* gf_gui_callback_t;

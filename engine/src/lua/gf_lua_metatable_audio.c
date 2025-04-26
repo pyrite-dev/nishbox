@@ -26,8 +26,9 @@
 
 /* Standard */
 
-void gf_lua_meta_init(gf_lua_t* lua) {
-	gf_lua_meta_init_gui(lua);
-	gf_lua_meta_init_font(lua);
-	gf_lua_meta_init_audio(lua);
+void gf_lua_meta_init_audio(gf_lua_t* lua) {
+	luaL_newmetatable(lua->lua, "GoldFishAudio");
+
+	lua_pushvalue(lua->lua, -1);
+	lua_setfield(lua->lua, -2, "__index");
 }
