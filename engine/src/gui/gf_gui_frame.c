@@ -40,6 +40,7 @@ void gf_gui_frame_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	if(c->text == NULL) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+	gf_graphic_clip_pop(gui->draw);
 
 	sx = cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->font, 24, c->text) / 2;
 	sy = ch / 2 - 24.0 / 2;

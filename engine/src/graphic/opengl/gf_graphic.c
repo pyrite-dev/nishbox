@@ -174,12 +174,35 @@ void gf_graphic_set_camera(gf_draw_t* draw) {
 }
 
 void gf_graphic_clip_push(gf_draw_t* draw, double x, double y, double w, double h) {
-	arrput(draw->clip, x);
-	arrput(draw->clip, y);
-	arrput(draw->clip, w);
-	arrput(draw->clip, h);
+	double ax = x;
+	double ay = y;
+	double aw = w;
+	double ah = h;
+	if(arrlen(draw->clip) > 0) {
+		double oldx = draw->clip[arrlen(draw->clip) - 4];
+		double oldy = draw->clip[arrlen(draw->clip) - 3];
+		double oldw = draw->clip[arrlen(draw->clip) - 2];
+		double oldh = draw->clip[arrlen(draw->clip) - 1];
+
+		if(ax < oldx) {
+			ax = oldx;
+		}
+		if(ay < oldy) {
+			ay = oldy;
+		}
+		if(ax + aw > oldx + oldw) {
+			aw = (oldx + oldw) - ax;
+		}
+		if(ay + ah > oldy + oldh) {
+			ah = (oldy + oldh) - ay;
+		}
+	}
+	arrput(draw->clip, ax);
+	arrput(draw->clip, ay);
+	arrput(draw->clip, aw);
+	arrput(draw->clip, ah);
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(x, draw->height - y - h, w, h);
+	glScissor(ax, draw->height - ay - ah, aw, ah);
 }
 
 void gf_graphic_clip_pop(gf_draw_t* draw) {

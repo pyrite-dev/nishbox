@@ -11,8 +11,7 @@
 #include <gf_macro.h>
 
 #ifdef GF_EXPOSE_LUA
-typedef struct gf_lua_t		      gf_lua_t;
-typedef struct gf_lua_gui_component_t gf_lua_gui_component_t;
+typedef struct gf_lua_t gf_lua_t;
 
 /* External library */
 #include <lua.h>
@@ -30,16 +29,16 @@ typedef struct gf_lua_gui_component_t gf_lua_gui_component_t;
  *
  * @var gf_lua_t::engine
  * @brief Engine instance
+ *
+ * @var gf_lua_t::lua
+ * @brief Lua
  */
 GF_DECLARE_TYPE(lua, {
 	gf_engine_t* engine;
 	lua_State*   lua;
 });
-
-GF_DECLARE_TYPE(lua_gui_component, { gf_gui_id_t id; });
 #else
 typedef void gf_lua_t;
-typedef void gf_lua_gui_component_t;
 #endif
 
 #endif

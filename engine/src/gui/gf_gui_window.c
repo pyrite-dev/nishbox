@@ -65,6 +65,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	if(c->type != GF_GUI_WINDOW) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+	gf_graphic_clip_pop(gui->draw);
 
 	if((prop = gf_prop_get_integer(&c->prop, "active")) == GF_PROP_NO_SUCH || !prop) {
 		col.r -= (double)gf_gui_border_color_diff * 3 / 2;

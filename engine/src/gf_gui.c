@@ -142,7 +142,12 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 	double		  ph = 0;
 	double		  bx = 0;
 	double		  by = 0;
+	double		  cx = 0;
+	double		  cy = 0;
+	double		  cw = 0;
+	double		  ch = 0;
 	double		  mul;
+	int		  hp = 0;
 	gf_prop_integer_t prop;
 
 	if(c->parent != -1) {
@@ -153,6 +158,7 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 		int    ind = hmgeti(gui->area, c->parent);
 		if(ind != -1) {
 			gf_gui_calc_xywh_noset(gui, &gui->area[ind], &x2, &y2, &w2, &h2);
+			gf_graphic_clip_pop(gui->draw);
 		}
 
 		pw = w2;
@@ -160,6 +166,8 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 
 		bx = x2;
 		by = y2;
+
+		hp = 1;
 	}
 
 	*x += bx;
@@ -187,6 +195,19 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 	if((*h) < c->height) {
 		*h = c->height;
 	}
+
+	cx = *x;
+	cy = *y;
+	cw = *w;
+	ch = *h;
+
+	if(hp && pw < (*w)) {
+		cw = pw;
+	}
+	if(hp && ph < (*h)) {
+		ch = ph;
+	}
+	gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
 }
 
 void gf_gui_calc_xywh(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
@@ -209,6 +230,7 @@ void gf_gui_render(gf_gui_t* gui) {
 		gf_gui_component_t* c		 = &gui->area[i];
 		int		    ignore_mouse = (prop = gf_prop_get_integer(&c->prop, "ignore-mouse")) != GF_PROP_NO_SUCH && prop;
 		gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+		gf_graphic_clip_pop(gui->draw);
 		if(!ignore_mouse && input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
 			gui->pressed = c->key;
 			gf_prop_set_integer(&c->prop, "clicked-x", input->mouse_x);
@@ -246,6 +268,7 @@ void gf_gui_render(gf_gui_t* gui) {
 
 		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
 		gf_gui_all_render(gui, c);
+		gf_graphic_clip_pop(gui->draw);
 		gf_graphic_clip_pop(gui->draw);
 
 		if((prop = gf_prop_get_integer(&c->prop, "resizable")) != GF_PROP_NO_SUCH && prop) {
@@ -287,6 +310,7 @@ void gf_gui_render(gf_gui_t* gui) {
 				c->width  = gf_prop_get_integer(&c->prop, "old-width");
 				c->height = gf_prop_get_integer(&c->prop, "old-height");
 				gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
+				gf_graphic_clip_pop(gui->draw);
 				if((prop = gf_prop_get_integer(&c->prop, "cancel-drag")) == GF_PROP_NO_SUCH) {
 					cancel = 1;
 					cancel = cancel && ((cx + cw - sp - sz) <= gf_prop_get_integer(&c->prop, "clicked-x"));
