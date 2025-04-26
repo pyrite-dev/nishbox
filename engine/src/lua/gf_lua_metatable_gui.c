@@ -28,9 +28,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-gf_gui_id_t* gf_lua_create_gui(lua_State* s);
-gf_font_t**  gf_lua_create_font(lua_State* s);
-
 int gf_lua_meta_call_gui_component_text(lua_State* s) {
 	gf_gui_id_t* id	 = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	const char*  str = luaL_checkstring(s, 2);
@@ -77,7 +74,7 @@ int gf_lua_meta_call_gui_component_prop(lua_State* s) {
 		return 0;
 	} else {
 		if(strcmp(type, "id") == 0) {
-			gf_gui_id_t* r = gf_lua_create_gui(s);
+			gf_gui_id_t* r = gf_lua_create_gui(lua);
 			*r	       = gf_gui_get_prop_id(lua->engine->client->draw->gui, *id, str);
 		} else if(strcmp(type, "integer") == 0) {
 			lua_pushinteger(s, gf_prop_get_integer(gf_gui_get_prop(lua->engine->client->draw->gui, *id), str));
@@ -118,7 +115,7 @@ int gf_lua_meta_call_gui_component_font(lua_State* s) {
 		gf_prop_set_ptr_keep(gf_gui_get_prop(lua->engine->client->draw->gui, *id), "font", *font);
 	} else {
 		gf_font_t*  pfont = gf_prop_get_ptr_keep(gf_gui_get_prop(lua->engine->client->draw->gui, *id), "font");
-		gf_font_t** font  = gf_lua_create_font(s);
+		gf_font_t** font  = gf_lua_create_font(lua);
 
 		*font = pfont;
 		return 1;
@@ -139,7 +136,7 @@ int gf_lua_meta_call_gui_component_parent(lua_State* s) {
 		gf_gui_set_parent(lua->engine->client->draw->gui, *id, *parent);
 		return 0;
 	} else {
-		parent	= gf_lua_create_gui(s);
+		parent	= gf_lua_create_gui(lua);
 		*parent = gf_gui_get_parent(lua->engine->client->draw->gui, *id);
 		return 1;
 	}

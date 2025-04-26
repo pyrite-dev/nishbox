@@ -15,6 +15,8 @@
 
 /* Engine */
 #include <gf_type/core.h>
+#include <gf_type/gui.h>
+#include <gf_type/font.h>
 
 /* Standard */
 
@@ -59,6 +61,20 @@ GF_EXPORT void gf_lua_meta_init_font(gf_lua_t* lua);
 
 /**
  * @~english
+ * @brief Create GUI userdata
+ * @param Lua interface
+ */
+GF_EXPORT gf_gui_id_t* gf_lua_create_gui(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Create Font userdata
+ * @param Lua interface
+ */
+GF_EXPORT gf_font_t** gf_lua_create_font(gf_lua_t* lua);
+
+/**
+ * @~english
  * @brief Initialize metatables
  * @param Lua interface
  */
@@ -94,6 +110,13 @@ GF_EXPORT void gf_lua_destroy(gf_lua_t* lua);
  * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_step(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Run close hook for Lua interface
+ * @param lua Lua interface
+ */
+GF_EXPORT void gf_lua_close(gf_lua_t* lua);
 
 #ifdef __cplusplus
 }

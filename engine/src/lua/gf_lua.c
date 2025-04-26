@@ -41,6 +41,56 @@ int gf_lua_call_loop(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_call_close(lua_State* s) {
+	int	  call = luaL_ref(s, LUA_REGISTRYINDEX);
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua->close = call;
+
+	return 0;
+}
+
+int gf_lua_call_geometry(lua_State* s) {
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua_newtable(s);
+
+	lua_pushstring(s, "x");
+	lua_pushnumber(s, lua->engine->client->draw->x);
+	lua_settable(s, -3);
+
+	lua_pushstring(s, "y");
+	lua_pushnumber(s, lua->engine->client->draw->y);
+	lua_settable(s, -3);
+
+	lua_pushstring(s, "width");
+	lua_pushnumber(s, lua->engine->client->draw->width);
+	lua_settable(s, -3);
+
+	lua_pushstring(s, "height");
+	lua_pushnumber(s, lua->engine->client->draw->height);
+	lua_settable(s, -3);
+
+	return 1;
+}
+
+int gf_lua_call_shutdown(lua_State* s) {
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua->engine->client->draw->close = 2;
+
+	return 0;
+}
+
 void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_newtable(lua->lua);
 
@@ -52,6 +102,18 @@ void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_pushcfunction(lua->lua, gf_lua_call_loop);
 	lua_settable(lua->lua, -3);
 
+	lua_pushstring(lua->lua, "close");
+	lua_pushcfunction(lua->lua, gf_lua_call_close);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "geometry");
+	lua_pushcfunction(lua->lua, gf_lua_call_geometry);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "shutdown");
+	lua_pushcfunction(lua->lua, gf_lua_call_shutdown);
+	lua_settable(lua->lua, -3);
+
 	lua_setglobal(lua->lua, "goldfish");
 }
 
@@ -60,8 +122,9 @@ gf_lua_t* gf_lua_create(gf_engine_t* engine) {
 	memset(lua, 0, sizeof(*lua));
 	lua->engine = engine;
 
-	lua->loop = 0;
-	lua->lua  = luaL_newstate();
+	lua->loop  = 0;
+	lua->close = 0;
+	lua->lua   = luaL_newstate();
 	luaL_openlibs(lua->lua);
 
 	lua_pushlightuserdata(lua->lua, lua);
@@ -104,6 +167,13 @@ void gf_lua_step(gf_lua_t* lua) {
 	if(lua->loop == 0) return;
 
 	lua_rawgeti(lua->lua, LUA_REGISTRYINDEX, lua->loop);
+	lua_pcall(lua->lua, 0, 0, 0);
+}
+
+void gf_lua_close(gf_lua_t* lua) {
+	if(lua->close == 0) return;
+
+	lua_rawgeti(lua->lua, LUA_REGISTRYINDEX, lua->close);
 	lua_pcall(lua->lua, 0, 0, 0);
 }
 

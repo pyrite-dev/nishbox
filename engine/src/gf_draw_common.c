@@ -95,36 +95,9 @@ void gf_draw_close_no(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int 
 int gf_draw_step(gf_draw_t* draw) {
 	int ret = gf_draw_platform_step(draw);
 	if(ret != 0) return ret;
-	if(draw->close == 1) {
-		gf_gui_id_t window;
-		gf_gui_id_t yes;
-		gf_gui_id_t no;
-
-		double w    = 600;
-		double h    = 200;
-		double bh   = 25;
+	if(draw->close == 1 && draw->engine->lua != NULL) {
 		draw->close = 0;
-
-		window = gf_gui_create_window(draw->gui, (double)draw->width / 2 - w / 2, (double)draw->height / 2 - h / 2, w, h);
-		gf_gui_set_text(draw->gui, window, "Confirm");
-
-		yes = gf_gui_create_button(draw->gui, 5.0 + bh * 2.5, 0, bh * 2.5, bh);
-		gf_prop_set_integer(gf_gui_get_prop(draw->gui, yes), "x-base", 1);
-		gf_prop_set_integer(gf_gui_get_prop(draw->gui, yes), "y-base", 1);
-		gf_gui_set_text(draw->gui, yes, "Yes");
-		gf_gui_set_callback(draw->gui, yes, gf_draw_close_yes);
-		gf_gui_set_parent(draw->gui, yes, gf_gui_get_prop_id(draw->gui, window, "frame"));
-
-		no = gf_gui_create_button(draw->gui, 0, 0, bh * 2.5, bh);
-		gf_prop_set_integer(gf_gui_get_prop(draw->gui, no), "x-base", 1);
-		gf_prop_set_integer(gf_gui_get_prop(draw->gui, no), "y-base", 1);
-		gf_gui_set_text(draw->gui, no, "No");
-		gf_gui_set_callback(draw->gui, no, gf_draw_close_no);
-		gf_gui_set_parent(draw->gui, no, gf_gui_get_prop_id(draw->gui, window, "frame"));
-
-		gf_gui_set_text(draw->gui, gf_gui_get_prop_id(draw->gui, window, "frame"), "Are you sure that you want to quit?");
-
-		gf_gui_sort_component(draw->gui);
+		gf_lua_close(draw->engine->lua);
 	}
 
 	return draw->close;

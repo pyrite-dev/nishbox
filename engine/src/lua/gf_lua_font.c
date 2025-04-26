@@ -26,10 +26,10 @@
 
 /* Standard */
 
-gf_font_t** gf_lua_create_font(lua_State* s) {
-	gf_font_t** font = lua_newuserdata(s, sizeof(*font));
-	luaL_getmetatable(s, "GoldFishFont");
-	lua_setmetatable(s, -2);
+gf_font_t** gf_lua_create_font(gf_lua_t* lua) {
+	gf_font_t** font = lua_newuserdata(lua->lua, sizeof(*font));
+	luaL_getmetatable(lua->lua, "GoldFishFont");
+	lua_setmetatable(lua->lua, -2);
 	return font;
 }
 
@@ -41,7 +41,7 @@ int gf_lua_call_font_load(lua_State* s) {
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
 
-	font  = gf_lua_create_font(s);
+	font  = gf_lua_create_font(lua);
 	*font = gf_font_create_file(lua->engine->client->draw, path);
 
 	return 1;

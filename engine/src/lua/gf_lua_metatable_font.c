@@ -26,8 +26,6 @@
 
 /* Standard */
 
-gf_font_t** gf_lua_create_font(lua_State* s);
-
 int gf_lua_meta_call_font_gc(lua_State* s) {
 	gf_font_t** font = luaL_checkudata(s, 1, "GoldFishFont");
 	gf_lua_t*   lua;

@@ -29,10 +29,10 @@
 #include <string.h>
 #include <stdio.h>
 
-gf_gui_id_t* gf_lua_create_gui(lua_State* s) {
-	gf_gui_id_t* id = lua_newuserdata(s, sizeof(*id));
-	luaL_getmetatable(s, "GoldFishGUIComponent");
-	lua_setmetatable(s, -2);
+gf_gui_id_t* gf_lua_create_gui(gf_lua_t* lua) {
+	gf_gui_id_t* id = lua_newuserdata(lua->lua, sizeof(*id));
+	luaL_getmetatable(lua->lua, "GoldFishGUIComponent");
+	lua_setmetatable(lua->lua, -2);
 	return id;
 }
 
@@ -46,7 +46,7 @@ void gf_lua_gui_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, i
 
 	lua_rawgeti(lua->lua, LUA_REGISTRYINDEX, *call);
 
-	pid  = gf_lua_create_gui(lua->lua);
+	pid  = gf_lua_create_gui(lua);
 	*pid = id;
 
 	lua_pushnumber(lua->lua, type);
@@ -68,7 +68,7 @@ int gf_lua_call_gui_create(lua_State* s) {
 	for(i = 0; i < sizeof(gf_gui_calls) / sizeof(gf_gui_calls[0]); i++) {
 		if(strcmp(gf_gui_calls[i].name, str) == 0) {
 			void**	     plua = malloc(sizeof(*plua));
-			gf_gui_id_t* id	  = gf_lua_create_gui(s);
+			gf_gui_id_t* id	  = gf_lua_create_gui(lua);
 
 			*plua = lua;
 

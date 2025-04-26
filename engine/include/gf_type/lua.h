@@ -35,11 +35,15 @@ typedef struct gf_lua_t gf_lua_t;
  *
  * @var gf_lua_t::loop
  * @brief Loop call
+ *
+ * @var gf_lua_t::close
+ * @brief Close call
  */
 GF_DECLARE_TYPE(lua, {
 	gf_engine_t* engine;
 	lua_State*   lua;
 	int	     loop;
+	int	     close;
 });
 #else
 typedef void gf_lua_t;

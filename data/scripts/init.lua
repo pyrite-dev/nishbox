@@ -6,32 +6,39 @@ local bold_font = gf.font.load("base:/font/bold.bdf")
 
 gf.font.default(bold_font)
 
-win = gf.gui.create("window", 200, 200, 400, 400)
-win:text("test")
-
-btn = gf.gui.create("button", 0, 0, 200, 200)
-btn:text("test button")
-
-local n = 0
-
-btn:callback(function (w, type)
-	if type == gf.gui.PRESS_EVENT then
-		if n == 1 then
-			win:destroy()
-		else
-			w:text("wow")
-		end
-		n = 1
-	end
-end)
-btn:parent(win:prop("id", "frame"))
-
-win:prop("id", "frame"):font(font)
-win:prop("id", "frame"):text("test")
-
-win:prop("integer", "resizable", 1)
-
-gf.gui.sort()
-
 gf.loop(function ()
+end)
+
+gf.close(function ()
+	local geo = gf.geometry()
+
+	local close_window = gf.gui.create("window", geo.width / 2 - 600 / 2, geo.height / 2 - 200 / 2, 600, 200)
+	local close_no = gf.gui.create("button", 0, 0, 60, 20)
+	local close_yes = gf.gui.create("button", 65, 0, 60, 20)
+
+	close_window:text("Confirm")
+
+	close_window:prop("id", "frame"):text("Are you sure that you want to quit?")
+
+	close_no:prop("integer", "x-base", 1)
+	close_no:prop("integer", "y-base", 1)
+	close_no:text("No")
+	close_no:parent(close_window:prop("id", "frame"))
+	close_no:callback(function (id, type)
+		if type == gf.gui.PRESS_EVENT then
+			close_window:destroy()
+		end
+	end)
+
+	close_yes:prop("integer", "x-base", 1)
+	close_yes:prop("integer", "y-base", 1)
+	close_yes:text("Yes")
+	close_yes:parent(close_window:prop("id", "frame"))
+	close_yes:callback(function (id, type)
+		if type == gf.gui.PRESS_EVENT then
+			gf.shutdown()
+		end
+	end)
+
+	gf.gui.sort()
 end)
