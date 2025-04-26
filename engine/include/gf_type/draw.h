@@ -10,6 +10,22 @@
 #include <gf_pre.h>
 #include <gf_macro.h>
 
+#ifdef GF_DRAW_USE_CLOCK
+#include <time.h>
+
+typedef clock_t gf_draw_time_t;
+#else
+#ifdef _WIN32
+#include <windows.h>
+
+typedef DWORD gf_draw_time_t;
+#else
+#include <sys/time.h>
+
+typedef struct timeval gf_draw_time_t;
+#endif
+#endif
+
 #ifdef GF_EXPOSE_DRAW
 typedef struct gf_draw_t gf_draw_t;
 
@@ -26,6 +42,7 @@ typedef struct gf_draw_t gf_draw_t;
 #include <gf_type/input.h>
 
 /* Standard */
+#include <time.h>
 
 /**
  * @struct gf_draw_t
@@ -89,6 +106,12 @@ typedef struct gf_draw_t gf_draw_t;
  *
  * @var gf_draw_t::font
  * @brief Default font
+ *
+ * @var gf_draw_t::last_draw
+ * @brief Last time when frame was drawn
+ *
+ * @var gf_draw_t::fps
+ * @brief FPS
  */
 GF_DECLARE_TYPE(draw, {
 	gf_engine_t*	    engine;
@@ -109,6 +132,8 @@ GF_DECLARE_TYPE(draw, {
 	gf_math_vector_t    camera;
 	double*		    clip;
 	gf_font_t*	    font;
+	gf_draw_time_t	    last_draw;
+	double		    fps;
 });
 #else
 typedef void gf_draw_t;

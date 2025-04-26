@@ -45,6 +45,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->input   = NULL;
 	draw->clip    = NULL;
 	draw->font    = NULL;
+	draw->fps     = -1;
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
@@ -92,13 +93,49 @@ void gf_draw_close_no(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int 
 	}
 }
 
+void gf_draw_time(gf_draw_time_t* dtime) {
+#ifdef GF_DRAW_USE_CLOCK
+	*dtime = clock();
+#else
+#ifdef _WIN32
+	*dtime = GetTickCount();
+#else
+	gettimeofday(dtime, NULL);
+#endif
+#endif
+}
+
+double gf_draw_time_number(gf_draw_time_t* dtime) {
+	double r = 0;
+#ifdef GF_DRAW_USE_CLOCK
+	r += (double)(*dtime) / CLOCKS_PER_SEC;
+#else
+#ifdef _WIN32
+	r += (double)(*dtime) / 1000.0;
+#else
+	r += (double)dtime->tv_sec;
+	r += (double)dtime->tv_usec / 1000000.0;
+#endif
+#endif
+	return r;
+}
+
 int gf_draw_step(gf_draw_t* draw) {
-	int ret = gf_draw_platform_step(draw);
+	int ret;
+	if(draw->fps != -1) {
+		gf_draw_time_t t;
+		gf_draw_time(&t);
+
+		draw->fps = 1.0 / (gf_draw_time_number(&t) - gf_draw_time_number(&draw->last_draw));
+	}
+	gf_draw_time(&draw->last_draw);
+	ret = gf_draw_platform_step(draw);
 	if(ret != 0) return ret;
 	if(draw->close == 1 && draw->engine->lua != NULL) {
 		draw->close = 0;
 		gf_lua_close(draw->engine->lua);
 	}
+	if(draw->fps == -1) draw->fps = 0;
 
 	return draw->close;
 }
@@ -115,3 +152,5 @@ void gf_draw_destroy(gf_draw_t* draw) {
 }
 
 void gf_draw_set_input(gf_draw_t* draw, gf_input_t* input) { draw->input = input; }
+
+double gf_draw_get_fps(gf_draw_t* draw) { return draw->fps; }

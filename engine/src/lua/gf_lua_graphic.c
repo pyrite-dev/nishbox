@@ -35,28 +35,46 @@ int gf_lua_call_graphic_text(lua_State* s) {
 	gf_lua_t*	   lua;
 	gf_graphic_color_t col;
 
-	lua_rawgeti(s, 6, 1);
-	col.r = lua_tonumber(s, -1);
-	lua_pop(s, 1);
-
-	lua_rawgeti(s, 6, 2);
-	col.g = lua_tonumber(s, -1);
-	lua_pop(s, 1);
-
-	lua_rawgeti(s, 6, 3);
-	col.b = lua_tonumber(s, -1);
-	lua_pop(s, 1);
-
-	lua_rawgeti(s, 6, 4);
-	col.a = lua_tonumber(s, -1);
-	lua_pop(s, 1);
-
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
+
+	if(lua_gettop(s) == 7) {
+		lua_rawgeti(s, 6, 1);
+		col.r = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 6, 2);
+		col.g = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 6, 3);
+		col.b = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 6, 4);
+		col.a = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+	} else {
+		col = lua->engine->client->draw->gui->font;
+	}
 
 	gf_graphic_text(lua->engine->client->draw, *font, x, y, sz, text, col);
 
 	return 0;
+}
+
+int gf_lua_call_graphic_text_width(lua_State* s) {
+	gf_font_t** font = luaL_checkudata(s, 1, "GoldFishFont");
+	double	    sz	 = luaL_checknumber(s, 2);
+	const char* text = luaL_checkstring(s, 3);
+	gf_lua_t*   lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua_pushnumber(s, gf_graphic_text_width(lua->engine->client->draw, *font, sz, text));
+
+	return 1;
 }
 
 void gf_lua_create_goldfish_graphic(gf_lua_t* lua) {
@@ -65,6 +83,10 @@ void gf_lua_create_goldfish_graphic(gf_lua_t* lua) {
 
 	lua_pushstring(lua->lua, "text");
 	lua_pushcfunction(lua->lua, gf_lua_call_graphic_text);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "text_width");
+	lua_pushcfunction(lua->lua, gf_lua_call_graphic_text_width);
 	lua_settable(lua->lua, -3);
 
 	lua_settable(lua->lua, -3);

@@ -1,5 +1,8 @@
 -- Initialize NishBox
 
+local fps = "??"
+local fpscount = 0
+
 local gf = goldfish
 local font = gf.font.load("base:/font/default.bdf")
 local bold_font = gf.font.load("base:/font/bold.bdf")
@@ -7,6 +10,25 @@ local bold_font = gf.font.load("base:/font/bold.bdf")
 gf.font.default(bold_font)
 
 gf.loop(function ()
+	local geo = gf.geometry()
+	local nfps = gf.fps()
+	local wid = 0
+	if not(nfps == -1) then
+		fpscount = fpscount + (1 / nfps)
+		if (fps == "??") or (fpscount >= 1) then
+			fps = string.format("%.1f FPS", nfps)
+			fpscount = 0
+		end
+	end
+	wid = gf.graphic.text_width(font, 24, fps)
+	gf.graphic.text(font, geo.width - wid, 0, 24, fps)
+end)
+
+gf.gui.create("button", 0, 0, 200, 200):callback(function (id, type)
+	if type == gf.gui.PRESS_EVENT then
+		local audio = gf.audio.create("base:/music/deep_blue.xm")
+		audio:resume()
+	end
 end)
 
 gf.close(function ()

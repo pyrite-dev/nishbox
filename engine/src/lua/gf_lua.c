@@ -23,6 +23,7 @@
 #include <gf_font.h>
 #include <gf_gui_component.h>
 #include <gf_graphic.h>
+#include <gf_draw.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -91,6 +92,17 @@ int gf_lua_call_shutdown(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_call_fps(lua_State* s) {
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua_pushnumber(s, gf_draw_get_fps(lua->engine->client->draw));
+
+	return 1;
+}
+
 void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_newtable(lua->lua);
 
@@ -115,6 +127,10 @@ void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_pushcfunction(lua->lua, gf_lua_call_shutdown);
 	lua_settable(lua->lua, -3);
 
+	lua_pushstring(lua->lua, "fps");
+	lua_pushcfunction(lua->lua, gf_lua_call_fps);
+	lua_settable(lua->lua, -3);
+
 	lua_setglobal(lua->lua, "goldfish");
 }
 
@@ -123,9 +139,11 @@ gf_lua_t* gf_lua_create(gf_engine_t* engine) {
 	memset(lua, 0, sizeof(*lua));
 	lua->engine = engine;
 
-	lua->loop  = 0;
-	lua->close = 0;
-	lua->lua   = luaL_newstate();
+	lua->loop	= 0;
+	lua->close	= 0;
+	lua->font_array = NULL;
+
+	lua->lua = luaL_newstate();
 	luaL_openlibs(lua->lua);
 
 	lua_pushlightuserdata(lua->lua, lua);
@@ -182,6 +200,12 @@ void gf_lua_close(gf_lua_t* lua) {
 void gf_lua_destroy(gf_lua_t* lua) {
 	int i;
 	lua_close(lua->lua);
+
+	for(i = 0; i < arrlen(lua->font_array); i++) {
+		gf_font_destroy(lua->font_array[i]);
+	}
+	arrfree(lua->font_array);
+
 	gf_log_function(lua->engine, "Destroyed Lua interface", "");
 	free(lua);
 }

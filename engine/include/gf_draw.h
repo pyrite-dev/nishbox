@@ -82,6 +82,13 @@ GF_EXPORT void gf_draw_end(void);
  */
 GF_EXPORT void gf_draw_reshape(gf_draw_t* draw);
 
+/**
+ * @~english
+ * @brief Get FPS
+ * @param draw Drawing interface
+ */
+GF_EXPORT double gf_draw_get_fps(gf_draw_t* draw);
+
 #ifdef __cplusplus
 }
 #endif
