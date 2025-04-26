@@ -1,4 +1,5 @@
 project("Pack")
+	flags("RelativeLinks")
 	kind("ConsoleApp")
 	language("C")
 	targetdir("../bin/%{cfg.buildcfg}/%{cfg.platform}")
@@ -31,6 +32,7 @@ project("Pack")
 	gf_msvc_filters()
 
 project("EngineInfo")
+	flags("RelativeLinks")
 	filter("system:windows")
 		kind("WindowedApp")
 	filter("system:not windows")

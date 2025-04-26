@@ -12,6 +12,7 @@
 
 /* Engine */
 #include <gf_prop.h>
+#include <gf_gui_component.h>
 #include <gf_gui_static.h>
 #include <gf_graphic.h>
 #include <gf_draw.h>
@@ -26,6 +27,8 @@ const int    gf_gui_border_color_diff = 48;
 
 gf_graphic_color_t gf_gui_base_color;
 gf_graphic_color_t gf_gui_font_color;
+
+gf_gui_call_t gf_gui_calls[GF_GUI_COMPONENTS];
 
 gf_gui_t* gf_gui_create(gf_engine_t* engine, gf_draw_t* draw) {
 	gf_gui_t* gui = malloc(sizeof(*gui));
@@ -135,10 +138,12 @@ void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, dou
 }
 
 void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
-	double pw = 0;
-	double ph = 0;
-	double bx = 0;
-	double by = 0;
+	double		  pw = 0;
+	double		  ph = 0;
+	double		  bx = 0;
+	double		  by = 0;
+	double		  mul;
+	gf_prop_integer_t prop;
 
 	if(c->parent != -1) {
 		double x2  = 0;
@@ -158,16 +163,22 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 	}
 
 	*x += bx;
-	if(c->x < 0 || c->x == -0.0) {
+	mul = 1;
+	if((prop = gf_prop_get_integer(&c->prop, "x-base")) != GF_PROP_NO_SUCH && prop == -1) {
+	} else if((prop = gf_prop_get_integer(&c->prop, "x-base")) != GF_PROP_NO_SUCH && prop == 1) {
 		*x += pw - (c->parent != -1 ? c->width : 0);
+		mul = -1;
 	}
-	*x += c->x;
+	*x += mul * c->x;
 
 	*y += by;
-	if(c->y < 0 || c->y == -0.0) {
+	mul = 1;
+	if((prop = gf_prop_get_integer(&c->prop, "y-base")) != GF_PROP_NO_SUCH && prop == -1) {
+	} else if((prop = gf_prop_get_integer(&c->prop, "y-base")) != GF_PROP_NO_SUCH && prop == 1) {
 		*y += ph - (c->parent != -1 ? c->height : 0);
+		mul = -1;
 	}
-	*y += c->y;
+	*y += mul * c->y;
 
 	if((*w) < c->width) {
 		*w = c->width;
@@ -216,6 +227,12 @@ void gf_gui_render(gf_gui_t* gui) {
 			}
 			if(gf_prop_get_integer(&c->prop, "min-height") == GF_PROP_NO_SUCH) {
 				gf_prop_set_integer(&c->prop, "min-height", 0);
+			}
+			if(gf_prop_get_integer(&c->prop, "x-base") == GF_PROP_NO_SUCH) {
+				gf_prop_set_integer(&c->prop, "x-base", -1);
+			}
+			if(gf_prop_get_integer(&c->prop, "y-base") == GF_PROP_NO_SUCH) {
+				gf_prop_set_integer(&c->prop, "y-base", -1);
 			}
 		}
 	}

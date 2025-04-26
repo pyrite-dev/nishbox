@@ -38,8 +38,9 @@ extern "C" {
  * @param line Line number
  * @param funcname Function name
  * @note Do not call this - you clearly want to use gf_assert
+ * @return Always `1`
  */
-GF_EXPORT void gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename, int line, const char* funcname);
+GF_EXPORT int gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename, int line, const char* funcname);
 
 #ifdef __cplusplus
 }

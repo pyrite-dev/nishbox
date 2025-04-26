@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename, int line, const char* funcname) {
+int gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename, int line, const char* funcname) {
 	char* msg = malloc(4096);
 	msg[0]	  = 0;
 
@@ -36,4 +36,6 @@ void gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename,
 #endif
 	free(msg);
 	engine->error = 1;
+
+	return 1;
 }

@@ -1,10 +1,13 @@
 #!/bin/sh
 
+n=0
+
 cd engine
 
 COMPONENTS=""
 for i in `ls -d src/gui/*.c`; do
 	COMPONENTS="$COMPONENTS `echo $i | rev | cut -d"_" -f1 | rev | cut -d"." -f1`"
+	n=`expr $n + 1`
 done
 
 ##### gf_gui_static.h #####
@@ -48,14 +51,38 @@ cat > include/gf_gui_static.h << EOF
 
 /* Engine */
 #include <gf_type/gui.h>
+#include <gf_gui_component.h>
 
 /* Standard */
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 EOF
+
+echo "#define GF_GUI_COMPONENTS $n" >> include/gf_gui_static.h
+
+cat >> include/gf_gui_static.h << EOF
+/**
+ * @~english
+ * @brief Initialize GUI component calls
+ */
+EOF
+incr=0
+echo "static void gf_gui_init_calls(void){" >> include/gf_gui_static.h
+echo "	extern gf_gui_call_t gf_gui_calls[$n];" >> include/gf_gui_static.h
+for i in $COMPONENTS; do
+	echo "	/*** Begin $i ***/" >> include/gf_gui_static.h
+	echo "	gf_gui_calls[$incr].name = malloc(512);" >> include/gf_gui_static.h
+	echo "	strcpy(gf_gui_calls[$incr].name, \"$i\");" >> include/gf_gui_static.h
+	echo "	gf_gui_calls[$incr].call = gf_gui_create_${i};" >> include/gf_gui_static.h
+	echo "	/***  End  $i ***/" >> include/gf_gui_static.h
+	incr=`expr $incr + 1`
+done
+echo "}" >> include/gf_gui_static.h
 
 generate "render"
 generate "drag"
@@ -118,6 +145,9 @@ EOF
 for i in $COMPONENTS; do
 	generate2 "$i"
 done
+
+echo "GF_EXPORT gf_gui_call_t gf_gui_calls[$n];" >> include/gf_gui_component.h
+echo >> include/gf_gui_component.h
 
 cat >> include/gf_gui_component.h << EOF
 #ifdef __cplusplus

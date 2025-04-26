@@ -13,6 +13,9 @@
 #include <gf_core.h>
 
 /* Engine */
+#include <gf_gui_static.h>
+#include <gf_assert.h>
+#include <gf_lua.h>
 #include <gf_client.h>
 #include <gf_server.h>
 #include <gf_log.h>
@@ -31,6 +34,8 @@ void gf_engine_begin(void) {
 	WSADATA wsa;
 #endif
 	gf_log_default = stderr;
+
+	gf_gui_init_calls();
 
 	gf_version_get(&ver);
 	gf_log_function(NULL, "GoldFish Engine %s", ver.full);
@@ -53,6 +58,8 @@ void gf_engine_end(void) {
 }
 
 gf_engine_t* gf_engine_create(const char* title, int nogui) {
+	int	     st;
+	gf_lua_t*    lua;
 	gf_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
 	engine->log   = stderr;
@@ -76,6 +83,13 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	if(!nogui) {
 		engine->client->draw->font	= gf_font_create_file(engine->client->draw, "base:/font/default.bdf");
 		engine->client->draw->bold_font = gf_font_create_file(engine->client->draw, "base:/font/bold.bdf");
+	}
+	lua = gf_lua_create(engine);
+	if((st = gf_lua_run(lua, "base:/scripts/init.lua")) != 0) {
+		gf_assert(engine, st == 0);
+		gf_lua_destroy(lua);
+		gf_engine_destroy(engine);
+		engine = NULL;
 	}
 	return engine;
 }

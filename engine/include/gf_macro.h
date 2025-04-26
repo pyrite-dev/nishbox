@@ -147,6 +147,14 @@
 #define GF_EXPOSE_PROP
 #endif
 
+#ifndef GF_EXPOSE_LUA
+/**
+ * @~english
+ * @brief Expose Lua properties
+ */
+#define GF_EXPOSE_LUA
+#endif
+
 #ifndef GF_EXPOSE_FILE
 /**
  * @~english

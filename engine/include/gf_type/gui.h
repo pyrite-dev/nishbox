@@ -132,4 +132,9 @@ typedef void gf_gui_t;
 typedef void gf_gui_component_t;
 #endif
 
+GF_DECLARE_TYPE(gui_call, {
+	char* name;
+	gf_gui_id_t (*call)(gf_gui_t* gui, double x, double y, double w, double h);
+});
+
 #endif

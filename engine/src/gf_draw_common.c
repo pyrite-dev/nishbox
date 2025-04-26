@@ -108,12 +108,16 @@ int gf_draw_step(gf_draw_t* draw) {
 		window = gf_gui_create_window(draw->gui, (double)draw->width / 2 - w / 2, (double)draw->height / 2 - h / 2, w, h);
 		gf_gui_set_text(draw->gui, window, "Confirm");
 
-		yes = gf_gui_create_button(draw->gui, -5.0 - bh * 2.5, -0.0, bh * 2.5, bh);
+		yes = gf_gui_create_button(draw->gui, 5.0 + bh * 2.5, 0, bh * 2.5, bh);
+		gf_prop_set_integer(gf_gui_get_prop(draw->gui, yes), "x-base", 1);
+		gf_prop_set_integer(gf_gui_get_prop(draw->gui, yes), "y-base", 1);
 		gf_gui_set_text(draw->gui, yes, "Yes");
 		gf_gui_set_callback(draw->gui, yes, gf_draw_close_yes);
 		gf_gui_set_parent(draw->gui, yes, gf_gui_get_prop_id(draw->gui, window, "frame"));
 
-		no = gf_gui_create_button(draw->gui, -0.0, -0.0, bh * 2.5, bh);
+		no = gf_gui_create_button(draw->gui, 0, 0, bh * 2.5, bh);
+		gf_prop_set_integer(gf_gui_get_prop(draw->gui, no), "x-base", 1);
+		gf_prop_set_integer(gf_gui_get_prop(draw->gui, no), "y-base", 1);
 		gf_gui_set_text(draw->gui, no, "No");
 		gf_gui_set_callback(draw->gui, no, gf_draw_close_no);
 		gf_gui_set_parent(draw->gui, no, gf_gui_get_prop_id(draw->gui, window, "frame"));

@@ -84,6 +84,7 @@ end
 include "engine"
 
 project("NishBoxServer")
+	flags("RelativeLinks")
 	kind("ConsoleApp")
 	language("C")
 	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
@@ -120,6 +121,7 @@ project("NishBoxServer")
 	msvc_filters()
 
 project("NishBox")
+	flags("RelativeLinks")
 	kind("ConsoleApp")
 	language("C")
 	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")

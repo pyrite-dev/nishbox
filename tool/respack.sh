@@ -1,6 +1,8 @@
 #!/bin/sh
+FILES="font scripts"
+cd data
 if [ "x${WINE}" = "x" ]; then
-	exec ./engine/bin/*/*/pack -d data base.pak
+	exec ../engine/bin/*/*/pack ../base.pak $FILES
 else
-	exec ${WINE} ./engine/bin/*/*/pack.exe -d data base.pak
+	exec ${WINE} ../engine/bin/*/*/pack.exe ../base.pak $FILES
 fi
