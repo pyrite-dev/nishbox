@@ -108,7 +108,7 @@ GF_DECLARE_TYPE(draw, {
 	gf_math_vector_t    lookat;
 	gf_math_vector_t    camera;
 	double*		    clip;
-	gf_font_t* font;
+	gf_font_t*	    font;
 });
 #else
 typedef void gf_draw_t;

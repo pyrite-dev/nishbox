@@ -24,6 +24,48 @@ extern "C" {
 
 /**
  * @~english
+ * @brief Create GoldFish GUI Lua interface
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_create_goldfish_gui(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Create GoldFish Graphic Lua interface
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_create_goldfish_graphic(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Create GoldFish Font Lua interface
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_create_goldfish_font(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Initialize GUI metatables
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_meta_init_gui(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Initialize Font metatables
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_meta_init_font(gf_lua_t* lua);
+
+/**
+ * @~english
+ * @brief Initialize metatables
+ * @param Lua interface
+ */
+GF_EXPORT void gf_lua_meta_init(gf_lua_t* lua);
+
+/**
+ * @~english
  * @brief Create Lua interface
  * @param engine Engine instance
  * @return Lua interface

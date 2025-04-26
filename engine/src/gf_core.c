@@ -64,7 +64,7 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	memset(engine, 0, sizeof(*engine));
 	engine->log   = stderr;
 	engine->error = 0;
-	engine->lua = NULL;
+	engine->lua   = NULL;
 	if(nogui) {
 		gf_log_function(engine, "No GUI mode", "");
 		engine->client = NULL;
@@ -81,7 +81,7 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	engine->server = gf_server_create(engine);
 
 	engine->base = gf_resource_create(engine, "base.pak");
-	engine->lua = gf_lua_create(engine);
+	engine->lua  = gf_lua_create(engine);
 	if((st = gf_lua_run(engine->lua, "base:/scripts/init.lua")) != 0) {
 		gf_assert(engine, st == 0);
 		gf_engine_destroy(engine);
@@ -113,7 +113,7 @@ void gf_engine_loop(gf_engine_t* engine) {
 }
 
 void gf_engine_destroy(gf_engine_t* engine) {
-	if(engine->lua != NULL){
+	if(engine->lua != NULL) {
 		gf_lua_destroy(engine->lua);
 	}
 	if(engine->server != NULL) gf_server_destroy(engine->server);

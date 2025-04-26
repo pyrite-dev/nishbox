@@ -62,7 +62,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_graphic_color_t col = gf_gui_font_color;
 	gf_gui_id_t	   fid;
 	int		   frame;
-	gf_font_t* font;
+	gf_font_t*	   font;
 	if(c->type != GF_GUI_WINDOW) return;
 
 	font = gf_prop_get_ptr_keep(&c->prop, "font");

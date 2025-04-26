@@ -35,7 +35,7 @@ int gf_assert_body(gf_engine_t* engine, const char* expr, const char* filename, 
 	fprintf(stderr, "-----  End  GoldFish Assertion Error -----\n");
 #endif
 	free(msg);
-	if (engine) engine->error = 1;
+	if(engine) engine->error = 1;
 
 	return 1;
 }

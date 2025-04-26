@@ -55,7 +55,7 @@ GF_DECLARE_TYPE(engine, {
 	gf_client_t*   client;
 	FILE*	       log;
 	gf_resource_t* base;
-	gf_lua_t* lua;
+	gf_lua_t*      lua;
 	int	       error;
 });
 #else

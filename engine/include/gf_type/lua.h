@@ -39,7 +39,7 @@ typedef struct gf_lua_t gf_lua_t;
 GF_DECLARE_TYPE(lua, {
 	gf_engine_t* engine;
 	lua_State*   lua;
-	int loop;
+	int	     loop;
 });
 #else
 typedef void gf_lua_t;

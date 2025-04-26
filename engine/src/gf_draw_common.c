@@ -44,7 +44,7 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->draw_3d = 0;
 	draw->input   = NULL;
 	draw->clip    = NULL;
-	draw->font = NULL;
+	draw->font    = NULL;
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {

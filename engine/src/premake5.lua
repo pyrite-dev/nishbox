@@ -50,6 +50,9 @@ project("GoldFish")
 	files({
 		"gui/*.c"
 	})
+	files({
+		"lua/*.c"
+	})
 	filter({
 		"system:windows",
 		"options:engine=dynamic"

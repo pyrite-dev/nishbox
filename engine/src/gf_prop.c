@@ -43,7 +43,7 @@ void gf_prop_set_ptr(gf_prop_t** prop, const char* key, void* value) {
 
 	gf_prop_delete(prop, key);
 	shput(*prop, (char*)key, value);
-	ind = shgeti(*prop, (char*)key);
+	ind		  = shgeti(*prop, (char*)key);
 	(*prop)[ind].keep = NULL;
 }
 
@@ -58,7 +58,7 @@ void gf_prop_set_ptr_keep(gf_prop_t** prop, const char* key, void* value) {
 
 	gf_prop_delete(prop, key);
 	shput(*prop, (char*)key, NULL);
-	ind = shgeti(*prop, (char*)key);
+	ind		  = shgeti(*prop, (char*)key);
 	(*prop)[ind].keep = value;
 }
 

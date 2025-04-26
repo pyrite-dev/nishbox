@@ -30,12 +30,12 @@ gf_gui_id_t gf_gui_create_frame(gf_gui_t* gui, double x, double y, double w, dou
 }
 
 void gf_gui_frame_render(gf_gui_t* gui, gf_gui_component_t* c) {
-	double cx;
-	double cy;
-	double cw;
-	double ch;
-	double sx;
-	double sy;
+	double	   cx;
+	double	   cy;
+	double	   cw;
+	double	   ch;
+	double	   sx;
+	double	   sy;
 	gf_font_t* font;
 	if(c->type != GF_GUI_FRAME) return;
 	if(c->text == NULL) return;

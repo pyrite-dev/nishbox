@@ -48,7 +48,7 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		   y;
 	gf_prop_integer_t  prop;
 	gf_prop_floating_t propf;
-	gf_font_t* font;
+	gf_font_t*	   font;
 	if(c->type != GF_GUI_BUTTON) return;
 
 	font = gf_prop_get_ptr_keep(&c->prop, "font");
