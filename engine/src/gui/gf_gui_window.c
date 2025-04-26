@@ -62,7 +62,12 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	gf_graphic_color_t col = gf_gui_font_color;
 	gf_gui_id_t	   fid;
 	int		   frame;
+	gf_font_t* font;
 	if(c->type != GF_GUI_WINDOW) return;
+
+	font = gf_prop_get_ptr_keep(&c->prop, "font");
+	if(font == NULL) font = gui->draw->font;
+	if(font == NULL) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 	gf_graphic_clip_pop(gui->draw);
@@ -77,7 +82,7 @@ void gf_gui_window_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	if(c->text != NULL) {
 		gf_graphic_clip_push(gui->draw, cx, cy, cw - GF_GUI_SMALL_FONT_SIZE - 10, GF_GUI_SMALL_FONT_SIZE + 10);
-		gf_graphic_text(gui->draw, gui->draw->bold_font, cx + 10, cy + 10 - (double)GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
+		gf_graphic_text(gui->draw, font, cx + 10, cy + 10 - (double)GF_GUI_SMALL_FONT_SIZE / 4, GF_GUI_SMALL_FONT_SIZE, c->text, col);
 		gf_graphic_clip_pop(gui->draw);
 	}
 

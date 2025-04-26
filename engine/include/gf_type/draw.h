@@ -71,12 +71,6 @@ typedef struct gf_draw_t gf_draw_t;
  * @var gf_draw_t::title
  * @brief Window title
  *
- * @var gf_draw_t::font
- * @brief Current font
- *
- * @var gf_draw_t::bold_font
- * @brief Current bold font
- *
  * @var gf_draw_t::light
  * @brief Light location
  * @note gf_draw_t::light[3] should be 1
@@ -92,6 +86,9 @@ typedef struct gf_draw_t gf_draw_t;
  *
  * @var gf_draw_t::clip
  * @brief Clip region stack
+ *
+ * @var gf_draw_t::font
+ * @brief Default font
  */
 GF_DECLARE_TYPE(draw, {
 	gf_engine_t*	    engine;
@@ -107,12 +104,11 @@ GF_DECLARE_TYPE(draw, {
 	int		    running;
 	int		    draw_3d;
 	char		    title[128];
-	gf_font_t*	    font;
-	gf_font_t*	    bold_font;
 	gf_math_vector_t    light;
 	gf_math_vector_t    lookat;
 	gf_math_vector_t    camera;
 	double*		    clip;
+	gf_font_t* font;
 });
 #else
 typedef void gf_draw_t;

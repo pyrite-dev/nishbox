@@ -39,14 +39,33 @@ gf_prop_floating_t gf_prop_get_floating(gf_prop_t** prop, const char* key) {
 }
 
 void gf_prop_set_ptr(gf_prop_t** prop, const char* key, void* value) {
+	int ind;
+
 	gf_prop_delete(prop, key);
 	shput(*prop, (char*)key, value);
+	ind = shgeti(*prop, (char*)key);
+	(*prop)[ind].keep = NULL;
 }
 
 void* gf_prop_get_ptr(gf_prop_t** prop, const char* key) {
 	int ind = shgeti(*prop, (char*)key);
 	if(ind == -1) return NULL;
 	return (*prop)[ind].value;
+}
+
+void gf_prop_set_ptr_keep(gf_prop_t** prop, const char* key, void* value) {
+	int ind;
+
+	gf_prop_delete(prop, key);
+	shput(*prop, (char*)key, NULL);
+	ind = shgeti(*prop, (char*)key);
+	(*prop)[ind].keep = value;
+}
+
+void* gf_prop_get_ptr_keep(gf_prop_t** prop, const char* key) {
+	int ind = shgeti(*prop, (char*)key);
+	if(ind == -1) return NULL;
+	return (*prop)[ind].keep;
 }
 
 void gf_prop_delete(gf_prop_t** prop, const char* key) {

@@ -39,6 +39,7 @@ typedef struct gf_prop_t gf_prop_t;
 GF_DECLARE_TYPE(prop, {
 	char* key;
 	void* value;
+	void* keep;
 });
 #else
 typedef void gf_prop_t;

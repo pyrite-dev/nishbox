@@ -20,7 +20,9 @@
 #include <gf_file.h>
 #include <gf_log.h>
 #include <gf_gui.h>
+#include <gf_font.h>
 #include <gf_gui_component.h>
+#include <gf_graphic.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -32,6 +34,13 @@ gf_gui_id_t* gf_lua_create_gui_id(lua_State* s) {
 	luaL_getmetatable(s, "GoldFishGUIComponent");
 	lua_setmetatable(s, -2);
 	return id;
+}
+
+gf_font_t** gf_lua_create_font(lua_State* s) {
+	gf_font_t** font = lua_newuserdata(s, sizeof(*font));
+	luaL_getmetatable(s, "GoldFishFont");
+	lua_setmetatable(s, -2);
+	return font;
 }
 
 void gf_lua_gui_callback(gf_engine_t* engine, gf_draw_t* draw, gf_gui_id_t id, int type) {
@@ -82,7 +91,7 @@ int gf_lua_call_gui_create(lua_State* s) {
 	return 0;
 }
 
-int gf_lua_call_gui_component_text(lua_State* s) {
+int gf_lua_meta_call_gui_component_text(lua_State* s) {
 	gf_gui_id_t* id	 = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	const char*  str = luaL_checkstring(s, 2);
 	gf_lua_t*    lua;
@@ -94,7 +103,7 @@ int gf_lua_call_gui_component_text(lua_State* s) {
 	return 0;
 }
 
-int gf_lua_call_gui_component_destroy(lua_State* s) {
+int gf_lua_meta_call_gui_component_destroy(lua_State* s) {
 	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	gf_lua_t*    lua;
 
@@ -105,7 +114,7 @@ int gf_lua_call_gui_component_destroy(lua_State* s) {
 	return 0;
 }
 
-int gf_lua_call_gui_component_prop(lua_State* s) {
+int gf_lua_meta_call_gui_component_prop(lua_State* s) {
 	gf_gui_id_t* id	  = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	const char*  type = luaL_checkstring(s, 2);
 	const char*  str  = luaL_checkstring(s, 3);
@@ -139,7 +148,7 @@ int gf_lua_call_gui_component_prop(lua_State* s) {
 	return 1;
 }
 
-int gf_lua_call_gui_component_callback(lua_State* s) {
+int gf_lua_meta_call_gui_component_callback(lua_State* s) {
 	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	gf_lua_t*    lua;
 
@@ -157,7 +166,27 @@ int gf_lua_call_gui_component_callback(lua_State* s) {
 	return 0;
 }
 
-int gf_lua_call_gui_component_parent(lua_State* s) {
+int gf_lua_meta_call_gui_component_font(lua_State* s) {
+	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
+	gf_lua_t*    lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	if(lua_gettop(s) == 3) {
+		gf_font_t** font = luaL_checkudata(s, 2, "GoldFishFont");
+		gf_prop_set_ptr_keep(gf_gui_get_prop(lua->engine->client->draw->gui, *id), "font", *font);
+	} else {
+		gf_font_t* pfont = gf_prop_get_ptr_keep(gf_gui_get_prop(lua->engine->client->draw->gui, *id), "font");
+		gf_font_t** font = gf_lua_create_font(s);
+
+		*font = pfont;
+		return 1;
+	}
+	return 0;
+}
+
+int gf_lua_meta_call_gui_component_parent(lua_State* s) {
 	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	gf_gui_id_t* parent;
 	gf_lua_t*    lua;
@@ -187,6 +216,89 @@ int gf_lua_call_gui_sort(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_call_graphic_text(lua_State* s) {
+	gf_font_t** font = luaL_checkudata(s, 1, "GoldFishFont");
+	double x = luaL_checknumber(s, 2);
+	double y = luaL_checknumber(s, 3);
+	double sz = luaL_checknumber(s, 4);
+	const char* text = luaL_checkstring(s, 5);
+	gf_lua_t* lua;
+	gf_graphic_color_t col;
+
+	lua_rawgeti(s, 6, 1);
+	col.r = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 6, 2);
+	col.g = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 6, 3);
+	col.b = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 6, 4);
+	col.a = lua_tonumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	gf_graphic_text(lua->engine->client->draw, *font, x, y, sz, text, col);
+
+	return 0;
+}
+
+int gf_lua_call_font_load(lua_State* s) {
+	const char*  path = luaL_checkstring(s, 1);
+	gf_font_t** font;
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	font = gf_lua_create_font(s);
+	*font = gf_font_create_file(lua->engine->client->draw, path);
+
+	return 1;
+}
+
+int gf_lua_call_font_default(lua_State* s) {
+	gf_font_t** font = luaL_checkudata(s, 1, "GoldFishFont");
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua->engine->client->draw->font = *font;
+
+	return 1;
+}
+
+int gf_lua_meta_call_font_gc(lua_State* s) {
+	gf_font_t** font = luaL_checkudata(s, 1, "GoldFishFont");
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	gf_font_destroy(*font);
+
+	return 1;
+}
+
+int gf_lua_call_loop(lua_State* s){
+	int call = luaL_ref(s, LUA_REGISTRYINDEX);
+	gf_lua_t* lua;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	lua->loop = call;
+
+	return 0;
+}
+
 void gf_lua_create_goldfish_gui(gf_lua_t* lua) {
 	int i;
 
@@ -208,10 +320,42 @@ void gf_lua_create_goldfish_gui(gf_lua_t* lua) {
 	lua_settable(lua->lua, -3);
 }
 
+void gf_lua_create_goldfish_graphic(gf_lua_t* lua) {
+	lua_pushstring(lua->lua, "graphic");
+	lua_newtable(lua->lua);
+
+	lua_pushstring(lua->lua, "text");
+	lua_pushcfunction(lua->lua, gf_lua_call_graphic_text);
+	lua_settable(lua->lua, -3);
+
+	lua_settable(lua->lua, -3);
+}
+
+void gf_lua_create_goldfish_font(gf_lua_t* lua) {
+	lua_pushstring(lua->lua, "font");
+	lua_newtable(lua->lua);
+
+	lua_pushstring(lua->lua, "load");
+	lua_pushcfunction(lua->lua, gf_lua_call_font_load);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "default");
+	lua_pushcfunction(lua->lua, gf_lua_call_font_default);
+	lua_settable(lua->lua, -3);
+
+	lua_settable(lua->lua, -3);
+}
+
 void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_newtable(lua->lua);
 
 	gf_lua_create_goldfish_gui(lua);
+	gf_lua_create_goldfish_graphic(lua);
+	gf_lua_create_goldfish_font(lua);
+
+	lua_pushstring(lua->lua, "loop");
+	lua_pushcfunction(lua->lua, gf_lua_call_loop);
+	lua_settable(lua->lua, -3);
 
 	lua_setglobal(lua->lua, "goldfish");
 }
@@ -221,32 +365,50 @@ gf_lua_t* gf_lua_create(gf_engine_t* engine) {
 	memset(lua, 0, sizeof(*lua));
 	lua->engine = engine;
 
+	lua->loop = 0;
 	lua->lua = luaL_newstate();
 	luaL_openlibs(lua->lua);
 
 	lua_pushlightuserdata(lua->lua, lua);
 	lua_setglobal(lua->lua, "_GF_LUA");
 
+	/*** GoldFish GUI Component ***/
+
 	luaL_newmetatable(lua->lua, "GoldFishGUIComponent");
 
 	lua_pushstring(lua->lua, "text");
-	lua_pushcfunction(lua->lua, gf_lua_call_gui_component_text);
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_text);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "parent");
-	lua_pushcfunction(lua->lua, gf_lua_call_gui_component_parent);
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_parent);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "destroy");
-	lua_pushcfunction(lua->lua, gf_lua_call_gui_component_destroy);
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_destroy);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "font");
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_font);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "prop");
-	lua_pushcfunction(lua->lua, gf_lua_call_gui_component_prop);
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_prop);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "callback");
-	lua_pushcfunction(lua->lua, gf_lua_call_gui_component_callback);
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_callback);
+	lua_settable(lua->lua, -3);
+
+	lua_pushvalue(lua->lua, -1);
+	lua_setfield(lua->lua, -2, "__index");
+
+	/*** GoldFish GUI Component ***/
+
+	luaL_newmetatable(lua->lua, "GoldFishFont");
+
+	lua_pushstring(lua->lua, "__gc");
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_font_gc);
 	lua_settable(lua->lua, -3);
 
 	lua_pushvalue(lua->lua, -1);
@@ -281,6 +443,13 @@ int gf_lua_run(gf_lua_t* lua, const char* path) {
 	free(str);
 	gf_file_close(f);
 	return 0;
+}
+
+void gf_lua_step(gf_lua_t* lua){
+	if(lua->loop == 0) return;
+
+	lua_rawgeti(lua->lua, LUA_REGISTRYINDEX, lua->loop);
+	lua_pcall(lua->lua, 0, 0, 0);
 }
 
 void gf_lua_destroy(gf_lua_t* lua) {

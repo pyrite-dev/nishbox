@@ -22,6 +22,7 @@
 #include <gf_font.h>
 #include <gf_gui.h>
 #include <gf_audio.h>
+#include <gf_lua.h>
 
 /* Standard */
 #include <stdlib.h>
@@ -41,9 +42,9 @@ gf_draw_t* gf_draw_create(gf_engine_t* engine, const char* title) {
 	draw->height  = 600;
 	draw->running = 0;
 	draw->draw_3d = 0;
-	draw->font    = NULL;
 	draw->input   = NULL;
 	draw->clip    = NULL;
+	draw->font = NULL;
 	strcpy(draw->title, title);
 	draw->platform = gf_draw_platform_create(engine, draw);
 	if(draw->platform != NULL) {
@@ -77,8 +78,7 @@ void gf_draw_reshape(gf_draw_t* draw) { gf_draw_driver_reshape(draw); }
 /* Runs every frame */
 void gf_draw_frame(gf_draw_t* draw) {
 	gf_graphic_clear(draw);
-	if(draw->draw_3d) {
-	}
+	gf_lua_step(draw->engine->lua);
 	gf_gui_render(draw->gui);
 }
 
@@ -131,9 +131,6 @@ int gf_draw_step(gf_draw_t* draw) {
 }
 
 void gf_draw_destroy(gf_draw_t* draw) {
-	if(draw->font != NULL) {
-		gf_font_destroy(draw->font);
-	}
 	if(draw->clip != NULL) {
 		arrfree(draw->clip);
 		draw->clip = NULL;

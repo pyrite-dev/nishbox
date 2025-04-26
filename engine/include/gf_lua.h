@@ -46,6 +46,13 @@ GF_EXPORT int gf_lua_run(gf_lua_t* lua, const char* path);
  */
 GF_EXPORT void gf_lua_destroy(gf_lua_t* lua);
 
+/**
+ * @~english
+ * @brief Run a single step for Lua interface
+ * @param lua Lua interface
+ */
+GF_EXPORT void gf_lua_step(gf_lua_t* lua);
+
 #ifdef __cplusplus
 }
 #endif

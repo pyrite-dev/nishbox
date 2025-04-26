@@ -64,6 +64,7 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	memset(engine, 0, sizeof(*engine));
 	engine->log   = stderr;
 	engine->error = 0;
+	engine->lua = NULL;
 	if(nogui) {
 		gf_log_function(engine, "No GUI mode", "");
 		engine->client = NULL;
@@ -80,14 +81,9 @@ gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	engine->server = gf_server_create(engine);
 
 	engine->base = gf_resource_create(engine, "base.pak");
-	if(!nogui) {
-		engine->client->draw->font	= gf_font_create_file(engine->client->draw, "base:/font/default.bdf");
-		engine->client->draw->bold_font = gf_font_create_file(engine->client->draw, "base:/font/bold.bdf");
-	}
-	lua = gf_lua_create(engine);
-	if((st = gf_lua_run(lua, "base:/scripts/init.lua")) != 0) {
+	engine->lua = gf_lua_create(engine);
+	if((st = gf_lua_run(engine->lua, "base:/scripts/init.lua")) != 0) {
 		gf_assert(engine, st == 0);
-		gf_lua_destroy(lua);
 		gf_engine_destroy(engine);
 		engine = NULL;
 	}
@@ -117,6 +113,9 @@ void gf_engine_loop(gf_engine_t* engine) {
 }
 
 void gf_engine_destroy(gf_engine_t* engine) {
+	if(engine->lua != NULL){
+		gf_lua_destroy(engine->lua);
+	}
 	if(engine->server != NULL) gf_server_destroy(engine->server);
 	if(engine->client != NULL) gf_client_destroy(engine->client);
 	if(engine->base != NULL) gf_resource_destroy(engine->base);

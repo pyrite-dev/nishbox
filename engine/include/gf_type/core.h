@@ -19,6 +19,7 @@ typedef struct gf_engine_t gf_engine_t;
 #include <gf_type/server.h>
 #include <gf_type/client.h>
 #include <gf_type/resource.h>
+#include <gf_type/lua.h>
 
 /* Standard */
 #include <stdio.h>
@@ -43,6 +44,9 @@ typedef struct gf_engine_t gf_engine_t;
  * @var gf_engine_t::base
  * @brief Base resource
  *
+ * @var gf_engine_t::lua
+ * @brief Lua interface
+ *
  * @var gf_engine_t::error
  * @brief Set on error
  */
@@ -51,6 +55,7 @@ GF_DECLARE_TYPE(engine, {
 	gf_client_t*   client;
 	FILE*	       log;
 	gf_resource_t* base;
+	gf_lua_t* lua;
 	int	       error;
 });
 #else

@@ -48,7 +48,12 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 	double		   y;
 	gf_prop_integer_t  prop;
 	gf_prop_floating_t propf;
+	gf_font_t* font;
 	if(c->type != GF_GUI_BUTTON) return;
+
+	font = gf_prop_get_ptr_keep(&c->prop, "font");
+	if(font == NULL) font = gui->draw->font;
+	if(font == NULL) return;
 
 	gf_gui_calc_xywh(gui, c, &cx, &cy, &cw, &ch);
 	gf_graphic_clip_pop(gui->draw);
@@ -62,14 +67,14 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 		if((propf = gf_prop_get_floating(&c->prop, "font-size")) != GF_PROP_NO_SUCH) {
 			fsz = propf;
 		}
-		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, gui->draw->bold_font, fsz, c->text) / 2;
+		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, font, fsz, c->text) / 2;
 		y = cy + ch / 2 - (double)fsz / 2;
 		if(gui->pressed == c->key) {
 			x += gf_gui_border_width / 2;
 			y += gf_gui_border_width / 2;
 		}
 		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
-		gf_graphic_text(gui->draw, gui->draw->bold_font, x, y, fsz, c->text, gf_gui_font_color);
+		gf_graphic_text(gui->draw, font, x, y, fsz, c->text, gf_gui_font_color);
 		gf_graphic_clip_pop(gui->draw);
 	}
 }

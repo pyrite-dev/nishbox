@@ -83,6 +83,24 @@ GF_EXPORT void* gf_prop_get_ptr(gf_prop_t** prop, const char* key);
 
 /**
  * @~english
+ * @brief Set void pointer to property
+ * @param prop Property
+ * @param key Key
+ * @param value Value
+ */
+GF_EXPORT void gf_prop_set_ptr_keep(gf_prop_t** prop, const char* key, void* value);
+
+/**
+ * @~english
+ * @brief Get void pointer from property
+ * @param prop Property
+ * @param key Key
+ * @return Value
+ */
+GF_EXPORT void* gf_prop_get_ptr_keep(gf_prop_t** prop, const char* key);
+
+/**
+ * @~english
  * @brief Delete property
  * @param prop Property
  * @param key Key

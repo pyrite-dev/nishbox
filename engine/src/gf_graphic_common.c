@@ -32,7 +32,7 @@ void gf_graphic_text(gf_draw_t* draw, gf_font_t* userfont, double x, double y, d
 				double fax = glyph->bbox.width;
 				double fay = glyph->bbox.height;
 				double fx  = glyph->bbox.x;
-				double fy  = (draw->font->bbox.height + draw->font->bbox.y) - (glyph->bbox.height + glyph->bbox.y);
+				double fy  = (font->bbox.height + font->bbox.y) - (glyph->bbox.height + glyph->bbox.y);
 				gf_graphic_draw_texture_2d(draw, x + mx + fx * zoom, y + fy * zoom, zoom * fax, zoom * fay, glyph->texture, color);
 				mx += zoom * glyph->dwidth[0];
 			}
@@ -46,7 +46,6 @@ double gf_graphic_text_width(gf_draw_t* draw, gf_font_t* userfont, double size, 
 	gf_font_glyph_t* glyph;
 	double		 zoom = 0;
 	gf_font_t*	 font = userfont;
-	if(font == NULL) font = draw->font;
 	if(font != NULL) {
 		zoom = size / font->bbox.height;
 		for(i = 0; text[i] != 0; i++) {
