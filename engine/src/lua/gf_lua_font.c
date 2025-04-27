@@ -40,7 +40,6 @@ int gf_lua_call_font_load(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	font  = gf_lua_create_font(lua);
 	*font = gf_font_create_file(lua->engine->client->draw, path);
@@ -55,7 +54,6 @@ int gf_lua_call_font_default(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	lua->engine->client->draw->font = *font;
 

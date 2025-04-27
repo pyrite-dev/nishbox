@@ -35,7 +35,6 @@ int gf_lua_meta_call_gui_component_text(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	gf_gui_set_text(lua->engine->client->draw->gui, *id, str);
 	return 0;
@@ -47,7 +46,6 @@ int gf_lua_meta_call_gui_component_destroy(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	gf_gui_destroy_id(lua->engine->client->draw->gui, *id);
 	return 0;
@@ -61,7 +59,6 @@ int gf_lua_meta_call_gui_component_prop(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	if(lua_gettop(s) == 5) {
 		if(strcmp(type, "id") == 0) {
@@ -94,7 +91,6 @@ int gf_lua_meta_call_gui_component_callback(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	if(lua_gettop(s) == 3) {
 		int* ptr = malloc(sizeof(*ptr));
@@ -113,7 +109,6 @@ int gf_lua_meta_call_gui_component_font(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	if(lua_gettop(s) == 3) {
 		gf_font_t** font = luaL_checkudata(s, 2, "GoldFishFont");
@@ -135,7 +130,6 @@ int gf_lua_meta_call_gui_component_parent(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	if(lua_gettop(s) == 3) {
 		parent = luaL_checkudata(s, 2, "GoldFishGUIComponent");

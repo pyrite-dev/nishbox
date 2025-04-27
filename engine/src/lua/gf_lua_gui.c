@@ -64,7 +64,6 @@ int gf_lua_call_gui_create(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	for(i = 0; i < sizeof(gf_gui_calls) / sizeof(gf_gui_calls[0]); i++) {
 		if(strcmp(gf_gui_calls[i].name, str) == 0) {
@@ -90,7 +89,6 @@ int gf_lua_call_gui_sort(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	gf_gui_sort_component(lua->engine->client->draw->gui);
 
@@ -104,7 +102,6 @@ int gf_lua_call_gui_color(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	lua_rawgeti(s, 2, 1);
 	color.r = luaL_checknumber(s, -1);

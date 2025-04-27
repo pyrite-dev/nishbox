@@ -38,7 +38,6 @@ int gf_lua_call_graphic_text(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	if(lua_gettop(s) == 7) {
 		lua_rawgeti(s, 6, 1);
@@ -73,7 +72,6 @@ int gf_lua_call_graphic_text_width(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	lua_pushnumber(s, gf_graphic_text_width(lua->engine->client->draw, *font, sz, text));
 
@@ -107,7 +105,6 @@ int gf_lua_call_graphic_points(lua_State* s) {
 
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
-	lua_pop(s, 1);
 
 	dim  = luaL_checknumber(s, 2);
 	plen = (dim == GF_GRAPHIC_2D ? 2 : 3);
