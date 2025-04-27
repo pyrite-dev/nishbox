@@ -42,11 +42,6 @@ GF_DECLARE_TYPE(draw_platform, {
 	HDC	     dc;
 	HGLRC	     glrc;
 });
-#elif defined(USE_GLFW)
-GF_DECLARE_TYPE(draw_platform, {
-	gf_engine_t* engine;
-	GLFWwindow*  window;
-});
 #elif defined(USE_RGFW)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;

@@ -1,13 +1,12 @@
 gf_backends = {
 	opengl = {
 		name = "OpenGL",
-		default = "glfw",
+		default = "rgfw",
 		unix = {"GL"},
 		windows = {"opengl32"},
 		backends = {
 			glx = {"GLX", {"X11"}},
 			wgl = {"WGL", {"gdi32"}},
-			glfw = {"GLFW", {"glfw"}},
 			rgfw = {"RGFW", {}}
 		}
 	},

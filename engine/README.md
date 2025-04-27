@@ -1,7 +1,7 @@
 # GoldFish Engine
 
 ## Stack
- - OpenGL 1.1 (probably) on WGL/GLX/[GLFW](https://www.glfw.org/)
+ - OpenGL 1.1 (probably) on WGL/GLX/RGFW
  - [Open Dynamics Engine](https://ode.org)
  - [zlib](https://zlib.net)
  - [Lua](https://lua.org)

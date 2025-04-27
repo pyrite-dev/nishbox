@@ -38,9 +38,6 @@ digraph relation {
 	glu [
 		label = "GLU"
 	];
-	glfw [
-		label = "GLFW"
-	];
 	glx [
 		label = "GLX/X11"
 	];
@@ -192,7 +189,7 @@ digraph relation {
 
 	dp -> glx;
 
-	dp -> {wgl glfw} [ // These APIs are callback-based
+	dp -> {wgl} [ // These APIs are callback-based
 		dir = "both"
 	];
 
@@ -230,7 +227,7 @@ digraph relation {
 	// Rank
 	{
 		rank = "same";
-		glx; wgl; glfw;
+		glx; wgl;
 	};
 
 	{
