@@ -41,6 +41,9 @@ digraph relation {
 	glx [
 		label = "GLX/X11"
 	];
+	rgfw [
+		label = "RGFW"
+	];
 	pthread [
 		label = "POSIX Thread"
 	];
@@ -188,6 +191,8 @@ digraph relation {
 	dd -> {opengl glu};
 
 	dp -> glx;
+	
+	dp -> rgfw;
 
 	dp -> {wgl} [ // These APIs are callback-based
 		dir = "both"
@@ -227,7 +232,7 @@ digraph relation {
 	// Rank
 	{
 		rank = "same";
-		glx; wgl;
+		glx; wgl; rgfw;
 	};
 
 	{
