@@ -8,6 +8,12 @@
 #ifndef __GF_OPENGL_H__
 #define __GF_OPENGL_H__
 
+#if defined(USE_RGFW)
+#define RGFW_USE_XDL
+#define RGFWDEF extern
+
+#include <RGFW.h>
+#else
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -20,6 +26,7 @@
 /* Should require nothing... for now? */
 #elif defined(USE_GLFW)
 #include <GLFW/glfw3.h>
+#endif
 #endif
 
 #endif

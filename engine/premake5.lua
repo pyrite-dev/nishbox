@@ -7,7 +7,8 @@ gf_backends = {
 		backends = {
 			glx = {"GLX", {"X11"}},
 			wgl = {"WGL", {"gdi32"}},
-			glfw = {"GLFW", {"glfw"}}
+			glfw = {"GLFW", {"glfw"}},
+			rgfw = {"RGFW", {}}
 		}
 	},
 	directx = {
