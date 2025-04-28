@@ -45,7 +45,13 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 			draw->y	     = rect.top;
 			draw->width  = rect.right - rect.left;
 			draw->height = rect.bottom - rect.top;
+#if defined(TYPE_NATIVE)
 			wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
+#elif defined(TYPE_OSMESA)
+			free(draw->platform->buffer);
+			draw->platform->buffer = malloc(draw->width * draw->height * 4);
+			OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height); 
+#endif
 			gf_draw_reshape(draw);
 		}
 		break;
@@ -109,7 +115,7 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	const char*		     ptr;
 	const int		     len = strlen(query);
 	PFNWGLGETEXTENSIONSSTRINGARB proc;
-
+#if defined(TYPE_NATIVE)
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
 	proc = (PFNWGLGETEXTENSIONSSTRINGARB)wglGetProcAddress("wglGetExtensionsStringARB");
@@ -119,13 +125,19 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 		ptr = strstr(ext, query);
 		return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
 	}
+#elif defined(TYPE_OSMESA)
+#endif
 	return 0;
 }
 
 int gf_draw_platform_step(gf_draw_t* draw) {
 	MSG msg;
 	int ret = 0;
+#if defined(TYPE_NATIVE)
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
+#elif defined(TYPE_OSMESA)
+	OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 	while(PeekMessage(&msg, draw->platform->window, 0, 0, PM_NOREMOVE)) {
 		if(GetMessage(&msg, draw->platform->window, 0, 0)) {
 			TranslateMessage(&msg);
@@ -206,13 +218,24 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	fmt = ChoosePixelFormat(platform->dc, &desc);
 	SetPixelFormat(platform->dc, fmt, &desc);
 
+#if defined(TYPE_NATIVE)
 	platform->glrc = wglCreateContext(platform->dc);
-	if(platform->glrc == NULL) {
+	if (platform->glrc == NULL) {
 		gf_log_function(engine, "Failed to create OpenGL context", "");
 		gf_draw_platform_destroy(platform);
 		return NULL;
 	}
 	wglMakeCurrent(platform->dc, platform->glrc);
+#elif defined(TYPE_OSMESA)
+	platform->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
+	if (platform->context == NULL) {
+		gf_log_function(engine, "Failed to get OpenGL context", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
+	}
+	platform->buffer = malloc(draw->width * draw->height * 4);
+	OSMesaMakeCurrent(platform->context, platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 
 #ifdef DO_SWAP_INTERVAL
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
@@ -234,6 +257,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 }
 
 void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
+#if defined(TYPE_NATIVE)
 	if(platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
 	}
@@ -243,6 +267,14 @@ void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
 	if(platform->glrc != NULL) {
 		wglDeleteContext(platform->glrc);
 	}
+#elif defined(TYPE_OSMESA)
+	if (platform->context != NULL) {
+		OSMesaDestroyContext(platform->context);
+	}
+	if (platform->buffer != NULL) {
+		free(platform->buffer);
+	}
+#endif
 	if(platform->window != NULL) {
 		DestroyWindow(platform->window);
 	}
