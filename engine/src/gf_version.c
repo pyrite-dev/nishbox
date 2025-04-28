@@ -31,19 +31,12 @@ void gf_version_get(gf_version_t* version) {
 
 #if defined(DRV_OPENGL)
 	strcpy(version->driver, "OpenGL");
-#if defined(USE_GLX)
-	strcpy(version->backend, "GLX");
-#elif defined(USE_WGL)
-	strcpy(version->backend, "WGL");
+#if defined(USE_X11)
+	strcpy(version->backend, "X11");
+#elif defined(USE_GDI)
+	strcpy(version->backend, "GDI");
 #elif defined(USE_RGFW)
 	strcpy(version->backend, "RGFW");
-#endif
-#endif
-
-#if defined(DRV_DIRECTX)
-	strcpy(version->driver, "DirectX");
-#if defined(USE_DX11)
-	strcpy(version->backend, "DirectX 11");
 #endif
 #endif
 

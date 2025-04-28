@@ -26,7 +26,7 @@ typedef struct gf_draw_platform_t gf_draw_platform_t;
 /* Standard */
 
 #if defined(DRV_OPENGL)
-#if defined(USE_GLX)
+#if defined(USE_X11)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;
 	Display*     display;
@@ -34,7 +34,7 @@ GF_DECLARE_TYPE(draw_platform, {
 	GLXContext   context;
 	Atom	     wm_delete_window;
 });
-#elif defined(USE_WGL)
+#elif defined(USE_GDI)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;
 	HINSTANCE    instance;

@@ -18,11 +18,11 @@
 #include <windows.h>
 #endif
 #include <GL/gl.h>
-#if defined(USE_GLX)
+#if defined(USE_X11)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <GL/glx.h>
-#elif defined(USE_WGL)
+#elif defined(USE_GDI)
 /* Should require nothing... for now? */
 #endif
 #endif
