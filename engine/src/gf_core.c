@@ -59,7 +59,6 @@ void gf_engine_end(void) {
 
 gf_engine_t* gf_engine_create(const char* title, int nogui) {
 	int	     st;
-	gf_lua_t*    lua;
 	gf_engine_t* engine = malloc(sizeof(*engine));
 	memset(engine, 0, sizeof(*engine));
 	engine->log   = stderr;
