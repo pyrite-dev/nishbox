@@ -65,6 +65,9 @@ GF_DECLARE_TYPE(draw_platform, {
 	HDC	       dc;
 	OSMesaContext  context;
 	unsigned char* buffer;
+	HBITMAP	       bitmap;
+	BITMAPV5HEADER header;
+	HDC	       bitmapdc;
 });
 #endif
 #elif defined(USE_RGFW)

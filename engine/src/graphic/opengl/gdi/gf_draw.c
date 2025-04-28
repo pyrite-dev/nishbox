@@ -1,3 +1,4 @@
+#include "OSMesa/osmesa.h"
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_INPUT
@@ -48,9 +49,19 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 #if defined(TYPE_NATIVE)
 			wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 #elif defined(TYPE_OSMESA)
-			free(draw->platform->buffer);
-			draw->platform->buffer = malloc(draw->width * draw->height * 4);
-			OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height); 
+			DeleteObject(draw->platform->bitmap);
+			DeleteDC(draw->platform->bitmapdc);
+			/**
+			 * Do NOT:
+			 * free(draw->platform->buffer);
+			 */
+			draw->platform->buffer		 = malloc(draw->width * draw->height * 4);
+			draw->platform->header.bV5Width	 = draw->width;
+			draw->platform->header.bV5Height = -((LONG)draw->height);
+			draw->platform->bitmap		 = CreateDIBSection(draw->platform->dc, (BITMAPINFO*)&draw->platform->header, DIB_RGB_COLORS, (void**)&draw->platform->buffer, NULL, (DWORD)0);
+			draw->platform->bitmapdc	 = CreateCompatibleDC(draw->platform->dc);
+			SelectObject(draw->platform->bitmapdc, draw->platform->bitmap);
+			OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
 #endif
 			gf_draw_reshape(draw);
 		}
@@ -152,7 +163,11 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 		gf_draw_frame(draw);
 		gf_draw_driver_after(draw);
 
+#if defined(TYPE_NATIVE)
 		SwapBuffers(draw->platform->dc);
+#elif defined(TYPE_OSMESA)
+		BitBlt(draw->platform->dc, 0, 0, draw->width, draw->height, draw->platform->bitmapdc, 0, 0, SRCCOPY);
+#endif
 	}
 	return ret;
 }
@@ -220,24 +235,37 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 
 #if defined(TYPE_NATIVE)
 	platform->glrc = wglCreateContext(platform->dc);
-	if (platform->glrc == NULL) {
+	if(platform->glrc == NULL) {
 		gf_log_function(engine, "Failed to create OpenGL context", "");
 		gf_draw_platform_destroy(platform);
 		return NULL;
 	}
 	wglMakeCurrent(platform->dc, platform->glrc);
 #elif defined(TYPE_OSMESA)
-	platform->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
-	if (platform->context == NULL) {
+	platform->context = OSMesaCreateContext(OSMESA_BGRA, NULL);
+	if(platform->context == NULL) {
 		gf_log_function(engine, "Failed to get OpenGL context", "");
 		gf_draw_platform_destroy(platform);
 		return NULL;
 	}
 	platform->buffer = malloc(draw->width * draw->height * 4);
 	OSMesaMakeCurrent(platform->context, platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+	OSMesaPixelStore(OSMESA_Y_UP, 0);
+
+	memset(&platform->header, 0, sizeof(platform->header));
+	platform->header.bV5Size	= sizeof(platform->header);
+	platform->header.bV5Width	= draw->width;
+	platform->header.bV5Height	= -((LONG)draw->height);
+	platform->header.bV5Planes	= 1;
+	platform->header.bV5BitCount	= 32;
+	platform->header.bV5Compression = BI_RGB;
+
+	platform->bitmap   = CreateDIBSection(platform->dc, (BITMAPINFO*)&platform->header, DIB_RGB_COLORS, (void**)&platform->buffer, NULL, (DWORD)0);
+	platform->bitmapdc = CreateCompatibleDC(platform->dc);
+	SelectObject(platform->bitmapdc, platform->bitmap);
 #endif
 
-#ifdef DO_SWAP_INTERVAL
+#if defined(DO_SWAP_INTERVAL) && defined(TYPE_NATIVE)
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	if(wglSwapIntervalEXT != NULL) {
 		gf_log_function(engine, "Enabled VSync", "");
@@ -261,18 +289,23 @@ void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
 	if(platform->glrc != NULL) {
 		wglMakeCurrent(NULL, NULL);
 	}
+#endif
 	if(platform->dc != NULL) {
 		ReleaseDC(platform->window, platform->dc);
 	}
+#if defined(TYPE_NATIVE)
 	if(platform->glrc != NULL) {
 		wglDeleteContext(platform->glrc);
 	}
 #elif defined(TYPE_OSMESA)
-	if (platform->context != NULL) {
+	if(platform->context != NULL) {
 		OSMesaDestroyContext(platform->context);
 	}
-	if (platform->buffer != NULL) {
-		free(platform->buffer);
+	if(platform->bitmapdc != NULL) {
+		DeleteDC(platform->bitmapdc);
+	}
+	if(platform->bitmap != NULL) {
+		DeleteObject(platform->bitmap);
 	}
 #endif
 	if(platform->window != NULL) {

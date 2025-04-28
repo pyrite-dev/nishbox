@@ -149,7 +149,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 
 	XFree(visual);
 #elif defined(TYPE_OSMESA)
-	platform->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
+	platform->context = OSMesaCreateContext(OSMESA_BGRA, NULL);
 	if(platform->context == NULL) {
 		gf_log_function(engine, "Failed to get OpenGL context", "");
 		gf_draw_platform_destroy(platform);
