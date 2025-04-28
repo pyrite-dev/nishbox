@@ -8,9 +8,6 @@
 [submodule "engine/external/zlib"]
 	path = engine/external/zlib
 	url = https://github.com/madler/zlib
-[submodule "engine/external/miniaudio"]
-	path = engine/external/miniaudio
-	url = https://github.com/mackron/miniaudio
 [submodule "engine/external/ode"]
 	path = engine/external/ode
 	url = https://github.com/thomasmarsh/ODE
