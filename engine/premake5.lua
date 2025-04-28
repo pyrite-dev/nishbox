@@ -232,14 +232,17 @@ function gf_link_stuffs(cond)
 					"system:windows",
 					cond
 				})
-					if v3.windows then
-						links(v3.windows)
-					end
 					if v2.links then
 						links(v2.links)
 					end
+					if v2.windows then
+						links(v2.windows)
+					end
 					if v3.links then
 						links(v3.links)
+					end
+					if v3.windows then
+						links(v3.windows)
 					end
 				filter({
 					"options:backend=" .. k,
@@ -248,14 +251,17 @@ function gf_link_stuffs(cond)
 					"system:not windows",
 					cond
 				})
-					if v3.unix then
-						links(v3.unix)
-					end
 					if v2.links then
 						links(v2.links)
 					end
+					if v2.unix then
+						links(v2.unix)
+					end
 					if v3.links then
 						links(v3.links)
+					end
+					if v3.unix then
+						links(v3.unix)
 					end
 			end
 		end
