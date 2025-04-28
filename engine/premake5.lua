@@ -1,13 +1,47 @@
 gf_backends = {
 	opengl = {
 		name = "OpenGL",
-		default = "rgfw",
-		unix = {"GL"},
-		windows = {"opengl32"},
+		default_backend = "rgfw",
+		default_type = "native",
+		types = {
+			native = {
+				name = "Native",
+				windows = {"opengl32"},
+				unix = {"GL"}
+			},
+			osmesa = {
+				name = "OSMesa",
+				includedirs = {
+					"external/osmesa/include",
+					"external/osmesa/src",
+					"external/osmesa/src/main",
+					"external/osmesa/src/glapi",
+					"external/osmesa/src/shader",
+					"external/osmesa/src/shader/grammar",
+					"external/osmesa/src/shader/slang"
+				},
+				files = {
+					"external/osmesa/src/**.c",
+					"-external/osmesa/src/shader/grammar/grammar.c"
+				}
+			}
+		},
 		backends = {
-			x11 = {"X11", {"X11"}},
-			gdi = {"GDI", {"gdi32"}},
-			rgfw = {"RGFW", {}}
+			x11 = {
+				name = "X11",
+				links = {
+					"X11"
+				}
+			},
+			gdi = {
+				name = "GDI",
+				links = {
+					"gdi32"
+				}
+			},
+			rgfw = {
+				name = "RGFW"
+			}
 		}
 	}
 }
@@ -16,7 +50,7 @@ gf_l = {}
 for k,v in pairs(gf_backends) do
 	allowed = {}
 	for k2,v2 in pairs(v["backends"]) do
-		table.insert(allowed, {k2, v2[1]})
+		table.insert(allowed, {k2, v2["name"]})
 	end
 	newoption({
 		trigger = k,
@@ -24,8 +58,22 @@ for k,v in pairs(gf_backends) do
 		description = "Choose a backend for " .. v["name"],
 		allowed = allowed,
 		category = "Engine",
-		default = v["default"]
+		default = v["default_backend"]
 	})
+
+	allowed = {}
+	for k2,v2 in pairs(v["types"]) do
+		table.insert(allowed, {k2, v2["name"]})
+	end
+	newoption({
+		trigger = k .. "-type",
+		value = "API",
+		description = "Choose a type for " .. v["name"],
+		allowed = allowed,
+		category = "Engine",
+		default = v["default_type"]
+	})
+
 	table.insert(gf_l, {k, v["name"]})
 end
 
@@ -72,14 +120,21 @@ function gf_default_stuffs()
 		})
 	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2
-			})
-				defines({
-					"DRV_" .. string.upper(k),
-					"USE_" .. string.upper(k2)
+			for k3,v3 in pairs(v["types"]) do
+				filter({
+					"options:backend=" .. k,
+					"options:" .. k .. "=" .. k2,
+					"options:" .. k .. "-type=" .. k3
 				})
+					defines({
+						"DRV_" .. string.upper(k),
+						"USE_" .. string.upper(k2),
+						"TYPE_" .. string.upper(k3)
+					})
+					if v3.defines then
+						defines(v3.defines)
+					end
+			end
 		end
 	end
 
@@ -169,22 +224,40 @@ function gf_link_stuffs(cond)
 		})
 	for k,v in pairs(gf_backends) do
 		for k2,v2 in pairs(v["backends"]) do
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:windows",
-				cond
-			})
-				links(v.windows)
-				links(v2[2])
-			filter({
-				"options:backend=" .. k,
-				"options:" .. k .. "=" .. k2,
-				"system:not windows",
-				cond
-			})
-				links(v.unix)
-				links(v2[2])
+			for k3,v3 in pairs(v["types"]) do
+				filter({
+					"options:backend=" .. k,
+					"options:" .. k .. "=" .. k2,
+					"options:" .. k .. "-type=" .. k3,
+					"system:windows",
+					cond
+				})
+					if v2.windows then
+						links(v2.windows)
+					end
+					if v2.links then
+						links(v2.links)
+					end
+					if v3.links then
+						links(v3.links)
+					end
+				filter({
+					"options:backend=" .. k,
+					"options:" .. k .. "=" .. k2,
+					"options:" .. k .. "-type=" .. k3,
+					"system:not windows",
+					cond
+				})
+					if v2.unix then
+						links(v2.unix)
+					end
+					if v2.links then
+						links(v2.links)
+					end
+					if v3.links then
+						links(v3.links)
+					end
+			end
 		end
 	end
 	filter({

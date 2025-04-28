@@ -140,6 +140,35 @@ project("GoldFish")
 		"dLIBCCD_CONVEX_CONVEX"
 	})
 	-- End ODE
+	
+	for k,v in pairs(gf_backends) do
+		for k2,v2 in pairs(v["backends"]) do
+			for k3,v3 in pairs(v["types"]) do
+				filter({
+					"options:backend=" .. k,
+					"options:" .. k .. "=" .. k2,
+					"options:" .. k .. "-type=" .. k3
+				})
+					if v3.includedirs then
+						local l = {}
+						for _,d in ipairs(v3.includedirs) do
+							table.insert(l, "../" .. d)
+						end
+						includedirs(l)
+					end
+					if v3.files then
+						for _,fn in ipairs(v3.files) do
+							if string.sub(fn, 1, 1) == "-" then
+								removefiles("../" .. string.sub(fn, 2, -1))
+							else
+								files("../" .. fn)
+							end
+						end
+					end
+			end
+		end
+	end
+	filter({})
 
 	gf_default_stuffs()
 	gf_link_stuffs("options:engine=dynamic")

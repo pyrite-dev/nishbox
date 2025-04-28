@@ -1,16 +1,19 @@
-[submodule "external/lua"]
+[submodule "engine/external/lua"]
 	path = engine/external/lua
 	url = https://github.com/lua/lua
 	branch = v5.4
-[submodule "external/stb"]
+[submodule "engine/external/stb"]
 	path = engine/external/stb
 	url = https://github.com/nothings/stb
-[submodule "external/zlib"]
+[submodule "engine/external/zlib"]
 	path = engine/external/zlib
 	url = https://github.com/madler/zlib
-[submodule "external/miniaudio"]
+[submodule "engine/external/miniaudio"]
 	path = engine/external/miniaudio
 	url = https://github.com/mackron/miniaudio
-[submodule "external/ode"]
+[submodule "engine/external/ode"]
 	path = engine/external/ode
 	url = https://github.com/thomasmarsh/ODE
+[submodule "engine/external/osmesa"]
+	path = engine/external/osmesa
+	url = https://github.com/nishiowo/osmesa
