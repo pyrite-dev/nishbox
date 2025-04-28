@@ -37,12 +37,15 @@ GF_DECLARE_TYPE(draw_platform, {
 });
 #elif defined(TYPE_OSMESA)
 GF_DECLARE_TYPE(draw_platform, {
-	gf_engine_t* engine;
-	Display*     display;
-	Window	     window;
-	OSMesaContext   context;
-	Atom	     wm_delete_window;
+	gf_engine_t*   engine;
+	Display*       display;
+	Window	       window;
+	OSMesaContext  context;
+	Atom	       wm_delete_window;
 	unsigned char* buffer;
+	XImage*	       image;
+	XVisualInfo    visual;
+	GC	       gc;
 });
 #endif
 #elif defined(USE_GDI)
@@ -56,11 +59,11 @@ GF_DECLARE_TYPE(draw_platform, {
 });
 #elif defined(TYPE_OSMESA)
 GF_DECLARE_TYPE(draw_platform, {
-	gf_engine_t* engine;
-	HINSTANCE    instance;
-	HWND	     window;
-	HDC	     dc;
-	OSMesaContext   context;
+	gf_engine_t*   engine;
+	HINSTANCE      instance;
+	HWND	       window;
+	HDC	       dc;
+	OSMesaContext  context;
 	unsigned char* buffer;
 });
 #endif
