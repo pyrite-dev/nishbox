@@ -129,8 +129,6 @@ int gf_lua_call_gui_color(lua_State* s) {
 }
 
 void gf_lua_create_goldfish_gui(gf_lua_t* lua) {
-	int i;
-
 	lua_pushstring(lua->lua, "gui");
 	lua_newtable(lua->lua);
 

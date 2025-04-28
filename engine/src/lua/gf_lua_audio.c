@@ -49,8 +49,6 @@ int gf_lua_call_audio_create(lua_State* s) {
 }
 
 void gf_lua_create_goldfish_audio(gf_lua_t* lua) {
-	int i;
-
 	lua_pushstring(lua->lua, "audio");
 	lua_newtable(lua->lua);
 
