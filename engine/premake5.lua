@@ -266,7 +266,8 @@ function gf_link_stuffs(cond)
 	})
 		links({
 			"user32",
-			"ws2_32"
+			"ws2_32",
+			"opengl32"
 		})
 	filter({
 		"system:not windows",
