@@ -232,8 +232,8 @@ function gf_link_stuffs(cond)
 					"system:windows",
 					cond
 				})
-					if v2.windows then
-						links(v2.windows)
+					if v3.windows then
+						links(v3.windows)
 					end
 					if v2.links then
 						links(v2.links)
@@ -248,8 +248,8 @@ function gf_link_stuffs(cond)
 					"system:not windows",
 					cond
 				})
-					if v2.unix then
-						links(v2.unix)
+					if v3.unix then
+						links(v3.unix)
 					end
 					if v2.links then
 						links(v2.links)
@@ -266,8 +266,7 @@ function gf_link_stuffs(cond)
 	})
 		links({
 			"user32",
-			"ws2_32",
-			"opengl32"
+			"ws2_32"
 		})
 	filter({
 		"system:not windows",
