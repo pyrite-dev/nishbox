@@ -48,15 +48,6 @@ GF_DECLARE_TYPE(draw_platform, {
 	RGFW_window* window;
 });
 #endif
-#elif defined(DRV_DIRECTX)
-#if defined(USE_DX11)
-GF_DECLARE_TYPE(draw_platform, {
-	gf_engine_t* engine;
-	HINSTANCE    instance;
-	HWND	     window;
-	HDC	     dc;
-});
-#endif
 #else
 /**
  * @struct gf_draw_platform_t
