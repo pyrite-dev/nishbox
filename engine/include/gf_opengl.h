@@ -22,9 +22,14 @@
 #include <windows.h>
 #endif
 #include <GL/gl.h>
+#if defined(TYPE_OSMESA)
+#include <GL/osmesa.h>
+#endif
+
 #if defined(USE_X11)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/Xutil.h>
 
 #if defined(TYPE_NATIVE)
 #include <GL/glx.h>

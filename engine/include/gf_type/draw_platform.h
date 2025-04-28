@@ -27,6 +27,7 @@ typedef struct gf_draw_platform_t gf_draw_platform_t;
 
 #if defined(DRV_OPENGL)
 #if defined(USE_X11)
+#if defined(TYPE_NATIVE)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;
 	Display*     display;
@@ -34,7 +35,18 @@ GF_DECLARE_TYPE(draw_platform, {
 	GLXContext   context;
 	Atom	     wm_delete_window;
 });
+#elif defined(TYPE_OSMESA)
+GF_DECLARE_TYPE(draw_platform, {
+	gf_engine_t* engine;
+	Display*     display;
+	Window	     window;
+	OSMesaContext   context;
+	Atom	     wm_delete_window;
+	unsigned char* buffer;
+});
+#endif
 #elif defined(USE_GDI)
+#if defined(TYPE_NATIVE)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;
 	HINSTANCE    instance;
@@ -42,6 +54,16 @@ GF_DECLARE_TYPE(draw_platform, {
 	HDC	     dc;
 	HGLRC	     glrc;
 });
+#elif defined(TYPE_OSMESA)
+GF_DECLARE_TYPE(draw_platform, {
+	gf_engine_t* engine;
+	HINSTANCE    instance;
+	HWND	     window;
+	HDC	     dc;
+	OSMesaContext   context;
+	unsigned char* buffer;
+});
+#endif
 #elif defined(USE_RGFW)
 GF_DECLARE_TYPE(draw_platform, {
 	gf_engine_t* engine;

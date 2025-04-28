@@ -1,3 +1,4 @@
+#include "OSMesa/osmesa.h"
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_INPUT
@@ -46,19 +47,31 @@ int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 	const char* ptr;
 	const int   len = strlen(query);
 
+#if defined(TYPE_NATIVE)
 	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
+#elif defined(TYPE_OSMESA)
+	OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 
+#if defined(TYPE_NATIVE)
 	ext = glXQueryExtensionsString(draw->platform->display, DefaultScreen(draw->platform->display));
 	ptr = strstr(ext, query);
 	return ((ptr != NULL) && ((ptr[len] == ' ') || (ptr[len] == '\0')));
+#elif defined(TYPE_OSMESA)
+	return 0;
+#endif
 }
 
 gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
 	int		     i = 0;
-	int		     attribs[64];
 	int		     screen;
 	Window		     root;
+#if defined(TYPE_NATIVE)
+	int		     attribs[64];
 	XVisualInfo*	     visual;
+#elif defined(TYPE_OSMESA)
+	XVisualInfo visual;
+#endif
 	XSetWindowAttributes attr;
 	XSizeHints	     hints;
 	int		     interval = 0;
@@ -66,12 +79,21 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	memset(platform, 0, sizeof(*platform));
 	platform->engine = engine;
 
+#if defined(TYPE_OSMESA)
+	platform->buffer = NULL;
+#endif
+
 	platform->display = XOpenDisplay(NULL);
 	if(platform->display == NULL) {
 		gf_log_function(engine, "Failed to open display", "");
 		gf_draw_platform_destroy(platform);
 		return NULL;
 	}
+
+	screen = DefaultScreen(platform->display);
+	root   = RootWindow(platform->display, screen);
+
+#if defined(TYPE_NATIVE)
 	attribs[i++] = GLX_RGBA;
 	attribs[i++] = GLX_DOUBLEBUFFER;
 
@@ -86,19 +108,28 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 
 	attribs[i++] = None;
 
-	screen = DefaultScreen(platform->display);
-	root   = RootWindow(platform->display, screen);
-
 	visual = glXChooseVisual(platform->display, screen, attribs);
 	if(visual == NULL) {
 		gf_log_function(engine, "Failed to get visual", "");
 		gf_draw_platform_destroy(platform);
 		return NULL;
 	}
+#elif defined(TYPE_OSMESA)
+	if(!XMatchVisualInfo(platform->display, screen, 24, DirectColor, &visual)){
+		gf_log_function(engine, "Failed to get visual", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
+	}
+#endif
 
-	attr.colormap	 = XCreateColormap(platform->display, root, visual->visual, AllocNone);
 	attr.event_mask	 = StructureNotifyMask | ExposureMask | PointerMotionMask | ButtonPressMask | ButtonReleaseMask;
+#if defined(TYPE_NATIVE)
+	attr.colormap	 = XCreateColormap(platform->display, root, visual->visual, AllocNone);
 	platform->window = XCreateWindow(platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual->depth, InputOutput, visual->visual, CWColormap | CWEventMask, &attr);
+#elif defined(TYPE_OSMESA)
+	attr.colormap	 = XCreateColormap(platform->display, root, visual.visual, AllocNone);
+	platform->window = XCreateWindow(platform->display, root, draw->width, draw->height, draw->width, draw->height, 0, visual.depth, InputOutput, visual.visual, CWColormap | CWEventMask, &attr);
+#endif
 
 	hints.x	     = draw->x;
 	hints.y	     = draw->y;
@@ -111,6 +142,7 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	platform->wm_delete_window = XInternAtom(platform->display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(platform->display, platform->window, &platform->wm_delete_window, 1);
 
+#if defined(TYPE_NATIVE)
 	platform->context = glXCreateContext(platform->display, visual, NULL, True);
 	if(platform->context == NULL) {
 		XFree(visual);
@@ -120,11 +152,24 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	}
 
 	XFree(visual);
+#elif defined(TYPE_OSMESA)
+	platform->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
+	if(platform->context == NULL) {
+		gf_log_function(engine, "Failed to get OpenGL context", "");
+		gf_draw_platform_destroy(platform);
+		return NULL;
+	}
+#endif
 
 	XMapWindow(platform->display, platform->window);
+#if defined(TYPE_NATIVE)
 	glXMakeCurrent(platform->display, platform->window, platform->context);
+#elif defined(TYPE_OSMESA)
+	platform->buffer = malloc(draw->width * draw->height * 4);
+	OSMesaMakeCurrent(platform->context, platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 
-#ifdef DO_SWAP_INTERVAL
+#if defined(DO_SWAP_INTERVAL) && defined(TYPE_NATIVE)
 	if(gf_draw_platform_has_extension(draw, "GLX_EXT_swap_control")) {
 		unsigned int		  tmp  = -1;
 		PFNGLXSWAPINTERVALEXTPROC proc = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddressARB("glXSwapIntervalEXT");
@@ -154,7 +199,11 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 
 int gf_draw_platform_step(gf_draw_t* draw) {
 	int ret = 0;
+#if defined(TYPE_NATIVE)
 	glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
+#elif defined(TYPE_OSMESA)
+	OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 	while(XPending(draw->platform->display) > 0) {
 		XEvent event;
 		XNextEvent(draw->platform->display, &event);
@@ -170,7 +219,13 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 			draw->y	     = event.xconfigure.y;
 			draw->width  = event.xconfigure.width;
 			draw->height = event.xconfigure.height;
+#if defined(TYPE_NATIVE)
 			glXMakeCurrent(draw->platform->display, draw->platform->window, draw->platform->context);
+#elif defined(TYPE_OSMESA)
+			free(draw->platform->buffer);
+			draw->platform->buffer = malloc(draw->width * draw->height * 4);
+			OSMesaMakeCurrent(draw->platform->context, draw->platform->buffer, GL_UNSIGNED_BYTE, draw->width, draw->height);
+#endif
 			gf_draw_reshape(draw);
 		} else if(event.type == ButtonPress) {
 			if(draw->input != NULL) {
@@ -196,20 +251,31 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 		gf_draw_frame(draw);
 		gf_draw_driver_after(draw);
 
+#if defined(TYPE_NATIVE)
 		glXSwapBuffers(draw->platform->display, draw->platform->window);
+#endif
 	}
 	return ret;
 }
 
 void gf_draw_platform_destroy(gf_draw_platform_t* platform) {
 	if(platform->context != NULL) {
+#if defined(TYPE_NATIVE)
 		glXMakeCurrent(platform->display, None, NULL);
 		glXDestroyContext(platform->display, platform->context);
+#elif defined(TYPE_OSMESA)
+		OSMesaDestroyContext(platform->context);
+#endif
 	}
 	if(platform->display != NULL) {
 		XDestroyWindow(platform->display, platform->window);
 		XCloseDisplay(platform->display);
 	}
+#if defined(TYPE_OSMESA)
+	if(platform->buffer != NULL){
+		free(platform->buffer);
+	}
+#endif
 	gf_log_function(platform->engine, "Destroyed platform-dependent part of drawing driver", "");
 	free(platform);
 }
