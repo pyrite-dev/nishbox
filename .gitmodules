@@ -11,6 +11,3 @@
 [submodule "engine/external/ode"]
 	path = engine/external/ode
 	url = https://github.com/thomasmarsh/ODE
-[submodule "engine/external/osmesa"]
-	path = engine/external/osmesa
-	url = https://github.com/nishiowo/osmesa
