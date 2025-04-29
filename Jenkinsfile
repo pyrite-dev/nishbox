@@ -5,33 +5,15 @@ pipeline {
 		WEBHOOK_ORIN = credentials("webhook-orin")
 	}
 	stages {
-		stage("Initialize submodules") {
-			steps {
-				sh "git submodule update --init --recursive"
-			}
-			post {
-				always {
-					post_always()
-				}
-			}
-		}
-		stage("Configure for Windows") {
-			steps {
-				sh "premake5 gmake --engine=dynamic --opengl=gdi"
-			}
-			post {
-				always {
-					post_always()
-				}
-			}
-		}
 		stage("Build for Windows") {
 			parallel {
 				stage("Build for Windows 64-bit") {
 					agent any
 					steps {
+						sh "git submodule update --init --recursive"
+						sh "premake5 gmake --engine=dynamic --opengl=gdi"
 						sh "gmake config=release_win64 -j4"
-						sh "./tool/pack.sh Win64 nishbox64"
+						sh "./tool/pack.sh Win64 nishbox nishbox64.zip"
 						archiveArtifacts(
 							"nishbox64.zip"
 						)
@@ -45,8 +27,10 @@ pipeline {
 				stage("Build for Windows 32-bit") {
 					agent any
 					steps {
+						sh "git submodule update --init --recursive"
+						sh "premake5 gmake --engine=dynamic --opengl=gdi"
 						sh "gmake config=release_win32 -j4"
-						sh "./tool/pack.sh Win32 nishbox32"
+						sh "./tool/pack.sh Win32 nishbox nishbox32.zip"
 						archiveArtifacts(
 							"nishbox32.zip"
 						)
