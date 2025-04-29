@@ -45,7 +45,7 @@ local function draw_points()
 		end
 	end
 
-	gf.graphic.points({255, 255, 255, 255}, gf.graphic.DIM_3D, p)
+	gf.graphic.points({0x44, 0xaa, 0, 255}, gf.graphic.DIM_3D, p)
 end
 
 gf.loop(function ()
@@ -62,11 +62,11 @@ gf.loop(function ()
 		end
 	end
 
-	gf.graphic.rect(0, 0, geo.width, geo.height, {32, 32, 32, 255})
+	gf.graphic.rect(0, 0, geo.width, geo.height, {0, 0x11, 0x11, 255})
 
 	text = fps
-	wid = gf.graphic.text_width(bold_font, 24, text)
-	gf.graphic.text(bold_font, geo.width - wid, 0, 24, text)
+	wid = gf.graphic.text_width(mono_bold_font, 24, text)
+	gf.graphic.text(mono_bold_font, geo.width - wid, 0, 24, text)
 
 	draw_points()
 

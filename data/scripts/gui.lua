@@ -7,6 +7,11 @@ local menu_entries = {
 		end
 	},
 	{
+		name = "Credits",
+		callback = function()
+		end
+	},
+	{
 		name = "Options",
 		callback = function()
 		end
@@ -27,7 +32,7 @@ local menu_entries = {
 local function menu()
 	for i,v in ipairs(menu_entries) do
 		if v.name then
-			local size = 40
+			local size = 56
 			local btn = gf.gui.create("button", 5 + size, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
 			if v.component then
 				v.component:destroy()
