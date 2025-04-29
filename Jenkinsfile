@@ -25,6 +25,7 @@ def post_always(){
 		result: currentBuild.currentResult,
 		title: env.JOB_NAME,
 		showChangeset: true,
-		enableArtifactsList: true
+		enableArtifactsList: true,
+		description: "**Build:** ${env.BUILD_NUMBER}\n**Status:** ${currentBuild.currentResult}"
 	)
 }
