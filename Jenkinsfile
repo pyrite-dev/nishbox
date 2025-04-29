@@ -1,18 +1,3 @@
-def set_post(){
-	post {
-		always {
-			discordSend(
-				webhookURL: env.WEBHOOK_NISHBOX,
-				link: env.BUILD_URL,
-				result: currentBuild.currentResult,
-				title: env.JOB_NAME,
-				showChangeset: true,
-				enableArtifactsList: true
-			)
-		}
-	}
-}
-
 pipeline {
 	agent any
 	environment {
@@ -24,7 +9,22 @@ pipeline {
 			steps {
 				echo "dummy"
 			}
+			post {
+				always {
+					post_always()
+				}
+			}
 		}
-		set_post()
 	}
+}
+
+def post_always(){
+	discordSend(
+		webhookURL: env.WEBHOOK_NISHBOX,
+		link: env.BUILD_URL,
+		result: currentBuild.currentResult,
+		title: env.JOB_NAME,
+		showChangeset: true,
+		enableArtifactsList: true
+	)
 }
