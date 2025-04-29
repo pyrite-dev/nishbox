@@ -6,26 +6,11 @@ pipeline {
 	}
 	stages {
 		stage("Build for Windows") {
-			stage("Configure for Windows") {
-				agent any
-				steps {
-					sh "premake5 gmake --engine=dynamic --opengl=gdi"
-				}
-				post {
-					always {
-						post_always()
-					}
-				}
-			}
-			parallel {
-				stage("Build for Windows 64-bit") {
+			steps {
+				stage("Configure for Windows") {
 					agent any
 					steps {
-						sh "gmake config=release_win64 -j4"
-						sh "./tool/pack.sh Win64 nishbox64"
-						archiveArtifacts(
-							"nishbox64.zip"
-						)
+						sh "premake5 gmake --engine=dynamic --opengl=gdi"
 					}
 					post {
 						always {
@@ -33,18 +18,35 @@ pipeline {
 						}
 					}
 				}
-				stage("Build for Windows 32-bit") {
-					agent any
-					steps {
-						sh "gmake config=release_win32 -j4"
-						sh "./tool/pack.sh Win32 nishbox32"
-						archiveArtifacts(
-							"nishbox32.zip"
-						)
+				parallel {
+					stage("Build for Windows 64-bit") {
+						agent any
+						steps {
+							sh "gmake config=release_win64 -j4"
+							sh "./tool/pack.sh Win64 nishbox64"
+							archiveArtifacts(
+								"nishbox64.zip"
+							)
+						}
+						post {
+							always {
+								post_always()
+							}
+						}
 					}
-					post {
-						always {
-							post_always()
+					stage("Build for Windows 32-bit") {
+						agent any
+						steps {
+							sh "gmake config=release_win32 -j4"
+							sh "./tool/pack.sh Win32 nishbox32"
+							archiveArtifacts(
+								"nishbox32.zip"
+							)
+						}
+						post {
+							always {
+								post_always()
+							}
 						}
 					}
 				}
