@@ -21,5 +21,3 @@ Building NishBox is simple.
 *nix ones are tested on NetBSD/amd64 and Debian GNU/Linux 12 x86_64.
 
 MSVC ones are tested on VS2008/VS2010.
-
-`--opengl-type=osmesa` is broken on VS2008/VS2010
