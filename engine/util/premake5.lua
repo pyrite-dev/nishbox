@@ -56,17 +56,14 @@ project("EngineInfo")
 			"engineinfo/main_console.c"
 		})
 		files({
-			"engineinfo/main_windows.c"
+			"engineinfo/main_windows.c",
+			"engineinfo/*.rc"
 		})
 	filter({})
 	links({
 		"GoldFish"
 	})
 	gf_link_stuffs("options:engine=static")
-	filter("system:windows")
-		files({
-			"engineinfo/*.rc"
-		})
 	filter("configurations:Debug")
 		defines({
 			"DEBUG"
