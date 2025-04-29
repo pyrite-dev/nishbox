@@ -5,6 +5,16 @@ pipeline {
 		WEBHOOK_ORIN = credentials("webhook-orin")
 	}
 	stages {
+		stage("Get submodules") {
+			steps {
+				sh "git submodule update --init --recursive"
+			}
+			post {
+				always {
+					post_always(false)
+				}
+			}
+		}
 		stage("Build for Windows") {
 			parallel {
 				stage("Build for Windows 64-bit") {
