@@ -48,6 +48,12 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 		} else if(draw->platform->window->event.type == RGFW_mousePosChanged) {
 			draw->input->mouse_x = draw->platform->window->event.point.x;
 			draw->input->mouse_y = draw->platform->window->event.point.y;
+		} else if(draw->platform->window->event.type == RGFW_windowMoved) {
+			draw->x = draw->platform->window->r.x;
+			draw->y = draw->platform->window->r.y;
+		} else if(draw->platform->window->event.type == RGFW_windowResized) {
+			draw->width  = draw->platform->window->r.w;
+			draw->height = draw->platform->window->r.h;
 		} else if(draw->platform->window->event.type == RGFW_mouseButtonPressed) {
 			if(draw->platform->window->event.button == RGFW_mouseLeft) draw->input->mouse_flag |= GF_INPUT_MOUSE_LEFT_MASK;
 			if(draw->platform->window->event.button == RGFW_mouseMiddle) draw->input->mouse_flag |= GF_INPUT_MOUSE_MIDDLE_MASK;

@@ -16,6 +16,7 @@
 #include <gf_lua.h>
 
 /* Engine */
+#include <gf_version.h>
 #include <gf_prop.h>
 #include <gf_file.h>
 #include <gf_log.h>
@@ -108,7 +109,58 @@ int gf_lua_call_fps(lua_State* s) {
 	return 1;
 }
 
+int gf_lua_call_require(lua_State* s) {
+	const char* path = luaL_checkstring(s, 1);
+	gf_lua_t*   lua;
+	gf_file_t*  f;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
+
+	lua_getglobal(s, "package");
+	lua_getfield(s, -1, "loaded");
+	lua_getfield(s, -1, path);
+	if(strcmp(luaL_typename(s, -1), "nil") != 0) {
+		lua_remove(s, -2);
+		lua_remove(s, -2);
+		return 1;
+	}
+	lua_pop(s, 3);
+
+	f = gf_file_open(lua->engine, path, "r");
+	if(f != NULL) {
+		char* d = malloc(f->size);
+		gf_file_read(f, d, f->size);
+		gf_file_close(f);
+
+		if(luaL_loadbuffer(s, d, f->size, path)) {
+			free(d);
+			lua_pop(s, 1);
+		} else if(lua_pcall(s, 0, LUA_MULTRET, 0)) {
+			free(d);
+			lua_pop(s, 1);
+		} else {
+			free(d);
+		}
+
+		lua_getglobal(s, "package");
+		lua_getfield(s, -1, "loaded");
+
+		lua_pushstring(s, path);
+		lua_pushvalue(s, -4);
+		lua_settable(s, -3);
+
+		return lua_gettop(s) - 1;
+	}
+
+	return 0;
+}
+
 void gf_lua_create_goldfish(gf_lua_t* lua) {
+	gf_version_t ver;
+	gf_version_get(&ver);
+
 	lua_newtable(lua->lua);
 
 	gf_lua_create_goldfish_gui(lua);
@@ -136,10 +188,15 @@ void gf_lua_create_goldfish(gf_lua_t* lua) {
 	lua_pushcfunction(lua->lua, gf_lua_call_fps);
 	lua_settable(lua->lua, -3);
 
+	lua_pushstring(lua->lua, "version");
+	lua_pushstring(lua->lua, ver.full);
+	lua_settable(lua->lua, -3);
+
 	lua_setglobal(lua->lua, "goldfish");
 }
 
 gf_lua_t* gf_lua_create(gf_engine_t* engine) {
+	char	  prg[1024];
 	gf_lua_t* lua = malloc(sizeof(*lua));
 	memset(lua, 0, sizeof(*lua));
 	lua->engine = engine;
@@ -157,6 +214,9 @@ gf_lua_t* gf_lua_create(gf_engine_t* engine) {
 	gf_lua_meta_init(lua);
 
 	gf_lua_create_goldfish(lua);
+
+	lua_pushcfunction(lua->lua, gf_lua_call_require);
+	lua_setglobal(lua->lua, "require");
 
 	return lua;
 }

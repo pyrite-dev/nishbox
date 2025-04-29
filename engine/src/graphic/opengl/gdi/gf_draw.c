@@ -121,12 +121,12 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 }
 
 int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
-	const char*		     ext = NULL;
+	const char* ext = NULL;
 #if defined(TYPE_NATIVE)
 	const char*		     ptr;
 	PFNWGLGETEXTENSIONSSTRINGARB proc;
 #endif
-	const int		     len = strlen(query);
+	const int len = strlen(query);
 #if defined(TYPE_NATIVE)
 	wglMakeCurrent(draw->platform->dc, draw->platform->glrc);
 
