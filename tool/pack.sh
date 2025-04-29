@@ -1,13 +1,17 @@
 #!/bin/sh
 
-rm -rf nishbox
-rm -rf nishbox.zip
-mkdir -p nishbox
-mkdir -p nishbox/bin
-mkdir -p nishbox/lib
-mkdir -p nishbox/include
+TARGET=${1:-"*"}
+DIR=${2:-nishbox}
+OUTPUT=${3:-$DIR.zip}
 
-cat > nishbox/README.txt << EOF
+rm -rf $DIR
+rm -rf $OUTPUT
+mkdir -p $DIR
+mkdir -p $DIR/bin
+mkdir -p $DIR/lib
+mkdir -p $DIR/include
+
+cat > $DIR/README.txt << EOF
  - GoldFish DLL
  - NishBox executables
  - GoldFish executables
@@ -19,18 +23,18 @@ is in include/
  - GoldFish .lib
 is in lib/
 EOF
-cp engine/LICENSE nishbox/LICENSE.txt
+cp engine/LICENSE $DIR/LICENSE.txt
 
-cp -rf engine/include/* nishbox/include/
-cp engine/lib/*/*/*.lib nishbox/lib/
-cp bin/*/*/*.exe ./nishbox/bin/
-cp engine/bin/*/*/*.exe ./nishbox/bin/
-cp engine/lib/*/*/*.dll ./nishbox/bin/
-cp base.pak ./nishbox/bin/
+cp -rf engine/include/* $DIR/include/
+cp engine/lib/*/$TARGET/*.lib $DIR/lib/
+cp bin/*/$TARGET/*.exe ./$DIR/bin/
+cp engine/bin/*/$TARGET/*.exe ./$DIR/bin/
+cp engine/lib/*/$TARGET/*.dll ./$DIR/bin/
+cp base.pak ./$DIR/bin/
 
-rm -f ./nishbox/include/*.txt
+rm -f ./$DIR/include/*.txt
 
-zip -zrv nishbox.zip nishbox << EOF
+zip -zrv $OUTPUT $DIR << EOF
 +---------------------------------------+
 | NishBox/GoldFish distribution zipfile |
 | Contains:                             |
@@ -41,4 +45,4 @@ zip -zrv nishbox.zip nishbox << EOF
 +---------------------------------------+
 .
 EOF
-rm -rf nishbox
+rm -rf $DIR
