@@ -5,6 +5,16 @@ pipeline {
 		WEBHOOK_ORIN = credentials("webhook-orin")
 	}
 	stages {
+		stage("Initialize submodules") {
+			steps {
+				sh "git submodule update --init --recursive"
+			}
+			post {
+				always {
+					post_always()
+				}
+			}
+		}
 		stage("Configure for Windows") {
 			steps {
 				sh "premake5 gmake --engine=dynamic --opengl=gdi"
