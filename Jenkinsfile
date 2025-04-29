@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	environment {
-		WEBHOOK_NISHBOX = credentials("webhook-nishbox"),
+		WEBHOOK_NISHBOX = credentials("webhook-nishbox")
 		WEBHOOK_ORIN = credentials("webhook-orin")
 	}
 	stages {
