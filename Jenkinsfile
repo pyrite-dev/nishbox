@@ -25,7 +25,7 @@ def post_always(){
 			webhookURL: list[i],
 			link: env.BUILD_URL,
 			result: currentBuild.currentResult,
-			title: env.JOB_NAME,
+			title: "${env.JOB_NAME} - ${env.STAGE_NAME}",
 			showChangeset: true,
 			enableArtifactsList: true,
 			description: "**Build:** ${env.BUILD_NUMBER}\n**Status:** ${currentBuild.currentResult}"
