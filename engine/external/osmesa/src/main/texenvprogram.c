@@ -1234,6 +1234,9 @@ static void cache_item(struct texenvprog_cache *cache,
 		       const struct state_key *key,
 		       void *data)
 {
+#ifndef __clang_analyzer__
+    size_t hmod;
+#endif
     struct texenvprog_cache_item *c = (struct texenvprog_cache_item *) malloc(sizeof(*c));
     c->hash = hash;
 
@@ -1253,7 +1256,7 @@ static void cache_item(struct texenvprog_cache *cache,
     // I think this is a false positive from clang?  % triggers a
     // core.UndefinedBinaryOperatorResult with clang 12
 #ifndef __clang_analyzer__
-    size_t hmod = hash % cache->size;
+    hmod = hash % cache->size;
     c->next = cache->items[hmod];
     cache->items[hmod] = c;
 #else

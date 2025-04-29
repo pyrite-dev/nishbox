@@ -321,11 +321,13 @@ wrap_texture(GLcontext *ctx, struct gl_renderbuffer_attachment *att)
 static void
 update_wrapper(GLcontext *ctx, const struct gl_renderbuffer_attachment *att)
 {
+    struct texture_renderbuffer *trb;
+
     /* Sanity */
     if (!att)
 	return;
 
-    struct texture_renderbuffer *trb = (struct texture_renderbuffer *) att->Renderbuffer;
+    trb = (struct texture_renderbuffer *) att->Renderbuffer;
     (void) ctx;
     ASSERT(trb);
 

@@ -71,9 +71,6 @@ NAME(GLcontext *ctx, const SWvertex *vert0, const SWvertex *vert1)
 {
     const SWcontext *swrast = SWRAST_CONTEXT(ctx);
     SWspan span;
-    span.x = 0;
-    span.y = 0;
-    span.z = 0;
     GLuint interpFlags = 0;
     GLint x0 = (GLint) vert0->win[0];
     GLint x1 = (GLint) vert1->win[0];
@@ -102,6 +99,10 @@ NAME(GLcontext *ctx, const SWvertex *vert0, const SWvertex *vert1)
     SETUP_CODE
 #endif
 
+    span.x = 0;
+    span.y = 0;
+    span.z = 0;
+
     (void) swrast;
 
     /* Cull primitives with malformed coordinates.
@@ -114,7 +115,7 @@ NAME(GLcontext *ctx, const SWvertex *vert0, const SWvertex *vert1)
     }
 
     /*
-    printf("%s():\n", __func__);
+    printf("%s():\n", OSMESA_FUNCTION);
     printf(" (%f, %f, %f) -> (%f, %f, %f)\n",
            vert0->win[0], vert0->win[1], vert0->win[2],
            vert1->win[0], vert1->win[1], vert1->win[2]);

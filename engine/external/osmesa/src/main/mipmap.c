@@ -490,12 +490,13 @@ make_1d_mipmap(const struct gl_texture_format *format, GLint border,
 	       GLint srcWidth, const GLubyte *srcPtr,
 	       GLint dstWidth, GLubyte *dstPtr)
 {
+    GLint bpt;
+    const GLubyte *src;
+    GLubyte *dst;
     if (!srcPtr || !dstPtr)
 	return;
 
-    const GLint bpt = format->TexelBytes;
-    const GLubyte *src;
-    GLubyte *dst;
+    bpt = format->TexelBytes;
 
     /* skip the border pixel, if any */
     src = srcPtr + border * bpt;
@@ -524,18 +525,24 @@ make_2d_mipmap(const struct gl_texture_format *format, GLint border,
 	       GLint srcWidth, GLint srcHeight, const GLubyte *srcPtr,
 	       GLint dstWidth, GLint dstHeight, GLubyte *dstPtr)
 {
+    GLubyte *dst;
+    GLint row;
+    const GLubyte *srcA, *srcB;
+    GLint bpt;
+    GLint srcWidthNB;
+    GLint dstWidthNB;
+    GLint dstHeightNB;
+    GLint srcRowStride;
+    GLint dstRowStride;
     if (!srcPtr || !dstPtr)
 	return;
 
-    const GLint bpt = format->TexelBytes;
-    const GLint srcWidthNB = srcWidth - 2 * border;  /* sizes w/out border */
-    const GLint dstWidthNB = dstWidth - 2 * border;
-    const GLint dstHeightNB = dstHeight - 2 * border;
-    const GLint srcRowStride = bpt * srcWidth;
-    const GLint dstRowStride = bpt * dstWidth;
-    const GLubyte *srcA, *srcB;
-    GLubyte *dst;
-    GLint row;
+    bpt = format->TexelBytes;
+    srcWidthNB = srcWidth - 2 * border;  /* sizes w/out border */
+    dstWidthNB = dstWidth - 2 * border;
+    dstHeightNB = dstHeight - 2 * border;
+    srcRowStride = bpt * srcWidth;
+    dstRowStride = bpt * dstWidth;
 
     /* Compute src and dst pointers, skipping any border */
     srcA = srcPtr + border * ((srcWidth + 1) * bpt);
@@ -611,20 +618,26 @@ make_3d_mipmap(const struct gl_texture_format *format, GLint border,
 	       GLint dstWidth, GLint dstHeight, GLint dstDepth,
 	       GLubyte *dstPtr)
 {
-    if (!srcPtr || !dstPtr)
-	return;
-
-    const GLint bpt = format->TexelBytes;
-    const GLint srcWidthNB = srcWidth - 2 * border;  /* sizes w/out border */
-    const GLint srcDepthNB = srcDepth - 2 * border;
-    const GLint dstWidthNB = dstWidth - 2 * border;
-    const GLint dstHeightNB = dstHeight - 2 * border;
-    const GLint dstDepthNB = dstDepth - 2 * border;
     GLvoid *tmpRowA, *tmpRowB;
     GLint img, row;
     GLint bytesPerSrcImage, bytesPerDstImage;
     GLint bytesPerSrcRow, bytesPerDstRow;
     GLint srcImageOffset, srcRowOffset;
+    GLint bpt;
+    GLint srcWidthNB;
+    GLint srcDepthNB;
+    GLint dstWidthNB;
+    GLint dstHeightNB;
+    GLint dstDepthNB;
+    if (!srcPtr || !dstPtr)
+	return;
+
+    bpt = format->TexelBytes;
+    srcWidthNB = srcWidth - 2 * border;  /* sizes w/out border */
+    srcDepthNB = srcDepth - 2 * border;
+    dstWidthNB = dstWidth - 2 * border;
+    dstHeightNB = dstHeight - 2 * border;
+    dstDepthNB = dstDepth - 2 * border;
 
     (void) srcDepthNB; /* silence warnings */
 

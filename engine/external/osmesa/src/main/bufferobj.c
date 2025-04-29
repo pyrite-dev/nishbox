@@ -438,6 +438,9 @@ _mesa_validate_pbo_access(GLuint dimensions,
 			  GLsizei width, GLsizei height, GLsizei depth,
 			  GLenum format, GLenum type, const GLvoid *ptr)
 {
+    const GLvoid* start;
+    const GLvoid* end;
+    const GLubyte* sizeAddr;
     ASSERT(pack->BufferObj->Name != 0);
 
     if (pack->BufferObj->Size == 0)
@@ -445,15 +448,15 @@ _mesa_validate_pbo_access(GLuint dimensions,
 	return GL_FALSE;
 
     /* get address of first pixel we'll read */
-    const GLvoid *start = _mesa_image_address(dimensions, pack, ptr, width, height,
+    start = _mesa_image_address(dimensions, pack, ptr, width, height,
 				format, type, 0, 0, 0);
 
     /* get address just past the last pixel we'll read */
-    const GLvoid *end =  _mesa_image_address(dimensions, pack, ptr, width, height,
+    end =  _mesa_image_address(dimensions, pack, ptr, width, height,
 			       format, type, depth-1, height-1, width);
 
     /* buffer size, cast to a pointer */
-    const GLubyte *sizeAddr = ((const GLubyte *) 0) + pack->BufferObj->Size;
+    sizeAddr = ((const GLubyte *) 0) + pack->BufferObj->Size;
 
     if (start > (const GLvoid*)sizeAddr) {
 	/* This will catch negative values / wrap-around */

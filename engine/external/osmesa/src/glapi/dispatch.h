@@ -45,7 +45,7 @@
     do { \
         if ( (offset) < 0 ) { \
             /* fprintf( stderr, "[%s:%u] SET_by_offset(%p, %d, %s)!\n", */ \
-            /*         __func__, __LINE__, disp, offset, # fn); */ \
+            /*         OSMESA_FUNCTION, __LINE__, disp, offset, # fn); */ \
             /* abort(); */ \
         } \
         else { \

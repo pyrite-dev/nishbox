@@ -3737,7 +3737,13 @@ typedef unsigned short GLhalfNV;
 #define GLEXT_64_TYPES_DEFINED
 /* Define int32_t, int64_t, and uint64_t types for UST/MSC */
 /* (as used in the GL_EXT_timer_query extension). */
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 #include <inttypes.h>
+#elif defined(_MSC_VER)
+typedef long long int64_t;
+typedef unsigned long long uint64_t;
+typedef int int32_t;
+#endif
 #endif
 
 #ifndef GL_EXT_timer_query

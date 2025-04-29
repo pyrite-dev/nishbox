@@ -88,9 +88,9 @@ constant_plane(GLfloat value, GLfloat plane[4])
 
 #define CONSTANT_PLANE(VALUE, PLANE)	\
 do {					\
-   PLANE[0] = 0.0F;			\
-   PLANE[1] = 0.0F;			\
-   PLANE[2] = -1.0F;			\
+   PLANE[0] = 0.0f;			\
+   PLANE[1] = 0.0f;			\
+   PLANE[2] = -1.0f;			\
    PLANE[3] = VALUE;			\
 } while (0)
 
@@ -347,7 +347,6 @@ rgba_aa_tri(GLcontext *ctx,
 #define DO_RGBA
 #include "s_aatritemp.h"
 }
-
 
 static void
 index_aa_tri(GLcontext *ctx,

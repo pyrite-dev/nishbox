@@ -58,11 +58,19 @@
 
 
 /* Get typedefs for uintptr_t and friends */
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 #include <stdint.h>
 #if defined(_WIN32)
 #  include <basetsd.h>
 #endif
 #include <inttypes.h>
+#elif defined(_MSC_VER)
+#ifdef _WIN64
+typedef unsigned long long uintptr_t;
+#else
+typedef unsigned int uintptr_t;
+#endif
+#endif
 
 #if defined(_WIN32) && !defined(__WIN32__) && !defined(__CYGWIN__)
 #  define __WIN32__

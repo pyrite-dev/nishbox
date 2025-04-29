@@ -49,6 +49,9 @@
 /* debug predicate */
 #define DEBUG_PROG 0
 
+#ifndef INFINITY
+#define INFINITY HUGE
+#endif
 
 /**
  * Set x to positive or negative infinity.

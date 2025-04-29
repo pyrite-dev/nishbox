@@ -575,7 +575,8 @@ _mesa_clone_parameter_list(const struct gl_program_parameter_list *list)
 	if (p->Type == PROGRAM_STATE_VAR) {
 	    struct gl_program_parameter *q = clone->Parameters + j;
 	    if (q) {
-		for (GLint k = 0; k < STATE_LENGTH; k++) {
+		GLint k;
+		for (k = 0; k < STATE_LENGTH; k++) {
 		    q->StateIndexes[k] = p->StateIndexes[k];
 		}
 	    }

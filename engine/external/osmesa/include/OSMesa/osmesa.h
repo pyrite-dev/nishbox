@@ -78,6 +78,11 @@ extern "C" {
 #define OSMESA_BGR		0x4
 #define OSMESA_RGB_565		0x5
 
+/*
+ * Added by Nishi
+ */
+#define OSMESA_RGB_332		0x6
+
 
 /*
  * OSMesaPixelStore() parameters:

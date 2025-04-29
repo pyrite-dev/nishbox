@@ -347,6 +347,24 @@ osmesa_update_state(GLcontext *ctx, GLuint new_state)
 #include "swrast/s_spantemp.h"
 
 
+/* 8-bit 3/3/2 RGB */
+#define NAME(PREFIX) PREFIX##_RGB_332
+#define RB_TYPE GLubyte
+#define SPAN_VARS \
+   const OSMesaContext osmesa = OSMESA_CONTEXT(ctx);
+#define INIT_PIXEL_PTR(P, X, Y) \
+   GLubyte *P = (GLubyte *) osmesa->rowaddr[Y] + (X)
+#define INC_PIXEL_PTR(P) P += 1
+#define STORE_PIXEL(DST, X, Y, VALUE) \
+   *DST = ((VALUE[RCOMP] * 7 / 255) << 5) | ((VALUE[GCOMP] * 7 / 255) << 2) | ((VALUE[BCOMP] * 3 / 255) << 0)
+#define FETCH_PIXEL(DST, SRC) \
+   DST[RCOMP] = (((*SRC) >> 5) & 7) * 255 / 7;  \
+   DST[GCOMP] = (((*SRC) >> 2) & 7) * 255 / 7;  \
+   DST[BCOMP] = (((*SRC) >> 0) & 3) * 255 / 3;  \
+   DST[ACOMP] = 255
+#include "swrast/s_spantemp.h"
+
+
 /* 8-bit RGB */
 #define NAME(PREFIX) PREFIX##_RGB8
 #define RB_TYPE GLubyte
@@ -769,6 +787,9 @@ compute_row_addresses(OSMesaContext osmesa)
     } else if (osmesa->format == OSMESA_RGB_565) {
 	/* 5/6/5 RGB pixel in 16 bits */
 	bytesPerPixel = 2;
+    } else if (osmesa->format == OSMESA_RGB_332) {
+	/* 3/3/2 RGB pixel in 8 bits */
+	bytesPerPixel = 1;
     } else {
 	/* RGBA mode */
 	bytesPerPixel = 4 * bpc;
@@ -976,6 +997,18 @@ osmesa_renderbuffer_storage(GLcontext *ctx, struct gl_renderbuffer *rb,
 	rb->RedBits = 5;
 	rb->GreenBits = 6;
 	rb->BlueBits = 5;
+    } else if (osmesa->format == OSMESA_RGB_332) {
+	ASSERT(rb->DataType == GL_UNSIGNED_BYTE);
+	rb->GetRow = get_row_RGB_332;
+	rb->GetValues = get_values_RGB_332;
+	rb->PutRow = put_row_RGB_332;
+	rb->PutRowRGB = put_row_rgb_RGB_332;
+	rb->PutMonoRow = put_mono_row_RGB_332;
+	rb->PutValues = put_values_RGB_332;
+	rb->PutMonoValues = put_mono_values_RGB_332;
+	rb->RedBits = 3;
+	rb->GreenBits = 3;
+	rb->BlueBits = 2;
     } else if (osmesa->format == OSMESA_COLOR_INDEX) {
 	rb->GetRow = get_row_CI;
 	rb->GetValues = get_values_CI;
@@ -1121,6 +1154,17 @@ OSMesaCreateContextExt(GLenum format, GLint depthBits, GLint stencilBits,
 	alphaBits = 0;
 	rind = 2;
 	gind = 1;
+	bind = 0;
+	rgbmode = GL_TRUE;
+    }
+    else if (format==OSMESA_RGB_332) {
+	indexBits = 0;
+	redBits = 3;
+	greenBits = 3;
+	blueBits = 2;
+	alphaBits = 0;
+	rind = 0; /* not used */
+	gind = 0;
 	bind = 0;
 	rgbmode = GL_TRUE;
     }

@@ -168,7 +168,7 @@ typedef union {
 #if 0
 #define INV_SQRTF(X) _mesa_inv_sqrt(X)
 #else
-#define INV_SQRTF(X) (1.0F / SQRTF(X))  /* this is faster on a P4 */
+#define INV_SQRTF(X) (1.0f / SQRTF(X))  /* this is faster on a P4 */
 #endif
 
 
@@ -195,7 +195,7 @@ static INLINE GLfloat LOG2(GLfloat val)
  * NOTE: log_base_2(x) = log(x) / log(2)
  * NOTE: 1.442695 = 1/log(2).
  */
-#define LOG2(x)  ((GLfloat) (log(x) * 1.442695F))
+#define LOG2(x)  ((GLfloat) (log(x) * 1.442695f))
 #endif
 
 
@@ -232,7 +232,7 @@ static INLINE int GET_FLOAT_BITS(float x)
 }
 #define IS_NEGATIVE(x) (GET_FLOAT_BITS(x) < 0)
 #else
-#define IS_NEGATIVE(x) (x < 0.0F)
+#define IS_NEGATIVE(x) (x < 0.0f)
 #endif
 
 
@@ -245,7 +245,7 @@ static INLINE int GET_FLOAT_BITS(float x)
 /* Could just use (x*y<0) except for the flatshading requirements.
  * Maybe there's a better way?
  */
-#define DIFFERENT_SIGNS(x,y) ((x) * (y) <= 0.0F && (x) - (y) != 0.0F)
+#define DIFFERENT_SIGNS(x,y) ((x) * (y) <= 0.0f && (x) - (y) != 0.0f)
 #endif
 
 
@@ -281,16 +281,16 @@ static INLINE int GET_FLOAT_BITS(float x)
 /***
  *** IROUND: return (as an integer) float rounded to nearest integer
  ***/
-#define IROUND(f)  ((int) (((f) >= 0.0F) ? ((f) + 0.5F) : ((f) - 0.5F)))
+#define IROUND(x)  ((int) (((x) >= 0.0f) ? ((x) + 0.5f) : ((x) - 0.5f)))
 
 
 /***
  *** IROUND_POS: return (as an integer) positive float rounded to nearest int
  ***/
 #ifdef DEBUG
-#define IROUND_POS(f) (assert((f) >= 0.0F), IROUND(f))
+#define IROUND_POS(x) (assert((x) >= 0.0f), IROUND(x))
 #else
-#define IROUND_POS(f) (IROUND(f))
+#define IROUND_POS(x) (IROUND(x))
 #endif
 
 
@@ -369,21 +369,21 @@ static INLINE int iceil(float f)
            else if (__tmp.i >= IEEE_0996)				\
               UB = (GLubyte) 255;					\
            else {							\
-              __tmp.f = __tmp.f * (255.0F/256.0F) + 32768.0F;		\
+              __tmp.f = __tmp.f * (255.0f/256.0f) + 32768.0f;		\
               UB = (GLubyte) __tmp.i;					\
            }								\
         } while (0)
 #define CLAMPED_FLOAT_TO_UBYTE(UB, F)					\
         do {								\
            fi_type __tmp;						\
-           __tmp.f = (F) * (255.0F/256.0F) + 32768.0F;			\
+           __tmp.f = (F) * (255.0f/256.0f) + 32768.0f;			\
            UB = (GLubyte) __tmp.i;					\
         } while (0)
 #else
 #define UNCLAMPED_FLOAT_TO_UBYTE(ub, f) \
-	ub = ((GLubyte) IROUND(CLAMP((f), 0.0F, 1.0F) * 255.0F))
+	ub = ((GLubyte) IROUND(CLAMP((f), 0.0f, 1.0f) * 255.0f))
 #define CLAMPED_FLOAT_TO_UBYTE(ub, f) \
-	ub = ((GLubyte) IROUND((f) * 255.0F))
+	ub = ((GLubyte) IROUND((f) * 255.0f))
 #endif
 
 
