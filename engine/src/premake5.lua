@@ -149,6 +149,13 @@ project("GoldFish")
 					"options:" .. k .. "=" .. k2,
 					"options:" .. k .. "-type=" .. k3
 				})
+					if v2.includedirs then
+						local l = {}
+						for _,d in ipairs(v2.includedirs) do
+							table.insert(l, "../" .. d)
+						end
+						includedirs(l)
+					end
 					if v3.includedirs then
 						local l = {}
 						for _,d in ipairs(v3.includedirs) do

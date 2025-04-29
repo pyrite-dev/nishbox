@@ -50,7 +50,10 @@ gf_backends = {
 				}
 			},
 			rgfw = {
-				name = "RGFW"
+				name = "RGFW",
+				includedirs = {
+					"external/rgfw"
+				}
 			}
 		}
 	}
@@ -141,9 +144,6 @@ function gf_default_stuffs()
 						"USE_" .. string.upper(k2),
 						"TYPE_" .. string.upper(k3)
 					})
-					if v3.defines then
-						defines(v3.defines)
-					end
 			end
 		end
 	end
