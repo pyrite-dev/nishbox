@@ -78,6 +78,43 @@ int gf_lua_call_graphic_text_width(lua_State* s) {
 	return 1;
 }
 
+int gf_lua_call_graphic_rect(lua_State* s) {
+	gf_lua_t*	   lua;
+	gf_graphic_color_t col;
+	double		   x;
+	double		   y;
+	double		   w;
+	double		   h;
+
+	x = luaL_checknumber(s, 1);
+	y = luaL_checknumber(s, 2);
+	w = luaL_checknumber(s, 3);
+	h = luaL_checknumber(s, 4);
+
+	lua_rawgeti(s, 5, 1);
+	col.r = luaL_checknumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 5, 2);
+	col.g = luaL_checknumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 5, 3);
+	col.b = luaL_checknumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_rawgeti(s, 5, 4);
+	col.a = luaL_checknumber(s, -1);
+	lua_pop(s, 1);
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	gf_graphic_fill_rect(lua->engine->client->draw, x, y, w, h, col);
+
+	return 0;
+}
+
 int gf_lua_call_graphic_points(lua_State* s) {
 	int		   i;
 	int		   len;
@@ -163,6 +200,10 @@ void gf_lua_create_goldfish_graphic(gf_lua_t* lua) {
 
 	lua_pushstring(lua->lua, "points");
 	lua_pushcfunction(lua->lua, gf_lua_call_graphic_points);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "rect");
+	lua_pushcfunction(lua->lua, gf_lua_call_graphic_rect);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "DIM_2D");

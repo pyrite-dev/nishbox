@@ -165,22 +165,25 @@ void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, dou
 		by = y2;
 
 		hp = 1;
+	} else {
+		pw = gui->draw->width;
+		ph = gui->draw->height;
 	}
 
 	*x += bx;
 	mul = 1;
-	if((prop = gf_prop_get_integer(&c->prop, "x-base")) != GF_PROP_NO_SUCH && prop == -1) {
+	if((prop = gf_prop_get_integer(&c->prop, "x-base")) == GF_PROP_NO_SUCH || prop == -1) {
 	} else if((prop = gf_prop_get_integer(&c->prop, "x-base")) != GF_PROP_NO_SUCH && prop == 1) {
-		*x += pw - (c->parent != -1 ? c->width : 0);
+		*x += pw - c->width;
 		mul = -1;
 	}
 	*x += mul * c->x;
 
 	*y += by;
 	mul = 1;
-	if((prop = gf_prop_get_integer(&c->prop, "y-base")) != GF_PROP_NO_SUCH && prop == -1) {
+	if((prop = gf_prop_get_integer(&c->prop, "y-base")) == GF_PROP_NO_SUCH || prop == -1) {
 	} else if((prop = gf_prop_get_integer(&c->prop, "y-base")) != GF_PROP_NO_SUCH && prop == 1) {
-		*y += ph - (c->parent != -1 ? c->height : 0);
+		*y += ph - c->height;
 		mul = -1;
 	}
 	*y += mul * c->y;
@@ -250,12 +253,6 @@ void gf_gui_render(gf_gui_t* gui) {
 			}
 			if(gf_prop_get_integer(&c->prop, "min-height") == GF_PROP_NO_SUCH) {
 				gf_prop_set_integer(&c->prop, "min-height", 0);
-			}
-			if(gf_prop_get_integer(&c->prop, "x-base") == GF_PROP_NO_SUCH) {
-				gf_prop_set_integer(&c->prop, "x-base", -1);
-			}
-			if(gf_prop_get_integer(&c->prop, "y-base") == GF_PROP_NO_SUCH) {
-				gf_prop_set_integer(&c->prop, "y-base", -1);
 			}
 		}
 	}

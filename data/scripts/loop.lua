@@ -61,6 +61,9 @@ gf.loop(function ()
 			fpscount = 0
 		end
 	end
+
+	gf.graphic.rect(0, 0, geo.width, geo.height, {32, 32, 32, 255})
+
 	text = fps
 	wid = gf.graphic.text_width(bold_font, 24, text)
 	gf.graphic.text(bold_font, geo.width - wid, 0, 24, text)

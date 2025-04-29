@@ -64,8 +64,16 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 		if((propf = gf_prop_get_floating(&c->prop, "font-size")) != GF_PROP_NO_SUCH) {
 			fsz = propf;
 		}
-		x = cx + cw / 2 - gf_graphic_text_width(gui->draw, font, fsz, c->text) / 2;
-		y = cy + ch / 2 - (double)fsz / 2;
+		if((prop = gf_prop_get_integer(&c->prop, "align")) == GF_PROP_NO_SUCH || prop == 0) {
+			x = cx + cw / 2 - gf_graphic_text_width(gui->draw, font, fsz, c->text) / 2;
+			y = cy + ch / 2 - (double)fsz / 2;
+		} else if(prop == -1) {
+			x = cx;
+			y = cy + ch / 2 - (double)fsz / 2;
+		} else if(prop == 1) {
+			x = cx - gf_graphic_text_width(gui->draw, font, fsz, c->text);
+			y = cy + ch / 2 - (double)fsz / 2;
+		}
 		if(gui->pressed == c->key) {
 			x += gf_gui_border_width / 2;
 			y += gf_gui_border_width / 2;
