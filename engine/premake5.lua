@@ -318,7 +318,8 @@ function gf_msvc_filters()
 			"/wd4996",
 			"/wd4244",
 			"/wd4789",
-			"/wd4018"
+			"/wd4018",
+			"/wd4305"
 		})
 	filter({
 			"options:cc=msc",
@@ -332,7 +333,8 @@ function gf_msvc_filters()
 			"/wd4996",
 			"/wd4244",
 			"/wd4789",
-			"/wd4018"
+			"/wd4018",
+			"/wd4305"
 		})
 	end
 	filter({})
