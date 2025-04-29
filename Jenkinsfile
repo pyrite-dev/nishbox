@@ -1,5 +1,7 @@
 pipeline {
 	agent any
+	stages {
+	}
 	post {
 		always {
 			discordSend(
