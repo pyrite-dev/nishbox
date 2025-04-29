@@ -1,3 +1,13 @@
+
+require("gmake")
+if not(premake.modules.gmake.patched_resource) then
+	premake.modules.gmake.patched_resource = true
+	premake.override(premake.modules.gmake.cpp, "pchRules", function(base, cfg, toolset)
+		base(cfg, toolset)
+		_p("$(RESOURCES): | prebuild")
+	end)
+end
+
 gf_backends = {
 	opengl = {
 		name = "OpenGL",
