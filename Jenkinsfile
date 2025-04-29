@@ -1,5 +1,9 @@
 pipeline {
 	agent any
+	environment {
+		WEBHOOK_NISHBOX = credentials("webhook-nishbox"),
+		WEBHOOK_ORIN = credentials("webhook-orin")
+	}
 	stages {
 		stage("Build") {
 			steps {
@@ -10,10 +14,12 @@ pipeline {
 	post {
 		always {
 			discordSend(
-				webhookURL: params.webhook1,
+				webhookURL: env.WEBHOOK_NISHBOX,
 				link: env.BUILD_URL,
 				result: currentBuild.currentResult,
-				title: env.JOB_NAME
+				title: env.JOB_NAME,
+				showChangeSet: true,
+				enableArtifactsList: true
 			)
 		}
 	}
