@@ -61,6 +61,8 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 
 	if(c->text != NULL) {
 		double fsz = GF_GUI_SMALL_FONT_SIZE;
+		double ogx;
+		double ogy;
 		if((propf = gf_prop_get_floating(&c->prop, "font-size")) != GF_PROP_NO_SUCH) {
 			fsz = propf;
 		}
@@ -74,12 +76,31 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 			x = cx - gf_graphic_text_width(gui->draw, font, fsz, c->text);
 			y = cy + ch / 2 - (double)fsz / 2;
 		}
+
+		ogx = x;
+		ogy = y;
+		ogx += gf_gui_border_width / 2;
+		ogy += gf_gui_border_width / 2;
+
 		if(gui->pressed == c->key) {
 			x += gf_gui_border_width / 2;
 			y += gf_gui_border_width / 2;
 		}
+
 		gf_graphic_clip_push(gui->draw, cx, cy, cw, ch);
-		gf_graphic_text(gui->draw, font, x, y, fsz, c->text, gui->font);
+		if((prop = gf_prop_get_integer(&c->prop, "no-border")) != GF_PROP_NO_SUCH && prop) {
+			gf_graphic_color_t dim;
+			dim.r = 0;
+			dim.g = 0;
+			dim.b = 0;
+			dim.a = 128;
+			gf_graphic_text(gui->draw, font, ogx, ogy, fsz, c->text, dim);
+		}
+		if(gui->hover == c->key){
+			gf_graphic_text(gui->draw, font, x, y, fsz, c->text, c->hover_font);
+		}else{
+			gf_graphic_text(gui->draw, font, x, y, fsz, c->text, c->font);
+		}
 		gf_graphic_clip_pop(gui->draw);
 	}
 }

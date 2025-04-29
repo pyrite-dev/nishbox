@@ -88,6 +88,12 @@ enum GF_GUI_COMPONENT_TYPES {
  *
  * @var gf_gui_component_t::text
  * @brief Text
+ *
+ * @var gf_gui_component_t::font
+ * @brief Font color
+ *
+ * @var gf_gui_component_t::hover_font
+ * @brief Hover font color
  */
 GF_DECLARE_TYPE(gui_component, {
 	gf_gui_id_t	  key;
@@ -101,6 +107,8 @@ GF_DECLARE_TYPE(gui_component, {
 	gf_prop_t*	  prop;
 	gf_gui_callback_t callback;
 	char*		  text;
+	gf_graphic_color_t font;
+	gf_graphic_color_t  hover_font;
 });
 
 /**
@@ -125,6 +133,9 @@ GF_DECLARE_TYPE(gui_component, {
  *
  * @var gf_gui_t::font
  * @brief Font color
+ *
+ * @var gf_gui_t::hover
+ * @brief Hover
  */
 GF_DECLARE_TYPE(gui, {
 	gf_engine_t*	    engine;
@@ -133,6 +144,7 @@ GF_DECLARE_TYPE(gui, {
 	gf_gui_component_t* area;
 	gf_graphic_color_t  base;
 	gf_graphic_color_t  font;
+	gf_gui_id_t hover;
 });
 #else
 typedef void* gf_gui_callback_t;

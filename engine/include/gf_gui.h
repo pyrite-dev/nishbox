@@ -130,6 +130,42 @@ GF_EXPORT void gf_gui_set_text(gf_gui_t* gui, gf_gui_id_t id, const char* text);
 
 /**
  * @~english
+ * @brief Set font color
+ * @param gui GUI
+ * @param id Component ID
+ * @param color Font color
+ */
+GF_EXPORT void gf_gui_set_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color);
+
+/**
+ * @~english
+ * @brief Get font color
+ * @param gui GUI
+ * @param id Component ID
+ * @return Font color
+ */
+GF_EXPORT gf_graphic_color_t gf_gui_get_font_color(gf_gui_t* gui, gf_gui_id_t id);
+
+/**
+ * @~english
+ * @brief Set hover font color
+ * @param gui GUI
+ * @param id Component ID
+ * @param color Hover font color
+ */
+GF_EXPORT void gf_gui_set_hover_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color);
+
+/**
+ * @~english
+ * @brief Get hover font color
+ * @param gui GUI
+ * @param id Component ID
+ * @return Hover font color
+ */
+GF_EXPORT gf_graphic_color_t gf_gui_get_hover_font_color(gf_gui_t* gui, gf_gui_id_t id);
+
+/**
+ * @~english
  * @brief Sort components
  * @param gui GUI
  */

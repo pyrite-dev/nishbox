@@ -123,6 +123,63 @@ int gf_lua_meta_call_gui_component_font(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_meta_call_gui_component_color(lua_State* s) {
+	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
+	const char* name = luaL_checkstring(s, 2);
+	gf_lua_t*    lua;
+	gf_graphic_color_t color;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+
+	if(lua_gettop(s) == 4) {
+		lua_rawgeti(s, 3, 1);
+		color.r = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 3, 2);
+		color.g = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 3, 3);
+		color.b = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		lua_rawgeti(s, 3, 4);
+		color.a = lua_tonumber(s, -1);
+		lua_pop(s, 1);
+
+		if(strcmp(name, "font") == 0){
+			gf_gui_set_font_color(lua->engine->client->draw->gui, *id, color);
+		}else if(strcmp(name, "hover-font") == 0){
+			gf_gui_set_hover_font_color(lua->engine->client->draw->gui, *id, color);
+		}
+	} else {
+		if(strcmp(name, "font") == 0){
+			color = gf_gui_get_font_color(lua->engine->client->draw->gui, *id);
+		}else if(strcmp(name, "hover-font") == 0){
+			color = gf_gui_get_hover_font_color(lua->engine->client->draw->gui, *id);
+		}
+
+		lua_newtable(s);
+
+		lua_pushnumber(s, color.r);
+		lua_rawseti(s, -2, 1);
+
+		lua_pushnumber(s, color.g);
+		lua_rawseti(s, -2, 2);
+
+		lua_pushnumber(s, color.b);
+		lua_rawseti(s, -2, 3);
+
+		lua_pushnumber(s, color.a);
+		lua_rawseti(s, -2, 4);
+
+		return 1;
+	}
+	return 0;
+}
+
 int gf_lua_meta_call_gui_component_parent(lua_State* s) {
 	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
 	gf_gui_id_t* parent;
@@ -159,6 +216,10 @@ void gf_lua_meta_init_gui(gf_lua_t* lua) {
 
 	lua_pushstring(lua->lua, "font");
 	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_font);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "color");
+	lua_pushcfunction(lua->lua, gf_lua_meta_call_gui_component_color);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "prop");

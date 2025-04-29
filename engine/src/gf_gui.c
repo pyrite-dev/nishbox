@@ -132,6 +132,9 @@ void gf_gui_create_component(gf_gui_t* gui, gf_gui_component_t* c, double x, dou
 	c->callback = NULL;
 	c->text	    = NULL;
 	gf_prop_create(&c->prop);
+
+	memcpy(&c->font, &gui->font, sizeof(gui->font));
+	memcpy(&c->hover_font, &gui->font, sizeof(gui->font));
 }
 
 void gf_gui_calc_xywh_noset(gf_gui_t* gui, gf_gui_component_t* c, double* x, double* y, double* w, double* h) {
@@ -230,6 +233,7 @@ void gf_gui_render(gf_gui_t* gui) {
 	double		  cw;
 	double		  ch;
 	gf_prop_integer_t prop;
+	gui->hover = -1;
 	for(i = hmlen(gui->area) - 1; i >= 0; i--) {
 		gf_gui_component_t* c		 = &gui->area[i];
 		int		    ignore_mouse = (prop = gf_prop_get_integer(&c->prop, "ignore-mouse")) != GF_PROP_NO_SUCH && prop;
@@ -245,6 +249,8 @@ void gf_gui_render(gf_gui_t* gui) {
 				gf_prop_set_integer(&c->prop, "old-width", cw);
 				gf_prop_set_integer(&c->prop, "old-height", ch);
 			}
+		} else if(!ignore_mouse && input->mouse_x != -1 && input->mouse_y != -1 && gui->hover == -1 && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
+			gui->hover = c->key;
 		} else if(gui->pressed == -1) {
 			c->pressed = 0;
 			gf_prop_delete(&c->prop, "cancel-drag");
@@ -484,4 +490,28 @@ gf_prop_t** gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return NULL;
 	return &gui->area[ind].prop;
+}
+
+void gf_gui_set_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color){
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return;
+	memcpy(&gui->area[ind].font, &color, sizeof(color));
+}
+
+gf_graphic_color_t gf_gui_get_font_color(gf_gui_t* gui, gf_gui_id_t id){
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return gui->font;
+	return gui->area[ind].font;
+}
+
+void gf_gui_set_hover_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color){
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return;
+	memcpy(&gui->area[ind].hover_font, &color, sizeof(color));
+}
+
+gf_graphic_color_t gf_gui_get_hover_font_color(gf_gui_t* gui, gf_gui_id_t id){
+	int ind = hmgeti(gui->area, id);
+	if(ind == -1) return gui->font;
+	return gui->area[ind].hover_font;
 }

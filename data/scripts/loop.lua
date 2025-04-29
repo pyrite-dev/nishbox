@@ -17,7 +17,7 @@ local points = {
 	X, _, _, _, X, _, X, _, _, X, X, X, _, _, X, _, X, _, X, X, X, X, _, _, _, X, X, _, _, X, _, _, _, X,
 }
 
-function draw_points()
+local function draw_points()
 	local p = {}
 	local s = 0.015
 	local c = #points / 7
