@@ -96,19 +96,19 @@ enum GF_GUI_COMPONENT_TYPES {
  * @brief Hover font color
  */
 GF_DECLARE_TYPE(gui_component, {
-	gf_gui_id_t	  key;
-	int		  type;
-	double		  x;
-	double		  y;
-	double		  width;
-	double		  height;
-	int		  pressed;
-	gf_gui_id_t	  parent;
-	gf_prop_t*	  prop;
-	gf_gui_callback_t callback;
-	char*		  text;
+	gf_gui_id_t	   key;
+	int		   type;
+	double		   x;
+	double		   y;
+	double		   width;
+	double		   height;
+	int		   pressed;
+	gf_gui_id_t	   parent;
+	gf_prop_t*	   prop;
+	gf_gui_callback_t  callback;
+	char*		   text;
 	gf_graphic_color_t font;
-	gf_graphic_color_t  hover_font;
+	gf_graphic_color_t hover_font;
 });
 
 /**
@@ -144,7 +144,7 @@ GF_DECLARE_TYPE(gui, {
 	gf_gui_component_t* area;
 	gf_graphic_color_t  base;
 	gf_graphic_color_t  font;
-	gf_gui_id_t hover;
+	gf_gui_id_t	    hover;
 });
 #else
 typedef void* gf_gui_callback_t;

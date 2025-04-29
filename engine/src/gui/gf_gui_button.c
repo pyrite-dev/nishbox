@@ -96,9 +96,9 @@ void gf_gui_button_render(gf_gui_t* gui, gf_gui_component_t* c) {
 			dim.a = 128;
 			gf_graphic_text(gui->draw, font, ogx, ogy, fsz, c->text, dim);
 		}
-		if(gui->hover == c->key){
+		if(gui->hover == c->key) {
 			gf_graphic_text(gui->draw, font, x, y, fsz, c->text, c->hover_font);
-		}else{
+		} else {
 			gf_graphic_text(gui->draw, font, x, y, fsz, c->text, c->font);
 		}
 		gf_graphic_clip_pop(gui->draw);

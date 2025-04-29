@@ -85,8 +85,18 @@ GF_EXPORT void gf_audio_resume(gf_audio_t* audio, gf_audio_id_t id);
  * @brief Stop audio
  * @param audio Audio interface
  * @param id Audio ID
+ * @note This frees the decoder
  */
 GF_EXPORT void gf_audio_stop(gf_audio_t* audio, gf_audio_id_t id);
+
+/**
+ * @~english
+ * @brief Check if audio is over
+ * @param audio Audio interface
+ * @param id Audio ID
+ * @return `1` if it is over, otherwise `0`
+ */
+GF_EXPORT int gf_audio_is_over(gf_audio_t* audio, gf_audio_id_t id);
 
 #ifdef __cplusplus
 }

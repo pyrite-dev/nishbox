@@ -80,6 +80,36 @@ gf.loop(function ()
 		y = y - 20
 	end
 
+	if current_music then
+		if not(current_music.state) then
+			current_music.text = "\"" .. current_music.title .. "\" By " .. current_music.composer
+			current_music.from = -gf.graphic.text_width(bold_font, 24, current_music.text)
+			current_music.to = 0
+			current_music.incr = 0
+			current_music.state = 1
+			current_music.second = 1.5
+			current_music.wait = 3
+		elseif current_music.state == 1 then
+			local x = current_music.from - math.log(1 / (math.min(current_music.incr, current_music.second) / current_music.second + 1), 2) * (current_music.to - current_music.from)
+
+			gf.graphic.text(bold_font, x, 0, 24, current_music.text, {255, 255, 255, 255})
+
+			current_music.incr = current_music.incr + (1 / nfps)
+			if (current_music.to == 0) and (x >= current_music.to) and (current_music.incr >= current_music.second + current_music.wait) then
+				current_music.to = current_music.from
+				current_music.from = 0
+				current_music.incr = 0
+				current_music.second = 0.5
+			elseif (current_music.from == 0) and (x <= current_music.to) then
+				current_music.state = 2
+			end
+		end
+	end
+
+	if not(current_music) or current_music.music:over() then
+		random_music()
+	end
+
 	if not(nfps == -1) then
 		rad = rad + math.rad(30) / nfps
 	end

@@ -41,6 +41,10 @@ gf_file_t* gf_file_open(gf_engine_t* engine, const char* path, const char* mode)
 	} else {
 		if(strcmp(mode, "r") == 0) {
 			fp->fp = fopen(path, "rb");
+			if(fp->fp == NULL) {
+				free(fp);
+				return NULL;
+			}
 			fseek(fp->fp, 0, SEEK_END);
 			fp->size = ftell(fp->fp);
 			fseek(fp->fp, 0, SEEK_SET);

@@ -103,7 +103,7 @@ int gf_lua_call_gui_color(lua_State* s) {
 	lua_getglobal(s, "_GF_LUA");
 	lua = lua_touserdata(s, -1);
 
-	if(lua_gettop(s) == 2){
+	if(lua_gettop(s) == 2) {
 		if(strcmp(type, "base") == 0) {
 			color = lua->engine->client->draw->gui->base;
 		} else if(strcmp(type, "font") == 0) {
@@ -125,23 +125,23 @@ int gf_lua_call_gui_color(lua_State* s) {
 		lua_rawseti(s, -2, 4);
 
 		return 1;
-	}else{
+	} else {
 		lua_rawgeti(s, 2, 1);
 		color.r = luaL_checknumber(s, -1);
 		lua_pop(s, 1);
-	
+
 		lua_rawgeti(s, 2, 2);
 		color.g = luaL_checknumber(s, -1);
 		lua_pop(s, 1);
-	
+
 		lua_rawgeti(s, 2, 3);
 		color.b = luaL_checknumber(s, -1);
 		lua_pop(s, 1);
-	
+
 		lua_rawgeti(s, 2, 4);
 		color.a = luaL_checknumber(s, -1);
 		lua_pop(s, 1);
-	
+
 		if(strcmp(type, "base") == 0) {
 			lua->engine->client->draw->gui->base = color;
 		} else if(strcmp(type, "font") == 0) {

@@ -124,9 +124,9 @@ int gf_lua_meta_call_gui_component_font(lua_State* s) {
 }
 
 int gf_lua_meta_call_gui_component_color(lua_State* s) {
-	gf_gui_id_t* id = luaL_checkudata(s, 1, "GoldFishGUIComponent");
-	const char* name = luaL_checkstring(s, 2);
-	gf_lua_t*    lua;
+	gf_gui_id_t*	   id	= luaL_checkudata(s, 1, "GoldFishGUIComponent");
+	const char*	   name = luaL_checkstring(s, 2);
+	gf_lua_t*	   lua;
 	gf_graphic_color_t color;
 
 	lua_getglobal(s, "_GF_LUA");
@@ -149,15 +149,15 @@ int gf_lua_meta_call_gui_component_color(lua_State* s) {
 		color.a = lua_tonumber(s, -1);
 		lua_pop(s, 1);
 
-		if(strcmp(name, "font") == 0){
+		if(strcmp(name, "font") == 0) {
 			gf_gui_set_font_color(lua->engine->client->draw->gui, *id, color);
-		}else if(strcmp(name, "hover-font") == 0){
+		} else if(strcmp(name, "hover-font") == 0) {
 			gf_gui_set_hover_font_color(lua->engine->client->draw->gui, *id, color);
 		}
 	} else {
-		if(strcmp(name, "font") == 0){
+		if(strcmp(name, "font") == 0) {
 			color = gf_gui_get_font_color(lua->engine->client->draw->gui, *id);
-		}else if(strcmp(name, "hover-font") == 0){
+		} else if(strcmp(name, "hover-font") == 0) {
 			color = gf_gui_get_hover_font_color(lua->engine->client->draw->gui, *id);
 		}
 

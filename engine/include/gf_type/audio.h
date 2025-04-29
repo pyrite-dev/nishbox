@@ -53,7 +53,13 @@ typedef struct gf_audio_decoder_t gf_audio_decoder_t;
  * @brief Used internally
  *
  * @var gf_audio_decoder_t::used
- * @brief `1` if used, `-1` if used but paused, otherwise `0`
+ * @brief `1` if used, `-1` if used but paused, `-2` if used but drain, otherwise `0`
+ *
+ * @var gf_audio_decoder_t::data
+ * @brief Copy of data
+ *
+ * @var gf_audio_decoder_t::size
+ * @brief Data size
  */
 GF_DECLARE_TYPE(audio_decoder, {
 	gf_audio_id_t	   key;
@@ -64,6 +70,8 @@ GF_DECLARE_TYPE(audio_decoder, {
 	jar_mod_context_t* mod;
 	int		   internal;
 	int		   used;
+	unsigned char*	   data;
+	size_t		   size;
 });
 
 /**

@@ -23,10 +23,9 @@ const char* gf_audio_mod_sig[] = {"M!K!", "M.K.", "FLT4", "FLT8", "4CHN", "6CHN"
 
 void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint32 frame) {
 	ma_uint32   i;
-	gf_audio_t* audio    = dev->pUserData;
-	ma_int16*   out	     = (ma_int16*)output;
-	float*	    tmp	     = malloc(sizeof(*tmp) * frame * 2);
-	int	    unlocked = 0;
+	gf_audio_t* audio = dev->pUserData;
+	ma_int16*   out	  = (ma_int16*)output;
+	float*	    tmp	  = malloc(sizeof(*tmp) * frame * 2);
 
 	for(i = 0; i < frame; i++) {
 		tmp[2 * i + 0] = 0;
@@ -46,9 +45,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			}
 			free(r);
 			if(frame > readframe) {
-				ma_mutex_unlock(audio->mutex);
-				unlocked = 1;
-				gf_audio_decoder_destroy(&audio->decoder[i]);
+				audio->decoder[i].used = -2;
 			}
 		} else if(audio->decoder[i].used == 1 && audio->decoder[i].xm != NULL) {
 			int    j;
@@ -62,9 +59,7 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			}
 			free(r);
 			if(jar_xm_get_loop_count(audio->decoder[i].xm) > audio->decoder[i].internal) {
-				ma_mutex_unlock(audio->mutex);
-				unlocked = 1;
-				gf_audio_decoder_destroy(&audio->decoder[i]);
+				audio->decoder[i].used = -2;
 			}
 		} else if(audio->decoder[i].used == 1 && audio->decoder[i].mod != NULL) {
 			int	  j;
@@ -78,13 +73,11 @@ void gf_audio_callback(ma_device* dev, void* output, const void* input, ma_uint3
 			}
 			free(r);
 			if(audio->decoder[i].mod->loopcount > audio->decoder[i].internal) {
-				ma_mutex_unlock(audio->mutex);
-				unlocked = 1;
-				gf_audio_decoder_destroy(&audio->decoder[i]);
+				audio->decoder[i].used = -2;
 			}
 		}
 	}
-	if(!unlocked) ma_mutex_unlock(audio->mutex);
+	ma_mutex_unlock(audio->mutex);
 
 	for(i = 0; i < frame; i++) {
 		out[2 * i + 0] = tmp[2 * i + 0] * 32768;
@@ -108,6 +101,7 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 	decoder.mod	       = NULL;
 	decoder.decoder_config = ma_decoder_config_init(audio->device_config.playback.format, audio->device_config.playback.channels, audio->device_config.sampleRate);
 	decoder.key	       = 0;
+	decoder.data	       = NULL;
 	do {
 		ind = hmgeti(audio->decoder, decoder.key);
 		if(ind != -1) {
@@ -158,12 +152,16 @@ gf_audio_id_t gf_audio_load(gf_audio_t* audio, const void* data, size_t size) {
 		decoder.mod = NULL;
 	}
 	decoder.decoder = malloc(sizeof(*decoder.decoder));
-	if(ma_decoder_init_memory(data, size, &decoder.decoder_config, decoder.decoder) == MA_SUCCESS) {
+	decoder.data	= malloc(size);
+	decoder.size	= size;
+	memcpy(decoder.data, data, size);
+	if(ma_decoder_init_memory(decoder.data, decoder.size, &decoder.decoder_config, decoder.decoder) == MA_SUCCESS) {
 		decoder.used = -1;
 		hmputs(audio->decoder, decoder);
 		ma_mutex_unlock(audio->mutex);
 		return decoder.key;
 	}
+	free(decoder.data);
 	free(decoder.decoder);
 	decoder.decoder = NULL;
 	ma_mutex_unlock(audio->mutex);
@@ -231,7 +229,8 @@ gf_audio_t* gf_audio_create(gf_engine_t* engine) {
 }
 
 void gf_audio_decoder_destroy(gf_audio_decoder_t* decoder) {
-	ma_mutex_lock(decoder->audio->mutex);
+	gf_audio_t* audio = decoder->audio;
+	ma_mutex_lock(audio->mutex);
 	if(decoder->decoder != NULL) {
 		ma_decoder_uninit(decoder->decoder);
 		free(decoder->decoder);
@@ -246,9 +245,12 @@ void gf_audio_decoder_destroy(gf_audio_decoder_t* decoder) {
 		free(decoder->mod);
 		decoder->mod = NULL;
 	}
+	if(decoder->data != NULL) {
+		free(decoder->data);
+	}
 	decoder->used = 0;
-	hmdel(decoder->audio->decoder, decoder->key);
-	ma_mutex_unlock(decoder->audio->mutex);
+	hmdel(audio->decoder, decoder->key);
+	ma_mutex_unlock(audio->mutex);
 }
 
 void gf_audio_destroy(gf_audio_t* audio) {
@@ -303,4 +305,11 @@ void gf_audio_stop(gf_audio_t* audio, gf_audio_id_t id) {
 	if(ind == -1) return;
 
 	gf_audio_decoder_destroy(&audio->decoder[ind]);
+}
+
+int gf_audio_is_over(gf_audio_t* audio, gf_audio_id_t id) {
+	int ind = hmgeti(audio->decoder, id);
+	if(ind == -1) return 0;
+
+	return audio->decoder[ind].used == -2 ? 1 : 0;
 }

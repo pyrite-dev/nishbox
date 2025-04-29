@@ -492,25 +492,25 @@ gf_prop_t** gf_gui_get_prop(gf_gui_t* gui, gf_gui_id_t id) {
 	return &gui->area[ind].prop;
 }
 
-void gf_gui_set_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color){
+void gf_gui_set_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return;
 	memcpy(&gui->area[ind].font, &color, sizeof(color));
 }
 
-gf_graphic_color_t gf_gui_get_font_color(gf_gui_t* gui, gf_gui_id_t id){
+gf_graphic_color_t gf_gui_get_font_color(gf_gui_t* gui, gf_gui_id_t id) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return gui->font;
 	return gui->area[ind].font;
 }
 
-void gf_gui_set_hover_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color){
+void gf_gui_set_hover_font_color(gf_gui_t* gui, gf_gui_id_t id, gf_graphic_color_t color) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return;
 	memcpy(&gui->area[ind].hover_font, &color, sizeof(color));
 }
 
-gf_graphic_color_t gf_gui_get_hover_font_color(gf_gui_t* gui, gf_gui_id_t id){
+gf_graphic_color_t gf_gui_get_hover_font_color(gf_gui_t* gui, gf_gui_id_t id) {
 	int ind = hmgeti(gui->area, id);
 	if(ind == -1) return gui->font;
 	return gui->area[ind].hover_font;

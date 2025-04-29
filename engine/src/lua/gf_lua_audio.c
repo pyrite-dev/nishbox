@@ -44,6 +44,9 @@ int gf_lua_call_audio_create(lua_State* s) {
 
 	id  = gf_lua_create_audio(lua);
 	*id = gf_audio_load_file(lua->engine->client->audio, str);
+	if(*id == -1) {
+		return 0;
+	}
 
 	return 1;
 }

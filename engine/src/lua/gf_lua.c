@@ -97,6 +97,29 @@ int gf_lua_call_shutdown(lua_State* s) {
 	return 0;
 }
 
+int gf_lua_call_read(lua_State* s) {
+	const char* path = luaL_checkstring(s, 1);
+	gf_lua_t*   lua;
+	gf_file_t*  file;
+
+	lua_getglobal(s, "_GF_LUA");
+	lua = lua_touserdata(s, -1);
+	lua_pop(s, 1);
+
+	file = gf_file_open(lua->engine, path, "r");
+	if(file != NULL) {
+		char* buffer	   = malloc(file->size + 1);
+		buffer[file->size] = 0;
+		gf_file_read(file, buffer, file->size);
+		lua_pushlstring(s, buffer, file->size + 1);
+		gf_file_close(file);
+		free(buffer);
+		return 1;
+	}
+
+	return 0;
+}
+
 int gf_lua_call_fps(lua_State* s) {
 	gf_lua_t* lua;
 
@@ -186,6 +209,10 @@ void gf_lua_create_goldfish(gf_lua_t* lua) {
 
 	lua_pushstring(lua->lua, "fps");
 	lua_pushcfunction(lua->lua, gf_lua_call_fps);
+	lua_settable(lua->lua, -3);
+
+	lua_pushstring(lua->lua, "read");
+	lua_pushcfunction(lua->lua, gf_lua_call_read);
 	lua_settable(lua->lua, -3);
 
 	lua_pushstring(lua->lua, "version");

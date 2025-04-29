@@ -1,4 +1,6 @@
 local gf = goldfish
+
+local windows = {}
 local menu_entries = {
 	{
 		name = "Quit",
@@ -9,6 +11,13 @@ local menu_entries = {
 	{
 		name = "Credits",
 		callback = function()
+			local width = 400
+			local height = 300
+			local geo = gf.geometry()
+			local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+			win:text("Credits")
+			table.insert(windows, win)
+			gf.gui.sort()
 		end
 	},
 	{
@@ -29,14 +38,28 @@ local menu_entries = {
 	}
 }
 
+local function cleanup_menu()
+	for _,v in ipairs(menu_entries) do
+		if v.component then
+			v.component:destroy()
+			v.component = nil
+		end
+	end
+end
+
+local function cleanup_window()
+	for _,v in ipairs(windows) do
+		v:destroy()
+	end
+	windows = {}
+end
+
 local function menu()
+	cleanup_menu()
 	for i,v in ipairs(menu_entries) do
 		if v.name then
 			local size = 56
 			local btn = gf.gui.create("button", 5 + size, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
-			if v.component then
-				v.component:destroy()
-			end
 			btn:text(v.name)
 			btn:prop("integer", "y-base", 1)
 			btn:prop("floating", "font-size", size)
