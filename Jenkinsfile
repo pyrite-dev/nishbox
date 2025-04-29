@@ -48,10 +48,10 @@ pipeline {
 					}
 				}
 			}
-		}
-		post {
-			always {
-				post_always()
+			post {
+				always {
+					post_always()
+				}
 			}
 		}
 	}
