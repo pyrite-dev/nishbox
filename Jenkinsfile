@@ -11,7 +11,7 @@ pipeline {
 			}
 			post {
 				always {
-					post_always(false)
+					post_always(true)
 				}
 			}
 		}
