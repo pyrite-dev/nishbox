@@ -11,7 +11,7 @@ pipeline {
 			}
 			post {
 				always {
-					post_always(true)
+					post_always(true, false)
 				}
 			}
 		}
@@ -31,7 +31,7 @@ pipeline {
 					}
 					post {
 						always {
-							post_always(false)
+							post_always(false, false)
 						}
 					}
 				}
@@ -49,21 +49,21 @@ pipeline {
 					}
 					post {
 						always {
-							post_always(false)
+							post_always(false, false)
 						}
 					}
 				}
 			}
 			post {
 				always {
-					post_always(true)
+					post_always(true, true)
 				}
 			}
 		}
 	}
 }
 
-def post_always(art){
+def post_always(cmt,art){
 	def list = [env.WEBHOOK_NISHBOX, env.WEBHOOK_ORIN]
 	for(int i = 0; i < list.size(); i++){
 		discordSend(
@@ -71,7 +71,7 @@ def post_always(art){
 			link: env.BUILD_URL,
 			result: currentBuild.currentResult,
 			title: "${env.JOB_NAME} - ${env.STAGE_NAME}",
-			showChangeset: art,
+			showChangeset: cmt,
 			enableArtifactsList: art,
 			description: "**Build:** ${env.BUILD_NUMBER}\n**Status:** ${currentBuild.currentResult}"
 		)
