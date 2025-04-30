@@ -22,6 +22,8 @@ is in include/
 
  - GoldFish .lib
 is in lib/
+
+Packed at `date`
 EOF
 cp engine/LICENSE $DIR/LICENSE.txt
 
