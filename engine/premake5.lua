@@ -56,6 +56,7 @@ gf_backends = {
 				}
 			},
 			["rgfw-wayland"] = {
+				alias = "rgfw",
 				name = "RGFW (Wayland)",
 				includedirs = {
 					"external/rgfw"
@@ -150,7 +151,7 @@ function gf_default_stuffs()
 				})
 					defines({
 						"DRV_" .. string.upper(k),
-						"USE_" .. string.upper(k2),
+						"USE_" .. string.upper(v2.alias or k2),
 						"TYPE_" .. string.upper(k3)
 					})
 			end
