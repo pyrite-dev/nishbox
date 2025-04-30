@@ -163,6 +163,12 @@ project("GoldFish")
 						end
 						includedirs(l)
 					end
+					if v2.defines then
+						defines(v2.defines)
+					end
+					if v3.defines then
+						defines(v3.defines)
+					end
 					if v3.files then
 						for _,fn in ipairs(v3.files) do
 							if string.sub(fn, 1, 1) == "-" then

@@ -54,6 +54,15 @@ gf_backends = {
 				includedirs = {
 					"external/rgfw"
 				}
+			},
+			["rgfw-wayland"] = {
+				name = "RGFW (Wayland)",
+				includedirs = {
+					"external/rgfw"
+				},
+				defines = {
+					"RGFW_WAYLAND=1"
+				}
 			}
 		}
 	}
