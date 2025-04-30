@@ -169,6 +169,15 @@ project("GoldFish")
 					if v3.defines then
 						defines(v3.defines)
 					end
+					if v2.files then
+						for _,fn in ipairs(v2.files) do
+							if string.sub(fn, 1, 1) == "-" then
+								removefiles("../" .. string.sub(fn, 2, -1))
+							else
+								files("../" .. fn)
+							end
+						end
+					end
 					if v3.files then
 						for _,fn in ipairs(v3.files) do
 							if string.sub(fn, 1, 1) == "-" then

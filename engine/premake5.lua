@@ -63,6 +63,19 @@ gf_backends = {
 				},
 				defines = {
 					"RGFW_WAYLAND=1"
+				},
+				links = {
+					"wayland-cursor",
+					"wayland-client",
+					"xkbcommon",
+					"wayland-egl",
+					"EGL",
+					"GL"
+				},
+				files = {
+					"external/rgfw/relative-pointer-unstable-v1-client-protocol.c",
+					"external/rgfw/xdg-decoration-unstable-v1.c",
+					"external/rgfw/xdg-shell.c"
 				}
 			}
 		}
