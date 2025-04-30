@@ -121,8 +121,8 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 }
 
 int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
-	const char* ext = NULL;
 #if defined(TYPE_NATIVE)
+	const char* ext = NULL;
 	const char*		     ptr;
 	PFNWGLGETEXTENSIONSSTRINGARB proc;
 #endif
@@ -175,12 +175,14 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 
 gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
 	WNDCLASSEX	      wc;
-	PIXELFORMATDESCRIPTOR desc;
 #ifdef DO_SWAP_INTERVAL
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 #endif
-	RECT		    rect;
+#if defined(TYPE_NATIVE)
+	PIXELFORMATDESCRIPTOR desc;
 	int		    fmt;
+#endif
+	RECT		    rect;
 	DWORD		    style;
 	gf_draw_platform_t* platform = malloc(sizeof(*platform));
 	memset(platform, 0, sizeof(*platform));
@@ -220,6 +222,9 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 
 	SetWindowLongPtr(platform->window, GWLP_USERDATA, (LONG_PTR)draw);
 
+	platform->dc = GetDC(platform->window);
+
+#if defined(TYPE_NATIVE)
 	memset(&desc, 0, sizeof(desc));
 	desc.nSize	= sizeof(desc);
 	desc.nVersion	= 1;
@@ -229,12 +234,9 @@ gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw
 	desc.cAlphaBits = 8;
 	desc.cDepthBits = 32;
 
-	platform->dc = GetDC(platform->window);
-
 	fmt = ChoosePixelFormat(platform->dc, &desc);
 	SetPixelFormat(platform->dc, fmt, &desc);
 
-#if defined(TYPE_NATIVE)
 	platform->glrc = wglCreateContext(platform->dc);
 	if(platform->glrc == NULL) {
 		gf_log_function(engine, "Failed to create OpenGL context", "");
