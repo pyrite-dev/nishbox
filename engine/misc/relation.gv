@@ -35,14 +35,8 @@ digraph relation {
 	opengl [
 		label = "OpenGL"
 	];
-	glu [
-		label = "GLU"
-	];
-	glx [
-		label = "GLX/X11"
-	];
-	rgfw [
-		label = "RGFW"
+	x11 [
+		label = "X11"
 	];
 	pthread [
 		label = "POSIX Thread"
@@ -50,8 +44,8 @@ digraph relation {
 	win32thread [
 		label = "Win32 Thread"
 	];
-	wgl [
-		label = "WGL/GDI"
+	gdi [
+		label = "GDI"
 	];
 
 	subgraph cluster_user {
@@ -144,11 +138,20 @@ digraph relation {
 			miniaudio [
 				label = "miniaudio"
 			];
+			rgfw [
+				label = "RGFW"
+			];
+			osmesa [
+				label = "OSMesa"
+			];
 
 			subgraph cluster_stb {
 				label = "stb";
 				stb_image [
 					label = "stb_image"
+				];
+				stb_ds [
+					label = "stb_ds"
 				];
 			};
 		};
@@ -188,15 +191,17 @@ digraph relation {
 		dir = "both"
 	];
 
-	dd -> {opengl glu};
+	dd -> opengl;
 
-	dp -> glx;
+	dp -> x11;
 	
 	dp -> rgfw;
 
-	dp -> {wgl} [ // These APIs are callback-based
+	dp -> gdi [ // These APIs are callback-based
 		dir = "both"
 	];
+
+	{x11 gdi rgfw} -> {opengl osmesa};
 
 	dt -> gui;
 
@@ -226,13 +231,10 @@ digraph relation {
 		dir = "none"
 	];
 
-	// External
-	glu -> opengl;
-
 	// Rank
 	{
 		rank = "same";
-		glx; wgl; rgfw;
+		x11; gdi;
 	};
 
 	{
@@ -247,6 +249,6 @@ digraph relation {
 
 	{
 		rank = "same";
-		opengl; glu;
+		opengl;
 	};
 }
