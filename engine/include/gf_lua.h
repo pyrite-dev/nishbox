@@ -28,77 +28,77 @@ extern "C" {
 /**
  * @~english
  * @brief Create GoldFish GUI Lua interface
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_create_goldfish_gui(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create GoldFish Graphic Lua interface
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_create_goldfish_graphic(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create GoldFish Font Lua interface
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_create_goldfish_font(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create GoldFish Audio Lua interface
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_create_goldfish_audio(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Initialize GUI metatables
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_meta_init_gui(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Initialize Font metatables
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_meta_init_font(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Initialize Audio metatables
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_meta_init_audio(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create GUI userdata
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT gf_gui_id_t* gf_lua_create_gui(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create Font userdata
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT gf_font_t** gf_lua_create_font(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Create Audio userdata
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT gf_audio_id_t* gf_lua_create_audio(gf_lua_t* lua);
 
 /**
  * @~english
  * @brief Initialize metatables
- * @param Lua interface
+ * @param lua Lua interface
  */
 GF_EXPORT void gf_lua_meta_init(gf_lua_t* lua);
 
@@ -115,7 +115,7 @@ GF_EXPORT gf_lua_t* gf_lua_create(gf_engine_t* engine);
  * @brief Run Lua program
  * @param lua Lua interface
  * @param path Path
- * @retrun `0` if successful, otherwise `-1`
+ * @return `0` if successful, otherwise `-1`
  */
 GF_EXPORT int gf_lua_run(gf_lua_t* lua, const char* path);
 

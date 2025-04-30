@@ -19,7 +19,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Install packages
-      run: sudo apt-get install doxygen tcl
+      run: sudo apt-get install doxygen tcl graphviz
     - name: Get docgen
       run: wget https://github.com/nishistack/docgen/raw/refs/heads/master/docgen -O docgen && chmod +x docgen
     - name: Create directory
