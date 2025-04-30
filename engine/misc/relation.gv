@@ -234,7 +234,7 @@ digraph relation {
 	// Rank
 	{
 		rank = "same";
-		x11; gdi;
+		x11; gdi; opengl;
 	};
 
 	{
@@ -245,10 +245,5 @@ digraph relation {
 	{
 		rank = "same";
 		tt; tct;
-	};
-
-	{
-		rank = "same";
-		opengl;
 	};
 }
