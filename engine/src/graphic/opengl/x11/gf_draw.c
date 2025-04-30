@@ -1,4 +1,3 @@
-#include "OSMesa/osmesa.h"
 #define GF_EXPOSE_DRAW_PLATFORM
 #define GF_EXPOSE_DRAW
 #define GF_EXPOSE_INPUT
