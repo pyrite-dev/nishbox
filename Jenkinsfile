@@ -71,7 +71,7 @@ def post_always(art){
 			link: env.BUILD_URL,
 			result: currentBuild.currentResult,
 			title: "${env.JOB_NAME} - ${env.STAGE_NAME}",
-			showChangeset: true,
+			showChangeset: art,
 			enableArtifactsList: art,
 			description: "**Build:** ${env.BUILD_NUMBER}\n**Status:** ${currentBuild.currentResult}"
 		)
