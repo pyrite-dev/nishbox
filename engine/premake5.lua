@@ -390,3 +390,12 @@ if _ACTION and _ACTION ~= "clean" then
 	outfile:write("#endif\n")
 	outfile:close()
 end
+
+if (_OPTIONS and _OPTIONS["opengl"] == "rgfw-wayland") and (_ACTION and _ACTION ~= "clean") then
+        os.execute("wayland-scanner client-header /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml external/rgfw/xdg-shell.h")
+        os.execute("wayland-scanner public-code /usr/share/wayland-protocols/stable/xdg-shell/xdg-shell.xml external/rgfw/xdg-shell.c")
+        os.execute("wayland-scanner client-header /usr/share/wayland-protocols/unstable/xdg-decoration/xdg-decoration-unstable-v1.xml external/rgfw/xdg-decoration-unstable-v1.h")
+        os.execute("wayland-scanner public-code /usr/share/wayland-protocols/unstable/xdg-decoration/xdg-decoration-unstable-v1.xml external/rgfw/xdg-decoration-unstable-v1.c")
+        os.execute("wayland-scanner client-header /usr/share/wayland-protocols/unstable/relative-pointer/relative-pointer-unstable-v1.xml external/rgfw/relative-pointer-unstable-v1-client-protocol.h")
+        os.execute("wayland-scanner client-header /usr/share/wayland-protocols/unstable/relative-pointer/relative-pointer-unstable-v1.xml external/rgfw/relative-pointer-unstable-v1-client-protocol.c")
+end
