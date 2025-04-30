@@ -192,8 +192,8 @@ project("GoldFish")
 				"options:" .. k .. "=" .. k2
 			})
 				files({
-					"graphic/" .. (v2.alias or k) .. "/*.c",
-					"graphic/" .. (v2.alias or k) .. "/" .. k2 .. "/*.c"
+					"graphic/" .. k .. "/*.c",
+					"graphic/" .. k .. "/" .. (v2.alias or k2) .. "/*.c"
 				})
 		end
 	end
