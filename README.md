@@ -1,6 +1,10 @@
 # NishBox
 
-multiplayer sandbox game i might work on
+multiplayer sandbox game
+
+## Download
+
+Nightly builds are available from [Jenkins](https://j.nishi.boats/job/NishBox/job/master/).
 
 ## Stack
  - [Premake5](https://premake.github.io)
