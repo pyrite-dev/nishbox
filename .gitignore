@@ -21,3 +21,9 @@ Makefile
 /engine/bin
 /engine/doc
 /engine/include/gf_config.h
+/engine/external/rgfw/relative-pointer-unstable-v1-client-protocol.c
+/engine/external/rgfw/relative-pointer-unstable-v1-client-protocol.h
+/engine/external/rgfw/xdg-decoration-unstable-v1.c
+/engine/external/rgfw/xdg-decoration-unstable-v1.h
+/engine/external/rgfw/xdg-shell.c
+/engine/external/rgfw/xdg-shell.h
