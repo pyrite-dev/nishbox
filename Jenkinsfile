@@ -22,7 +22,7 @@ pipeline {
 					steps {
 						sh "git submodule update --init --recursive"
 						sh "premake5 gmake --engine=dynamic --opengl=gdi"
-						sh "gmake config=release_win64 -j4"
+						sh "gmake config=release_win64 -j9"
 						sh "pack -d data base.pak"
 						sh "./tool/pack.sh Win64 nishbox nishbox64.zip"
 						archiveArtifacts(
@@ -40,7 +40,7 @@ pipeline {
 					steps {
 						sh "git submodule update --init --recursive"
 						sh "premake5 gmake --engine=dynamic --opengl=gdi"
-						sh "gmake config=release_win32 -j4"
+						sh "gmake config=release_win32 -j9"
 						sh "pack -d data base.pak"
 						sh "./tool/pack.sh Win32 nishbox nishbox32.zip"
 						archiveArtifacts(
