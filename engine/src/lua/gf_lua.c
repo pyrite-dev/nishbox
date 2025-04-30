@@ -153,11 +153,12 @@ int gf_lua_call_require(lua_State* s) {
 
 	f = gf_file_open(lua->engine, path, "r");
 	if(f != NULL) {
-		char* d = malloc(f->size);
+		char* d = malloc(f->size + 1);
 		gf_file_read(f, d, f->size);
+		d[f->size] = 0;
 		gf_file_close(f);
 
-		if(luaL_loadbuffer(s, d, f->size, path)) {
+		if(luaL_loadstring(s, d)) {
 			free(d);
 			lua_pop(s, 1);
 		} else if(lua_pcall(s, 0, LUA_MULTRET, 0)) {
