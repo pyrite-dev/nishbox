@@ -47,7 +47,8 @@ typedef void (*gf_gui_callback_t)(gf_engine_t* engine, gf_draw_t* draw, gf_gui_i
 enum GF_GUI_COMPONENT_TYPES {
 	GF_GUI_BUTTON = 0,
 	GF_GUI_WINDOW,
-	GF_GUI_FRAME
+	GF_GUI_FRAME,
+	GF_GUI_TEXT
 };
 
 /**
