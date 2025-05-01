@@ -241,7 +241,7 @@ void gf_gui_render(gf_gui_t* gui) {
 		gf_graphic_clip_pop(gui->draw);
 		if(!ignore_mouse && input->mouse_x != -1 && input->mouse_y != -1 && gui->pressed == -1 && (input->mouse_flag & GF_INPUT_MOUSE_LEFT_MASK) && (cx <= input->mouse_x && input->mouse_x <= cx + cw) && (cy <= input->mouse_y && input->mouse_y <= cy + ch)) {
 			gui->pressed = c->key;
-			gui->hover = c->key;
+			gui->hover   = c->key;
 			gf_prop_set_integer(&c->prop, "clicked-x", input->mouse_x);
 			gf_prop_set_integer(&c->prop, "clicked-y", input->mouse_y);
 			gf_prop_set_integer(&c->prop, "diff-x", input->mouse_x - cx);

@@ -122,7 +122,7 @@ LRESULT CALLBACK gf_draw_platform_proc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp
 
 int gf_draw_platform_has_extension(gf_draw_t* draw, const char* query) {
 #if defined(TYPE_NATIVE)
-	const char* ext = NULL;
+	const char*		     ext = NULL;
 	const char*		     ptr;
 	PFNWGLGETEXTENSIONSSTRINGARB proc;
 #endif
@@ -174,13 +174,13 @@ int gf_draw_platform_step(gf_draw_t* draw) {
 }
 
 gf_draw_platform_t* gf_draw_platform_create(gf_engine_t* engine, gf_draw_t* draw) {
-	WNDCLASSEX	      wc;
+	WNDCLASSEX wc;
 #ifdef DO_SWAP_INTERVAL
 	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 #endif
 #if defined(TYPE_NATIVE)
 	PIXELFORMATDESCRIPTOR desc;
-	int		    fmt;
+	int		      fmt;
 #endif
 	RECT		    rect;
 	DWORD		    style;

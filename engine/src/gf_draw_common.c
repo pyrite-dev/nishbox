@@ -135,15 +135,15 @@ int gf_draw_step(gf_draw_t* draw) {
 		draw->close = 0;
 		gf_lua_close(draw->engine->lua);
 	}
-	if(draw->fps == -1){
+	if(draw->fps == -1) {
 		draw->fps = 0;
-	}else{
-		double sfps = 60;
+	} else {
+		double	       sfps = 60;
 		gf_draw_time_t t;
 
-		do{
+		do {
 			gf_draw_time(&t);
-		}while((gf_draw_time_number(&t) - gf_draw_time_number(&draw->last_draw)) < 1.0 / sfps);
+		} while((gf_draw_time_number(&t) - gf_draw_time_number(&draw->last_draw)) < 1.0 / sfps);
 	}
 
 	return draw->close;
