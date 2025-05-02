@@ -1,13 +1,3 @@
-[submodule "engine/external/lua"]
-	path = engine/external/lua
-	url = https://github.com/lua/lua
-	branch = v5.4
-[submodule "engine/external/stb"]
-	path = engine/external/stb
-	url = https://github.com/nothings/stb
-[submodule "engine/external/zlib"]
-	path = engine/external/zlib
-	url = https://github.com/madler/zlib
-[submodule "engine/external/ode"]
-	path = engine/external/ode
-	url = https://github.com/thomasmarsh/ODE
+[submodule "engine"]
+	path = engine
+	url = https://github.com/pyrite-dev/goldfish

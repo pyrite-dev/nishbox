@@ -1,5 +1,0 @@
-#include <windows.h>
-
-#define FILE_DESCRIPTION "GoldFish Engine"
-
-#include "../common.rc"
