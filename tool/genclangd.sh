@@ -66,8 +66,4 @@ compile () {
 	cd $OLD
 }
 
-compile "engine/src"
-compile "engine/util"
-compile "src" "." 
-
-cp engine/src/compile_flags.txt engine/include/
+compile "src" "."
