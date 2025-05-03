@@ -4,16 +4,18 @@ local gf = goldfish
 
 local musics = {names = {}}
 
+gf.audio.set_volume(0)
+
 current_music = nil
 
 math.randomseed(os.time())
 
-font = gf.font.load("base:/font/default.bdf")
-bold_font = gf.font.load("base:/font/bold.bdf")
-mono_font = gf.font.load("base:/font/mono.bdf")
-mono_bold_font = gf.font.load("base:/font/monobold.bdf")
+font = gf.font.load("base:/font/default.ttf")
+bold_font = gf.font.load("base:/font/bold.ttf")
+mono_font = gf.font.load("base:/font/mono.ttf")
+mono_bold_font = gf.font.load("base:/font/monobold.ttf")
 
-gf.font.default(bold_font)
+gf.font.default(font)
 
 function lines(str)
 	str = str:gsub("\r\n", "\n")

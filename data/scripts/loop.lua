@@ -65,8 +65,8 @@ gf.loop(function ()
 	gf.graphic.rect(0, 0, geo.width, geo.height, {0, 0x11, 0x11, 255})
 
 	text = fps
-	wid = gf.graphic.text_width(mono_bold_font, 24, text)
-	gf.graphic.text(mono_bold_font, geo.width - wid, 0, 24, text)
+	wid = gf.graphic.text_width(mono_font, 16, text)
+	gf.graphic.text(mono_font, geo.width - wid, 0, 16, text)
 
 	draw_points()
 
@@ -75,15 +75,15 @@ gf.loop(function ()
 		"Copyright (C) NishBox/GoldFish contributors",
 		"Engine version " .. gf.version
 	}) do
-		wid = gf.graphic.text_width(mono_bold_font, 20, text)
-		gf.graphic.text(mono_bold_font, geo.width - wid, y - 20, 20, text)
+		wid = gf.graphic.text_width(mono_font, 16, text)
+		gf.graphic.text(mono_font, geo.width - wid, y - 16, 16, text)
 		y = y - 20
 	end
 
 	if current_music then
 		if not(current_music.state) then
 			current_music.text = "\"" .. current_music.title .. "\" By " .. current_music.composer
-			current_music.from = -gf.graphic.text_width(bold_font, 24, current_music.text)
+			current_music.from = -gf.graphic.text_width(font, 24, current_music.text)
 			current_music.to = 0
 			current_music.incr = 0
 			current_music.state = 1
@@ -92,7 +92,7 @@ gf.loop(function ()
 		elseif current_music.state == 1 then
 			local x = current_music.from - math.log(1 / (math.min(current_music.incr, current_music.second) / current_music.second + 1), 2) * (current_music.to - current_music.from)
 
-			gf.graphic.text(bold_font, x, 0, 24, current_music.text, {255, 255, 255, 255})
+			gf.graphic.text(font, x, 0, 24, current_music.text, {255, 255, 255, 255})
 
 			current_music.incr = current_music.incr + (1 / nfps)
 			if (current_music.to == 0) and (x >= current_music.to) and (current_music.incr >= current_music.second + current_music.wait) then
