@@ -1,5 +1,21 @@
 local gf = goldfish
 
+local function spawn_credits()
+	local width = 600
+	local height = width / 4 * 3
+	local geo = gf.geometry()
+	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+	local text = gf.gui.create("text", 0, 0, 0, 0)
+
+	win:text("Credits")
+
+	text:parent(win:prop("id", "frame"))
+	text:size(win:prop("id", "frame"):size())
+
+	table.insert(windows, win)
+	gf.gui.sort()
+end
+
 local windows = {}
 local menu_entries = {
 	{
@@ -10,15 +26,7 @@ local menu_entries = {
 	},
 	{
 		name = "Credits",
-		callback = function()
-			local width = 400
-			local height = 300
-			local geo = gf.geometry()
-			local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
-			win:text("Credits")
-			table.insert(windows, win)
-			gf.gui.sort()
-		end
+		callback = spawn_credits
 	},
 	{
 		name = "Options",
@@ -59,7 +67,7 @@ local function menu()
 	for i,v in ipairs(menu_entries) do
 		if v.name then
 			local size = 56
-			local btn = gf.gui.create("button", 5 + size, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
+			local btn = gf.gui.create("button", 5 + size / 3, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
 			btn:text(v.name)
 			btn:prop("integer", "y-base", 1)
 			btn:prop("floating", "font-size", size)
@@ -74,5 +82,7 @@ local function menu()
 end
 
 menu()
+
+spawn_credits()
 
 return true
