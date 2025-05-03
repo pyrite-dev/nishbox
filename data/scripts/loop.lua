@@ -77,7 +77,7 @@ gf.loop(function ()
 	}) do
 		wid = gf.graphic.text_width(mono_font, 16, text)
 		gf.graphic.text(mono_font, geo.width - wid, y - 16, 16, text)
-		y = y - 20
+		y = y - gf.graphic.text_height(mono_font, 16, text)
 	end
 
 	if current_music then
