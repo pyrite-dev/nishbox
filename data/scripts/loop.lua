@@ -72,7 +72,7 @@ gf.loop(function ()
 
 	y = geo.height
 	for _,text in ipairs({
-		"Copyright (C) NishBox/GoldFish contributors",
+		"Copyright (C) Pyrite Development Team",
 		"Engine version " .. gf.version
 	}) do
 		wid = gf.graphic.text_width(mono_font, 16, text)
