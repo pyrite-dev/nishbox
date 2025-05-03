@@ -4,7 +4,7 @@ local gf = goldfish
 
 local musics = {names = {}}
 
-gf.audio.set_volume(0)
+gf.audio.set_volume(1)
 
 current_music = nil
 
