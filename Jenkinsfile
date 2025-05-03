@@ -75,7 +75,7 @@ pipeline {
 					agent any
 					steps {
 						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic --opengl=gd --opengl-type=osmesa
+						sh "premake5 gmake --engine=dynamic --opengl=gdi --opengl-type=osmesa"
 						sh "gmake config=release_win32 -j9"
 						sh "pack -d data base.pak"
 						sh "./tool/pack.sh Win32 nishbox nishbox32-osmesa.zip"
