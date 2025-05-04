@@ -12,10 +12,20 @@ local function spawn_credits()
 	text:parent(win:prop("id", "frame"))
 	text:size(win:prop("id", "frame"):size())
 
-	local str = "abcdefghijklmnopqrstuvwxyz"
-	for i = 0, 6 do
-		str = str .. str
-	end
+	local str = ""
+	str = str .. "NishBox - from Pyrite Development Team\n"
+	str = str .. "Powered by GoldFish engine.\n"
+	str = str .. "\n"
+	str = str .. "GoldFish uses these projects:\n"
+	str = str .. "  - Open Dynamcis Engine\n"
+	str = str .. "  - Lua\n"
+	str = str .. "  - stb\n"
+	str = str .. "  - zlib\n"
+	str = str .. "  - miniaudio\n"
+	str = str .. "  - RGFW\n"
+	str = str .. "  - OSMesa, from Mesa 3-D graphics library\n"
+	str = str .. "\n"
+	str = str .. "For more information, see COPYING file.\n"
 	text:font(mono_font)
 	text:text(str)
 
@@ -89,7 +99,5 @@ local function menu()
 end
 
 menu()
-
-spawn_credits()
 
 return true
