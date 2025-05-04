@@ -12,6 +12,13 @@ local function spawn_credits()
 	text:parent(win:prop("id", "frame"))
 	text:size(win:prop("id", "frame"):size())
 
+	local str = "abcdefghijklmnopqrstuvwxyz"
+	for i = 0, 6 do
+		str = str .. str
+	end
+	text:font(mono_font)
+	text:text(str)
+
 	table.insert(windows, win)
 	gf.gui.sort()
 end
