@@ -17,7 +17,7 @@ local function spawn_credits()
 	str = str .. "Powered by GoldFish engine.\n"
 	str = str .. "\n"
 	str = str .. "GoldFish uses these projects:\n"
-	str = str .. "  - Open Dynamcis Engine\n"
+	str = str .. "  - Open Dynamics Engine\n"
 	str = str .. "  - Lua\n"
 	str = str .. "  - stb\n"
 	str = str .. "  - zlib\n"
