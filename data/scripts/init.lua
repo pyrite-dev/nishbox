@@ -4,18 +4,9 @@ local gf = goldfish
 
 local musics = {names = {}}
 
-gf.audio.set_volume(1)
-
 current_music = nil
 
 math.randomseed(os.time())
-
-font = gf.font.load("base:/font/default.ttf")
-bold_font = gf.font.load("base:/font/bold.ttf")
-mono_font = gf.font.load("base:/font/mono.ttf")
-mono_bold_font = gf.font.load("base:/font/monobold.ttf")
-
-gf.font.default(font)
 
 function lines(str)
 	str = str:gsub("\r\n", "\n")
@@ -69,8 +60,17 @@ function init_music()
 	end
 end
 
-require("base:/scripts/gui.lua")
-require("base:/scripts/loop.lua")
-require("base:/scripts/close.lua")
+if not(gf.server_only) then
+	font = gf.font.load("base:/font/default.ttf")
+	bold_font = gf.font.load("base:/font/bold.ttf")
+	mono_font = gf.font.load("base:/font/mono.ttf")
+	mono_bold_font = gf.font.load("base:/font/monobold.ttf")
 
-init_music()
+	gf.font.default(font)
+	gf.audio.set_volume(1)
+
+	require("base:/scripts/gui.lua")
+	require("base:/scripts/loop.lua")
+	require("base:/scripts/close.lua")
+	init_music()
+end
