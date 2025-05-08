@@ -62,7 +62,7 @@ gf.loop(function ()
 		end
 	end
 
-	gf.graphic.fill_rect(0, 0, geo.width, geo.height, {0, 0x11, 0x11, 255})
+	gf.graphic.rect(0, 0, geo.width, geo.height, {0, 0x11, 0x11, 255})
 
 	text = fps
 	wid = gf.graphic.text_width(mono_font, 16, text)
