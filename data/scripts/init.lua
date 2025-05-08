@@ -17,12 +17,12 @@ function lines(str)
 end
 
 function play_music(name)
-	if current_music and current_music.music then
-		current_music.music:stop()
-	end
-	local music = gf.audio.create("base:/music/" .. name)
+	local music = gf.audio.load_file("base:/music/" .. name)
 	if not(music) then
 		return false
+	end
+	if current_music and current_music.music then
+		current_music.music:stop()
 	end
 	current_music = {
 		title = musics[name].title,
@@ -61,10 +61,10 @@ function init_music()
 end
 
 if not(gf.server_only) then
-	font = gf.font.load("base:/font/default.ttf")
-	bold_font = gf.font.load("base:/font/bold.ttf")
-	mono_font = gf.font.load("base:/font/mono.ttf")
-	mono_bold_font = gf.font.load("base:/font/monobold.ttf")
+	font = gf.font.create_file("base:/font/default.ttf")
+	bold_font = gf.font.create_file("base:/font/bold.ttf")
+	mono_font = gf.font.create_file("base:/font/mono.ttf")
+	mono_bold_font = gf.font.create_file("base:/font/monobold.ttf")
 
 	gf.font.default(font)
 	gf.audio.set_volume(1)
