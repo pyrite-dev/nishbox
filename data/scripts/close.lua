@@ -3,9 +3,9 @@ local gf = goldfish
 gf.close(function ()
 	local geo = gf.geometry()
 
-	local close_window = gf.gui.create_window(geo.width / 2 - 600 / 2, geo.height / 2 - 200 / 2, 600, 200)
-	local close_no = gf.gui.create_button(0, 0, 60, 20)
-	local close_yes = gf.gui.create_button(65, 0, 60, 20)
+	local close_window = gf.gui.create("window", geo.width / 2 - 600 / 2, geo.height / 2 - 200 / 2, 600, 200)
+	local close_no = gf.gui.create("button", 0, 0, 60, 20)
+	local close_yes = gf.gui.create("button", 65, 0, 60, 20)
 
 	close_window:set_text("Confirm")
 

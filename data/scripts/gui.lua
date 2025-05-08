@@ -6,8 +6,8 @@ local function spawn_credits()
 	local width = 600
 	local height = width / 4 * 3
 	local geo = gf.geometry()
-	local win = gf.gui.create_window(geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
-	local text = gf.gui.create_text(0, 0, 0, 0)
+	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+	local text = gf.gui.create("text", 0, 0, 0, 0)
 
 	win:set_text("Credits")
 
@@ -86,7 +86,7 @@ local function menu()
 	for i,v in ipairs(menu_entries) do
 		if v.name then
 			local size = 56
-			local btn = gf.gui.create_button(5 + size / 3, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
+			local btn = gf.gui.create("button", 5 + size / 3, 5 + size * (i - 1), gf.graphic.text_width(bold_font, size, v.name) + 5, size)
 			btn:set_text(v.name)
 			btn:prop("integer", "y-base", 1)
 			btn:prop("floating", "font-size", size)
