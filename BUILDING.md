@@ -13,7 +13,7 @@ Building NishBox is simple.
    
    `<version>` depends on the Visual Studio version. On VS2008, it should be `2008`.
    
-   GLFW backend is untested.
+   RGFW backend is untested.
 2. Run `msbuild NishBox.sln`.
 
 ## Classic Mac OS
