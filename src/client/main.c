@@ -24,15 +24,13 @@ void handle_signal(int sig) {
 #endif
 
 int main(int argc, char** argv) {
-	char	     title[64];
 	gf_version_t ver;
 	gf_version_get(&ver);
 #ifndef _WIN32
 	signal(SIGINT, handle_signal);
 #endif
-	sprintf(title, "NishBox %s (%s on %s)", ver.full, ver.driver, ver.backend);
 	gf_engine_begin();
-	engine = gf_engine_create(title, 0);
+	engine = gf_engine_create("NishBox", 0);
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
 		gf_engine_end();
