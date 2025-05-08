@@ -7,7 +7,7 @@ pipeline {
 	stages {
 		stage("Get submodules") {
 			steps {
-				sh "git submodule update --init --recursive"
+				sh "git submodule update --init --recursive --force"
 			}
 			post {
 				always {
