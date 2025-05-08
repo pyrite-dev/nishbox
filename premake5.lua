@@ -17,7 +17,8 @@ workspace("NishBox")
 	platforms({
 		"Native",
 		"Win32",
-		"Win64"
+		"Win64",
+		"ClassicMacOS"
 	})
 	defaultplatform("Native")
 
@@ -30,6 +31,10 @@ filter("platforms:Win64")
 	system("windows")
 	architecture("x86_64")
 	gccprefix("x86_64-w64-mingw32-")
+
+filter("platforms:ClassicMacOS")
+       gccprefix("powerpc-apple-macos-")
+       defines({"CLASSIC_MAC_OS=1"})
 
 filter({})
 
