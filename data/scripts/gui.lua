@@ -24,6 +24,8 @@ local function spawn_credits()
 	str = str .. "  - stb\n"
 	str = str .. "  - zlib\n"
 	str = str .. "  - miniaudio\n"
+	str = str .. "  - dr_libs\n"
+	str = str .. "  - jar\n"
 	str = str .. "  - RGFW\n"
 	str = str .. "  - OSMesa, from Mesa 3-D graphics library\n"
 	str = str .. "\n"
