@@ -16,8 +16,16 @@ Building NishBox is simple.
    GLFW backend is untested.
 2. Run `msbuild NishBox.sln`.
 
+## Classic Mac OS
+
+1. Install [Retro68](https://github.com/autc04/Retro68)
+2. Run `premake5 gmake --opengl=agl --audio_backend=none`
+3. copy `engine/external/OpenGLOnMacOS9/lib/libgl.a` to your Retro68 toolchain's lib directory, making sure to capitalize it when you do so (i.e. `/opt/Retro68/toolchain/powerpc-apple-macos/lib/libGL.a`) 
+3. Run `CC=powerpc-apple-macos-gcc CXX=powerpc-apple-macos-g++ make -j$(nproc) config=debug_classicmacos`
 ## Note
 
 *nix ones are tested on NetBSD/amd64 and Debian GNU/Linux 12 x86_64.
 
 MSVC ones are tested on VS2008/VS2010.
+
+Classic Mac OS requires System 8.6+ or above and is only avaliable for PowerPC.
