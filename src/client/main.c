@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 #else
 	FreeConsole();
 	gf_log_default = fopen("nishbox.log", "w");
+	setbuf(gf_log_default, NULL);
 #endif
 	gf_engine_begin();
 	engine = gf_engine_create("NishBox", 0);
