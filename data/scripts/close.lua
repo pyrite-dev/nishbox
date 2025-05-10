@@ -17,7 +17,7 @@ gf.close(function ()
 	close_no:set_parent(close_window:prop("id", "frame"))
 	close_no:callback(function (id, type)
 		if type == gf.gui.PRESS_EVENT then
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 			close_window:destroy()
 		end
 	end)
@@ -28,7 +28,7 @@ gf.close(function ()
 	close_yes:set_parent(close_window:prop("id", "frame"))
 	close_yes:callback(function (id, type)
 		if type == gf.gui.PRESS_EVENT then
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 			gf.shutdown()
 		end
 	end)

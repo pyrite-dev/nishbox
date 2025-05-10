@@ -36,29 +36,29 @@ end
 
 
 function play_sound(name)
-	local music = gf.audio.load("base:/music/" .. name)
+	local music = gf.audio.load("base:/sound/" .. name)
 
-    if not (music) then
-        return false
-    end
+	if not (music) then
+		return false
+	end
 
-    if playing_sound and playing_sound.music then
-        playing_sound.music:stop()
-    end
+	if playing_sound and playing_sound.music then
+		playing_sound.music:stop()
+	end
 
-    playing_sound = {
-        music = music
-    }
+	playing_sound = {
+		music = music
+	}
 
-    music:resume();
-    return true
+	music:resume();
+	return true
 end
 
 function stop_sound()
-    if playing_sound and playing_sound.music then
-        playing_sound.music:stop()
-        playing_sound = nil
-    end
+	if playing_sound and playing_sound.music then
+		playing_sound.music:stop()
+		playing_sound = nil
+	end
 end
 
 

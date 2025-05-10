@@ -35,7 +35,7 @@ local function spawn_credits()
 
 	table.insert(windows, win)
 	gf.gui.sort()
-    play_sound("choice.wav")
+	play_sound("choice.wav")
 end
 
 local windows = {}
@@ -43,7 +43,7 @@ local menu_entries = {
 	{
 		name = "Quit",
 		callback = function()
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 			gf.shutdown()
 		end
 	},
@@ -54,20 +54,20 @@ local menu_entries = {
 	{
 		name = "Options",
 		callback = function()
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 		end
 	},
 	{},
 	{
 		name = "Multiplayer",
 		callback = function()
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 		end
 	},
 	{
 		name = "Singleplayer",
 		callback = function()
-            play_sound("choice.wav")
+			play_sound("choice.wav")
 		end
 	}
 }

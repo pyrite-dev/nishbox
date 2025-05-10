@@ -110,9 +110,9 @@ gf.loop(function ()
 		random_music()
 	end
 
-    if playing_sound and playing_sound.music:over() then
-        stop_sound()
-    end
+	if playing_sound and playing_sound.music:over() then
+		stop_sound()
+	end
 
 
 
