@@ -110,9 +110,16 @@ gf.loop(function ()
 		random_music()
 	end
 
+    if playing_sound and playing_sound.music:over() then
+        stop_sound()
+    end
+
+
+
 	if not(nfps == -1) then
 		rad = rad + math.rad(30) / nfps
 	end
 end)
+
 
 return true

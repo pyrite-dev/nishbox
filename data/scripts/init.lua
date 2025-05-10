@@ -5,6 +5,7 @@ local gf = goldfish
 local musics = {names = {}}
 
 current_music = nil
+playing_sound = nil
 
 math.randomseed(os.time())
 
@@ -32,6 +33,34 @@ function play_music(name)
 	music:resume()
 	return true
 end
+
+
+function play_sound(name)
+	local music = gf.audio.load("base:/music/" .. name)
+
+    if not (music) then
+        return false
+    end
+
+    if playing_sound and playing_sound.music then
+        playing_sound.music:stop()
+    end
+
+    playing_sound = {
+        music = music
+    }
+
+    music:resume();
+    return true
+end
+
+function stop_sound()
+    if playing_sound and playing_sound.music then
+        playing_sound.music:stop()
+        playing_sound = nil
+    end
+end
+
 
 function random_music()
 	local st = false
