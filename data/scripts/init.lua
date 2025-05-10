@@ -55,9 +55,7 @@ function play_sound(name)
 end
 
 function stop_sound()
-    print("stop_sound(): ");
     if playing_sound and playing_sound.music then
-        print("stop_sound(): stop");
         playing_sound.music:stop()
         playing_sound = nil
     end
