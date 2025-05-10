@@ -90,6 +90,8 @@ function init_music()
 end
 
 if not(gf.server_only) then
+	local wav = nil
+
 	font = gf.font.load("base:/font/default.ttf")
 	bold_font = gf.font.load("base:/font/bold.ttf")
 	mono_font = gf.font.load("base:/font/mono.ttf")
@@ -97,6 +99,8 @@ if not(gf.server_only) then
 
 	gf.font.default(font)
 	gf.audio.set_volume(1)
+
+	gf.gui.set_button_sound("base:/sound/choice.wav")
 
 	require("base:/scripts/gui.lua")
 	require("base:/scripts/loop.lua")
