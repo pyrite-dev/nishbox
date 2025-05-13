@@ -2,6 +2,7 @@ local gf = goldfish
 
 windows = {}
 
+-- Credits window
 local function spawn_credits()
 	local width = 600
 	local height = width / 4 * 3
@@ -41,29 +42,36 @@ local function spawn_credits()
 	gf.gui.sort()
 end
 
+-- Options window
 local function spawn_options()
 	local width = 600
 	local height = width / 4 * 3
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
 	local volume = gf.gui.create("range", 0, 0, width / 2, 0)
+	local choice_config = gf.gui.create("button", 0, 0, width / 2, 0)
 
 	win:set_text("Options")
 
+	volume:set_text("Volume")
 	volume:set_parent(win:prop("id", "frame"))
 	volume:prop("floating", "min-value", 0)
 	volume:prop("floating", "max-value", 1)
 	volume:prop("floating", "value", gf.audio.get_volume())
-
 	volume:callback(function ()
 		gf.audio.set_volume(volume:prop("floating", "value"))
 	end)
+
 
 	table.insert(windows, win)
 	gf.gui.sort()
 end
 
+
+-- Currently displayed window
 local windows = {}
+
+-- Menu menu entries
 local menu_entries = {
 	{
 		name = "Quit",
@@ -93,6 +101,7 @@ local menu_entries = {
 	}
 }
 
+-- Destroys all currently displayed components
 local function cleanup_menu()
 	for _,v in ipairs(menu_entries) do
 		if v.component then
@@ -102,6 +111,8 @@ local function cleanup_menu()
 	end
 end
 
+
+-- Clean all windows
 local function cleanup_window()
 	for _,v in ipairs(windows) do
 		v:destroy()
@@ -109,6 +120,7 @@ local function cleanup_window()
 	windows = {}
 end
 
+-- Draw menu
 local function menu()
 	cleanup_menu()
 	for i,v in ipairs(menu_entries) do
