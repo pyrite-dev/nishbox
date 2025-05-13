@@ -36,7 +36,11 @@ int main(int argc, char** argv) {
 	gf_log_default = fopen("nishbox.log", "w");
 #endif
 	gf_engine_begin();
+#if 0
+	engine = gf_engine_create_ex("NishBox", 0, "data");
+#else
 	engine = gf_engine_create("NishBox", 0);
+#endif
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
 		gf_engine_end();
