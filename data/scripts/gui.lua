@@ -49,7 +49,6 @@ local function spawn_options()
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
 	local volume = gf.gui.create("range", 0, 0, width / 2, 0)
-	local volume_text = gf.gui.create("frame", 0,0, width / 2, 5)
 
 	win:set_text("Options")
 	volume:set_parent(win:prop("id", "frame"))
