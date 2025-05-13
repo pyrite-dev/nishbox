@@ -5,7 +5,6 @@ local musics = {names = {}}
 
 current_music = nil
 playing_sound = nil
-choice = true
 
 math.randomseed(os.time())
 
@@ -100,9 +99,7 @@ if not(gf.server_only) then
 	gf.font.default(font)
 	gf.audio.set_volume(1)
 
-	if choice then
-		gf.gui.set_button_sound("base:/sound/choice.wav")
-	end
+	gf.gui.set_button_sound("base:/sound/choice.wav")
 
 	require("base:/scripts/gui.lua")
 	require("base:/scripts/loop.lua")

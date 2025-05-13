@@ -114,9 +114,6 @@ gf.loop(function ()
 		stop_sound()
 	end
 
-	if not(choice) then
-	end
-
 
 
 	if not(nfps == -1) then
