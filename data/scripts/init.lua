@@ -1,7 +1,6 @@
 -- Initialize NishBox
 
 local gf = goldfish
-
 local musics = {names = {}}
 
 current_music = nil
