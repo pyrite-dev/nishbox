@@ -41,6 +41,28 @@ local function spawn_credits()
 	gf.gui.sort()
 end
 
+local function spawn_options()
+	local width = 600
+	local height = width / 4 * 3
+	local geo = gf.geometry()
+	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+	local volume = gf.gui.create("range", 0, 0, width / 2, 0)
+
+	win:set_text("Options")
+
+	volume:set_parent(win:prop("id", "frame"))
+	volume:prop("floating", "min-value", 0)
+	volume:prop("floating", "max-value", 1)
+	volume:prop("floating", "value", gf.audio.get_volume())
+
+	volume:callback(function ()
+		gf.audio.set_volume(volume:prop("floating", "value"))
+	end)
+
+	table.insert(windows, win)
+	gf.gui.sort()
+end
+
 local windows = {}
 local menu_entries = {
 	{
@@ -56,8 +78,7 @@ local menu_entries = {
 	},
 	{
 		name = "Options",
-		callback = function()
-		end
+		callback = spawn_options
 	},
 	{},
 	{
