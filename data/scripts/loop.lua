@@ -21,6 +21,7 @@ local function draw_points()
 	local p = {}
 	local s = 0.015
 	local c = #points / 7
+	local psize = gf.graphic.point_size()
 	
 	for k, v in ipairs(points) do
 		if v == 1 then
@@ -45,7 +46,9 @@ local function draw_points()
 		end
 	end
 
+	gf.graphic.point_size(5)
 	gf.graphic.points({0x44, 0xaa, 0, 255}, gf.graphic.DIM_3D, p)
+	gf.graphic.point_size(psize)
 end
 
 gf.loop(function ()

@@ -10,6 +10,7 @@ gf.close(function ()
 	close_window:set_text("Confirm")
 
 	close_window:prop("id", "frame"):set_text("Are you sure that you want to quit?")
+	close_window:prop("id", "frame"):prop("floating", "font-size", 24)
 
 	close_no:prop("integer", "x-base", 1)
 	close_no:prop("integer", "y-base", 1)

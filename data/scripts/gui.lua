@@ -44,21 +44,49 @@ end
 
 -- Options window
 local function spawn_options()
-	local width = 600
+	local width = 400
 	local height = width / 4 * 3
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
-	local volume = gf.gui.create("range", 0, 0, width / 2, 0)
+	local y = 0
+
+	local kv = {
+		Sound = {{
+			name = "Volume",
+			callback = function(p, x, y, w, h)
+				local volume = gf.gui.create("range", 0, 0, w - x, 0)
+				volume:move({x, y + h / 2 - (volume:size()[2] - 2) / 2})
+
+				volume:set_parent(p)
+				volume:prop("floating", "min-value", 0)
+				volume:prop("floating", "max-value", 1)
+				volume:prop("floating", "value", gf.audio.get_volume())
+				volume:callback(function ()
+					gf.audio.set_volume(volume:prop("floating", "value"))
+				end)
+			end
+		}}
+	}
 
 	win:set_text("Options")
-	volume:set_parent(win:prop("id", "frame"))
-	volume:prop("floating", "min-value", 0)
-	volume:prop("floating", "max-value", 1)
-	volume:prop("floating", "value", gf.audio.get_volume())
-	volume:callback(function ()
-		gf.audio.set_volume(volume:prop("floating", "value"))
-	end)
+	for k, v in pairs(kv) do
+		for _, c in pairs(v) do
+			local p = win:prop("id", "frame")
+			local th = gf.graphic.text_height(font, 20, k)
+			local eh = (th > 30) and th or 30
+			local tw = gf.graphic.text_width(font, 20, k)
+			local text = gf.gui.create("frame", 0, y, tw, eh)
 
+			text:set_parent(p)
+			text:set_text(k)
+			text:font(font)
+			text:prop("floating", "font-size", 20)
+
+			c.callback(p, p:size()[1] / 2, y, p:size()[1], eh)
+
+			y = y + eh
+		end
+	end
 
 	table.insert(windows, win)
 	gf.gui.sort()
@@ -138,5 +166,7 @@ local function menu()
 end
 
 menu()
+
+spawn_options()
 
 return true
