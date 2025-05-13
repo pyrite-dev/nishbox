@@ -49,11 +49,9 @@ local function spawn_options()
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
 	local volume = gf.gui.create("range", 0, 0, width / 2, 0)
-	local choice_config = gf.gui.create("button", 0, 0, width / 2, 0)
+	local volume_text = gf.gui.create("frame", 0,0, width / 2, 5)
 
 	win:set_text("Options")
-
-	volume:set_text("Volume")
 	volume:set_parent(win:prop("id", "frame"))
 	volume:prop("floating", "min-value", 0)
 	volume:prop("floating", "max-value", 1)
