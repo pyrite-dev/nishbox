@@ -48,9 +48,14 @@ local function spawn_options()
 	local height = width / 4 * 3
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+	local tab = gf.gui.create("tab", 0, 0, win:prop("id", "frame"):size()[1], win:prop("id", "frame"):size()[2])
 	local y = 0
+	local n = 1
+
+	tab:set_parent(win:prop("id", "frame"))
 
 	local kv = {
+		General = {},
 		Sound = {{
 			name = "Volume",
 			callback = function(p, x, y, w, h)
@@ -69,20 +74,23 @@ local function spawn_options()
 	}
 
 	win:set_text("Options")
-	for k, v in pairs(kv) do
-		for _, c in pairs(v) do
-			local p = win:prop("id", "frame")
-			local th = gf.graphic.text_height(font, 20, k)
+	for k, v in sorted_pairs(kv) do
+		local p = gf.gui.create("frame", 0, 0, tab:prop("id", "frame"):size()[1], tab:prop("id", "frame"):size()[2])
+		p:prop("text", "title", k)
+		p:set_parent(tab:prop("id", "frame"))
+		n = n + 1
+		for _, c in sorted_pairs(v) do
+			local th = gf.graphic.text_height(font, 20, c.name)
 			local eh = (th > 30) and th or 30
-			local tw = gf.graphic.text_width(font, 20, k)
-			local text = gf.gui.create("frame", 0, y, tw, eh)
+			local tw = gf.graphic.text_width(font, 20, c.name)
+			local text = gf.gui.create("frame", 5, y, tw, eh)
 
 			text:set_parent(p)
-			text:set_text(k)
+			text:set_text(c.name)
 			text:font(font)
 			text:prop("floating", "font-size", 20)
 
-			c.callback(p, p:size()[1] / 2, y, p:size()[1], eh)
+			c.callback(p, p:size()[1] / 2, y, (p:size()[1] - 5), eh)
 
 			y = y + eh
 		end

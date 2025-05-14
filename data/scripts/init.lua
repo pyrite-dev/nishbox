@@ -8,6 +8,25 @@ playing_sound = nil
 
 math.randomseed(os.time())
 
+function sorted_pairs(t, f)
+	local a = {}
+	local i = 0
+	for n in pairs(t) do
+		table.insert(a, n)
+	end
+	table.sort(a, f)
+
+	local iter = function ()
+		i = i + 1
+		if a[i] == nil then
+			return nil
+		end
+		return a[i], t[a[i]]
+	end
+	
+	return iter
+end
+
 function lines(str)
 	str = str:gsub("\r\n", "\n")
 	if str:sub(-1) ~= "\n" then
