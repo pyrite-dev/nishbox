@@ -175,6 +175,4 @@ end
 
 menu()
 
-spawn_options()
-
 return true
