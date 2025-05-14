@@ -55,7 +55,8 @@ local function spawn_options()
 	tab:set_parent(win:prop("id", "frame"))
 
 	local kv = {
-		General = {},
+		Control = {},
+		Graphic = {},
 		Sound = {{
 			name = "Volume",
 			callback = function(p, x, y, w, h)
@@ -80,15 +81,15 @@ local function spawn_options()
 		p:set_parent(tab:prop("id", "frame"))
 		n = n + 1
 		for _, c in sorted_pairs(v) do
-			local th = gf.graphic.text_height(font, 20, c.name)
+			local th = gf.graphic.text_height(font, 14, c.name)
 			local eh = (th > 30) and th or 30
-			local tw = gf.graphic.text_width(font, 20, c.name)
+			local tw = gf.graphic.text_width(font, 14, c.name)
 			local text = gf.gui.create("frame", 5, y, tw, eh)
 
 			text:set_parent(p)
 			text:set_text(c.name)
 			text:font(font)
-			text:prop("floating", "font-size", 20)
+			text:prop("floating", "font-size", 14)
 
 			c.callback(p, p:size()[1] / 2, y, (p:size()[1] - 5), eh)
 
