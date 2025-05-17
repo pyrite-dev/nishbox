@@ -53,42 +53,6 @@ pipeline {
 						}
 					}
 				}
-				stage("Build for Windows 64-bit OSMesa") {
-					agent any
-					steps {
-						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic --opengl=gdi --opengl-type=osmesa"
-						sh "gmake config=release_win64 -j9"
-						sh "pack -d data base.pak"
-						sh "./tool/pack.sh Win64 nishbox nishbox64-osmesa.zip"
-						archiveArtifacts(
-							"nishbox64-osmesa.zip"
-						)
-					}
-					post {
-						always {
-							post_always(false, false)
-						}
-					}
-				}
-				stage("Build for Windows 32-bit OSMesa") {
-					agent any
-					steps {
-						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic --opengl=gdi --opengl-type=osmesa"
-						sh "gmake config=release_win32 -j9"
-						sh "pack -d data base.pak"
-						sh "./tool/pack.sh Win32 nishbox nishbox32-osmesa.zip"
-						archiveArtifacts(
-							"nishbox32-osmesa.zip"
-						)
-					}
-					post {
-						always {
-							post_always(false, false)
-						}
-					}
-				}
 			}
 			post {
 				always {
