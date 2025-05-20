@@ -10,6 +10,7 @@
 gf_engine_t* engine;
 
 int main(int argc, char** argv) {
+	FILE* f;
 	gf_engine_begin();
 #if 0
 	engine = gf_engine_create_ex("unused", 0, "data");
