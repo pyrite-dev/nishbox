@@ -28,6 +28,7 @@ void handle_signal(int sig) {
 
 int main(int argc, char** argv) {
 	gf_version_t ver;
+	FILE* f;
 	gf_version_get(&ver);
 #ifndef _WIN32
 	signal(SIGINT, handle_signal);
@@ -39,7 +40,13 @@ int main(int argc, char** argv) {
 #if 0
 	engine = gf_engine_create_ex("NishBox", 0, "data");
 #else
-	engine = gf_engine_create("NishBox", 0);
+	f = fopen("base.pak", "r");
+	if(f != NULL){
+		fclose(f);
+		engine = gf_engine_create("NishBox", 0);
+	}else{
+		engine = gf_engine_create_ex("NishBox", 0, PREFIX "/share/nishbox/base.pak");
+	}
 #endif
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");

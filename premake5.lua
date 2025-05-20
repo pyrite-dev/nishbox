@@ -38,6 +38,22 @@ filter("platforms:ClassicMacOS")
 
 filter({})
 
+newoption({
+	trigger = "destdir",
+	value = "Path",
+	description = "DESTDIR equiv.",
+	category = "Installation",
+	default = "/"
+})
+
+newoption({
+	trigger = "prefix",
+	value = "Path",
+	description = "Installation destination",
+	category = "Installation",
+	default = "/usr/local"
+})
+
 newaction({
 	trigger = "clean",
 	description = "Clean the files",
@@ -115,6 +131,7 @@ project("NishBoxServer")
 	})
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
+	defines("PREFIX=\"" .. _OPTIONS["PREFIX"] .. "\"")
 	filter("system:windows")
 		defines({
 			"FD_SERVER"
@@ -152,6 +169,7 @@ project("NishBox")
 	})
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
+	defines("PREFIX=\"" .. _OPTIONS["PREFIX"] .. "\"")
 	filter("system:windows")
 		defines({
 			"FD_NISHBOX"
@@ -170,3 +188,18 @@ project("NishBox")
 		})
 		optimize("On")
 	msvc_filters()
+
+if _ACTION and _ACTION ~= "clean" then
+	local f = io.open("install.sh", "w")
+	f:write("#!/bin/sh\n")
+	f:write("set -e\n")
+	f:write("mkdir -p " .. _OPTIONS["prefix"] .. "/lib\n")
+	f:write("mkdir -p " .. _OPTIONS["prefix"] .. "/bin\n")
+	f:write("mkdir -p " .. _OPTIONS["prefix"] .. "/share/nishbox\n")
+	f:write("cp ./engine/lib/*/*/*.so " .. _OPTIONS["prefix"] .. "/lib/ >/dev/null 2>&1 || echo 'Failed to copy engine, but it is okay'\n")
+	f:write("cp ./bin/*/*/nishbox " .. _OPTIONS["prefix"] .. "/bin/\n")
+	f:write("cp ./base.pak " .. _OPTIONS["prefix"] .. "/share/nishbox/\n")
+	f:write("echo 'Installation success'\n")
+	f:close()
+	os.chmod("install.sh", "755")
+end
