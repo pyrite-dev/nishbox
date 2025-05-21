@@ -31,7 +31,7 @@ local function spawn_credits()
 	str = str .. "  - miniaudio\n"
 	str = str .. "  - RGFW\n"
 	str = str .. "  - OSMesa, from Mesa 3-D graphics library\n"
-	str = str .. "  - ALSAlib\n"
+	str = str .. "  - ALSA\n"
 	str = str .. "  - SDL2\n"
 	str = str .. "\n"
 	str = str .. "For more information, see COPYING file.\n"
