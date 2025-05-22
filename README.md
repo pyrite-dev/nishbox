@@ -1,4 +1,5 @@
 # NishBox
+![[Build status](https://j.nishi.boats/job/NishBox/job/master/badge/icon?style=flat-square)](https://j.nishi.boats/job/NishBox/job/master/)
 
 multiplayer sandbox game
 
