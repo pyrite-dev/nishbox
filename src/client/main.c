@@ -38,14 +38,14 @@ int main(int argc, char** argv) {
 #endif
 	gf_engine_begin();
 #if 0
-	engine = gf_engine_create_ex("NishBox", 0, "data");
+	engine = gf_engine_create_ex("NishBox", 0, "data", argv, argc);
 #else
 	f = fopen("base.pak", "r");
 	if(f != NULL){
 		fclose(f);
-		engine = gf_engine_create("NishBox", 0);
+		engine = gf_engine_create_ex("NishBox", 0, NULL, argv, argc);
 	}else{
-		engine = gf_engine_create_ex("NishBox", 0, PREFIX "/share/nishbox/base.pak");
+		engine = gf_engine_create_ex("NishBox", 0, PREFIX "/share/nishbox/base.pak", argv, argc);
 	}
 #endif
 	if(engine == NULL) {
