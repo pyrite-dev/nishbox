@@ -159,7 +159,7 @@ local function menu()
 	cleanup_menu()
 	for i,v in ipairs(menu_entries) do
 		if v.name then
-			local size = 56
+			local size = 48
 			local btn = gf.gui.create("button", 5 + size / 3, 5 + size * (i - 1), gf.graphic.text_width(font, size, v.name) + 5, size)
 			btn:set_text(v.name)
 			btn:font(font)
