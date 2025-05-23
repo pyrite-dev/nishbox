@@ -58,7 +58,7 @@ Section "Uninstall"
 	${If} ${RunningX64}
 		SetRegView 64
 	${Else}
-		SetRegView 32i
+		SetRegView 32
 	${EndIf}
 
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NishBox"
