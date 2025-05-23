@@ -26,6 +26,7 @@ local function spawn_credits()
 	str = str .. "  - zlib\n"
 	str = str .. "  - dr_libs\n"
 	str = str .. "  - jar\n"
+	str = str .. "  - nanosvg\n"
 	str = str .. "\n"
 	str = str .. "and might be using, depending on the build options:\n"
 	str = str .. "  - miniaudio\n"
