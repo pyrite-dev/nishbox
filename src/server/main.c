@@ -13,14 +13,14 @@ int main(int argc, char** argv) {
 	FILE* f;
 	gf_engine_begin();
 #if 0
-	engine = gf_engine_create_ex("unused", 0, "data", argv, argc);
+	engine = gf_engine_create_ex("unused", 1, "data", argv, argc);
 #else
 	f = fopen("base.pak", "r");
 	if(f != NULL){
 		fclose(f);
-		engine = gf_engine_create_ex("unused", 0, NULL, argv, argc);
+		engine = gf_engine_create_ex("unused", 1, NULL, argv, argc);
 	}else{
-		engine = gf_engine_create_ex("unused", 0, PREFIX "/share/nishbox/base.pak", argv, argc);
+		engine = gf_engine_create_ex("unused", 1, PREFIX "/share/nishbox/base.pak", argv, argc);
 	}
 #endif
 	if(engine == NULL) {
