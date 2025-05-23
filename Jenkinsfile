@@ -28,8 +28,7 @@ pipeline {
 						sh "makensis -DCONFIG=Release -DPLATFORM=Win64 install.nsi"
 						sh "mv install.exe install64.exe"
 						archiveArtifacts(
-							"nishbox64.zip",
-							"install64.exe"
+							"nishbox64.zip, install64.exe"
 						)
 					}
 					post {
@@ -49,8 +48,7 @@ pipeline {
 						sh "makensis -DCONFIG=Release -DPLATFORM=Win32 install.nsi"
 						sh "mv install.exe install32.exe"
 						archiveArtifacts(
-							"nishbox32.zip",
-							"install32.exe"
+							"nishbox32.zip, install32.exe"
 						)
 					}
 					post {
