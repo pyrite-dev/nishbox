@@ -46,7 +46,7 @@ Section
 
         WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NishBox" "DisplayName" "NishBox"
         WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NishBox" "InstallDir" "$INSTDIR"
-        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NishBox" "UninstallString" '"$INSTDIR\uninstall.exe"
+        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NishBox" "UninstallString" '"$INSTDIR\uninstall.exe"'
 
 	WriteUninstaller "$INSTDIR\uninstall.exe"
 SectionEnd
