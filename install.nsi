@@ -24,11 +24,13 @@ UninstPage uninstConfirm
 UninstPage instfiles
 
 Section
-	CreateDirectory "$INTDIR"
+	CreateDirectory "$INSTDIR"
 	SetOutPath "$INSTDIR"
 	File /oname=LICENSE.txt "LICENSE"
-	File "bin\*\*\nishbox.exe"
-	File "bin\*\*\nishbox_server.exe"
+	!cd "bin\*\*"
+	File "nishbox.exe"
+	File "nishbox_server.exe"
+	!cd "..\..\.."
 	File /nonfatal "engine\lib\*\*\*.dll"
 	File "base.pak"
 
