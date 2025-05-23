@@ -5,7 +5,7 @@ VIAddVersionKey "CompanyName" "Pyrite Development Team"
 VIAddVersionKey "LegalCopyright" "3-clause BSD"
 VIAddVersionKey "FileDescription" "NishBox Installer"
 
-LoadLanguageFile "${NSISDIR}\Contrib\Language Files\English.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 
 Name "NishBox"
 OutFile "install.exe"
