@@ -27,9 +27,9 @@ Section
 	CreateDirectory "$INSTDIR"
 	SetOutPath "$INSTDIR"
 	File /oname=LICENSE.txt "LICENSE"
-	File "bin\${CONFIG}\${PLATFORM}\nishbox.exe"
-	File "bin\${CONFIG}\${PLATFORM}\nishbox_server.exe"
-	File /nonfatal "engine\lib\${CONFIG}\${PLATFORM}\*.dll"
+	File "bin\$CONFIG\$PLATFORM\nishbox.exe"
+	File "bin\$CONFIG\$PLATFORM\nishbox_server.exe"
+	File /nonfatal "engine\lib\$CONFIG\$PLATFORM\*.dll"
 	File "base.pak"
 
 	CreateDirectory "$SMPROGRAMS\NishBox"
