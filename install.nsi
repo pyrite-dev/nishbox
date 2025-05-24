@@ -6,6 +6,7 @@ VIAddVersionKey "LegalCopyright" "3-clause BSD"
 VIAddVersionKey "FileDescription" "NishBox Installer"
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\Japanese.nlf"
 
 Name "NishBox"
 OutFile "install.exe"
