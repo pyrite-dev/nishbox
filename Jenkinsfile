@@ -21,7 +21,7 @@ pipeline {
 					agent any
 					steps {
 						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic"
+						sh "premake5 gmake --engine=static"
 						sh "gmake config=release_native -j9"
 						sh "pack -d data base.pak"
 						sh "rm -rf app apps appc"
@@ -31,7 +31,6 @@ pipeline {
 						sh "cp /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 app/usr/lib/x86_64-linux-gnu/"
 						sh "cp /usr/lib/x86_64-linux-gnu/libc.so* app/usr/lib/x86_64-linux-gnu/"
 						sh "cp /usr/lib/x86_64-linux-gnu/libstdc++.so* app/usr/lib/x86_64-linux-gnu/"
-						sh "cp engine/lib/*/*/*.so app/usr/lib/x86_64-linux-gnu/"
 						sh "cp base.pak app/usr/share/nishbox/"
 						sh "cp src/icon.png app/nishbox.png"
 						sh "echo '[Desktop Entry]' > app/nishbox.desktop"
