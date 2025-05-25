@@ -15,8 +15,42 @@ pipeline {
 				}
 			}
 		}
-		stage("Build for Windows") {
+		stage("Build") {
 			parallel {
+				stage("Build for AppImage") {
+					agent any
+					steps {
+						sh "git submodule update --init --recursive"
+						sh "premake5 gmake --engine=dynamic"
+						sh "gmake config=release_native -j9"
+						sh "pack -d data base.pak"
+						sh "rm -rf app apps appc"
+						sh "mkdir -p app/usr/bin"
+						sh "mkdir -p app/usr/lib/x86_64-linux-gnu"
+						sh "mkdir -p app/usr/share/nishbox"
+						sh "cp /usr/lib/x86_64-linux-gnu/ld-linux-x86_64.so.2 app/usr/lib/x86_64-linux-gnu/"
+						sh "cp engine/lib/*/*/*.so app/usr/lib/"
+						sh "cp base.pak app/usr/share/nishbox/"
+						sh "echo '#!/bin/sh' > app/AppRun"
+						sh "chmod +x app/AppRun"
+						sh "cp -rf app apps"
+						sh "cp -rf app appc"
+						sh "cp -rf bin/*/*/nishbox appc/usr/bin/"
+						sh "cp -rf bin/*/*/nishbox_server apps/usr/bin/"
+						sh "echo 'exec \$APPDIR/usr/bin/nishbox' >> appc/AppRun"
+						sh "echo 'exec \$APPDIR/usr/bin/nishbox_server' >> apps/AppRun"
+						sh "ARCH=x86_64 appimagetool appc nishbox64.AppImage"
+						sh "ARCH=x86_64 appimagetool apps nishbox_server64.AppImage"
+						archiveArtifacts(
+							"nishbox64.AppImage, nishbox_server64.AppImage"
+						)
+					}
+					post {
+						always {
+							post_always(false, false)
+						}
+					}
+				}
 				stage("Build for Windows 64-bit") {
 					agent any
 					steps {
