@@ -3,9 +3,6 @@
 #ifdef FD_NISHBOX
 #define FILE_DESCRIPTION "NishBox\0"
 #endif
-#ifdef FD_SERVER
-#define FILE_DESCRIPTION "NishBox Dedicated Server\0"
-#endif
 
 GAME ICON "./icon.ico"
 
@@ -20,7 +17,7 @@ BEGIN
                         VALUE "FileDescription", FILE_DESCRIPTION
                         VALUE "LegalCopyright", "3-clause BSD\0"
                         VALUE "FileVersion", "0.0.0.0\0"
-                        VALUE "ProductName", "NishBox Component\0"
+                        VALUE "ProductName", "NishBox\0"
                 END
         END
 

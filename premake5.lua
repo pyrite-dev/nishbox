@@ -113,44 +113,6 @@ end
 
 include "engine"
 
-project("NishBoxServer")
-	flags("RelativeLinks")
-	kind("ConsoleApp")
-	language("C")
-	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
-	objdir("obj/%{cfg.buildcfg}/%{cfg.platform}")
-	targetname("nishbox_server")
-	includedirs({
-		"engine/include"
-	})
-	files({
-		"src/server/*.c"
-	})
-	links({
-		"GoldFish"
-	})
-	-- Call this if you are gonna use my engine...
-	gf_link_stuffs("options:engine=static")
-	defines("PREFIX=\"" .. _OPTIONS["PREFIX"] .. "\"")
-	filter("system:windows")
-		defines({
-			"FD_SERVER"
-		})
-		files({
-			"src/*.rc"
-		})
-	filter("configurations:Debug")
-		defines({
-			"DEBUG"
-		})
-		symbols("On")
-	filter("configurations:Release")
-		defines({
-			"NDEBUG"
-		})
-		optimize("On")
-	msvc_filters()
-
 project("NishBox")
 	flags("RelativeLinks")
 	kind("ConsoleApp")
@@ -162,7 +124,7 @@ project("NishBox")
 		"engine/include"
 	})
 	files({
-		"src/client/*.c"
+		"src/*.c"
 	})
 	links({
 		"GoldFish"

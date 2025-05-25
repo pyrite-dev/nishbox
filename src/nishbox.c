@@ -29,23 +29,34 @@ void handle_signal(int sig) {
 int main(int argc, char** argv) {
 	gf_version_t ver;
 	FILE* f;
+	int nogui = 0;
+	int i;
+
+	for(i = 1; i < argc; i++){
+		if(strcmp(argv[i], "-dedicated") == 0){
+			nogui = 1;
+		}
+	}
+
 	gf_version_get(&ver);
 #ifndef _WIN32
 	signal(SIGINT, handle_signal);
 #else
-	FreeConsole();
-	gf_log_default = fopen("nishbox.log", "w");
+	if(!nogui){
+		FreeConsole();
+		gf_log_default = fopen("nishbox.log", "w");
+	}
 #endif
 	gf_engine_begin();
 #if 0
-	engine = gf_engine_create_ex("NishBox", 0, "data", argv, argc);
+	engine = gf_engine_create_ex("NishBox", nogui, "data", argv, argc);
 #else
 	f = fopen("base.pak", "r");
 	if(f != NULL){
 		fclose(f);
-		engine = gf_engine_create_ex("NishBox", 0, NULL, argv, argc);
+		engine = gf_engine_create_ex("NishBox", nogui, NULL, argv, argc);
 	}else{
-		engine = gf_engine_create_ex("NishBox", 0, PREFIX "/share/nishbox/base.pak", argv, argc);
+		engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/share/nishbox/base.pak", argv, argc);
 	}
 #endif
 	if(engine == NULL) {
@@ -58,7 +69,7 @@ int main(int argc, char** argv) {
 	gf_engine_end();
 
 #ifdef _WIN32
-	if(gf_log_default != NULL) fclose(gf_log_default);
+	if(gf_log_default != NULL && !nogui) fclose(gf_log_default);
 #endif
 
 	return 0;
