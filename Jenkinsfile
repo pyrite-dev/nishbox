@@ -39,6 +39,7 @@ pipeline {
 						sh "echo 'Type=Application' >> app/nishbox.desktop"
 						sh "echo 'Categories=Game;' >> app/nishbox.desktop"
 						sh "echo '#!/bin/sh' > app/AppRun"
+						sh "echo 'export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:\$APPDIR/usr/lib' > app/AppRun"
 						sh "chmod +x app/AppRun"
 						sh "cp -rf app apps"
 						sh "cp -rf app appc"
