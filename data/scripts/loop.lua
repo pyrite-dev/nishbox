@@ -1,4 +1,4 @@
-local rad = 0
+local rad = math.rad(180)
 local fps = "??"
 local fpscount = 0
 
