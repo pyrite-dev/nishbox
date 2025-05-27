@@ -19,7 +19,7 @@ local points = {
 
 local function draw_points()
 	local p = {}
-	local s = 0.015
+	local s = 0.040
 	local c = #points / 7
 	local psize = gf.graphic.point_size()
 	
@@ -40,7 +40,7 @@ local function draw_points()
 
 			x = s * math.cos(lrad) * r
 			y = s * math.sin(lrad + rad) * r
-			z = 0
+			z = 1
 
 			table.insert(p, {x, y, z})
 		end
@@ -64,8 +64,6 @@ gf.loop(function ()
 			fpscount = 0
 		end
 	end
-
-	gf.graphic.rect(0, 0, geo.width, geo.height, {0, 0x11, 0x11, 255})
 
 	text = fps
 	wid = gf.graphic.text_width(mono_font, 16, text)

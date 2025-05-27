@@ -117,6 +117,7 @@ if not(gf.server_only) then
 
 	gf.font.default(font)
 	gf.audio.set_volume(1)
+	gf.audio.set_volume(0)
 
 	gf.gui.set_button_sound("base:/sound/choice.wav")
 
