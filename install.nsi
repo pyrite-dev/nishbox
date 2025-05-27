@@ -29,14 +29,13 @@ Section
 	SetOutPath "$INSTDIR"
 	File /oname=LICENSE.txt "LICENSE"
 	File "bin\${CONFIG}\${PLATFORM}\nishbox.exe"
-	File "bin\${CONFIG}\${PLATFORM}\nishbox_server.exe"
 	File /nonfatal "engine\lib\${CONFIG}\${PLATFORM}\*.dll"
 	File "base.pak"
 
 	CreateDirectory "$SMPROGRAMS\NishBox"
 	CreateShortcut "$SMPROGRAMS\NishBox\License.lnk" "$INSTDIR\LICENSE.txt" ""
 	CreateShortcut "$SMPROGRAMS\NishBox\NishBox.lnk" "$INSTDIR\nishbox.exe" ""
-	CreateShortcut "$SMPROGRAMS\NishBox\NishBox Dedicated Server.lnk" "$INSTDIR\nishbox_server.exe" ""
+	CreateShortcut "$SMPROGRAMS\NishBox\NishBox Dedicated Server.lnk" "$INSTDIR\nishbox.exe" "-dedicated"
 	CreateShortcut "$SMPROGRAMS\NishBox\Uninstall NishBox.lnk" "$INSTDIR\uninstall.exe" ""
 
 	${If} ${RunningX64}
