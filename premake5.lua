@@ -118,7 +118,7 @@ project("NishBox")
 	kind("ConsoleApp")
 	language("C")
 	targetdir("bin/%{cfg.buildcfg}/%{cfg.platform}")
-	objdir("obj/%{cfg.buildcfg}/%{cfg.platform}")
+	objdir("obj")
 	targetname("nishbox")
 	includedirs({
 		"engine/include"
