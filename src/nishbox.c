@@ -64,6 +64,7 @@ int main(int argc, char** argv) {
 		gf_engine_end();
 		return 1;
 	}
+	gf_engine_name(engine, "NishBox");
 	gf_engine_loop(engine);
 	gf_engine_destroy(engine);
 	gf_engine_end();
