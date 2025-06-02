@@ -10,7 +10,7 @@ LoadLanguageFile "${NSISDIR}\Contrib\Language files\Japanese.nlf"
 
 Name "NishBox"
 OutFile "install.exe"
-InstallDir "C:\NishBox"
+InstallDir "C:\Games\NishBox"
 Icon "src/icon.ico"
 LicenseData LICENSE
 
