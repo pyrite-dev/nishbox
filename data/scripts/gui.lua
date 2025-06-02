@@ -29,6 +29,7 @@ local function spawn_credits()
 	str = str .. "  - nanosvg\n"
 	str = str .. "  - PCRE\n"
 	str = str .. "  - ed25519\n"
+	str = str .. "  - SQLite\n"
 	str = str .. "\n"
 	str = str .. "and might be using, depending on the build options:\n"
 	str = str .. "  - miniaudio\n"
