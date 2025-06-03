@@ -131,7 +131,6 @@ project("NishBox")
 	})
 	-- Call this if you are gonna use my engine...
 	gf_link_stuffs("options:engine=static")
-	defines("PREFIX=\"" .. _OPTIONS["PREFIX"] .. "\"")
 	filter("system:windows")
 		defines({
 			"FD_NISHBOX"
@@ -164,4 +163,8 @@ if _ACTION and _ACTION ~= "clean" then
 	f:write("echo 'Installation success'\n")
 	f:close()
 	os.chmod("install.sh", "755")
+
+	f = io.open("src/macro.h", "w")
+	f:write("#define PREFIX \"" .. _OPTIONS["prefix"] .. "\"\n")
+	f:close()
 end

@@ -27,3 +27,4 @@ Makefile
 /engine/external/rgfw/xdg-decoration-unstable-v1.h
 /engine/external/rgfw/xdg-shell.c
 /engine/external/rgfw/xdg-shell.h
+/src/macro.h

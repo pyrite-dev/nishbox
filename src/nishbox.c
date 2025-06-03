@@ -1,3 +1,5 @@
+#include "macro.h"
+
 /* Engine */
 #include <gf_core.h>
 #include <gf_version.h>
@@ -28,12 +30,12 @@ void handle_signal(int sig) {
 
 int main(int argc, char** argv) {
 	gf_version_t ver;
-	FILE* f;
-	int nogui = 0;
-	int i;
+	FILE*	     f;
+	int	     nogui = 0;
+	int	     i;
 
-	for(i = 1; i < argc; i++){
-		if(strcmp(argv[i], "-dedicated") == 0){
+	for(i = 1; i < argc; i++) {
+		if(strcmp(argv[i], "-dedicated") == 0) {
 			nogui = 1;
 		}
 	}
@@ -42,7 +44,7 @@ int main(int argc, char** argv) {
 #ifndef _WIN32
 	signal(SIGINT, handle_signal);
 #else
-	if(!nogui){
+	if(!nogui) {
 		FreeConsole();
 		gf_log_default = fopen("nishbox.log", "w");
 	}
@@ -52,10 +54,10 @@ int main(int argc, char** argv) {
 	engine = gf_engine_create_ex("NishBox", nogui, "data", argv, argc);
 #else
 	f = fopen("base.pak", "r");
-	if(f != NULL){
+	if(f != NULL) {
 		fclose(f);
 		engine = gf_engine_create_ex("NishBox", nogui, NULL, argv, argc);
-	}else{
+	} else {
 		engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/share/nishbox/base.pak", argv, argc);
 	}
 #endif
