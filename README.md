@@ -3,6 +3,8 @@
 
 multiplayer sandbox game
 
+[This product includes software developed by the Pyrite Development Team.](https://github.com/pyrite-dev/goldfish/blob/master/LICENSE)
+
 ## Download
 
 Nightly builds are available from [Jenkins](https://j.nishi.boats/job/NishBox/job/master/).

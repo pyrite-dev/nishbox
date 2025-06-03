@@ -19,6 +19,7 @@ local function spawn_credits()
 	str = str .. "NishBox - from Pyrite Development Team\n"
 	str = str .. "Powered by GoldFish engine.\n"
 	str = str .. "\n"
+	str = str .. "This product includes software developed by the Pyrite Development Team.\n"
 	str = str .. "GoldFish uses these projects:\n"
 	str = str .. "  - Open Dynamics Engine\n"
 	str = str .. "  - Lua\n"
