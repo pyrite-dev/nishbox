@@ -9,6 +9,8 @@ local function spawn_credits()
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
 	local text = gf.gui.create("text", 0, 0, 0, 0)
+	local d = gf.read("base:/COPYING")
+	local l =  lines(d)
 
 	win:set_text("Credits")
 
@@ -39,7 +41,9 @@ local function spawn_credits()
 	str = str .. "  - ALSA\n"
 	str = str .. "  - SDL2\n"
 	str = str .. "\n"
-	str = str .. "For more information, see COPYING file.\n"
+	for v in l do
+		str = str .. v .. "\n"
+	end
 	text:font(mono_font)
 	text:set_text(str)
 
