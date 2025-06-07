@@ -41,7 +41,7 @@ filter({})
 newoption({
 	trigger = "destdir",
 	value = "Path",
-	description = "DESTDIR equiv.",
+	description = "DESTDIR equiv",
 	category = "Installation",
 	default = "/"
 })
