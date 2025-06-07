@@ -60,7 +60,7 @@ pipeline {
 					agent any
 					steps {
 						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic --opengl=gdi --prefix=C:/Games/NishBox"
+						sh "premake5 gmake --engine=dynamic --opengl=gdi --prefix=C:/Games"
 						sh "gmake config=release_win64 -j9"
 						sh "pack -d data base.pak"
 						sh "./tool/pack.sh Win64 nishbox nishbox64.zip"
@@ -80,7 +80,7 @@ pipeline {
 					agent any
 					steps {
 						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=dynamic --opengl=gdi --prefix=C:/Games/NishBox"
+						sh "premake5 gmake --engine=dynamic --opengl=gdi --prefix=C:/Games"
 						sh "gmake config=release_win32 -j9"
 						sh "pack -d data base.pak"
 						sh "./tool/pack.sh Win32 nishbox nishbox32.zip"
