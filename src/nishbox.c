@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
 	FILE*	     f;
 	int	     nogui = 0;
 	int	     i;
+	gf_engine_param_t param;
 #ifdef _WIN32
 	char* regpath = get_registry("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\NishBox", "InstallDir");
 #endif
@@ -73,44 +74,25 @@ int main(int argc, char** argv) {
 	}
 #endif
 	gf_engine_begin();
-#ifdef DEBUG
-	engine = gf_engine_create_ex("NishBox", nogui, "data", argv, argc);
-#else
-	f = fopen("base.pak", "r");
-	if(f != NULL) {
-		fclose(f);
-		engine = gf_engine_create_ex("NishBox", nogui, NULL, argv, argc);
-	} else {
 #ifdef _WIN32
-		if(regpath == NULL){
-			engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/base.pak", argv, argc);
-		}else{
-			char* p = malloc(strlen(regpath) + 1 + 8 + 1);
-			strcpy(p, regpath);
-			strcat(p, "/base.pak");
-			engine = gf_engine_create_ex("NishBox", nogui, p, argv, argc);
-			free(p);
-		}
+	param.prefix = regpath == NULL ? PREFIX : regpath;
 #else
-		engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/share/NishBox/base.pak", argv, argc);
+	param.prefix = PREFIX "/share";
 #endif
-	}
+	param.game = "NishBox";
+
+#ifdef DEBUG
+	param.base = "data";
+	engine = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
+#else
+	param.base = "base.pak";
+	engine = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
 #endif
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
 		gf_engine_end();
 		return 1;
 	}
-#ifdef _WIN32
-	if(regpath == NULL){
-		gf_engine_prefix(engine, PREFIX);
-	}else{
-		gf_engine_prefix(engine, regpath);
-	}
-#else
-	gf_engine_prefix(engine, PREFIX "/share");
-#endif
-	gf_engine_name(engine, "NishBox");
 	gf_engine_loop(engine);
 	gf_engine_destroy(engine);
 	gf_engine_end();
