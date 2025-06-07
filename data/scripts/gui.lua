@@ -9,8 +9,6 @@ local function spawn_credits()
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
 	local text = gf.gui.create("text", 0, 0, 0, 0)
-	local d = gf.read("base:/COPYING")
-	local l =  lines(d)
 
 	win:set_text("Credits")
 
@@ -22,10 +20,7 @@ local function spawn_credits()
 	str = str .. "Powered by GoldFish engine.\n"
 	str = str .. "\n"
 	str = str .. "This product includes software developed by the Pyrite Development Team.\n"
-	str = str .. "\n"
-	for v in l do
-		str = str .. v .. "\n"
-	end
+	str = str .. "For more information, see https://github.com/pyrite-dev/goldfish\n"
 	text:font(mono_font)
 	text:set_text(str)
 
