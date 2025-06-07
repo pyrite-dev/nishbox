@@ -81,7 +81,19 @@ int main(int argc, char** argv) {
 		fclose(f);
 		engine = gf_engine_create_ex("NishBox", nogui, NULL, argv, argc);
 	} else {
-		engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/share/nishbox/base.pak", argv, argc);
+#ifdef _WIN32
+		if(regpath == NULL){
+			engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/base.pak", argv, argc);
+		}else{
+			char* p = malloc(strlen(regpath) + 1 + 8 + 1);
+			strcpy(p, regpath);
+			strcat(p, "/base.pak");
+			engine = gf_engine_create_ex("NishBox", nogui, p, argv, argc);
+			free(p);
+		}
+#else
+		engine = gf_engine_create_ex("NishBox", nogui, PREFIX "/share/NishBox/base.pak", argv, argc);
+#endif
 	}
 #endif
 	if(engine == NULL) {
