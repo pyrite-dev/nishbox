@@ -19,21 +19,21 @@
 gf_engine_t* engine = NULL;
 
 #ifdef _WIN32
-char* get_registry(const char* main, const char* sub){
+char* get_registry(const char* main, const char* sub) {
 	DWORD bufsize = 512;
-	HKEY handle;
+	HKEY  handle;
 	char* value = malloc(513);
-	int err = RegOpenKeyEx(HKEY_LOCAL_MACHINE, main, 0, KEY_QUERY_VALUE, &handle);
-	if(err = ERROR_SUCCESS){
+	int   err   = RegOpenKeyEx(HKEY_LOCAL_MACHINE, main, 0, KEY_QUERY_VALUE, &handle);
+	if(err = ERROR_SUCCESS) {
 		err = RegQueryValueEx(handle, sub, NULL, NULL, value, &bufsize);
-		if(err != ERROR_SUCCESS){
+		if(err != ERROR_SUCCESS) {
 			free(value);
 			RegCloseKey(handle);
 			return NULL;
 		}
 		RegCloseKey(handle);
 		return value;
-	}else{
+	} else {
 		free(value);
 		return NULL;
 	}
@@ -49,10 +49,10 @@ void handle_signal(int sig) {
 #endif
 
 int main(int argc, char** argv) {
-	gf_version_t ver;
-	FILE*	     f;
-	int	     nogui = 0;
-	int	     i;
+	gf_version_t	  ver;
+	FILE*		  f;
+	int		  nogui = 0;
+	int		  i;
 	gf_engine_param_t param;
 #ifdef _WIN32
 	char* regpath = get_registry("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\NishBox", "InstallDir");
@@ -83,10 +83,10 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	param.base = "data";
-	engine = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
+	engine	   = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
 #else
 	param.base = "base.pak";
-	engine = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
+	engine	   = gf_engine_create_ex("NishBox", nogui, param, argv, argc);
 #endif
 	if(engine == NULL) {
 		fprintf(stderr, "Engine creation failure\n");
