@@ -28,3 +28,4 @@ Makefile
 /engine/external/rgfw/xdg-shell.c
 /engine/external/rgfw/xdg-shell.h
 /src/macro.h
+/install.sh
