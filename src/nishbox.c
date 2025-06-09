@@ -50,7 +50,6 @@ void handle_signal(int sig) {
 
 int main(int argc, char** argv) {
 	gf_version_t	  ver;
-	FILE*		  f;
 	int		  nogui = 0;
 	int		  i;
 	gf_engine_param_t param;
