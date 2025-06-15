@@ -116,6 +116,7 @@ if not(gf.server_only) then
 	mono_bold_font = gf.font.load("base:/font/monobold.ttf")
 
 	gf.font.default(font)
+	gf.font.default_monospace(mono_font)
 	gf.audio.set_volume(1)
 
 	gf.gui.set_button_sound("base:/sound/choice.wav")
