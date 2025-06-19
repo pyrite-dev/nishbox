@@ -7,7 +7,7 @@ multiplayer sandbox game
 
 ## Download
 
-Nightly builds are available from [Jenkins](https://j.nishi.boats/job/NishBox/job/master/).
+Download it from the [Pyrite homepage](http://pyrite.nishi.boats/nishbox/).
 
 ## Community
 
