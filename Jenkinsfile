@@ -8,13 +8,20 @@ pipeline {
 	stages {
 		stage("Build"){
 			parallel {
-				stage("MSVC Build for 64-bit") {
+				stage("MSVC Build for 32-bit") {
 					agent {
 						label "2012r2"
 					}
 					steps {
 						bat "git submodule update --init --recursive"
 						bat "premake5 vs2015 --engine=dynamic --opengl=gdi --cc=msc --prefix=C:/Games"
+						bat "msbuild nishbox.sln /p:Configuration=Release"
+						bat "pack -d data base.pak"
+						bat "makensis /DCONFIG=Release /DPLATFORM=Native install.nsi"
+						bat "ren install install32-vs2015.exe"
+						archiveArtifacts(
+							"install32-vs2015.exe"
+						)
 					}
 					post {
 						always {
