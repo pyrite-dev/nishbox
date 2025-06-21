@@ -29,27 +29,6 @@ pipeline {
 						}
 					}
 				}
-				stage("MSVC Build for 64-bit") {
-					agent {
-						label "2012r2-x64"
-					}
-					steps {
-						bat "git submodule update --init --recursive"
-						bat "premake5 vs2015 --engine=dynamic --opengl=gdi --cc=msc --prefix=C:/Games"
-						bat "msbuild nishbox.sln /p:Configuration=Release"
-						bat "pack -d data base.pak"
-						bat "makensis /DCONFIG=Release /DPLATFORM=Native install.nsi"
-						bat "move /y install.exe install64-vs2015.exe"
-						archiveArtifacts(
-							"install64-vs2015.exe"
-						)
-					}
-					post {
-						always {
-							post_always(false, false)
-						}
-					}
-				}
 				stage("Build for AppImage") {
 					agent any
 					steps {
