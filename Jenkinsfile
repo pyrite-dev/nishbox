@@ -18,7 +18,7 @@ pipeline {
 						bat "msbuild nishbox.sln /p:Configuration=Release"
 						bat "pack -d data base.pak"
 						bat "makensis /DCONFIG=Release /DPLATFORM=Native install.nsi"
-						bat "ren install.exe install32-vs2015.exe"
+						bat "move /y install.exe install32-vs2015.exe"
 						archiveArtifacts(
 							"install32-vs2015.exe"
 						)
@@ -39,7 +39,7 @@ pipeline {
 						bat "msbuild nishbox.sln /p:Configuration=Release"
 						bat "pack -d data base.pak"
 						bat "makensis /DCONFIG=Release /DPLATFORM=Native install.nsi"
-						bat "ren install.exe install64-vs2015.exe"
+						bat "move /y install.exe install64-vs2015.exe"
 						archiveArtifacts(
 							"install64-vs2015.exe"
 						)
