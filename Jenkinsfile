@@ -29,44 +29,44 @@ pipeline {
 						}
 					}
 				}
-				stage("Build for AppImage") {
-					agent any
-					steps {
-						sh "git submodule update --init --recursive"
-						sh "premake5 gmake --engine=static"
-						sh "gmake config=release_native -j9"
-						sh "pack -d data base.pak"
-						sh "rm -rf app"
-						sh "mkdir -p app/usr/bin"
-						sh "mkdir -p app/usr/lib/x86_64-linux-gnu"
-						sh "cp /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 app/usr/lib/x86_64-linux-gnu/"
-						sh "cp /usr/lib/x86_64-linux-gnu/libc.so* app/usr/lib/x86_64-linux-gnu/"
-						sh "cp /usr/lib/x86_64-linux-gnu/libstdc++.so* app/usr/lib/x86_64-linux-gnu/"
-						sh "cp /usr/lib/x86_64-linux-gnu/libgcc_s.so* app/usr/lib/x86_64-linux-gnu/"
-						sh "cp base.pak app/"
-						sh "cp src/icon.png app/nishbox.png"
-						sh "echo '[Desktop Entry]' > app/nishbox.desktop"
-						sh "echo 'Icon=nishbox' >> app/nishbox.desktop"
-						sh "echo 'Type=Application' >> app/nishbox.desktop"
-						sh "echo 'Categories=Game;' >> app/nishbox.desktop"
-						sh "echo '#!/bin/sh' > app/AppRun"
-						sh "echo 'cd \$APPDIR' >> app/AppRun"
-						sh "chmod +x app/AppRun"
-						sh "cp -rf bin/*/*/nishbox app/usr/bin/"
-						sh "echo 'exec \$APPDIR/usr/bin/nishbox \"\$@\"' >> app/AppRun"
-						sh "echo 'Name=NishBox' >> app/nishbox.desktop"
-						sh "echo 'Exec=nishbox' >> app/nishbox.desktop"
-						sh "ARCH=x86_64 appimagetool app nishbox64.AppImage"
-						archiveArtifacts(
-							"nishbox64.AppImage"
-						)
-					}
-					post {
-						always {
-							post_always(false, false)
-						}
-					}
-				}
+//				stage("Build for AppImage") {
+//					agent any
+//					steps {
+//						sh "git submodule update --init --recursive"
+//						sh "premake5 gmake --engine=static"
+//						sh "gmake config=release_native -j9"
+//						sh "pack -d data base.pak"
+//						sh "rm -rf app"
+//						sh "mkdir -p app/usr/bin"
+//						sh "mkdir -p app/usr/lib/x86_64-linux-gnu"
+//						sh "cp /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 app/usr/lib/x86_64-linux-gnu/"
+//						sh "cp /usr/lib/x86_64-linux-gnu/libc.so* app/usr/lib/x86_64-linux-gnu/"
+//						sh "cp /usr/lib/x86_64-linux-gnu/libstdc++.so* app/usr/lib/x86_64-linux-gnu/"
+//						sh "cp /usr/lib/x86_64-linux-gnu/libgcc_s.so* app/usr/lib/x86_64-linux-gnu/"
+//						sh "cp base.pak app/"
+//						sh "cp src/icon.png app/nishbox.png"
+//						sh "echo '[Desktop Entry]' > app/nishbox.desktop"
+//						sh "echo 'Icon=nishbox' >> app/nishbox.desktop"
+//						sh "echo 'Type=Application' >> app/nishbox.desktop"
+//						sh "echo 'Categories=Game;' >> app/nishbox.desktop"
+//						sh "echo '#!/bin/sh' > app/AppRun"
+//						sh "echo 'cd \$APPDIR' >> app/AppRun"
+//						sh "chmod +x app/AppRun"
+//						sh "cp -rf bin/*/*/nishbox app/usr/bin/"
+//						sh "echo 'exec \$APPDIR/usr/bin/nishbox \"\$@\"' >> app/AppRun"
+//						sh "echo 'Name=NishBox' >> app/nishbox.desktop"
+//						sh "echo 'Exec=nishbox' >> app/nishbox.desktop"
+//						sh "ARCH=x86_64 appimagetool app nishbox64.AppImage"
+//						archiveArtifacts(
+//							"nishbox64.AppImage"
+//						)
+//					}
+//					post {
+//						always {
+//							post_always(false, false)
+//						}
+//					}
+//				}
 				stage("Build for Windows 64-bit") {
 					agent any
 					steps {
