@@ -10,7 +10,7 @@ pipeline {
 			parallel {
 				stage("MSVC Build for 32-bit") {
 					agent {
-						label "2012r2-x86"
+						label "2012r2"
 					}
 					steps {
 						bat "git submodule update --init --recursive"
