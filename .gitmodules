@@ -2,3 +2,4 @@
 	path = engine
 	url = ../goldfish
 	branch = master
+	update = rebase
