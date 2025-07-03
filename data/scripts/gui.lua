@@ -87,6 +87,21 @@ local function spawn_options()
 	gf.gui.sort()
 end
 
+local function spawn_map ()
+	local width = 600
+	local height = width / 4 * 3
+	local geo = gf.geometry()
+	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
+	local img = gf.gui.create("image", 0, 0, 400, 300)
+
+	win:set_text("Select map")
+
+	img:prop("text", "image", "base:/texture/test.bmp")
+	img:set_parent(win:prop("id", "frame"))
+
+	table.insert(windows, win)
+	gf.gui.sort()
+end
 
 -- Currently displayed window
 local windows = {}
@@ -112,11 +127,13 @@ local menu_entries = {
 	{
 		name = "Multiplayer",
 		callback = function()
+			spawn_map()
 		end
 	},
 	{
 		name = "Singleplayer",
 		callback = function()
+			spawn_map()
 		end
 	}
 }
