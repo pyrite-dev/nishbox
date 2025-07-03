@@ -3,6 +3,8 @@
 
 multiplayer sandbox game
 
+Check [WONTFIX](https://github.com/pyrite-dev/goldfish/raw/refs/heads/master/WONTFIX.md) for known issues which won't be fixed.
+
 [This product includes software developed by the Pyrite Development Team.](https://github.com/pyrite-dev/goldfish/blob/master/LICENSE)
 
 ## Download
