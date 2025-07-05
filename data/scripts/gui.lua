@@ -92,7 +92,7 @@ local function spawn_map ()
 	local height = width / 4 * 3
 	local geo = gf.geometry()
 	local win = gf.gui.create("window", geo.width / 2 - width / 2, geo.height / 2 - height / 2, width, height)
-	local img = gf.gui.create("image", 0, 0, 400, 300)
+	local img = gf.gui.create("image", 0, 0, 100, 100)
 
 	win:set_text("Select map")
 
